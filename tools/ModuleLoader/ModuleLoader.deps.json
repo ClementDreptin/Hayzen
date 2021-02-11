@@ -1,0 +1,53 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "ModuleLoader/1.0.0": {
+        "dependencies": {
+          "xdevkit": "2.0.21256.0",
+          "xdrpc": "2.0.21256.0"
+        },
+        "runtime": {
+          "ModuleLoader.dll": {}
+        }
+      },
+      "xdevkit/2.0.21256.0": {
+        "runtime": {
+          "xdevkit.dll": {
+            "assemblyVersion": "2.0.21256.0",
+            "fileVersion": "2.0.21256.0"
+          }
+        }
+      },
+      "xdrpc/2.0.21256.0": {
+        "runtime": {
+          "xdrpc.dll": {
+            "assemblyVersion": "2.0.21256.0",
+            "fileVersion": "2.0.21256.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ModuleLoader/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "xdevkit/2.0.21256.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "xdrpc/2.0.21256.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

@@ -1,8 +1,6 @@
 #pragma once
 
 #include <xtl.h>
-#include <xboxmath.h>
-#include <xbox.h>
-#include <iostream>
+#include <string>
 #include <vector>
 #include "xkelib.h"

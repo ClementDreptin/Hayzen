@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "Xbox.h"
+#include "Utils\Xbox.h"
 
-#include "Formater.h"
+#include "Utils\Xam.h"
+#include "Utils\Formater.h"
 
-void Xbox::XNotify(const char* Text, XNOTIFYQUEUEUI_TYPE Type)
+void Xbox::XNotify(const std::string& text, Xam::XNOTIFYQUEUEUI_TYPE type)
 {
-	XNotifyQueueUI(Type, 0xFF, XNOTIFY_SYSTEM, Formater::CharToWChar(Text), 0);
+	Xam::XNotifyQueueUI(type, 0xFF, XNOTIFY_SYSTEM, Formater::CharToWChar(text.c_str()), 0);
 }

@@ -65,7 +65,7 @@ void GameLauncher(DWORD TitleID)
 	case COD_MODERN_WARFARE_2:
 		if (!strcmp((char*)0x82001270, "multiplayer"))
 		{
-			Xbox::XNotify("Appendum - MW2 Multiplayer [Detected]");
+			Xbox::XNotify("Hayzen - MW2 Multiplayer Detected");
 
 			Sleep(200);
 			*(int*)(0x83109D80 + 0x1C) = 1;//Precaches Shaders So You Can Use All Different Shaders
@@ -85,7 +85,7 @@ void GameLauncher(DWORD TitleID)
 		{
 			if (!hasBeenOnDash)
 			{
-				Xbox::XNotify("Appendum Success!");
+				Xbox::XNotify("Hayzen - Dashboard Detected");
 				hasBeenOnDash = true;
 			}
 

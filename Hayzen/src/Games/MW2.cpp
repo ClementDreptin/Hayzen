@@ -2,7 +2,6 @@
 #include "MW2.h"
 
 #include "Utils\Xbox.h"
-#include "Utils\Detour.h"
 
 //Detour xamInputGetStateDetour;
 //Detour xamLoaderTerminateTitleDetour;
@@ -12,7 +11,6 @@ void MW2::Init()
 	Xbox::XNotify("Hayzen - MW2 Multiplayer Detected!");
 
 	//xamLoaderTerminateTitleDetour.DetourFunction((void*)s_XamLoaderTerminateTitleAddr, XamLoaderTerminateTitle_Hook, false);
-	DbgPrint("XamLoaderTerminateTitle hooked\n");
 }
 
 /*void MW2::XamLoaderTerminateTitle_Hook()

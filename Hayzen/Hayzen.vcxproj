@@ -351,9 +351,10 @@
     <ClInclude Include="src\MenuFunctions.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\structs.h" />
-    <ClInclude Include="src\Utils\Detour.h" />
     <ClInclude Include="src\Utils\Formater.h" />
     <ClInclude Include="src\Utils\Memory.h" />
+    <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Utils\Xam.h" />
     <ClInclude Include="src\Utils\Xbox.h" />
   </ItemGroup>
   <ItemGroup>
@@ -370,9 +371,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Utils\Detour.cpp" />
     <ClCompile Include="src\Utils\Formater.cpp" />
     <ClCompile Include="src\Utils\Memory.cpp" />
+    <ClCompile Include="src\Utils\Utils.cpp" />
+    <ClCompile Include="src\Utils\Xam.cpp" />
     <ClCompile Include="src\Utils\Xbox.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

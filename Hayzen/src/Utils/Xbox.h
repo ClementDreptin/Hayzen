@@ -1,9 +1,10 @@
 #pragma once
 
-class Xbox
+#include "Utils\Xam.h"
+
+namespace Xbox
 {
-public:
-	static void XNotify(const char* Text, XNOTIFYQUEUEUI_TYPE Type = XNOTIFYUI_TYPE_PREFERRED_REVIEW);
-private:
-	Xbox() {}
-};
+	DWORD ResolveFunction(const std::string& moduleName, DWORD ordinal);
+
+	void XNotify(const std::string& text, Xam::XNOTIFYQUEUEUI_TYPE type = Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW);
+}

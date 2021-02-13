@@ -24,8 +24,9 @@
     <ClInclude Include="src\HudElements.h" />
     <ClInclude Include="src\MenuFunctions.h" />
     <ClInclude Include="src\structs.h" />
-    <ClInclude Include="src\Utils\Xam.h" />
     <ClInclude Include="src\Utils\Xbox.h" />
+    <ClInclude Include="src\Utils\Xam.h" />
     <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Utils\Kernel.h" />
   </ItemGroup>
 </Project>

@@ -3,4 +3,8 @@
 #include <xtl.h>
 #include <string>
 #include <vector>
-#include "xkelib.h"
+#include "Utils\Kernel.h"
+#include "Utils\Xam.h"
+
+using namespace Kernel;
+using namespace Xam;

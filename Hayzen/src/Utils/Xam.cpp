@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Utils\Xam.h"
 
+#include "Utils\Utils.h"
+
 void Xam::XNotifyQueueUI(XNOTIFYQUEUEUI_TYPE exnq, DWORD dwUserIndex, ULONGLONG qwAreas, PWCHAR displayText, PVOID contextData)
 {
 	void(__cdecl* TmpFunc)(

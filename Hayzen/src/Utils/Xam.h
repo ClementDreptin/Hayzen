@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Utils\Utils.h"
-
 namespace Xam
 {
 	typedef enum

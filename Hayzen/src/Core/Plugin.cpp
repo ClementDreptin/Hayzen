@@ -1,54 +1,48 @@
 #include "pch.h"
-#include "Plugin.h"
+#include "Core\Plugin.h"
 
+#include "Utils\Utils.h"
 #include "Games\Games.h"
-#include "Utils\Memory.h"
+
+bool Plugin::Running = false;
+DWORD Plugin::CurrentTitle = 0;
 
 void Plugin::Start()
 {
-	m_Running = true;
-	Memory::Thread((LPTHREAD_START_ROUTINE)TitleIdMonitorThread);
-	// TODO: try to call TitleIdMonitor on the same thread
+	Running = true;
+	Utils::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
 }
 
 void Plugin::Stop()
 {
-	m_Running = false;
+	Running = false;
 }
 
-DWORD Plugin::TitleIdMonitorThread(LPVOID pluginPtr)
+DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
 {
-	Plugin* plugin = (Plugin*)pluginPtr;
-	plugin->TitleIdMonitor();
-
-	return TRUE;
-}
-
-DWORD Plugin::TitleIdMonitor()
-{
-	while (m_Running)
+	while (Running)
 	{
-		if (XamGetCurrentTitleId() != m_CurrentGame)
-			InitNewGame(XamGetCurrentTitleId());
+		DWORD newTitle = XamGetCurrentTitleId();
+		if (newTitle != CurrentTitle)
+			InitNewGame(newTitle);
 	}
 
-	return TRUE;
+	return 0;
 }
 
 void Plugin::InitNewGame(DWORD titleId)
 {
-	m_CurrentGame = titleId;
+	CurrentTitle = titleId;
 
 	switch (titleId)
 	{
-		case Dashboard::s_TitleId:
+		case DASHBOARD:
 			Dashboard::Init();
 			break;
-		case MW2::s_TitleId:
-			if (!strcmp((char*)MW2::s_MPStringAddr, "multiplayer"))
-				MW2::Init();
+		case MW2:
+			MW2::Init();
 			break;
 		default:
-			break;
+			return;
 	}
 }

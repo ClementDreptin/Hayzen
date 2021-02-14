@@ -20,5 +20,7 @@ namespace Kernel
 			);
 
 		DWORD XamGetCurrentTitleId();
+
+		void DbgPrint(const char* s, ...);
 	}
 }

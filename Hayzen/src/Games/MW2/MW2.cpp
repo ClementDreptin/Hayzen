@@ -6,6 +6,21 @@
 // TEMP
 #include "MenuFunctions.h"
 
+__declspec(naked) void RenderSaveStub(const void* args, int unknown)
+{
+	__asm
+	{
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+	}
+}
+
 void MW2::Init()
 {
 	if (!strcmp((char*)0x82001270, "multiplayer"))
@@ -21,17 +36,16 @@ void MW2::Init()
 		*(int*)(0x8216906C) = 0x60000000;
 		*(int*)(0x821690E4) = 0x60000000;
 
-		// Allow walking in game timer and when game has ended
-		*(int*)(0x821D6DC8) = 0x60000000;
-
-		// TODO: figure out what is wrong with the hooks
-		//Utils::PatchInJump((DWORD*)0x823B64C4, (DWORD)XamInputGetStateHook, 0); --> entirely freezes the console
-		//Utils::PatchInJump((DWORD*)0x82253140, (DWORD)SV_ExecuteClientCommandHook, 0); --> corrupts the select save device pop-up
+		Utils::HookFunctionStart((DWORD*)0x82285C98, (DWORD*)RenderSaveStub, (DWORD)Menu_PaintAllHook);
+		Utils::PatchInJump((DWORD*)0x82253140, (DWORD)SV_ExecuteClientCommandHook, 0);
 	}
 }
 
-DWORD MW2::XamInputGetStateHook(DWORD dwUserIndex, PXINPUT_STATE pState)
+void MW2::Menu_PaintAllHook(const void* args, int unknown)
 {
+	// TODO:
+	// - remove all the debug stuff in Utils.cpp
+	// - fix issue removing all HUD (makes the menu not visible)
 	if (Game.inGame())
 		if (!Game.gameStarted)
 			Game.StartupGame();
@@ -39,7 +53,7 @@ DWORD MW2::XamInputGetStateHook(DWORD dwUserIndex, PXINPUT_STATE pState)
 		if (Game.gameStarted)
 			Game.ResetGame();
 
-	return XInputGetState(dwUserIndex, pState);
+	RenderSaveStub(args, unknown);
 }
 
 void MW2::SV_ExecuteClientCommandHook(unsigned long client, const char * s, bool clientOK)

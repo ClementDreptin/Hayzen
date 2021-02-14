@@ -5,6 +5,6 @@ namespace MW2
 	void Init();
 
 	// Hooks
-	DWORD XamInputGetStateHook(DWORD dwUserIndex, PXINPUT_STATE pState);
+	void Menu_PaintAllHook(const void* args, int unknown);
 	void SV_ExecuteClientCommandHook(unsigned long client, const char * s, bool clientOK);
 }

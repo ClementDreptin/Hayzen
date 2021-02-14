@@ -22,5 +22,7 @@ namespace Kernel
 		DWORD XamGetCurrentTitleId();
 
 		void DbgPrint(const char* s, ...);
+
+		#define __isync()        __emit(0x4C00012C)
 	}
 }

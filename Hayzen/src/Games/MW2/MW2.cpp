@@ -44,7 +44,6 @@ void MW2::Init()
 void MW2::Menu_PaintAllHook(const void* args, int unknown)
 {
 	// TODO:
-	// - remove all the debug stuff in Utils.cpp
 	// - fix issue removing all HUD (makes the menu not visible)
 	if (Game.inGame())
 		if (!Game.gameStarted)

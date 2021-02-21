@@ -9,6 +9,7 @@
     <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
+    <ClCompile Include="src\Games\MW2\Functions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\Games.h" />
@@ -24,5 +25,7 @@
     <ClInclude Include="src\Games\MW2\MW2.h" />
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Games\MW2\Structs.h" />
+    <ClInclude Include="src\Games\MW2\Functions.h" />
   </ItemGroup>
 </Project>

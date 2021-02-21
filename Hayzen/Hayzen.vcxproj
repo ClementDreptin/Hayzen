@@ -352,6 +352,8 @@
     <ClInclude Include="src\functions.h" />
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\Games.h" />
+    <ClInclude Include="src\Games\MW2\Functions.h" />
+    <ClInclude Include="src\Games\MW2\Structs.h" />
     <ClInclude Include="src\Games\MW2\MW2.h" />
     <ClInclude Include="src\HudElements.h" />
     <ClInclude Include="src\MenuFunctions.h" />
@@ -365,6 +367,7 @@
   <ItemGroup>
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
+    <ClCompile Include="src\Games\MW2\Functions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\Hayzen.cpp" />
     <ClCompile Include="src\pch.cpp">

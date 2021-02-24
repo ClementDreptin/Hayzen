@@ -4,9 +4,7 @@
 #include "Games\MW2\Structs.h"
 #include "Games\MW2\Functions.h"
 #include "Utils\Utils.h"
-#include "Utils\Formater.h"
-
-bool MW2::GameInitialized = false;
+#include "Utils\Formatter.h"
 
 __declspec(naked) void RenderSaveStub(const void* args, int unknown)
 {
@@ -38,21 +36,6 @@ __declspec(naked) void Scr_NotifyStub(MW2::gentity_s* entity, unsigned short str
 	}
 }
 
-__declspec(naked) void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer)
-{
-	__asm
-	{
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		nop
-		li r3, 2
-	}
-}
-
 void MW2::Init()
 {
 	if (!strcmp((char*)0x82001270, "multiplayer"))
@@ -69,16 +52,14 @@ void MW2::Init()
 		*(int*)(0x821690E4) = 0x60000000;
 
 		//Utils::HookFunctionStart((DWORD*)0x82285C98, (DWORD*)RenderSaveStub, (DWORD)Menu_PaintAllHook);
-		Utils::HookFunctionStart((DWORD*)0x82253140, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 		Utils::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
 	}
 }
 
 void MW2::SetupGame(int clientNum)
 {
-	// TODO: figure out why this prevents the game from starting
-	//SetClientDvar(clientNum, "loc_warnings", "0");
-	//SetClientDvar(clientNum, "loc_warningsUI", "0");
+	SetClientDvar(clientNum, "loc_warnings", "0");
+	SetClientDvar(clientNum, "loc_warningsUI", "0");
 
 	Cmd_RegisterNotification(clientNum, "+actionslot 1", "dpad_up");
 	Cmd_RegisterNotification(clientNum, "+actionslot 2", "dpad_down");
@@ -86,21 +67,11 @@ void MW2::SetupGame(int clientNum)
 	Cmd_RegisterNotification(clientNum, "+actionslot 4", "dpad_right");
 	Cmd_RegisterNotification(clientNum, "+gostand", "A");
 	Cmd_RegisterNotification(clientNum, "+stance", "B");
-
-	GameInitialized = true;
 }
 
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 {
-	SV(clientNum, 0, Formater::LinkChar("s %s \"%s\"", dvar, value));
-}
-
-void MW2::SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer)
-{
-	SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
-
-	if (!strcmp(s, "disconnect"))
-		GameInitialized = false;
+	SV(clientNum, 0, Formatter::LinkChar("s %s \"%s\"", dvar.c_str(), value.c_str()));
 }
 
 void MW2::Menu_PaintAllHook(const void* args, int unknown)

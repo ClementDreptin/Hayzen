@@ -1,9 +1,11 @@
 #include "pch.h"
-#include "Formater.h"
+#include "Formatter.h"
+
+// TODO: Make those 2 functions use strings instead of const char*
 
 char buffer[0x1000];
 
-char* Formater::LinkChar(const char* text, ...)
+char* Formatter::LinkChar(const char* text, ...)
 {
 	va_list pArgList;
 	va_start(pArgList, text);
@@ -12,7 +14,7 @@ char* Formater::LinkChar(const char* text, ...)
 	return buffer;
 }
 
-wchar_t* Formater::CharToWChar(const char* text)
+wchar_t* Formatter::CharToWChar(const char* text)
 {
 	const size_t cSize = strlen(text) + 1;
 	wchar_t* wc = new wchar_t[cSize];

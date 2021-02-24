@@ -349,17 +349,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\functions.h" />
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\Games.h" />
     <ClInclude Include="src\Games\MW2\Functions.h" />
     <ClInclude Include="src\Games\MW2\Structs.h" />
     <ClInclude Include="src\Games\MW2\MW2.h" />
-    <ClInclude Include="src\HudElements.h" />
-    <ClInclude Include="src\MenuFunctions.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\structs.h" />
-    <ClInclude Include="src\Utils\Formater.h" />
+    <ClInclude Include="src\Utils\Formatter.h" />
     <ClInclude Include="src\Utils\Kernel.h" />
     <ClInclude Include="src\Utils\Xam.h" />
     <ClInclude Include="src\Utils\Utils.h" />
@@ -379,7 +375,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Utils\Formater.cpp" />
+    <ClCompile Include="src\Utils\Formatter.cpp" />
     <ClCompile Include="src\Utils\Xam.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
   </ItemGroup>

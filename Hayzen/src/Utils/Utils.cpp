@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Utils\Utils.h"
 
-#include "Utils\Formater.h"
+#include "Utils\Formatter.h"
 
 DWORD Utils::ResolveFunction(const std::string& moduleName, DWORD ordinal)
 {
@@ -141,5 +141,5 @@ DWORD Utils::RelinkGPLR(int offset, DWORD* saveStubAddr, DWORD* orgAddr)
 
 void Utils::XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type)
 {
-	XNotifyQueueUI(type, 0xFF, XNOTIFY_SYSTEM, Formater::CharToWChar(text.c_str()), 0);
+	XNotifyQueueUI(type, 0xFF, XNOTIFY_SYSTEM, Formatter::CharToWChar(text.c_str()), 0);
 }

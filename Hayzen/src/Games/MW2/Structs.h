@@ -2,12 +2,14 @@
 
 namespace MW2
 {
-	struct vec2 {
+	struct vec2
+	{
 		float x;
 		float y;
 	};
 	
-	struct vec3 {
+	struct vec3
+	{
 		float x;
 		float y;
 		float z;
@@ -102,18 +104,6 @@ namespace MW2
 	#ifdef GHOSTS
 		int currentShowInKillcam;
 	#endif
-	};
-	
-	enum buttons_t {
-		BUTTON_RS = 0x4,
-		BUTTON_LS = 0x2002,
-		BUTTON_RT = 0x1,
-		BUTTON_LT = 0x80800,
-		BUTTON_RB = 0x4000,
-		BUTTON_LB = 0x8000,
-		BUTTON_X = 0x20,
-		BUTTON_A = 0x400,
-		BUTTON_START = 0x400000
 	};
 	
 	enum team_t {

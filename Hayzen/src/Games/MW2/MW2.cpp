@@ -71,7 +71,7 @@ void MW2::SetupGame(int clientNum)
 
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 {
-	SV(clientNum, 0, Formatter::LinkChar("s %s \"%s\"", dvar.c_str(), value.c_str()));
+	SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()));
 }
 
 void MW2::Menu_PaintAllHook(const void* args, int unknown)

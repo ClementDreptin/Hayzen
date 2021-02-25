@@ -2,6 +2,7 @@
 
 namespace Formatter
 {
-	char* LinkChar(const char* text, ...);
-	wchar_t* CharToWChar(const char* text);
+	char* Format(const char* format, ...);
+
+	std::wstring ToWide(const std::string& narrowString);
 }

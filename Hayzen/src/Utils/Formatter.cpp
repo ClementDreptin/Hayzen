@@ -1,24 +1,20 @@
 #include "pch.h"
-#include "Formatter.h"
+#include "Utils\Formatter.h"
 
-// TODO: Make those 2 functions use strings instead of const char*
-
-char buffer[0x1000];
-
-char* Formatter::LinkChar(const char* text, ...)
+char* Formatter::Format(const char* format, ...)
 {
-	va_list pArgList;
-	va_start(pArgList, text);
-	vsprintf(buffer, text, pArgList);
-	va_end(pArgList);
+	char* buffer = new char[200];
+	va_list args;
+    va_start(args, format);
+    vsprintf(buffer, format, args);
+	va_end(args);
 	return buffer;
 }
 
-wchar_t* Formatter::CharToWChar(const char* text)
+std::wstring Formatter::ToWide(const std::string& narrowString)
 {
-	const size_t cSize = strlen(text) + 1;
-	wchar_t* wc = new wchar_t[cSize];
-	size_t tmp = 0;
-	mbstowcs_s(&tmp, wc, cSize, text, cSize);
-	return wc;
+	std::wstring wideString;
+	wideString.assign(narrowString.begin(), narrowString.end());
+
+	return wideString;
 }

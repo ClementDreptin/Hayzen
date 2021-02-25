@@ -1,14 +1,14 @@
 #include "pch.h"
 #include "Utils\Formatter.h"
 
-char* Formatter::Format(const char* format, ...)
+std::string Formatter::Format(const char* format, ...)
 {
-	char* buffer = new char[200];
+	char buffer[200];
 	va_list args;
-    va_start(args, format);
-    vsprintf(buffer, format, args);
+	va_start(args, format);
+	vsprintf_s(buffer, 200, format, args);
 	va_end(args);
-	return buffer;
+	return std::string(buffer);
 }
 
 std::wstring Formatter::ToWide(const std::string& narrowString)

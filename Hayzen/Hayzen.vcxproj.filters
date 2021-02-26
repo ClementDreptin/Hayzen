@@ -2,28 +2,26 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="src\Hayzen.cpp" />
-    <ClCompile Include="src\Core\Plugin.cpp" />
-    <ClCompile Include="src\Utils\Xbox.cpp" />
-    <ClCompile Include="src\Utils\Memory.cpp" />
-    <ClCompile Include="src\Games\MW2.cpp" />
-    <ClCompile Include="src\Utils\Formater.cpp" />
-    <ClCompile Include="src\Utils\Detour.cpp" />
-    <ClCompile Include="src\Games\Dashboard.cpp" />
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Utils\Xam.cpp" />
+    <ClCompile Include="src\Core\Plugin.cpp" />
+    <ClCompile Include="src\Games\MW2\MW2.cpp" />
+    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
+    <ClCompile Include="src\Utils\Utils.cpp" />
+    <ClCompile Include="src\Games\MW2\Functions.cpp" />
+    <ClCompile Include="src\Utils\Formatter.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\Games\MW2.h" />
-    <ClInclude Include="src\Games\Dashboard.h" />
     <ClInclude Include="src\Games\Games.h" />
-    <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\Utils\Xbox.h" />
-    <ClInclude Include="src\Utils\Memory.h" />
-    <ClInclude Include="src\Utils\Formater.h" />
-    <ClInclude Include="src\Utils\Detour.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\functions.h" />
-    <ClInclude Include="src\HudElements.h" />
-    <ClInclude Include="src\MenuFunctions.h" />
-    <ClInclude Include="src\structs.h" />
+    <ClInclude Include="src\Utils\Xam.h" />
+    <ClInclude Include="src\Utils\Kernel.h" />
+    <ClInclude Include="src\Core\Plugin.h" />
+    <ClInclude Include="src\Games\MW2\MW2.h" />
+    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
+    <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\Games\MW2\Structs.h" />
+    <ClInclude Include="src\Games\MW2\Functions.h" />
+    <ClInclude Include="src\Utils\Formatter.h" />
   </ItemGroup>
 </Project>

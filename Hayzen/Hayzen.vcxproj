@@ -146,14 +146,15 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;_XBOX</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalOptions>/dll /entry:"_DllMainCRTStartup" /include:"XboxKrnlBuildNumber" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ImageXex>
@@ -178,14 +179,15 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PreprocessorDefinitions>_DEBUG;_XBOX</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <ImageXex>
       <ConfigurationFile>Hayzen.xml</ConfigurationFile>
@@ -210,7 +212,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -221,7 +223,8 @@
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
       <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <ImageXex>
       <ConfigurationFile>Hayzen.xml</ConfigurationFile>
@@ -246,7 +249,7 @@
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;FASTCAP</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -256,7 +259,8 @@
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
       <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <ImageXex>
       <ConfigurationFile>Hayzen.xml</ConfigurationFile>
@@ -280,7 +284,7 @@
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>NDEBUG;_XBOX</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -290,7 +294,8 @@
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
       <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
     </Link>
     <ImageXex>
       <ConfigurationFile>Hayzen.xml</ConfigurationFile>
@@ -314,7 +319,7 @@
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PreprocessorDefinitions>NDEBUG;_XBOX;LTCG</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;vendor\xkelib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -323,8 +328,9 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>vendor\xkelib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>xapilibd.lib;d3d9d.lib;d3dx9d.lib;xgraphicsd.lib;xboxkrnl.lib;xnetd.lib;xaudiod2.lib;xactd3.lib;x3daudiod.lib;xmcored.lib;xbdm.lib;vcompd.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>
+      </AdditionalLibraryDirectories>
       <AdditionalOptions>/dll /entry:"_DllMainCRTStartup" /include:"XboxKrnlBuildNumber" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ImageXex>
@@ -343,23 +349,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\functions.h" />
-    <ClInclude Include="src\Games\Dashboard.h" />
+    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\Games.h" />
-    <ClInclude Include="src\Games\MW2.h" />
-    <ClInclude Include="src\HudElements.h" />
-    <ClInclude Include="src\MenuFunctions.h" />
+    <ClInclude Include="src\Games\MW2\Functions.h" />
+    <ClInclude Include="src\Games\MW2\Structs.h" />
+    <ClInclude Include="src\Games\MW2\MW2.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\structs.h" />
-    <ClInclude Include="src\Utils\Detour.h" />
-    <ClInclude Include="src\Utils\Formater.h" />
-    <ClInclude Include="src\Utils\Memory.h" />
-    <ClInclude Include="src\Utils\Xbox.h" />
+    <ClInclude Include="src\Utils\Formatter.h" />
+    <ClInclude Include="src\Utils\Kernel.h" />
+    <ClInclude Include="src\Utils\Xam.h" />
+    <ClInclude Include="src\Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Plugin.cpp" />
-    <ClCompile Include="src\Games\Dashboard.cpp" />
-    <ClCompile Include="src\Games\MW2.cpp" />
+    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
+    <ClCompile Include="src\Games\MW2\Functions.cpp" />
+    <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\Hayzen.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">Create</PrecompiledHeader>
@@ -370,10 +375,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="src\Utils\Detour.cpp" />
-    <ClCompile Include="src\Utils\Formater.cpp" />
-    <ClCompile Include="src\Utils\Memory.cpp" />
-    <ClCompile Include="src\Utils\Xbox.cpp" />
+    <ClCompile Include="src\Utils\Formatter.cpp" />
+    <ClCompile Include="src\Utils\Xam.cpp" />
+    <ClCompile Include="src\Utils\Utils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

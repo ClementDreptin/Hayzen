@@ -131,7 +131,7 @@
     <RemoteRoot>hdd:\Plugins</RemoteRoot>
     <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">
     <ClCompile>
@@ -341,10 +341,12 @@
       <ExcludedFromBuild>false</ExcludedFromBuild>
     </Deploy>
     <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
     <PostBuildEvent>
-      <Message>Will unload then load the module after it's built.</Message>
+      <Message>
+      </Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

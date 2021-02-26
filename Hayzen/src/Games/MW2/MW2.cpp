@@ -6,7 +6,7 @@
 #include "Utils\Utils.h"
 #include "Utils\Formatter.h"
 
-__declspec(naked) void RenderSaveStub(const void* args, int unknown)
+__declspec(naked) void MW2::Menu_PaintAllStub(const void* args, int unknown)
 {
 	__asm
 	{
@@ -21,7 +21,7 @@ __declspec(naked) void RenderSaveStub(const void* args, int unknown)
 	}
 }
 
-__declspec(naked) void Scr_NotifyStub(MW2::gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
+__declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 {
 	__asm
 	{
@@ -76,7 +76,7 @@ void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::strin
 
 void MW2::Menu_PaintAllHook(const void* args, int unknown)
 {
-	RenderSaveStub(args, unknown);
+	Menu_PaintAllStub(args, unknown);
 }
 
 void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)

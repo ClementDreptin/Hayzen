@@ -17,46 +17,44 @@ namespace MW2
 	
 	enum he_type_t : int
 	{
-		HE_TYPE_FREE = 0x0,
-		HE_TYPE_TEXT = 0x1,
-		HE_TYPE_VALUE = 0x2,
-		HE_TYPE_PLAYERNAME = 0x3,
-		HE_TYPE_MATERIAL = 0x4,
-		HE_TYPE_TIMER_DOWN = 0x5,
-		HE_TYPE_TIMER_UP = 0x6,
-		HE_TYPE_TIMER_STATIC = 0x7,
-		HE_TYPE_TENTHS_TIMER_DOWN = 0x8,
-		HE_TYPE_TENTHS_TIMER_UP = 0x9,
-		HE_TYPE_TENTHS_TIMER_STATIC = 0xA,
-		HE_TYPE_CLOCK_DOWN = 0xB,
-		HE_TYPE_CLOCK_UP = 0xC,
-		HE_TYPE_WAYPOINT = 0xD,
-		HE_TYPE_MAPNAME = 0xE,
-		HE_TYPE_GAMETYPE = 0xF,
-		HE_TYPE_COUNT = 0x10,
+		HE_TYPE_FREE,
+		HE_TYPE_TEXT,
+		HE_TYPE_VALUE,
+		HE_TYPE_PLAYERNAME,
+		HE_TYPE_MATERIAL,
+		HE_TYPE_MAPNAME,
+		HE_TYPE_GAMETYPE,
+		HE_TYPE_TIMER_DOWN,
+		HE_TYPE_TIMER_UP,
+		HE_TYPE_TIMER_STATIC,
+		HE_TYPE_TENTHS_TIMER_DOWN,
+		HE_TYPE_TENTHS_TIMER_UP,
+		HE_TYPE_CLOCK_DOWN,
+		HE_TYPE_CLOCK_UP,
+		HE_TYPE_WAYPOINT,
+		HE_TYPE_COUNT,
 	};
 	
-	union hudelem_color_t
+	struct hudelem_color_t
 	{
-		struct
-		{
-			char r;
-			char g;
-			char b;
-			char a;
-		};
-		int rgba;
+		byte r;
+		byte g;
+		byte b;
+		byte a;
 	};
-	
+
 	struct hudelem_s
 	{
 		he_type_t type;
-		float x;
 		float y;
+		float x;
 		float z;
 		int targetEntNum;
 		float fontScale;
 		float fromFontScale;
+		int fontScaleStartTime;
+		int fontScaleTime;
+		int label;
 		int font;
 		int alignOrg;
 		int alignScreen;
@@ -64,26 +62,22 @@ namespace MW2
 		hudelem_color_t fromColor;
 		int fadeStartTime;
 		int fadeTime;
-		int label;
-		int width;
 		int height;
+		int width;
 		int materialIndex;
-	#if defined(WAW) || defined(COD4)
-		int offscreenMaterialIdx;
-	#endif
-		int fromWidth;
 		int fromHeight;
+		int fromWidth;
 		int scaleStartTime;
 		int scaleTime;
-		float fromX;
 		float fromY;
+		float fromX;
 		int fromAlignOrg;
 		int fromAlignScreen;
 		int moveStartTime;
 		int moveTime;
+		float value;
 		int time;
 		int duration;
-		float value;
 		int text;
 		float sort;
 		hudelem_color_t glowColor;
@@ -94,23 +88,21 @@ namespace MW2
 		int soundID;
 		int flags;
 	};
-	
+ 
 	struct game_hudelem_s
 	{
-		hudelem_s hud;
+		hudelem_s elem;
 		int clientNum;
-		int team;
+		int teamNum;
 		int archived;
-	#ifdef GHOSTS
-		int currentShowInKillcam;
-	#endif
 	};
 	
 	enum team_t {
 		TEAM_FREE,
 		TEAM_AXIS,
 		TEAM_ALLIES,
-		TEAM_SPECTATOR
+		TEAM_SPECTATOR,
+		TEAM_NUM_TEAMS
 	};
 	
 	enum serverState_t {
@@ -138,7 +130,8 @@ namespace MW2
 		OBJST_INVISIBLE,
 		OBJST_DONE,
 		OBJST_CURRENT,
-		OBJST_FAILED
+		OBJST_FAILED,
+		OBJST_NUMSTATES
 	};
 	
 	enum DvarSetSource {
@@ -154,10 +147,16 @@ namespace MW2
 		TR_LINEAR_STOP,
 		TR_SINE,
 		TR_GRAVITY,
+		TR_LOW_GRAVITY,
 		TR_ACCELERATE,
 		TR_DECELERATE,
 		TR_PHYSICS,
-		TR_RAGDOLL
+		TR_FIRST_RAGDOLL,
+		TR_RAGDOLL,
+		TR_RAGDOLL_GRAVITY,
+		TR_RAGDOLL_INTERPOLATE,
+		TR_LAST_RAGDOLL,
+		NUM_TRTYPES
 	};
 	
 	enum entityType_t {
@@ -185,7 +184,8 @@ namespace MW2
 		WEAPTYPE_BULLET,
 		WEAPTYPE_GRENADE,
 		WEAPTYPE_PROJECTILE,
-		WEAPTYPE_RIOTSHIELD
+		WEAPTYPE_RIOTSHIELD,
+		WEAPTYPE_NUM
 	};
 	
 	enum weapClass_t {
@@ -200,14 +200,15 @@ namespace MW2
 		WEAPCLASS_TURRET,
 		WEAPCLASS_THROWINGKNIFE,
 		WEAPCLASS_NON_PLAER,
-		WEAPCLASS_ITEM
+		WEAPCLASS_ITEM,
+		WEAPCLASS_NUM
 	};
 	
 	enum PlayerHandIndex {
 		WEAPON_HAND_RIGHT,
-		WEAPON_HAND_LEFT,
-		NUM_WEAPON_HANDS,
 		WEAPON_HAND_DEFAULT = 0,
+		WEAPON_HAND_LEFT,
+		NUM_WEAPON_HANDS
 	};
 	
 	enum pmtype_t {

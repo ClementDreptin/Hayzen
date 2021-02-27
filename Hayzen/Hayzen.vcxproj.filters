@@ -10,6 +10,10 @@
     <ClCompile Include="src\Utils\Utils.cpp" />
     <ClCompile Include="src\Games\MW2\Functions.cpp" />
     <ClCompile Include="src\Utils\Formatter.cpp" />
+    <ClCompile Include="src\Games\MW2\Client.cpp" />
+    <ClCompile Include="src\Games\MW2\Menu.cpp" />
+    <ClCompile Include="src\Games\MW2\Option.cpp" />
+    <ClCompile Include="src\Games\MW2\Hud.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\Games.h" />
@@ -23,5 +27,9 @@
     <ClInclude Include="src\Games\MW2\Structs.h" />
     <ClInclude Include="src\Games\MW2\Functions.h" />
     <ClInclude Include="src\Utils\Formatter.h" />
+    <ClInclude Include="src\Games\MW2\Client.h" />
+    <ClInclude Include="src\Games\MW2\Menu.h" />
+    <ClInclude Include="src\Games\MW2\Option.h" />
+    <ClInclude Include="src\Games\MW2\Hud.h" />
   </ItemGroup>
 </Project>

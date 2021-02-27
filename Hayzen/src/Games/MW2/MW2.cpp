@@ -6,7 +6,9 @@
 #include "Utils\Utils.h"
 #include "Utils\Formatter.h"
 
-__declspec(naked) void MW2::Menu_PaintAllStub(const void* args, int unknown)
+std::vector<MW2::Client> MW2::Clients;
+
+/*__declspec(naked) void MW2::Menu_PaintAllStub(const void* args, int unknown)
 {
 	__asm
 	{
@@ -19,7 +21,7 @@ __declspec(naked) void MW2::Menu_PaintAllStub(const void* args, int unknown)
 		nop
 		nop
 	}
-}
+}*/
 
 __declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 {
@@ -67,6 +69,8 @@ void MW2::SetupGame(int clientNum)
 	Cmd_RegisterNotification(clientNum, "+actionslot 4", "dpad_right");
 	Cmd_RegisterNotification(clientNum, "+gostand", "A");
 	Cmd_RegisterNotification(clientNum, "+stance", "B");
+
+	Clients.push_back(Client(clientNum));
 }
 
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -74,10 +78,10 @@ void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::strin
 	SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
-void MW2::Menu_PaintAllHook(const void* args, int unknown)
+/*void MW2::Menu_PaintAllHook(const void* args, int unknown)
 {
 	Menu_PaintAllStub(args, unknown);
-}
+}*/
 
 void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 {
@@ -91,20 +95,34 @@ void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned
 		SetupGame(clientNum);
 
 	if (!strcmp(notify, "dpad_up"))
+	{
 		SV(clientNum, 0, "f \"^2Dpad Up Pressed!\"");
-	
+	}
+
 	if (!strcmp(notify, "dpad_down"))
+	{
 		SV(clientNum, 0, "f \"^2Dpad Down Pressed!\"");
-	
+	}
+
 	if (!strcmp(notify, "dpad_left"))
+	{
+		Clients[0].GetMenu().Open();
 		SV(clientNum, 0, "f \"^2Dpad Left Pressed!\"");
+	}
 	
 	if (!strcmp(notify, "dpad_right"))
+	{
+		Clients[0].GetMenu().Close();
 		SV(clientNum, 0, "f \"^2Dpad Right Pressed!\"");
-	
+	}
+
 	if (!strcmp(notify, "A"))
+	{
 		SV(clientNum, 0, "f \"^2A Pressed!\"");
-	
+	}
+
 	if (!strcmp(notify, "B"))
+	{
 		SV(clientNum, 0, "f \"^2B Pressed!\"");
+	}
 }

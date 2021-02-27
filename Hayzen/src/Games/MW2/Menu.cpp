@@ -2,22 +2,24 @@
 #include "Games\MW2\Menu.h"
 
 #include "Games\MW2\Functions.h"
-#include "Games\MW2\Hud.h"
 
 namespace MW2
 {
 	Menu::Menu(int clientNum, int teamNum)
+		: m_Open(false)
 	{
-		m_HudElem = HudElem_Alloc(clientNum, teamNum);
+		m_Background = HudElem_Alloc(clientNum, teamNum);
 	}
 
 	void Menu::Open()
 	{
-		SetShader(m_HudElem, "black", 591.0f, 240.0f, 300, 470, 5, 0, 0.0f, 0, 0, 0, 180);
+		SetShader(m_Background, "black", 591.0f, 240.0f, 300, 470, 5, 0, 0.0f, 0, 0, 0, 180);
+		m_Open = true;
 	}
 
 	void Menu::Close()
 	{
-		SetShader(m_HudElem, "black", 0.0f, 0.0f, 0, 0, 5, 0, 0.0f, 0, 0, 0, 0);
+		SetShader(m_Background, "black", 0.0f, 0.0f, 0, 0, 5, 0, 0.0f, 0, 0, 0, 0);
+		m_Open = false;
 	}
 }

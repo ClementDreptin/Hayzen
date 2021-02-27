@@ -3,6 +3,7 @@
 #include <xtl.h>
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "Utils\Kernel.h"
 #include "Utils\Xam.h"
 

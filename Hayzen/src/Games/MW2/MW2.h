@@ -6,7 +6,7 @@
 namespace MW2
 {
 	// Variables
-	extern std::vector<Client> Clients;
+	extern std::unordered_map<int, Client> Clients;
 
 	// Functions
 	void Init();
@@ -14,9 +14,6 @@ namespace MW2
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
 	// Hooks and their stubs
-	//void Menu_PaintAllStub(const void* args, int unknown);
-	//void Menu_PaintAllHook(const void* args, int unknown);
-
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
 }

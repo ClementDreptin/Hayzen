@@ -1,10 +1,11 @@
 #pragma once
+#include "Games\MW2\HudElem.h"
 
 #include "Games\MW2\Option.h"
 
 namespace MW2
 {
-	class Menu
+	class Menu : public HudElem
 	{
 	public:
 		Menu() {}
@@ -12,8 +13,10 @@ namespace MW2
 
 		void Open();
 		void Close();
+
+		inline bool IsOpen() const { return m_Open; }
 	private:
-		//std::vector<Option> m_Options;
-		game_hudelem_s* m_HudElem;
+		game_hudelem_s* m_Background;
+		bool m_Open;
 	};
 }

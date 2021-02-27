@@ -13,7 +13,7 @@
     <ClCompile Include="src\Games\MW2\Client.cpp" />
     <ClCompile Include="src\Games\MW2\Menu.cpp" />
     <ClCompile Include="src\Games\MW2\Option.cpp" />
-    <ClCompile Include="src\Games\MW2\Hud.cpp" />
+    <ClCompile Include="src\Games\MW2\HudElem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\Games.h" />
@@ -30,6 +30,6 @@
     <ClInclude Include="src\Games\MW2\Client.h" />
     <ClInclude Include="src\Games\MW2\Menu.h" />
     <ClInclude Include="src\Games\MW2\Option.h" />
-    <ClInclude Include="src\Games\MW2\Hud.h" />
+    <ClInclude Include="src\Games\MW2\HudElem.h" />
   </ItemGroup>
 </Project>

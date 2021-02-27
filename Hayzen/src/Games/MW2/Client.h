@@ -7,11 +7,12 @@ namespace MW2
 	class Client
 	{
 	public:
+		Client() {}
 		Client(int clientNum);
 
-		inline Menu GetMenu() const { return m_Menu; }
+		inline Menu& GetMenu() { return m_Menu; }
 	private:
-		Menu m_Menu;
 		int m_Num;
+		Menu m_Menu;
 	};
 }

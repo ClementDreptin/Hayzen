@@ -38,4 +38,9 @@ namespace MW2
 		elem->elem.sort = sort;
 		elem->elem.text = G_LocalizedStringIndex(text);
 	}
+
+	void HudElem::MakeDisappear(game_hudelem_s* elem)
+	{
+		elem->elem.color.a = 0;
+	}
 }

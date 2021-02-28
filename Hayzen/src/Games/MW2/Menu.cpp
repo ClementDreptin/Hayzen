@@ -19,7 +19,7 @@ namespace MW2
 
 	void Menu::Close()
 	{
-		SetShader(m_Background, "black", 0.0f, 0.0f, 0, 0, 5, 0, 0.0f, 0, 0, 0, 0);
+		MakeDisappear(m_Background);
 		m_Open = false;
 	}
 }

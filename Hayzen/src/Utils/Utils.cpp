@@ -92,7 +92,8 @@ void Utils::HookFunctionStart(DWORD* address, DWORD* saveStub, DWORD destination
 
 VOID __declspec(naked) GLPR_FUN(VOID)
 {
-	__asm{
+	__asm
+	{
 		std     r14, -0x98(sp)
 		std     r15, -0x90(sp)
 		std     r16, -0x88(sp)

@@ -23,6 +23,8 @@ namespace Kernel
 
 		void DbgPrint(const char* s, ...);
 
+		BOOL MmIsAddressValid(PVOID address);
+
 		#define __isync() __emit(0x4C00012C)
 	}
 }

@@ -32,11 +32,11 @@ void MW2::Init()
 		Sleep(200);
 
 		// Precache all shaders
-		*(int*)(0x83109D80 + 0x1C) = 1;
+		Utils::Write<int>(0x83109D80 + 0x1C, 1);
 
 		// NOP cheat protection
-		*(int*)(0x8216906C) = 0x60000000;
-		*(int*)(0x821690E4) = 0x60000000;
+		Utils::Write<int>(0x8216906C, 0x60000000);
+		Utils::Write<int>(0x821690E4, 0x60000000);
 
 		Utils::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
 	}

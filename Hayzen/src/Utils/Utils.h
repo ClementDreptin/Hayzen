@@ -13,4 +13,16 @@ namespace Utils
 	DWORD RelinkGPLR(int offset, DWORD* saveStubAddr, DWORD* orgAddr);
 
 	void XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type = XNOTIFYUI_TYPE_PREFERRED_REVIEW);
+
+	template<typename T>
+	void Write(DWORD address, T data)
+	{
+		if (!MmIsAddressValid((DWORD*)address))
+		{
+			DbgPrint("Invalid address: %#010x\n", address);
+			return;
+		}
+
+		*(T*)address = data;
+	}
 }

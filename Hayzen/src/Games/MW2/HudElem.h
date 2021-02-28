@@ -19,9 +19,9 @@ namespace MW2
 		static const int m_TitleHeight = 30;
 		static const int m_LineHeight = 23;
 
-		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r = 255, byte g = 255, byte b = 255, byte a = 255, float sort = 0.0f, int alignOrg = 0, int alignScreen = 0);
+		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r = 255, byte g = 255, byte b = 255, byte a = 255, float sort = 0.0f, align_t alignOrg = ALIGN_TOP_LEFT, align_t alignScreen = ALIGN_TOP_LEFT);
 
-		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r = 255, byte g = 255, byte b = 255, byte a = 255, int font = 4, float sort = 1.0f, int alignOrg = 4, int alignScreen = 0);
+		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r = 255, byte g = 255, byte b = 255, byte a = 255, int font = 4, float sort = 1.0f, align_t alignOrg = ALIGN_TOP_MIDDLE, align_t alignScreen = ALIGN_TOP_LEFT);
 
 		void MakeAppear(game_hudelem_s* elem, byte alpha = 255);
 

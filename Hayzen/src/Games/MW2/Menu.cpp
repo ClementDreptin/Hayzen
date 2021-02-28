@@ -9,7 +9,7 @@ namespace MW2
 		: m_Open(false), m_CurrentScrollerPos(0)
 	{
 		m_Background = HudElem_Alloc(clientNum, teamNum);
-		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, 0, 0, 0, 0, 0.0f, 0);
+		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, 0, 0, 0, 0);
 
 		m_Title = HudElem_Alloc(clientNum, teamNum);
 		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, 255, 255, 255, 0);

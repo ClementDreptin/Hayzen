@@ -34,6 +34,19 @@ namespace MW2
 		HE_TYPE_WAYPOINT,
 		HE_TYPE_COUNT,
 	};
+
+	typedef enum align_t : int
+	{
+		ALIGN_TOP_LEFT = 0,
+		ALIGN_MIDDLE_LEFT = 1,
+		ALIGN_BOTTOM_LEFT = 2,
+		ALIGN_TOP_MIDDLE = 4,
+		ALIGN_MIDDLE_MIDDLE = 5,
+		ALIGN_BOTTOM_MIDDLE = 6,
+		ALIGN_TOP_RIGHT = 8,
+		ALIGN_MIDDLE_RIGHT = 9,
+		ALIGN_BOTTOM_RIGHT = 10
+	};
 	
 	struct hudelem_color_t
 	{
@@ -56,8 +69,8 @@ namespace MW2
 		int fontScaleTime;
 		int label;
 		int font;
-		int alignOrg;
-		int alignScreen;
+		align_t alignOrg;
+		align_t alignScreen;
 		hudelem_color_t color;
 		hudelem_color_t fromColor;
 		int fadeStartTime;

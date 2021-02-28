@@ -5,13 +5,13 @@
 
 namespace MW2
 {
-	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, float x, float y, int width, int height, byte r, byte g, byte b, byte a, float sort, int alignOrg, int alignScreen)
+	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r, byte g, byte b, byte a, float sort, int alignOrg, int alignScreen)
 	{
 		elem->elem.type = HE_TYPE_MATERIAL;
 		elem->elem.alignOrg = alignOrg;
 		elem->elem.alignScreen = alignScreen;
-		elem->elem.x = x;
-		elem->elem.y = y;
+		elem->elem.x = (float)x;
+		elem->elem.y = (float)y;
 		elem->elem.color.r = r;
 		elem->elem.color.g = g;
 		elem->elem.color.b = b;
@@ -22,15 +22,15 @@ namespace MW2
 		elem->elem.materialIndex = G_MaterialIndex(materialName);
 	}
 
-	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, float x, float y, byte r, byte g, byte b, byte a, int font, float sort, int alignOrg, int alignScreen)
+	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r, byte g, byte b, byte a, int font, float sort, int alignOrg, int alignScreen)
 	{
 		elem->elem.type = HE_TYPE_TEXT;
 		elem->elem.alignOrg = alignOrg;
 		elem->elem.alignScreen = alignScreen;
 		elem->elem.font = font;
 		elem->elem.fontScale = fontScale;
-		elem->elem.x = x;
-		elem->elem.y = y;
+		elem->elem.x = (float)x;
+		elem->elem.y = (float)y;
 		elem->elem.color.r = r;
 		elem->elem.color.g = g;
 		elem->elem.color.b = b;

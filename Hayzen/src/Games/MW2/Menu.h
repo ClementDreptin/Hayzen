@@ -18,12 +18,6 @@ namespace MW2
 		game_hudelem_s* m_Title;
 		std::vector<Option> m_Options;
 
-		static const int m_X = 591;
-		static const int m_Y = 240;
-		static const int m_Width = 300;
-		static const int m_Height = 470;
-		static const int m_LineHeight = 30;
-
 		void Open();
 		void Close();
 	};

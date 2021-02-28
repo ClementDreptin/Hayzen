@@ -9,12 +9,12 @@ namespace MW2
 		: m_Open(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, teamNum);
-		SetShader(m_Background, "black", (float)m_X, (float)m_Y, m_Width, m_Height, 0, 0, 0, 0);
+		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, 0, 0, 0, 0);
 
 		m_Title = HudElem_Alloc(clientNum, teamNum);
-		SetText(m_Title, "Main Menu", 3, (float)m_X, 10.0f, 255, 255, 255, 0);
+		SetText(m_Title, "Main Menu", 3.0f, m_MenuX, m_Padding, 255, 255, 255, 0);
 
-		m_Options.push_back(Option(clientNum, teamNum, "Option 1", (float)m_X, 10.0f + m_LineHeight * 1));
+		m_Options.push_back(Option(clientNum, teamNum, "Option 1", 0));
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

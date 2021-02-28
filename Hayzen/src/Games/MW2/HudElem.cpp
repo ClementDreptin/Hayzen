@@ -43,4 +43,9 @@ namespace MW2
 	{
 		elem->elem.color.a = 0;
 	}
+
+	void HudElem::MakeAppear(game_hudelem_s* elem, byte alpha)
+	{
+		elem->elem.color.a = alpha;
+	}
 }

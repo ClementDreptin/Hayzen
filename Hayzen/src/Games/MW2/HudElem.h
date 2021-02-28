@@ -15,6 +15,8 @@ namespace MW2
 
 		void SetText(game_hudelem_s* elem, const char* text, int font, float fontScale, float x, float y, int alignOrg, int alignScreen, float sort = 1.0f, byte r = 255, byte g = 255, byte b = 255, byte a = 255);
 
+		void MakeAppear(game_hudelem_s* elem, byte alpha = 255);
+
 		void MakeDisappear(game_hudelem_s* elem);
 	};
 }

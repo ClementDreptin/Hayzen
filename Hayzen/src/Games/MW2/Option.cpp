@@ -5,14 +5,10 @@
 
 namespace MW2
 {
-	Option::Option(int clientNum, int teamNum, const std::string& name)
+	Option::Option(int clientNum, int teamNum, const std::string& name, float x, float y)
 		: m_Name(name)
 	{
 		m_HudElem = HudElem_Alloc(clientNum, teamNum);
-	}
-
-	Option::~Option()
-	{
-		HudElem_Free(m_HudElem);
+		SetText(m_HudElem, name.c_str(), 4, 2, x, y, 5, 1, 1.0f, 255, 255, 255, 0);
 	}
 }

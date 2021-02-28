@@ -9,7 +9,12 @@ namespace MW2
 		: m_Open(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, teamNum);
+		SetShader(m_Background, "black", (float)m_X, (float)m_Y, m_Width, m_Height, 5, 0, 0.0f, 0, 0, 0, 0);
+
 		m_Title = HudElem_Alloc(clientNum, teamNum);
+		SetText(m_Title, "Main Menu", 4, 3, (float)m_X, 10.0f, 5, 1, 1.0f, 255, 255, 255, 0);
+
+		m_Options.push_back(Option(clientNum, teamNum, "Option 1", (float)m_X, 10.0f + m_LineHeight * 1));
 	}
 
 	void Menu::OnEvent(const std::string& eventString)
@@ -25,8 +30,12 @@ namespace MW2
 
 	void Menu::Open()
 	{
-		SetShader(m_Background, "black", 591.0f, 240.0f, 300, 470, 5, 0, 0.0f, 0, 0, 0, 180);
-		SetText(m_Title, "Main Menu", 4, 3, 591.0f, 10.0f, 5, 1);
+		MakeAppear(m_Background, 180);
+		MakeAppear(m_Title);
+
+		for (size_t i = 0; i < m_Options.size(); i++)
+			MakeAppear(m_Options[i].GetHudElem());
+
 		m_Open = true;
 	}
 
@@ -34,6 +43,10 @@ namespace MW2
 	{
 		MakeDisappear(m_Background);
 		MakeDisappear(m_Title);
+
+		for (size_t i = 0; i < m_Options.size(); i++)
+			MakeDisappear(m_Options[i].GetHudElem());
+
 		m_Open = false;
 	}
 }

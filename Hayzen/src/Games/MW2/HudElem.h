@@ -11,17 +11,17 @@ namespace MW2
 		virtual ~HudElem() {}
 
 	protected:
-		static const int m_MenuX = 591;
-		static const int m_MenuY = 240;
+		static const int m_MenuX = 441;
+		static const int m_MenuY = 5;
 		static const int m_MenuWidth = 300;
 		static const int m_MenuHeight = 470;
-		static const int m_Padding = 7;
-		static const int m_TitleHeight = 40;
-		static const int m_LineHeight = 30;
+		static const int m_Padding = 10;
+		static const int m_TitleHeight = 30;
+		static const int m_LineHeight = 23;
 
-		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r = 255, byte g = 255, byte b = 255, byte a = 255, float sort = 0.0f, int alignOrg = 5, int alignScreen = 0);
+		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r = 255, byte g = 255, byte b = 255, byte a = 255, float sort = 0.0f, int alignOrg = 0, int alignScreen = 0);
 
-		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r = 255, byte g = 255, byte b = 255, byte a = 255, int font = 4, float sort = 1.0f, int alignOrg = 5, int alignScreen = 1);
+		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r = 255, byte g = 255, byte b = 255, byte a = 255, int font = 4, float sort = 1.0f, int alignOrg = 4, int alignScreen = 0);
 
 		void MakeAppear(game_hudelem_s* elem, byte alpha = 255);
 

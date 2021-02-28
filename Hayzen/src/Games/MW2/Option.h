@@ -13,6 +13,7 @@ namespace MW2
 		inline game_hudelem_s* GetHudElem() const { return m_HudElem; }
 	private:
 		std::string m_Name;
+		int m_Index;
 		game_hudelem_s* m_HudElem;
 	};
 }

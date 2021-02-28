@@ -5,7 +5,7 @@
 
 namespace MW2
 {
-	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, float x, float y, int width, int height, int alignOrg, int alignScreen, float sort, byte r, byte g, byte b, byte a)
+	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, float x, float y, int width, int height, byte r, byte g, byte b, byte a, float sort, int alignOrg, int alignScreen)
 	{
 		elem->elem.type = HE_TYPE_MATERIAL;
 		elem->elem.alignOrg = alignOrg;
@@ -22,7 +22,7 @@ namespace MW2
 		elem->elem.materialIndex = G_MaterialIndex(materialName);
 	}
 
-	void HudElem::SetText(game_hudelem_s* elem, const char* text, int font, float fontScale, float x, float y, int alignOrg, int alignScreen, float sort, byte r, byte g, byte b, byte a)
+	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, float x, float y, byte r, byte g, byte b, byte a, int font, float sort, int alignOrg, int alignScreen)
 	{
 		elem->elem.type = HE_TYPE_TEXT;
 		elem->elem.alignOrg = alignOrg;

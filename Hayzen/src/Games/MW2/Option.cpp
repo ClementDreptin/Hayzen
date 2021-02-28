@@ -9,6 +9,6 @@ namespace MW2
 		: m_Name(name)
 	{
 		m_HudElem = HudElem_Alloc(clientNum, teamNum);
-		SetText(m_HudElem, name.c_str(), 4, 2, x, y, 5, 1, 1.0f, 255, 255, 255, 0);
+		SetText(m_HudElem, name.c_str(), 2, x, y, 255, 255, 255, 0);
 	}
 }

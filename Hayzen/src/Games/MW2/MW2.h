@@ -6,6 +6,7 @@
 namespace MW2
 {
 	// Variables
+	extern bool HasGameBegun;
 	extern std::unordered_map<int, Client> Clients;
 
 	// Functions

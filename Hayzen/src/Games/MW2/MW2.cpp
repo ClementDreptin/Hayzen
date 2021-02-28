@@ -6,6 +6,7 @@
 #include "Utils\Utils.h"
 #include "Utils\Formatter.h"
 
+bool MW2::HasGameBegun = false;
 std::unordered_map<int, MW2::Client> MW2::Clients;
 
 __declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
@@ -55,6 +56,8 @@ void MW2::SetupGame(int clientNum)
 	Cmd_RegisterNotification(clientNum, "+stance", "B");
 
 	Clients[clientNum] = Client(clientNum);
+
+	HasGameBegun = true;
 }
 
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -73,11 +76,6 @@ void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned
 	if (!strcmp(notify, "begin"))
 		SetupGame(clientNum);
 
-	if (!strcmp(notify, "dpad_left"))
-	{
-		if (!Clients[clientNum].GetMenu().IsOpen())
-			Clients[clientNum].GetMenu().Open();
-		else
-			Clients[clientNum].GetMenu().Close();
-	}
+	if (HasGameBegun && clientNum >= 0 && clientNum <= 17)
+		Clients[clientNum].GetMenu().OnEvent(notify);
 }

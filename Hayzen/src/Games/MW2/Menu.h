@@ -11,12 +11,13 @@ namespace MW2
 		Menu() {}
 		Menu(int clientNum, int teamNum);
 
+		void OnEvent(const std::string& eventString);
+	private:
+		bool m_Open;
+		game_hudelem_s* m_Background;
+		game_hudelem_s* m_Title;
+
 		void Open();
 		void Close();
-
-		inline bool IsOpen() const { return m_Open; }
-	private:
-		game_hudelem_s* m_Background;
-		bool m_Open;
 	};
 }

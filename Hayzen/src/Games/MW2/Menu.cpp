@@ -47,7 +47,7 @@ namespace MW2
 				Close();
 		}
 
-		if (eventString == "dpad_up")
+		if (eventString == "dpad_up" && m_Open)
 		{
 			m_CurrentScrollerPos--;
 
@@ -57,7 +57,7 @@ namespace MW2
 			MoveScroller(m_CurrentScrollerPos);
 		}
 
-		if (eventString == "dpad_down")
+		if (eventString == "dpad_down" && m_Open)
 		{
 			m_CurrentScrollerPos++;
 

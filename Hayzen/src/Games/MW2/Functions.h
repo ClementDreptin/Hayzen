@@ -21,4 +21,8 @@ namespace MW2
 	extern int(__cdecl *G_LocalizedStringIndex)(const char* string);
 
 	extern clientState_s*(__cdecl *GetClientState)(int clientNum);
+
+	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
+
+	extern void iPrintLn(int clientNum, const std::string& text);
 }

@@ -24,17 +24,17 @@ namespace MW2
 
 	void Menu::MainClicked()
 	{
-		SV(m_ClientNum, 0, "f \"^2Main Clicked\"");
+		iPrintLn(m_ClientNum, "^2Main Clicked");
 	}
 
 	void Menu::TeleportClicked()
 	{
-		SV(m_ClientNum, 0, "f \"^2Teleport Clicked\"");
+		iPrintLn(m_ClientNum, "^2Teleport Clicked");
 	}
 
 	void Menu::InfectClicked()
 	{
-		SV(m_ClientNum, 0, "f \"^2Infect Clicked\"");
+		iPrintLn(m_ClientNum, "^2Infect Clicked");
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

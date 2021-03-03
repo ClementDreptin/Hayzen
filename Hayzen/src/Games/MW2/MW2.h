@@ -12,7 +12,6 @@ namespace MW2
 	// Functions
 	void Init();
 	void SetupGame(int clientNum);
-	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
 	// Hooks and their stubs
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);

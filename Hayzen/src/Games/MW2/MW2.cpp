@@ -4,7 +4,6 @@
 #include "Games\MW2\Structs.h"
 #include "Games\MW2\Functions.h"
 #include "Utils\Utils.h"
-#include "Utils\Formatter.h"
 
 bool MW2::HasGameBegun = false;
 std::unordered_map<int, MW2::Client> MW2::Clients;
@@ -58,11 +57,6 @@ void MW2::SetupGame(int clientNum)
 	Clients[clientNum] = Client(clientNum);
 
 	HasGameBegun = true;
-}
-
-void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
-{
-	SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
 void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)

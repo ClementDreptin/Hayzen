@@ -4,6 +4,11 @@
 
 namespace MW2
 {
+	extern const hudelem_color_t COLOR_WHITE;
+	extern const hudelem_color_t COLOR_WHITE_NO_ALPHA;
+	extern const hudelem_color_t COLOR_BLACK;
+	extern const hudelem_color_t COLOR_BLACK_NO_ALPHA;
+
 	class HudElem
 	{
 	public:
@@ -19,9 +24,9 @@ namespace MW2
 		static const int m_TitleHeight = 30;
 		static const int m_LineHeight = 23;
 
-		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r = 255, byte g = 255, byte b = 255, byte a = 255, float sort = 0.0f, align_t alignOrg = ALIGN_TOP_LEFT, align_t alignScreen = ALIGN_TOP_LEFT);
+		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, hudelem_color_t color = COLOR_WHITE, float sort = 0.0f, align_t alignOrg = ALIGN_TOP_LEFT, align_t alignScreen = ALIGN_TOP_LEFT);
 
-		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r = 255, byte g = 255, byte b = 255, byte a = 255, int font = 4, float sort = 1.0f, align_t alignOrg = ALIGN_TOP_MIDDLE, align_t alignScreen = ALIGN_TOP_LEFT);
+		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, hudelem_color_t color = COLOR_WHITE, int font = 4, float sort = 1.0f, align_t alignOrg = ALIGN_TOP_MIDDLE, align_t alignScreen = ALIGN_TOP_LEFT);
 
 		void MakeAppear(game_hudelem_s* elem, byte alpha = 255);
 

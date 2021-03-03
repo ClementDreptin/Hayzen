@@ -9,6 +9,6 @@ namespace MW2
 		: m_Name(name), m_Index(index)
 	{
 		m_HudElem = HudElem_Alloc(clientNum, teamNum);
-		SetText(m_HudElem, name.c_str(), 2, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding * 2 + m_TitleHeight + m_LineHeight * index, 255, 255, 255, 0);
+		SetText(m_HudElem, name.c_str(), 2, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding * 2 + m_TitleHeight + m_LineHeight * index, COLOR_WHITE_NO_ALPHA);
 	}
 }

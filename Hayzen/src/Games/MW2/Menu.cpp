@@ -9,13 +9,13 @@ namespace MW2
 		: m_Open(false), m_CurrentScrollerPos(0)
 	{
 		m_Background = HudElem_Alloc(clientNum, teamNum);
-		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, 0, 0, 0, 0);
+		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
 
 		m_Title = HudElem_Alloc(clientNum, teamNum);
-		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, 255, 255, 255, 0);
+		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, COLOR_WHITE_NO_ALPHA);
 
 		m_Scroller = HudElem_Alloc(clientNum, teamNum);
-		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, 255, 255, 255, 0);
+		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA);
 
 		m_Options.push_back(Option(clientNum, teamNum, "Main", 0));
 		m_Options.push_back(Option(clientNum, teamNum, "Teleport", 1));

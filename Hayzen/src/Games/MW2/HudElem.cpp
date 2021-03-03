@@ -5,24 +5,26 @@
 
 namespace MW2
 {
-	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, byte r, byte g, byte b, byte a, float sort, align_t alignOrg, align_t alignScreen)
+	const hudelem_color_t COLOR_WHITE = { 255, 255, 255, 255 };
+	const hudelem_color_t COLOR_WHITE_NO_ALPHA = { 255, 255, 255, 0 };
+	const hudelem_color_t COLOR_BLACK = { 0, 0, 0, 255 };
+	const hudelem_color_t COLOR_BLACK_NO_ALPHA = { 0, 0, 0, 0 };
+
+	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, hudelem_color_t color, float sort, align_t alignOrg, align_t alignScreen)
 	{
 		elem->elem.type = HE_TYPE_MATERIAL;
 		elem->elem.alignOrg = alignOrg;
 		elem->elem.alignScreen = alignScreen;
 		elem->elem.x = (float)x;
 		elem->elem.y = (float)y;
-		elem->elem.color.r = r;
-		elem->elem.color.g = g;
-		elem->elem.color.b = b;
-		elem->elem.color.a = a;
+		elem->elem.color = color;
 		elem->elem.width = width;
 		elem->elem.height = height;
 		elem->elem.sort = sort;
 		elem->elem.materialIndex = G_MaterialIndex(materialName);
 	}
 
-	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, byte r, byte g, byte b, byte a, int font, float sort, align_t alignOrg, align_t alignScreen)
+	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, hudelem_color_t color, int font, float sort, align_t alignOrg, align_t alignScreen)
 	{
 		elem->elem.type = HE_TYPE_TEXT;
 		elem->elem.alignOrg = alignOrg;
@@ -31,10 +33,7 @@ namespace MW2
 		elem->elem.fontScale = fontScale;
 		elem->elem.x = (float)x;
 		elem->elem.y = (float)y;
-		elem->elem.color.r = r;
-		elem->elem.color.g = g;
-		elem->elem.color.b = b;
-		elem->elem.color.a = a;
+		elem->elem.color = color;
 		elem->elem.sort = sort;
 		elem->elem.text = G_LocalizedStringIndex(text);
 	}

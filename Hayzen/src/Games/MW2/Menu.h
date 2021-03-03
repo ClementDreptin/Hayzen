@@ -9,10 +9,11 @@ namespace MW2
 	{
 	public:
 		Menu() {}
-		Menu(int clientNum, int teamNum);
+		Menu(int clientNum);
 
 		void OnEvent(const std::string& eventString);
 	private:
+		int m_ClientNum;
 		bool m_Open;
 		int m_CurrentScrollerPos;
 
@@ -25,5 +26,9 @@ namespace MW2
 		void Open();
 		void Close();
 		void MoveScroller(int position);
+
+		void MainClicked();
+		void TeleportClicked();
+		void InfectClicked();
 	};
 }

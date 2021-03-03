@@ -8,7 +8,6 @@ namespace MW2
 	Client::Client(int clientNum)
 		: m_Num(clientNum)
 	{
-		int teamNum = GetClientState(clientNum)->team;
-		m_Menu = Menu(clientNum, teamNum);
+		m_Menu = Menu(clientNum);
 	}
 }

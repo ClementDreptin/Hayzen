@@ -5,21 +5,36 @@
 
 namespace MW2
 {
-	Menu::Menu(int clientNum, int teamNum)
-		: m_Open(false), m_CurrentScrollerPos(0)
+	Menu::Menu(int clientNum)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
 	{
-		m_Background = HudElem_Alloc(clientNum, teamNum);
+		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
 
-		m_Title = HudElem_Alloc(clientNum, teamNum);
+		m_Title = HudElem_Alloc(clientNum, 0);
 		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, COLOR_WHITE_NO_ALPHA);
 
-		m_Scroller = HudElem_Alloc(clientNum, teamNum);
+		m_Scroller = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA);
 
-		m_Options.push_back(Option(clientNum, teamNum, "Main", 0));
-		m_Options.push_back(Option(clientNum, teamNum, "Teleport", 1));
-		m_Options.push_back(Option(clientNum, teamNum, "Infect", 2));
+		m_Options.push_back(Option(clientNum, "Main", 0, std::bind(&Menu::MainClicked, this)));
+		m_Options.push_back(Option(clientNum, "Teleport", 1, std::bind(&Menu::TeleportClicked, this)));
+		m_Options.push_back(Option(clientNum, "Infect", 2, std::bind(&Menu::InfectClicked, this)));
+	}
+
+	void Menu::MainClicked()
+	{
+		SV(m_ClientNum, 0, "f \"^2Main Clicked\"");
+	}
+
+	void Menu::TeleportClicked()
+	{
+		SV(m_ClientNum, 0, "f \"^2Teleport Clicked\"");
+	}
+
+	void Menu::InfectClicked()
+	{
+		SV(m_ClientNum, 0, "f \"^2Infect Clicked\"");
 	}
 
 	void Menu::OnEvent(const std::string& eventString)
@@ -51,6 +66,9 @@ namespace MW2
 
 			MoveScroller(m_CurrentScrollerPos);
 		}
+
+		if (eventString == "A" && m_Open)
+			m_Options[m_CurrentScrollerPos].OnClick();
 	}
 
 	void Menu::Open()

@@ -27,8 +27,16 @@ namespace MW2
 		void Close();
 		void MoveScroller(int position);
 
-		void MainClicked();
-		void TeleportClicked();
-		void InfectClicked();
+		void GoToRoot();
+		void GoToMain();
+		void GoToTeleport();
+		void GoToInfect();
+
+		void OptionClicked();
+
+		void OnAPressed(const std::string& optionName);
+		void OnBPressed(const std::string& optionName);
+
+		void Cleanup();
 	};
 }

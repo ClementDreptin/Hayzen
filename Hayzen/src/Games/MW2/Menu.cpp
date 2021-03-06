@@ -9,32 +9,103 @@ namespace MW2
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
-		SetShader(m_Background, "black", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
+		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
 
 		m_Title = HudElem_Alloc(clientNum, 0);
 		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, COLOR_WHITE_NO_ALPHA);
 
 		m_Scroller = HudElem_Alloc(clientNum, 0);
-		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA);
+		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA, 0.5f);
 
-		m_Options.push_back(Option(clientNum, "Main", 0, std::bind(&Menu::MainClicked, this)));
-		m_Options.push_back(Option(clientNum, "Teleport", 1, std::bind(&Menu::TeleportClicked, this)));
-		m_Options.push_back(Option(clientNum, "Infect", 2, std::bind(&Menu::InfectClicked, this)));
+		GoToRoot();
 	}
 
-	void Menu::MainClicked()
+	void Menu::GoToRoot()
 	{
-		iPrintLn(m_ClientNum, "^2Main Clicked");
+		Cleanup();
+
+		// m_Open will indicate if it's the first time the method is called or not
+		m_Options.push_back(Option(m_ClientNum, "Main", 0, m_Open));
+		m_Options.push_back(Option(m_ClientNum, "Teleport", 1, m_Open));
+		m_Options.push_back(Option(m_ClientNum, "Infect", 2, m_Open));
 	}
 
-	void Menu::TeleportClicked()
+	void Menu::GoToMain()
 	{
-		iPrintLn(m_ClientNum, "^2Teleport Clicked");
+		Cleanup();
+
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 1", 0, true));
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 2", 1, true));
 	}
 
-	void Menu::InfectClicked()
+	void Menu::GoToTeleport()
 	{
-		iPrintLn(m_ClientNum, "^2Infect Clicked");
+		Cleanup();
+
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 3", 0, true));
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 4", 1, true));
+	}
+
+	void Menu::GoToInfect()
+	{
+		Cleanup();
+
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 5", 0, true));
+		m_Options.push_back(Option(m_ClientNum, "Sub Option 6", 1, true));
+	}
+
+	void Menu::Cleanup()
+	{
+		for (size_t i = 0; i < m_Options.size(); i++)
+			m_Options[i].FreeHudElem();
+
+		m_CurrentScrollerPos = 0;
+		MoveScroller(m_CurrentScrollerPos);
+
+		m_Options.clear();
+	}
+
+	void Menu::OptionClicked()
+	{
+		iPrintLn(m_ClientNum, "^2Option Clicked");
+	}
+
+	void Menu::OnAPressed(const std::string& optionName)
+	{
+		if (optionName == "Main")
+			GoToMain();
+		if (optionName == "Teleport")
+			GoToTeleport();
+		if (optionName == "Infect")
+			GoToInfect();
+		if (optionName == "Sub Option 1")
+			OptionClicked();
+		if (optionName == "Sub Option 2")
+			OptionClicked();
+		if (optionName == "Sub Option 3")
+			OptionClicked();
+		if (optionName == "Sub Option 4")
+			OptionClicked();
+		if (optionName == "Sub Option 5")
+			OptionClicked();
+		if (optionName == "Sub Option 6")
+			OptionClicked();
+	}
+
+	void Menu::OnBPressed(const std::string& optionName)
+	{
+		if (optionName == "Sub Option 1")
+			GoToRoot();
+		if (optionName == "Sub Option 2")
+			GoToRoot();
+		if (optionName == "Sub Option 3")
+			GoToRoot();
+		if (optionName == "Sub Option 4")
+			GoToRoot();
+		if (optionName == "Sub Option 5")
+			GoToRoot();
+		if (optionName == "Sub Option 6")
+			GoToRoot();
 	}
 
 	void Menu::OnEvent(const std::string& eventString)
@@ -68,7 +139,10 @@ namespace MW2
 		}
 
 		if (eventString == "A" && m_Open)
-			m_Options[m_CurrentScrollerPos].OnClick();
+			OnAPressed(m_Options[m_CurrentScrollerPos].GetName());
+
+		if (eventString == "B" && m_Open)
+			OnBPressed(m_Options[m_CurrentScrollerPos].GetName());
 	}
 
 	void Menu::Open()
@@ -78,7 +152,7 @@ namespace MW2
 		MakeAppear(m_Scroller, 180);
 
 		for (size_t i = 0; i < m_Options.size(); i++)
-			MakeAppear(m_Options[i].GetHudElem());
+			m_Options[i].Activate();
 
 		m_Open = true;
 	}
@@ -90,7 +164,7 @@ namespace MW2
 		MakeDisappear(m_Scroller);
 
 		for (size_t i = 0; i < m_Options.size(); i++)
-			MakeDisappear(m_Options[i].GetHudElem());
+			m_Options[i].Deactivate();
 
 		m_Open = false;
 	}

@@ -9,7 +9,7 @@ namespace MW2
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_ElevatorsEnabled(false)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_ElevatorsEnabled(false), m_DepatchBouncesEnabled(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
@@ -61,6 +61,24 @@ namespace MW2
 		iPrintLn(-1, "Knockback set to ^2" + std::string(buffer));
 	}
 
+	void Menu::ToggleDepatchBounces()
+	{
+		DWORD branchAddress = 0x820DABE4;
+		unsigned int defaultValue = 0x409AFFB0;
+		unsigned int modifiedValue = 0x6060FFB0;
+		bool depatchBouncesActuallyEnabled = Utils::Read<unsigned int>(branchAddress) == modifiedValue;
+
+		if (!m_DepatchBouncesEnabled && !depatchBouncesActuallyEnabled)
+			Utils::Write<unsigned int>(branchAddress, modifiedValue);
+		else if (m_DepatchBouncesEnabled && depatchBouncesActuallyEnabled)
+			Utils::Write<unsigned int>(branchAddress, defaultValue);
+
+		m_DepatchBouncesEnabled = !m_DepatchBouncesEnabled;
+
+		std::string status = m_DepatchBouncesEnabled ? "^2On" : "^1Off";
+		iPrintLn(m_ClientNum, "Depatch Bounces " + status);
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -70,13 +88,14 @@ namespace MW2
 		s_Structure["Cod Jumper"].emplace_back("Admin");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(6);
+		s_Structure["Main"].reserve(7);
 		s_Structure["Main"].emplace_back("God Mode");
 		s_Structure["Main"].emplace_back("Fall Damage");
 		s_Structure["Main"].emplace_back("Ammo");
 		s_Structure["Main"].emplace_back("Blast Marks");
 		s_Structure["Main"].emplace_back("Old School");
 		s_Structure["Main"].emplace_back("Elevators");
+		s_Structure["Main"].emplace_back("Depatch Bounces");
 
 		s_Structure["Teleport"] = std::vector<std::string>();
 		s_Structure["Teleport"].reserve(4);
@@ -102,6 +121,8 @@ namespace MW2
 			ToggleElevators();
 		else if (optionName == "Knockback")
 			Knockback();
+		else if (optionName == "Depatch Bounces")
+			ToggleDepatchBounces();
 		else
 			ToDo();
 	}

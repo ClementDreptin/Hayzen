@@ -18,6 +18,7 @@ namespace MW2
 		int m_CurrentScrollerPos;
 
 		bool m_ElevatorsEnabled;
+		bool m_DepatchBouncesEnabled;
 
 		game_hudelem_s* m_Background;
 		game_hudelem_s* m_Title;
@@ -28,6 +29,7 @@ namespace MW2
 
 		void ToggleElevators();
 		void Knockback();
+		void ToggleDepatchBounces();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

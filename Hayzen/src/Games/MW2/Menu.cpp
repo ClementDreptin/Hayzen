@@ -57,29 +57,35 @@ namespace MW2
 	void Menu::CreateStructure()
 	{
 		s_Structure["root"] = std::vector<std::string>();
-		s_Structure["root"].push_back("Main");
-		s_Structure["root"].push_back("Teleport");
-		s_Structure["root"].push_back("Infect");
+		s_Structure["root"].reserve(3);
+		s_Structure["root"].emplace_back("Main");
+		s_Structure["root"].emplace_back("Teleport");
+		s_Structure["root"].emplace_back("Infect");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].push_back("Sub Option 1");
-		s_Structure["Main"].push_back("Sub Option 2");
+		s_Structure["Main"].reserve(2);
+		s_Structure["Main"].emplace_back("Sub Option 1");
+		s_Structure["Main"].emplace_back("Sub Option 2");
 
 		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].push_back("Sub Option 3");
-		s_Structure["Teleport"].push_back("Sub Option 4");
+		s_Structure["Teleport"].reserve(2);
+		s_Structure["Teleport"].emplace_back("Sub Option 3");
+		s_Structure["Teleport"].emplace_back("Sub Option 4");
 
 		s_Structure["Infect"] = std::vector<std::string>();
-		s_Structure["Infect"].push_back("Sub Option 5");
-		s_Structure["Infect"].push_back("Sub Option 6");
+		s_Structure["Infect"].reserve(2);
+		s_Structure["Infect"].emplace_back("Sub Option 5");
+		s_Structure["Infect"].emplace_back("Sub Option 6");
 	}
 
 	void Menu::GoToMenu(const std::string& menuName)
 	{
 		Cleanup();
 
+		m_Options.reserve(s_Structure[menuName].size());
+
 		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
-			m_Options.push_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
+			m_Options.emplace_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

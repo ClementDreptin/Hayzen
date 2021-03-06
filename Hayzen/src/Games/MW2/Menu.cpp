@@ -2,14 +2,14 @@
 #include "Games\MW2\Menu.h"
 
 #include "Games\MW2\Functions.h"
-#include "Utils\Formatter.h"
+#include "Utils\Utils.h"
 
 namespace MW2
 {
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_ElevatorsEnabled(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
@@ -23,6 +23,24 @@ namespace MW2
 		CreateStructure();
 
 		GoToMenu("Cod Jumper");
+	}
+
+	void Menu::ToggleElevators()
+	{
+		DWORD branchAddress = 0x820D8310;
+		unsigned int defaultValue = 0x409A0054;
+		unsigned int modifiedValue = 0x409A0094;
+		bool elevatorsActuallyEnabled = Utils::Read<unsigned int>(branchAddress) == modifiedValue;
+
+		if (!m_ElevatorsEnabled && !elevatorsActuallyEnabled)
+			Utils::Write<unsigned int>(branchAddress, modifiedValue);
+		else if (m_ElevatorsEnabled && elevatorsActuallyEnabled)
+			Utils::Write<unsigned int>(branchAddress, defaultValue);
+
+		m_ElevatorsEnabled = !m_ElevatorsEnabled;
+
+		std::string status = m_ElevatorsEnabled ? "^2On" : "^1Off";
+		iPrintLn(m_ClientNum, "Elevators " + status);
 	}
 
 	void Menu::CreateStructure()
@@ -62,6 +80,8 @@ namespace MW2
 	{
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
+		else if (optionName == "Elevators")
+			ToggleElevators();
 		else
 			ToDo();
 	}

@@ -17,12 +17,16 @@ namespace MW2
 		bool m_Open;
 		int m_CurrentScrollerPos;
 
+		bool m_ElevatorsEnabled;
+
 		game_hudelem_s* m_Background;
 		game_hudelem_s* m_Title;
 		game_hudelem_s* m_Scroller;
 
 		std::vector<Option> m_Options;
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
+
+		void ToggleElevators();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

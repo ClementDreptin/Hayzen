@@ -27,6 +27,7 @@ namespace MW2
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
 
 		void ToggleElevators();
+		void Knockback();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

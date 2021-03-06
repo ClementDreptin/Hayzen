@@ -25,4 +25,17 @@ namespace Utils
 
 		*(T*)address = data;
 	}
+
+	template<typename T>
+	T Read(DWORD address)
+	{
+		if (!MmIsAddressValid((DWORD*)address))
+		{
+			DbgPrint("Invalid address: %#010x\n", address);
+			return 0;
+		}
+
+		T value = *(T*)address;
+		return value;
+	}
 }

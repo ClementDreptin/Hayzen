@@ -22,7 +22,7 @@ namespace MW2
 
 		CreateStructure();
 
-		GoToMenu("root");
+		GoToMenu("Cod Jumper");
 	}
 
 	void Menu::OptionClicked(const std::string& optionName)
@@ -56,11 +56,11 @@ namespace MW2
 
 	void Menu::CreateStructure()
 	{
-		s_Structure["root"] = std::vector<std::string>();
-		s_Structure["root"].reserve(3);
-		s_Structure["root"].emplace_back("Main");
-		s_Structure["root"].emplace_back("Teleport");
-		s_Structure["root"].emplace_back("Infect");
+		s_Structure["Cod Jumper"] = std::vector<std::string>();
+		s_Structure["Cod Jumper"].reserve(3);
+		s_Structure["Cod Jumper"].emplace_back("Main");
+		s_Structure["Cod Jumper"].emplace_back("Teleport");
+		s_Structure["Cod Jumper"].emplace_back("Infect");
 
 		s_Structure["Main"] = std::vector<std::string>();
 		s_Structure["Main"].reserve(2);
@@ -81,6 +81,9 @@ namespace MW2
 	void Menu::GoToMenu(const std::string& menuName)
 	{
 		Cleanup();
+
+		if (m_Open) // If m_Open is false, it means this is the call from the constructor and the title has already been set.
+			SetText(m_Title, menuName.c_str(), m_Title->elem.fontScale, (int)m_Title->elem.x, (int)m_Title->elem.y);
 
 		m_Options.reserve(s_Structure[menuName].size());
 
@@ -146,17 +149,17 @@ namespace MW2
 	void Menu::OnBPressed(const std::string& optionName)
 	{
 		if (optionName == "Sub Option 1")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 		if (optionName == "Sub Option 2")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 		if (optionName == "Sub Option 3")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 		if (optionName == "Sub Option 4")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 		if (optionName == "Sub Option 5")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 		if (optionName == "Sub Option 6")
-			GoToMenu("root");
+			GoToMenu("Cod Jumper");
 	}
 
 	void Menu::MoveScroller(int position)

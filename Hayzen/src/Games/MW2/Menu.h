@@ -22,21 +22,17 @@ namespace MW2
 		game_hudelem_s* m_Scroller;
 
 		std::vector<Option> m_Options;
+		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
+
+		void OptionClicked(const std::string& optionName);
 
 		void Open();
 		void Close();
-		void MoveScroller(int position);
-
-		void GoToRoot();
-		void GoToMain();
-		void GoToTeleport();
-		void GoToInfect();
-
-		void OptionClicked();
-
+		static void CreateStructure();
+		void GoToMenu(const std::string& menuName);
 		void OnAPressed(const std::string& optionName);
 		void OnBPressed(const std::string& optionName);
-
+		void MoveScroller(int position);
 		void Cleanup();
 	};
 }

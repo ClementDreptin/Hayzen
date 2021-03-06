@@ -2,9 +2,12 @@
 #include "Games\MW2\Menu.h"
 
 #include "Games\MW2\Functions.h"
+#include "Utils\Formatter.h"
 
 namespace MW2
 {
+	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
+
 	Menu::Menu(int clientNum)
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
 	{
@@ -17,95 +20,66 @@ namespace MW2
 		m_Scroller = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA, 0.5f);
 
-		GoToRoot();
+		CreateStructure();
+
+		GoToMenu("root");
 	}
 
-	void Menu::GoToRoot()
+	void Menu::OptionClicked(const std::string& optionName)
 	{
-		Cleanup();
-
-		// m_Open will indicate if it's the first time the method is called or not
-		m_Options.push_back(Option(m_ClientNum, "Main", 0, m_Open));
-		m_Options.push_back(Option(m_ClientNum, "Teleport", 1, m_Open));
-		m_Options.push_back(Option(m_ClientNum, "Infect", 2, m_Open));
+		iPrintLn(m_ClientNum, Formatter::Format("^2You clicked on %s", optionName.c_str()));
 	}
 
-	void Menu::GoToMain()
+	void Menu::Open()
 	{
-		Cleanup();
+		MakeAppear(m_Background, 180);
+		MakeAppear(m_Title);
+		MakeAppear(m_Scroller, 180);
 
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 1", 0, true));
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 2", 1, true));
-	}
-
-	void Menu::GoToTeleport()
-	{
-		Cleanup();
-
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 3", 0, true));
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 4", 1, true));
-	}
-
-	void Menu::GoToInfect()
-	{
-		Cleanup();
-
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 5", 0, true));
-		m_Options.push_back(Option(m_ClientNum, "Sub Option 6", 1, true));
-	}
-
-	void Menu::Cleanup()
-	{
 		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].FreeHudElem();
+			m_Options[i].Activate();
 
-		m_CurrentScrollerPos = 0;
-		MoveScroller(m_CurrentScrollerPos);
-
-		m_Options.clear();
+		m_Open = true;
 	}
 
-	void Menu::OptionClicked()
+	void Menu::Close()
 	{
-		iPrintLn(m_ClientNum, "^2Option Clicked");
+		MakeDisappear(m_Background);
+		MakeDisappear(m_Title);
+		MakeDisappear(m_Scroller);
+
+		for (size_t i = 0; i < m_Options.size(); i++)
+			m_Options[i].Deactivate();
+
+		m_Open = false;
 	}
 
-	void Menu::OnAPressed(const std::string& optionName)
+	void Menu::CreateStructure()
 	{
-		if (optionName == "Main")
-			GoToMain();
-		if (optionName == "Teleport")
-			GoToTeleport();
-		if (optionName == "Infect")
-			GoToInfect();
-		if (optionName == "Sub Option 1")
-			OptionClicked();
-		if (optionName == "Sub Option 2")
-			OptionClicked();
-		if (optionName == "Sub Option 3")
-			OptionClicked();
-		if (optionName == "Sub Option 4")
-			OptionClicked();
-		if (optionName == "Sub Option 5")
-			OptionClicked();
-		if (optionName == "Sub Option 6")
-			OptionClicked();
+		s_Structure["root"] = std::vector<std::string>();
+		s_Structure["root"].push_back("Main");
+		s_Structure["root"].push_back("Teleport");
+		s_Structure["root"].push_back("Infect");
+
+		s_Structure["Main"] = std::vector<std::string>();
+		s_Structure["Main"].push_back("Sub Option 1");
+		s_Structure["Main"].push_back("Sub Option 2");
+
+		s_Structure["Teleport"] = std::vector<std::string>();
+		s_Structure["Teleport"].push_back("Sub Option 3");
+		s_Structure["Teleport"].push_back("Sub Option 4");
+
+		s_Structure["Infect"] = std::vector<std::string>();
+		s_Structure["Infect"].push_back("Sub Option 5");
+		s_Structure["Infect"].push_back("Sub Option 6");
 	}
 
-	void Menu::OnBPressed(const std::string& optionName)
+	void Menu::GoToMenu(const std::string& menuName)
 	{
-		if (optionName == "Sub Option 1")
-			GoToRoot();
-		if (optionName == "Sub Option 2")
-			GoToRoot();
-		if (optionName == "Sub Option 3")
-			GoToRoot();
-		if (optionName == "Sub Option 4")
-			GoToRoot();
-		if (optionName == "Sub Option 5")
-			GoToRoot();
-		if (optionName == "Sub Option 6")
-			GoToRoot();
+		Cleanup();
+
+		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
+			m_Options.push_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
 	}
 
 	void Menu::OnEvent(const std::string& eventString)
@@ -145,32 +119,53 @@ namespace MW2
 			OnBPressed(m_Options[m_CurrentScrollerPos].GetName());
 	}
 
-	void Menu::Open()
+	void Menu::OnAPressed(const std::string& optionName)
 	{
-		MakeAppear(m_Background, 180);
-		MakeAppear(m_Title);
-		MakeAppear(m_Scroller, 180);
-
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Activate();
-
-		m_Open = true;
+		if (optionName == "Main" || optionName == "Teleport" || optionName == "Infect")
+			GoToMenu(optionName);
+		if (optionName == "Sub Option 1")
+			OptionClicked(optionName);
+		if (optionName == "Sub Option 2")
+			OptionClicked(optionName);
+		if (optionName == "Sub Option 3")
+			OptionClicked(optionName);
+		if (optionName == "Sub Option 4")
+			OptionClicked(optionName);
+		if (optionName == "Sub Option 5")
+			OptionClicked(optionName);
+		if (optionName == "Sub Option 6")
+			OptionClicked(optionName);
 	}
 
-	void Menu::Close()
+	void Menu::OnBPressed(const std::string& optionName)
 	{
-		MakeDisappear(m_Background);
-		MakeDisappear(m_Title);
-		MakeDisappear(m_Scroller);
-
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Deactivate();
-
-		m_Open = false;
+		if (optionName == "Sub Option 1")
+			GoToMenu("root");
+		if (optionName == "Sub Option 2")
+			GoToMenu("root");
+		if (optionName == "Sub Option 3")
+			GoToMenu("root");
+		if (optionName == "Sub Option 4")
+			GoToMenu("root");
+		if (optionName == "Sub Option 5")
+			GoToMenu("root");
+		if (optionName == "Sub Option 6")
+			GoToMenu("root");
 	}
 
 	void Menu::MoveScroller(int position)
 	{
 		m_Scroller->elem.y = (float)(m_MenuY + (m_Padding * 2) + m_TitleHeight + (m_LineHeight * position));
+	}
+
+	void Menu::Cleanup()
+	{
+		for (size_t i = 0; i < m_Options.size(); i++)
+			m_Options[i].FreeHudElem();
+
+		m_CurrentScrollerPos = 0;
+		MoveScroller(m_CurrentScrollerPos);
+
+		m_Options.clear();
 	}
 }

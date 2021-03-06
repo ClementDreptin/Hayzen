@@ -24,14 +24,13 @@ namespace MW2
 		std::vector<Option> m_Options;
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
 
-		void OptionClicked(const std::string& optionName);
-
-		void Open();
-		void Close();
 		static void CreateStructure();
-		void GoToMenu(const std::string& menuName);
 		void OnAPressed(const std::string& optionName);
 		void OnBPressed(const std::string& optionName);
+		void Open();
+		void Close();
+		void GoToMenu(const std::string& menuName);
+		void ToDo(); // Remove when all features are implemented
 		void MoveScroller(int position);
 		void Cleanup();
 	};

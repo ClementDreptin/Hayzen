@@ -25,9 +25,59 @@ namespace MW2
 		GoToMenu("Cod Jumper");
 	}
 
-	void Menu::OptionClicked(const std::string& optionName)
+	void Menu::CreateStructure()
 	{
-		iPrintLn(m_ClientNum, Formatter::Format("^2You clicked on %s", optionName.c_str()));
+		s_Structure["Cod Jumper"] = std::vector<std::string>();
+		s_Structure["Cod Jumper"].reserve(3);
+		s_Structure["Cod Jumper"].emplace_back("Main");
+		s_Structure["Cod Jumper"].emplace_back("Teleport");
+		s_Structure["Cod Jumper"].emplace_back("Admin");
+
+		s_Structure["Main"] = std::vector<std::string>();
+		s_Structure["Main"].reserve(6);
+		s_Structure["Main"].emplace_back("God Mode");
+		s_Structure["Main"].emplace_back("Fall Damage");
+		s_Structure["Main"].emplace_back("Ammo");
+		s_Structure["Main"].emplace_back("Blast Marks");
+		s_Structure["Main"].emplace_back("Old School");
+		s_Structure["Main"].emplace_back("Elevators");
+
+		s_Structure["Teleport"] = std::vector<std::string>();
+		s_Structure["Teleport"].reserve(4);
+		s_Structure["Teleport"].emplace_back("Save/Load Binds");
+		s_Structure["Teleport"].emplace_back("Save Position");
+		s_Structure["Teleport"].emplace_back("Load Position");
+		s_Structure["Teleport"].emplace_back("UFO");
+
+		s_Structure["Admin"] = std::vector<std::string>();
+		s_Structure["Admin"].reserve(2);
+		s_Structure["Admin"].emplace_back("Infect");
+			s_Structure["Infect"] = std::vector<std::string>();
+			s_Structure["Infect"].reserve(1);
+			s_Structure["Infect"].emplace_back("Knockback");
+		s_Structure["Admin"].emplace_back("Verify");
+	}
+
+	void Menu::OnAPressed(const std::string& optionName)
+	{
+		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
+			GoToMenu(optionName);
+		else
+			ToDo();
+	}
+
+	void Menu::OnBPressed(const std::string& optionName)
+	{
+		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
+			return;
+
+		if (optionName == "Knockback")
+		{
+			GoToMenu("Admin");
+			return;
+		}
+
+		GoToMenu("Cod Jumper");
 	}
 
 	void Menu::Open()
@@ -54,30 +104,6 @@ namespace MW2
 		m_Open = false;
 	}
 
-	void Menu::CreateStructure()
-	{
-		s_Structure["Cod Jumper"] = std::vector<std::string>();
-		s_Structure["Cod Jumper"].reserve(3);
-		s_Structure["Cod Jumper"].emplace_back("Main");
-		s_Structure["Cod Jumper"].emplace_back("Teleport");
-		s_Structure["Cod Jumper"].emplace_back("Infect");
-
-		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(2);
-		s_Structure["Main"].emplace_back("Sub Option 1");
-		s_Structure["Main"].emplace_back("Sub Option 2");
-
-		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].reserve(2);
-		s_Structure["Teleport"].emplace_back("Sub Option 3");
-		s_Structure["Teleport"].emplace_back("Sub Option 4");
-
-		s_Structure["Infect"] = std::vector<std::string>();
-		s_Structure["Infect"].reserve(2);
-		s_Structure["Infect"].emplace_back("Sub Option 5");
-		s_Structure["Infect"].emplace_back("Sub Option 6");
-	}
-
 	void Menu::GoToMenu(const std::string& menuName)
 	{
 		Cleanup();
@@ -89,6 +115,11 @@ namespace MW2
 
 		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
 			m_Options.emplace_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
+	}
+
+	void Menu::ToDo()
+	{
+		iPrintLn(m_ClientNum, "^1Not Implemented Yet!");
 	}
 
 	void Menu::OnEvent(const std::string& eventString)
@@ -126,40 +157,6 @@ namespace MW2
 
 		if (eventString == "B" && m_Open)
 			OnBPressed(m_Options[m_CurrentScrollerPos].GetName());
-	}
-
-	void Menu::OnAPressed(const std::string& optionName)
-	{
-		if (optionName == "Main" || optionName == "Teleport" || optionName == "Infect")
-			GoToMenu(optionName);
-		if (optionName == "Sub Option 1")
-			OptionClicked(optionName);
-		if (optionName == "Sub Option 2")
-			OptionClicked(optionName);
-		if (optionName == "Sub Option 3")
-			OptionClicked(optionName);
-		if (optionName == "Sub Option 4")
-			OptionClicked(optionName);
-		if (optionName == "Sub Option 5")
-			OptionClicked(optionName);
-		if (optionName == "Sub Option 6")
-			OptionClicked(optionName);
-	}
-
-	void Menu::OnBPressed(const std::string& optionName)
-	{
-		if (optionName == "Sub Option 1")
-			GoToMenu("Cod Jumper");
-		if (optionName == "Sub Option 2")
-			GoToMenu("Cod Jumper");
-		if (optionName == "Sub Option 3")
-			GoToMenu("Cod Jumper");
-		if (optionName == "Sub Option 4")
-			GoToMenu("Cod Jumper");
-		if (optionName == "Sub Option 5")
-			GoToMenu("Cod Jumper");
-		if (optionName == "Sub Option 6")
-			GoToMenu("Cod Jumper");
 	}
 
 	void Menu::MoveScroller(int position)

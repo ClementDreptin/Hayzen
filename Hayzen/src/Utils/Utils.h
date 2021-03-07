@@ -35,7 +35,6 @@ namespace Utils
 			return 0;
 		}
 
-		T value = *(T*)address;
-		return value;
+		return *(T*)address;
 	}
 }

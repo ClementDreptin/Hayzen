@@ -129,6 +129,20 @@ namespace MW2
 		}
 	}
 
+	void Menu::ToggleBlastMarks()
+	{
+		if (Dvar_GetBool("fx_marks"))
+		{
+			SetClientDvar(m_ClientNum, "fx_marks", "0");
+			iPrintLn(m_ClientNum, "Blast Marks ^2Off");
+		}
+		else
+		{
+			SetClientDvar(m_ClientNum, "fx_marks", "1");
+			iPrintLn(m_ClientNum, "Blast Marks ^1On");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -179,6 +193,8 @@ namespace MW2
 			ToggleAmmo();
 		else if (optionName == "Old School")
 			ToggleOldSchool();
+		else if (optionName == "Blast Marks")
+			ToggleBlastMarks();
 		else
 			ToDo();
 	}

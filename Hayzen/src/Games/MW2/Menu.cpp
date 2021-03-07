@@ -95,6 +95,24 @@ namespace MW2
 		}
 	}
 
+	void Menu::ToggleAmmo()
+	{
+		DWORD address = 0x820E1724;
+		unsigned int defaultValue = 0x7D1D4850;
+		unsigned int modifiedValue = 0x7D284B78;
+
+		if (Utils::Read<unsigned int>(address) != modifiedValue)
+		{
+			Utils::Write<unsigned int>(address, modifiedValue);
+			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
+		}
+		else
+		{
+			Utils::Write<unsigned int>(address, defaultValue);
+			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -141,6 +159,8 @@ namespace MW2
 			ToggleDepatchBounces();
 		else if (optionName == "Fall Damage")
 			ToggleFallDamage();
+		else if (optionName == "Ammo")
+			ToggleAmmo();
 		else
 			ToDo();
 	}

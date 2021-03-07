@@ -24,6 +24,13 @@ int(__cdecl *MW2::G_LocalizedStringIndex)(const char* string) = (int(*)(const ch
 
 MW2::clientState_s*(__cdecl *MW2::GetClientState)(int clientNum) = (MW2::clientState_s*(*)(int))0x821E6610;
 
+MW2::playerState_s*(__cdecl *MW2::GetPlayerState)(int clientNum) = (MW2::playerState_s*(*)(int))0x821E6628;
+
+MW2::gclient_s* MW2::GetGClient(int clientNum)
+{
+	return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
+}
+
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 {
 	SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());

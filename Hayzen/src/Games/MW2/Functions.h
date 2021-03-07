@@ -24,6 +24,10 @@ namespace MW2
 
 	extern clientState_s*(__cdecl *GetClientState)(int clientNum);
 
+	extern playerState_s*(__cdecl *GetPlayerState)(int clientNum);
+
+	extern gclient_s* GetGClient(int clientNum);
+
 	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
 	extern void iPrintLn(int clientNum, const std::string& text);

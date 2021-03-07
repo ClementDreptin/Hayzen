@@ -10,7 +10,9 @@ namespace MW2
 
 	extern void(__cdecl *SV)(int clientNum, int type, const char* text);
 
-	extern bool(__cdecl *Dvar_GetBool)(const char* DvarName);
+	extern bool(__cdecl *Dvar_GetBool)(const char* dvarName);
+
+	extern int(__cdecl *Dvar_GetInt)(const char* dvarName);
 
 	extern game_hudelem_s*(__cdecl *HudElem_Alloc)(int clientNum, int teamNum);
 

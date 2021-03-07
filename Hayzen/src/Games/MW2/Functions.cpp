@@ -10,7 +10,9 @@ const char*(__cdecl *MW2::SL_ConvertToString)(unsigned int stringValue) = (const
 
 void(__cdecl *MW2::SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
 
-bool(__cdecl *MW2::Dvar_GetBool)(const char* DvarName) = (bool(*)(const char*))0x8229EEE8;
+bool(__cdecl *MW2::Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
+
+int(__cdecl *MW2::Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
 
 MW2::game_hudelem_s*(__cdecl *MW2::HudElem_Alloc)(int clientNum, int teamNum) = (MW2::game_hudelem_s*(*)(int, int))0x821DF928;
 

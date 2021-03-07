@@ -79,6 +79,22 @@ namespace MW2
 		iPrintLn(m_ClientNum, "Depatch Bounces " + status);
 	}
 
+	void Menu::ToggleFallDamage()
+	{
+		DWORD address = 0x82019C48;
+
+		if (Utils::Read<float>(address) == 128.0f)
+		{
+			Utils::Write<float>(address, 9999.0f);
+			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
+		}
+		else
+		{
+			Utils::Write<float>(address, 128.0f);
+			iPrintLn(m_ClientNum, "Fall Damage ^1On");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -123,6 +139,8 @@ namespace MW2
 			Knockback();
 		else if (optionName == "Depatch Bounces")
 			ToggleDepatchBounces();
+		else if (optionName == "Fall Damage")
+			ToggleFallDamage();
 		else
 			ToDo();
 	}

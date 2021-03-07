@@ -30,6 +30,7 @@ namespace MW2
 		void ToggleElevators();
 		void Knockback();
 		void ToggleDepatchBounces();
+		void ToggleFallDamage();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

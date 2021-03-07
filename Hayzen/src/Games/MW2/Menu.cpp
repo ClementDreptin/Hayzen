@@ -143,6 +143,20 @@ namespace MW2
 		}
 	}
 
+	void Menu::ToggleUFO()
+	{
+		if (GetGClient(m_ClientNum)->mFlags != 2)
+		{
+			GetGClient(m_ClientNum)->mFlags = 2;
+			iPrintLn(m_ClientNum, "Ufo ^2On");
+		}
+		else
+		{
+			GetGClient(m_ClientNum)->mFlags = 0;
+			iPrintLn(m_ClientNum, "Ufo ^1Off");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -195,6 +209,8 @@ namespace MW2
 			ToggleOldSchool();
 		else if (optionName == "Blast Marks")
 			ToggleBlastMarks();
+		else if (optionName == "UFO")
+			ToggleUFO();
 		else
 			ToDo();
 	}

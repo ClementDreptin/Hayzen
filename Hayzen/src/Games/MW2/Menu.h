@@ -31,6 +31,7 @@ namespace MW2
 		void ToggleAmmo();
 		void ToggleOldSchool();
 		void ToggleBlastMarks();
+		void ToggleUFO();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

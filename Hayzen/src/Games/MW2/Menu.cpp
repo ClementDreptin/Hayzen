@@ -113,6 +113,22 @@ namespace MW2
 		}
 	}
 
+	void Menu::ToggleOldSchool()
+	{
+		DWORD address = 0x82001A34;
+
+		if (Utils::Read<float>(address) == 39.0f)
+		{
+			Utils::Write<float>(address, 64.0f);
+			iPrintLn(m_ClientNum, "Old School ^2On");
+		}
+		else
+		{
+			Utils::Write<float>(address, 39.0f);
+			iPrintLn(m_ClientNum, "Old School ^1Off");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -161,6 +177,8 @@ namespace MW2
 			ToggleFallDamage();
 		else if (optionName == "Ammo")
 			ToggleAmmo();
+		else if (optionName == "Old School")
+			ToggleOldSchool();
 		else
 			ToDo();
 	}

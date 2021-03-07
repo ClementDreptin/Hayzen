@@ -29,6 +29,7 @@ namespace MW2
 		void ToggleDepatchBounces();
 		void ToggleFallDamage();
 		void ToggleAmmo();
+		void ToggleOldSchool();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

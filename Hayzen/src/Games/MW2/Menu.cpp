@@ -9,7 +9,7 @@ namespace MW2
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_ElevatorsEnabled(false), m_DepatchBouncesEnabled(false)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
@@ -30,17 +30,17 @@ namespace MW2
 		DWORD branchAddress = 0x820D8310;
 		unsigned int defaultValue = 0x409A0054;
 		unsigned int modifiedValue = 0x409A0094;
-		bool elevatorsActuallyEnabled = Utils::Read<unsigned int>(branchAddress) == modifiedValue;
 
-		if (!m_ElevatorsEnabled && !elevatorsActuallyEnabled)
+		if (Utils::Read<unsigned int>(branchAddress) == defaultValue)
+		{
 			Utils::Write<unsigned int>(branchAddress, modifiedValue);
-		else if (m_ElevatorsEnabled && elevatorsActuallyEnabled)
+			iPrintLn(m_ClientNum, "Elevators ^2On");
+		}
+		else
+		{
 			Utils::Write<unsigned int>(branchAddress, defaultValue);
-
-		m_ElevatorsEnabled = !m_ElevatorsEnabled;
-
-		std::string status = m_ElevatorsEnabled ? "^2On" : "^1Off";
-		iPrintLn(m_ClientNum, "Elevators " + status);
+			iPrintLn(m_ClientNum, "Elevators ^1Off");
+		}
 	}
 
 	void Menu::Knockback()
@@ -66,17 +66,17 @@ namespace MW2
 		DWORD branchAddress = 0x820DABE4;
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
-		bool depatchBouncesActuallyEnabled = Utils::Read<unsigned int>(branchAddress) == modifiedValue;
 
-		if (!m_DepatchBouncesEnabled && !depatchBouncesActuallyEnabled)
+		if (Utils::Read<unsigned int>(branchAddress) == defaultValue)
+		{
 			Utils::Write<unsigned int>(branchAddress, modifiedValue);
-		else if (m_DepatchBouncesEnabled && depatchBouncesActuallyEnabled)
+			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
+		}
+		else
+		{
 			Utils::Write<unsigned int>(branchAddress, defaultValue);
-
-		m_DepatchBouncesEnabled = !m_DepatchBouncesEnabled;
-
-		std::string status = m_DepatchBouncesEnabled ? "^2On" : "^1Off";
-		iPrintLn(m_ClientNum, "Depatch Bounces " + status);
+			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
+		}
 	}
 
 	void Menu::ToggleFallDamage()
@@ -101,7 +101,7 @@ namespace MW2
 		unsigned int defaultValue = 0x7D1D4850;
 		unsigned int modifiedValue = 0x7D284B78;
 
-		if (Utils::Read<unsigned int>(address) != modifiedValue)
+		if (Utils::Read<unsigned int>(address) == defaultValue)
 		{
 			Utils::Write<unsigned int>(address, modifiedValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");

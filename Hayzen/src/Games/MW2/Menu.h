@@ -17,9 +17,6 @@ namespace MW2
 		bool m_Open;
 		int m_CurrentScrollerPos;
 
-		bool m_ElevatorsEnabled;
-		bool m_DepatchBouncesEnabled;
-
 		game_hudelem_s* m_Background;
 		game_hudelem_s* m_Title;
 		game_hudelem_s* m_Scroller;

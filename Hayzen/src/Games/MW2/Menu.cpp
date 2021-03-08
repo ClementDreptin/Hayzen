@@ -27,18 +27,18 @@ namespace MW2
 
 	void Menu::ToggleElevators()
 	{
-		DWORD branchAddress = 0x820D8310;
-		unsigned int defaultValue = 0x409A0054;
-		unsigned int modifiedValue = 0x409A0094;
+		DWORD branchAddress = 0x820D8360;
+		unsigned short defaultValue = 0x419A;
+		unsigned short modifiedValue = 0x4800;
 
-		if (Utils::Read<unsigned int>(branchAddress) == defaultValue)
+		if (Utils::Read<unsigned short>(branchAddress) == defaultValue)
 		{
-			Utils::Write<unsigned int>(branchAddress, modifiedValue);
+			Utils::Write<unsigned short>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Elevators ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned int>(branchAddress, defaultValue);
+			Utils::Write<unsigned short>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Elevators ^1Off");
 		}
 	}

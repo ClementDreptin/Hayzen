@@ -28,6 +28,8 @@ namespace MW2
 
 	extern gclient_s* GetGClient(int clientNum);
 
+	extern gentity_s* GetPlayerEntity(int clientNum);
+
 	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
 	extern void iPrintLn(int clientNum, const std::string& text);

@@ -31,6 +31,11 @@ MW2::gclient_s* MW2::GetGClient(int clientNum)
 	return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
 }
 
+MW2::gentity_s* MW2::GetPlayerEntity(int clientNum)
+{
+	return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * clientNum);
+}
+
 void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 {
 	SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());

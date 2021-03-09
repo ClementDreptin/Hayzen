@@ -187,6 +187,23 @@ namespace MW2
 		m_BindsEnabled = !m_BindsEnabled;
 	}
 
+	void Menu::ToggleGodMode()
+	{
+		int GOD_MODE_ON = 4097;
+		int GOD_MODE_OFF = 4096;
+
+		if (GetPlayerEntity(m_ClientNum)->flags == GOD_MODE_OFF)
+		{
+			GetPlayerEntity(m_ClientNum)->flags = GOD_MODE_ON;
+			iPrintLn(m_ClientNum, "God Mode ^2On");
+		}
+		else
+		{
+			GetPlayerEntity(m_ClientNum)->flags = GOD_MODE_OFF;
+			iPrintLn(m_ClientNum, "God Mode ^1Off");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -247,6 +264,8 @@ namespace MW2
 			LoadPosition();
 		else if (optionName == "Save/Load Binds")
 			ToggleSaveLoadBinds();
+		else if (optionName == "God Mode")
+			ToggleGodMode();
 		else
 			ToDo();
 	}

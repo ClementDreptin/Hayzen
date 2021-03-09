@@ -37,6 +37,7 @@ namespace MW2
 		void SavePosition();
 		void LoadPosition();
 		void ToggleSaveLoadBinds();
+		void ToggleGodMode();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

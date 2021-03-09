@@ -9,7 +9,7 @@ namespace MW2
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
@@ -157,6 +157,36 @@ namespace MW2
 		}
 	}
 
+	void Menu::SavePosition()
+	{
+		m_SavedPos = GetPlayerState(m_ClientNum)->origin;
+
+		iPrintLn(m_ClientNum, "Position ^2Saved");
+	}
+
+	void Menu::LoadPosition()
+	{
+		if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f))
+		{
+			iPrintLn(m_ClientNum, "^1Save a position first!");
+			return;
+		}
+		
+		GetPlayerState(m_ClientNum)->origin = m_SavedPos;
+		
+		iPrintLn(m_ClientNum, "Position ^2Loaded");
+	}
+
+	void Menu::ToggleSaveLoadBinds()
+	{
+		if (!m_BindsEnabled)
+			iPrintLn(m_ClientNum, "Press [{+frag}] to ^2Save^7 and [{+smoke}] to ^2Load");
+		else
+			iPrintLn(m_ClientNum, "Save and Load binds ^1Off");
+
+		m_BindsEnabled = !m_BindsEnabled;
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -211,6 +241,12 @@ namespace MW2
 			ToggleBlastMarks();
 		else if (optionName == "UFO")
 			ToggleUFO();
+		else if (optionName == "Save Position")
+			SavePosition();
+		else if (optionName == "Load Position")
+			LoadPosition();
+		else if (optionName == "Save/Load Binds")
+			ToggleSaveLoadBinds();
 		else
 			ToDo();
 	}
@@ -306,6 +342,12 @@ namespace MW2
 
 		if (eventString == "B" && m_Open)
 			OnBPressed(m_Options[m_CurrentScrollerPos].GetName());
+
+		if (eventString == "LB" && m_BindsEnabled)
+			LoadPosition();
+
+		if (eventString == "RB" && m_BindsEnabled)
+			SavePosition();
 	}
 
 	void Menu::MoveScroller(int position)

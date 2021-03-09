@@ -16,6 +16,8 @@ namespace MW2
 		int m_ClientNum;
 		bool m_Open;
 		int m_CurrentScrollerPos;
+		vec3 m_SavedPos;
+		bool m_BindsEnabled;
 
 		game_hudelem_s* m_Background;
 		game_hudelem_s* m_Title;
@@ -32,6 +34,9 @@ namespace MW2
 		void ToggleOldSchool();
 		void ToggleBlastMarks();
 		void ToggleUFO();
+		void SavePosition();
+		void LoadPosition();
+		void ToggleSaveLoadBinds();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

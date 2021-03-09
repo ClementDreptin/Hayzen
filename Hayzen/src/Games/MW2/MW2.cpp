@@ -53,6 +53,8 @@ void MW2::SetupGame(int clientNum)
 	Cmd_RegisterNotification(clientNum, "+actionslot 4", "dpad_right");
 	Cmd_RegisterNotification(clientNum, "+gostand", "A");
 	Cmd_RegisterNotification(clientNum, "+stance", "B");
+	Cmd_RegisterNotification(clientNum, "+smoke", "LB");
+	Cmd_RegisterNotification(clientNum, "+frag", "RB");
 
 	Clients[clientNum] = Client(clientNum);
 

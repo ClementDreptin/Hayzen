@@ -4,15 +4,23 @@ namespace MW2
 {
 	struct vec2
 	{
+		vec2(float x, float y) : x(x), y(y) {}
+
 		float x;
 		float y;
+
+		bool operator==(const vec2& other) const { return x == other.x && y == other.y; }
 	};
 	
 	struct vec3
 	{
+		vec3(float x, float y, float z) : x(x), y(y), z(z) {}
+
 		float x;
 		float y;
 		float z;
+
+		bool operator==(const vec3& other) const { return x == other.x && y == other.y && z == other.z; }
 	};
 	
 	enum he_type_t : int

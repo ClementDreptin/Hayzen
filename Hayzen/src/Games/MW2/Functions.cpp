@@ -26,6 +26,8 @@ MW2::clientState_s*(__cdecl *MW2::GetClientState)(int clientNum) = (MW2::clientS
 
 MW2::playerState_s*(__cdecl *MW2::GetPlayerState)(int clientNum) = (MW2::playerState_s*(*)(int))0x821E6628;
 
+bool(__cdecl *MW2::Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
+
 MW2::gclient_s* MW2::GetGClient(int clientNum)
 {
 	return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
@@ -44,4 +46,9 @@ void MW2::SetClientDvar(int clientNum, const std::string& dvar, const std::strin
 void MW2::iPrintLn(int clientNum, const std::string& text)
 {
 	SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
+}
+
+bool MW2::IsHost(int clientNum)
+{
+	return Session_IsHost(0x83AC3DB0, clientNum);
 }

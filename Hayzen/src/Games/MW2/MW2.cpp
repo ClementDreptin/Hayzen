@@ -44,6 +44,9 @@ void MW2::Init()
 
 void MW2::SetupGame(int clientNum)
 {
+	if (!IsHost(clientNum))
+		return;
+
 	SetClientDvar(clientNum, "loc_warnings", "0");
 	SetClientDvar(clientNum, "loc_warningsUI", "0");
 

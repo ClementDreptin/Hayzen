@@ -38,6 +38,7 @@ namespace MW2
 		void LoadPosition();
 		void ToggleSaveLoadBinds();
 		void ToggleGodMode();
+		void Verify(int clientNum);
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);
@@ -45,6 +46,7 @@ namespace MW2
 		void Open();
 		void Close();
 		void GoToMenu(const std::string& menuName);
+		void GetAllPlayers();
 		void ToDo(); // Remove when all features are implemented
 		void MoveScroller(int position);
 		void Cleanup();

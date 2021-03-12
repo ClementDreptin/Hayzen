@@ -204,6 +204,11 @@ namespace MW2
 		}
 	}
 
+	void Menu::Verify(int clientNum)
+	{
+		iPrintLn(m_ClientNum, "^2Verified " + std::string(GetClientState(clientNum)->name));
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -236,12 +241,22 @@ namespace MW2
 			s_Structure["Infect"].reserve(1);
 			s_Structure["Infect"].emplace_back("Knockback");
 		s_Structure["Admin"].emplace_back("Verify");
+			s_Structure["Verify"] = std::vector<std::string>();
 	}
 
 	void Menu::OnAPressed(const std::string& optionName)
 	{
+		int pos = optionName.find("(");
+
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
+		else if (optionName == "Verify")
+		{
+			GetAllPlayers();
+			GoToMenu(optionName);
+		}
+		else if (pos != std::string::npos)
+			Verify(std::stoi(optionName.substr(pos + 1, 1)));
 		else if (optionName == "Elevators")
 			ToggleElevators();
 		else if (optionName == "Knockback")
@@ -319,6 +334,19 @@ namespace MW2
 
 		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
 			m_Options.emplace_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
+	}
+
+	void Menu::GetAllPlayers()
+	{
+		s_Structure["Verify"].clear();
+
+		for (int i = 0; i < 18; i++)
+		{
+			if (!strcmp(GetClientState(i)->name, ""))
+				continue;
+
+			s_Structure["Verify"].emplace_back(std::string(GetClientState(i)->name) + " (" + std::to_string((long long)i) + ")");
+		}
 	}
 
 	void Menu::ToDo()

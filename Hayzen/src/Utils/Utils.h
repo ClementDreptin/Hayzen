@@ -4,7 +4,7 @@ namespace Utils
 {
 	DWORD ResolveFunction(const std::string& moduleName, DWORD ordinal);
 
-	void Thread(LPTHREAD_START_ROUTINE lpStartAddress);
+	void Thread(LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameters = 0);
 
 	void PatchInJump(DWORD* address, DWORD destination, BOOL linked);
 

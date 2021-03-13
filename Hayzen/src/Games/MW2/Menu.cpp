@@ -264,7 +264,7 @@ namespace MW2
 		else if (optionName == "Elevators")
 			ToggleElevators();
 		else if (optionName == "Knockback")
-			Knockback();
+			_Knockback();
 		else if (optionName == "Depatch Bounces")
 			ToggleDepatchBounces();
 		else if (optionName == "Fall Damage")
@@ -351,6 +351,18 @@ namespace MW2
 
 			s_Structure["Verify"].emplace_back(std::string(GetClientState(i)->name) + " (" + std::to_string((long long)i) + ")");
 		}
+	}
+
+	DWORD Menu::StaticKnockbackThread(LPVOID lpThreadParameter)
+	{
+		Menu* This = (Menu*)lpThreadParameter;
+		This->Knockback();
+		return 0;
+	}
+
+	void Menu::_Knockback()
+	{
+		Utils::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::ToDo()

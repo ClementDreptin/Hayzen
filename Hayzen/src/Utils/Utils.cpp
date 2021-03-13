@@ -10,11 +10,11 @@ DWORD Utils::ResolveFunction(const std::string& moduleName, DWORD ordinal)
 	return (mHandle == NULL) ? NULL : (DWORD)GetProcAddress(mHandle, (LPCSTR)ordinal);
 }
 
-void Utils::Thread(LPTHREAD_START_ROUTINE lpStartAddress)
+void Utils::Thread(LPTHREAD_START_ROUTINE lpStartAddress, LPVOID lpParameters)
 {
 	HANDLE hThread;
 	DWORD dwThreadId;
-	ExCreateThread(&hThread, 0, &dwThreadId, (PVOID)XapiThreadStartup , lpStartAddress, 0, 2);
+	ExCreateThread(&hThread, 0, &dwThreadId, (PVOID)XapiThreadStartup , lpStartAddress, lpParameters, 2);
 	ResumeThread(hThread);
 	CloseHandle(hThread);
 }

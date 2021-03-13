@@ -47,6 +47,8 @@ namespace MW2
 		void Close();
 		void GoToMenu(const std::string& menuName);
 		void GetAllPlayers();
+		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);  
+		void _Knockback();
 		void ToDo(); // Remove when all features are implemented
 		void MoveScroller(int position);
 		void Cleanup();

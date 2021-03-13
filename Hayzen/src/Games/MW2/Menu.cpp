@@ -50,12 +50,15 @@ namespace MW2
 		wchar_t wideBuffer[7];
 		char buffer[7];
 		ZeroMemory(&Overlapped, sizeof(Overlapped));
-		XShowKeyboardUI(0, VKBD_LATIN_NUMERIC, L"", L"Knockback", L"Recommended value: 30000", wideBuffer, 7, &Overlapped);
+		XShowKeyboardUI(0, VKBD_LATIN_NUMERIC, L"30000", L"Knockback", L"Recommended value: 30000", wideBuffer, 7, &Overlapped);
 
-		while(!XHasOverlappedIoCompleted(&Overlapped))
+		while (!XHasOverlappedIoCompleted(&Overlapped))
 			Sleep(100);
 
 		wcstombs(buffer, wideBuffer, 7);
+
+		if (!strcmp(buffer, ""))
+			return;
 
 		SetClientDvar(-1, "g_knockback", buffer);
 

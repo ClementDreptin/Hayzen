@@ -7,7 +7,6 @@
 
 bool MW2::HasGameBegun = false;
 std::unordered_map<int, MW2::Client> MW2::Clients;
-int MW2::HostNum = -1;
 
 __declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 {
@@ -63,7 +62,6 @@ void MW2::SetupGame(int clientNum)
 {
 	if (IsHost(clientNum))
 	{
-		HostNum = clientNum;
 		Verify(clientNum);
 		HasGameBegun = true;
 	}
@@ -73,11 +71,8 @@ void MW2::ResetGame(int clientNum)
 {
 	Clients.erase(clientNum);
 
-	if (clientNum == HostNum)
-	{
-		HostNum = -1;
+	if (IsHost(clientNum))
 		HasGameBegun = false;
-	}
 }
 
 bool MW2::Verify(int clientNum)

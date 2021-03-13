@@ -7,6 +7,7 @@
 
 bool MW2::HasGameBegun = false;
 std::unordered_map<int, MW2::Client> MW2::Clients;
+int MW2::HostNum = -1;
 
 __declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 {
@@ -20,6 +21,21 @@ __declspec(naked) void MW2::Scr_NotifyStub(gentity_s* entity, unsigned short str
 		nop
 		nop
 		li r3, 1
+	}
+}
+
+__declspec(naked) void MW2::SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer)
+{
+	__asm
+	{
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		nop
+		li r3, 2
 	}
 }
 
@@ -39,13 +55,24 @@ void MW2::Init()
 		Utils::Write<int>(0x821690E4, 0x60000000);
 
 		Utils::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+		Utils::HookFunctionStart((DWORD*)0x82253140, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 	}
+}
+
+void MW2::Reset()
+{
+	Clients.clear();
+	HostNum = -1;
+	HasGameBegun = false;
 }
 
 void MW2::SetupGame(int clientNum)
 {
 	if (IsHost(clientNum))
+	{
+		HostNum = clientNum;
 		Verify(clientNum);
+	}
 
 	HasGameBegun = true;
 }
@@ -88,4 +115,14 @@ void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned
 
 	if (HasGameBegun && clientNum >= 0 && clientNum <= 17)
 		Clients[clientNum].GetMenu().OnEvent(notify);
+}
+
+void MW2::SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer)
+{
+	SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
+
+	int clientNum = (client - Utils::Read<int>(0x83623B98)) / 0x97F80;
+
+	if (!strcmp(s, "disconnect") && clientNum == HostNum)
+		Reset();
 }

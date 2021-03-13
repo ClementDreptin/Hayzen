@@ -8,13 +8,18 @@ namespace MW2
 	// Variables
 	extern bool HasGameBegun;
 	extern std::unordered_map<int, Client> Clients;
+	extern int HostNum;
 
 	// Functions
 	void Init();
+	void Reset();
 	void SetupGame(int clientNum);
 	bool Verify(int clientNum);
 
 	// Hooks and their stubs
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
+
+	void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer);
+	void SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer);
 }

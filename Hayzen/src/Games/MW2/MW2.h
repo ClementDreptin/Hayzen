@@ -12,8 +12,8 @@ namespace MW2
 
 	// Functions
 	void Init();
-	void Reset();
 	void SetupGame(int clientNum);
+	void ResetGame(int clientNum);
 	bool Verify(int clientNum);
 
 	// Hooks and their stubs

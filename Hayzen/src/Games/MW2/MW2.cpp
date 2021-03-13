@@ -59,22 +59,25 @@ void MW2::Init()
 	}
 }
 
-void MW2::Reset()
-{
-	Clients.clear();
-	HostNum = -1;
-	HasGameBegun = false;
-}
-
 void MW2::SetupGame(int clientNum)
 {
 	if (IsHost(clientNum))
 	{
 		HostNum = clientNum;
 		Verify(clientNum);
+		HasGameBegun = true;
 	}
+}
 
-	HasGameBegun = true;
+void MW2::ResetGame(int clientNum)
+{
+	Clients.erase(clientNum);
+
+	if (clientNum == HostNum)
+	{
+		HostNum = -1;
+		HasGameBegun = false;
+	}
 }
 
 bool MW2::Verify(int clientNum)
@@ -113,7 +116,7 @@ void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned
 	if (!strcmp(notify, "begin"))
 		SetupGame(clientNum);
 
-	if (HasGameBegun && clientNum >= 0 && clientNum <= 17)
+	if (HasGameBegun && Clients.find(clientNum) != Clients.end())
 		Clients[clientNum].GetMenu().OnEvent(notify);
 }
 
@@ -123,6 +126,6 @@ void MW2::SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, i
 
 	int clientNum = (client - Utils::Read<int>(0x83623B98)) / 0x97F80;
 
-	if (!strcmp(s, "disconnect") && clientNum == HostNum)
-		Reset();
+	if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
+		ResetGame(clientNum);
 }

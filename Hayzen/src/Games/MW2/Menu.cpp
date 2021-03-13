@@ -3,6 +3,7 @@
 
 #include "Games\MW2\Functions.h"
 #include "Utils\Utils.h"
+#include "Games\MW2\MW2.h"
 
 namespace MW2
 {
@@ -204,6 +205,14 @@ namespace MW2
 		}
 	}
 
+	void Menu::Verify(int clientNum)
+	{
+		if (MW2::Verify(clientNum))
+			iPrintLn(clientNum, "You have been ^2Verified^7, press [{+actionslot 3}] to ^2Open");
+		else
+			iPrintLn(m_ClientNum, "^1This player is already Verified!");
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -236,12 +245,22 @@ namespace MW2
 			s_Structure["Infect"].reserve(1);
 			s_Structure["Infect"].emplace_back("Knockback");
 		s_Structure["Admin"].emplace_back("Verify");
+			s_Structure["Verify"] = std::vector<std::string>();
 	}
 
 	void Menu::OnAPressed(const std::string& optionName)
 	{
+		int pos;
+
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
+		else if (optionName == "Verify")
+		{
+			GetAllPlayers();
+			GoToMenu(optionName);
+		}
+		else if ((pos = optionName.find("(")) != std::string::npos)
+			Verify(std::stoi(optionName.substr(pos + 1, 1)));
 		else if (optionName == "Elevators")
 			ToggleElevators();
 		else if (optionName == "Knockback")
@@ -275,7 +294,7 @@ namespace MW2
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
 			return;
 
-		if (optionName == "Knockback")
+		if (optionName == "Knockback" || optionName.find("(") != std::string::npos)
 		{
 			GoToMenu("Admin");
 			return;
@@ -319,6 +338,19 @@ namespace MW2
 
 		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
 			m_Options.emplace_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
+	}
+
+	void Menu::GetAllPlayers()
+	{
+		s_Structure["Verify"].clear();
+
+		for (int i = 0; i < 18; i++)
+		{
+			if (!strcmp(GetClientState(i)->name, ""))
+				continue;
+
+			s_Structure["Verify"].emplace_back(std::string(GetClientState(i)->name) + " (" + std::to_string((long long)i) + ")");
+		}
 	}
 
 	void Menu::ToDo()

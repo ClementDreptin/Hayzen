@@ -26,6 +26,8 @@ namespace MW2
 
 	extern playerState_s*(__cdecl *GetPlayerState)(int clientNum);
 
+	extern bool(__cdecl *Session_IsHost)(DWORD sessionDataPtr, int clientNum);
+
 	extern gclient_s* GetGClient(int clientNum);
 
 	extern gentity_s* GetPlayerEntity(int clientNum);
@@ -33,4 +35,6 @@ namespace MW2
 	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
 	extern void iPrintLn(int clientNum, const std::string& text);
+
+	extern bool IsHost(int clientNum);
 }

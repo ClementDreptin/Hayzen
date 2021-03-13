@@ -44,6 +44,20 @@ void MW2::Init()
 
 void MW2::SetupGame(int clientNum)
 {
+	if (IsHost(clientNum))
+		Verify(clientNum);
+
+	HasGameBegun = true;
+}
+
+bool MW2::Verify(int clientNum)
+{
+	if (clientNum < 0 || clientNum > 17)
+		return false;
+
+	if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
+		return false;
+
 	SetClientDvar(clientNum, "loc_warnings", "0");
 	SetClientDvar(clientNum, "loc_warningsUI", "0");
 
@@ -58,7 +72,7 @@ void MW2::SetupGame(int clientNum)
 
 	Clients[clientNum] = Client(clientNum);
 
-	HasGameBegun = true;
+	return true;
 }
 
 void MW2::Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)

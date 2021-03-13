@@ -3,6 +3,7 @@
 
 #include "Games\MW2\Functions.h"
 #include "Utils\Utils.h"
+#include "Games\MW2\MW2.h"
 
 namespace MW2
 {
@@ -206,7 +207,10 @@ namespace MW2
 
 	void Menu::Verify(int clientNum)
 	{
-		iPrintLn(m_ClientNum, "^2Verified " + std::string(GetClientState(clientNum)->name));
+		if (MW2::Verify(clientNum))
+			iPrintLn(clientNum, "You have been ^2Verified^7, press [{+actionslot 3}] to ^2Open");
+		else
+			iPrintLn(m_ClientNum, "^1This player is already Verified!");
 	}
 
 	void Menu::CreateStructure()
@@ -246,7 +250,7 @@ namespace MW2
 
 	void Menu::OnAPressed(const std::string& optionName)
 	{
-		int pos = optionName.find("(");
+		int pos;
 
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
@@ -255,7 +259,7 @@ namespace MW2
 			GetAllPlayers();
 			GoToMenu(optionName);
 		}
-		else if (pos != std::string::npos)
+		else if ((pos = optionName.find("(")) != std::string::npos)
 			Verify(std::stoi(optionName.substr(pos + 1, 1)));
 		else if (optionName == "Elevators")
 			ToggleElevators();
@@ -290,7 +294,7 @@ namespace MW2
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
 			return;
 
-		if (optionName == "Knockback")
+		if (optionName == "Knockback" || optionName.find("(") != std::string::npos)
 		{
 			GoToMenu("Admin");
 			return;

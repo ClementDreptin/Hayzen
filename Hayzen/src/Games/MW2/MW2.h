@@ -12,6 +12,7 @@ namespace MW2
 	// Functions
 	void Init();
 	void SetupGame(int clientNum);
+	bool Verify(int clientNum);
 
 	// Hooks and their stubs
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);

@@ -39,6 +39,7 @@ namespace MW2
 		void ToggleSaveLoadBinds();
 		void ToggleGodMode();
 		void Verify(int clientNum);
+		void SpawnCP();
 
 		static void CreateStructure();
 		void OnAPressed(const std::string& optionName);

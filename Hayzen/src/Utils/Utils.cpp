@@ -144,3 +144,9 @@ void Utils::XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type)
 {
 	XNotifyQueueUI(type, 0xFF, XNOTIFY_SYSTEM, (PWCHAR)(Formatter::ToWide(text).c_str()), 0);
 }
+
+double Utils::Radians(double degrees)
+{
+	double pi = 3.14159265359;
+	return (degrees * (pi / 180));
+}

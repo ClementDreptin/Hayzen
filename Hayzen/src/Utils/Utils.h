@@ -14,6 +14,8 @@ namespace Utils
 
 	void XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type = XNOTIFYUI_TYPE_PREFERRED_REVIEW);
 
+	double Radians(double degrees);
+
 	template<typename T>
 	void Write(DWORD address, T data)
 	{

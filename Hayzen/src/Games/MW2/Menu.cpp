@@ -216,6 +216,43 @@ namespace MW2
 			iPrintLn(m_ClientNum, "^1This player is already Verified!");
 	}
 
+	void Menu::SpawnCP()
+	{
+		gentity_s* currentMapEntity = GetCurrentMapEntity();
+		if (!currentMapEntity)
+		{
+			iPrintLn(m_ClientNum, "^1You cannot spawn a Care Package on this map!");
+			return;
+		}
+
+		float distance = 100.0f;
+
+		vec3 origin = GetPlayerState(m_ClientNum)->origin;
+		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
+
+		vec3 cratePos;
+		cratePos.x = origin.x + (float)(distance * cos(Utils::Radians(viewY)));
+		cratePos.y = origin.y + (float)(distance * sin(Utils::Radians(viewY)));
+		cratePos.z = origin.z;
+
+		gentity_s* entity = G_Spawn();
+		entity->r.currentOrigin = cratePos;
+		entity->r.currentAngles.y = viewY;
+
+		G_SetModel(entity, "com_plasticcase_friendly");
+		SP_script_model(entity);
+		SV_UnlinkEntity(entity);
+		entity->r.bmodel = 4;
+		entity->state.index = currentMapEntity->state.index;
+		
+		int contents = entity->r.contents;
+		SV_SetBrushModel(entity);
+		contents |= entity->r.contents;
+		entity->r.contents = contents;
+
+		SV_LinkEntity(entity);
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -225,7 +262,7 @@ namespace MW2
 		s_Structure["Cod Jumper"].emplace_back("Admin");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(7);
+		s_Structure["Main"].reserve(8);
 		s_Structure["Main"].emplace_back("God Mode");
 		s_Structure["Main"].emplace_back("Fall Damage");
 		s_Structure["Main"].emplace_back("Ammo");
@@ -233,6 +270,7 @@ namespace MW2
 		s_Structure["Main"].emplace_back("Old School");
 		s_Structure["Main"].emplace_back("Elevators");
 		s_Structure["Main"].emplace_back("Depatch Bounces");
+		s_Structure["Main"].emplace_back("Spawn Care Package");
 
 		s_Structure["Teleport"] = std::vector<std::string>();
 		s_Structure["Teleport"].reserve(4);
@@ -288,6 +326,8 @@ namespace MW2
 			ToggleSaveLoadBinds();
 		else if (optionName == "God Mode")
 			ToggleGodMode();
+		else if (optionName == "Spawn Care Package")
+			SpawnCP();
 		else
 			ToDo();
 	}

@@ -14,6 +14,8 @@ bool(__cdecl *MW2::Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0
 
 int(__cdecl *MW2::Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
 
+const char*(__cdecl *MW2::Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
+
 MW2::game_hudelem_s*(__cdecl *MW2::HudElem_Alloc)(int clientNum, int teamNum) = (MW2::game_hudelem_s*(*)(int, int))0x821DF928;
 
 void(__cdecl *MW2::HudElem_Free)(MW2::game_hudelem_s* hud) = (void(*)(MW2::game_hudelem_s*))0x821DF9C0;
@@ -27,6 +29,18 @@ MW2::clientState_s*(__cdecl *MW2::GetClientState)(int clientNum) = (MW2::clientS
 MW2::playerState_s*(__cdecl *MW2::GetPlayerState)(int clientNum) = (MW2::playerState_s*(*)(int))0x821E6628;
 
 bool(__cdecl *MW2::Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
+
+void(__cdecl *MW2::SP_script_model)(MW2::gentity_s* mSelf) = (void(*)(MW2::gentity_s*))0x82206D88;
+
+MW2::gentity_s*(__cdecl *MW2::G_Spawn)() = (MW2::gentity_s*(*)())0x8220DB50;
+
+void(__cdecl *MW2::G_SetModel)(MW2::gentity_s* ent, const char* modelName) = (void(*)(MW2::gentity_s*, const char*))0x8220D278;
+
+void(__cdecl *MW2::SV_LinkEntity)(MW2::gentity_s* gEnt) = (void(*)(MW2::gentity_s*))0x8225F518;
+
+void(__cdecl *MW2::SV_UnlinkEntity)(MW2::gentity_s* gEnt) = (void(*)(MW2::gentity_s*))0x8225F430;
+
+void(__cdecl *MW2::SV_SetBrushModel)(MW2::gentity_s* ent) = (void(*)(MW2::gentity_s*))0x82254B50;
 
 MW2::gclient_s* MW2::GetGClient(int clientNum)
 {
@@ -51,4 +65,44 @@ void MW2::iPrintLn(int clientNum, const std::string& text)
 bool MW2::IsHost(int clientNum)
 {
 	return Session_IsHost(0x83AC3DB0, clientNum);
+}
+
+MW2::gentity_s* MW2::GetCurrentMapEntity()
+{
+	std::string mapName = Dvar_GetString("ui_mapname");
+
+	if (mapName == "mp_afghan")
+		return (gentity_s*)0x82F7E800;
+	if (mapName == "mp_derail")
+		return (gentity_s*)0x82F5F680;
+	if (mapName == "mp_estate")
+		return (gentity_s*)0x82F4AF00;
+	if (mapName == "mp_favela")
+		return (gentity_s*)0x82F70C00;
+	if (mapName == "mp_highrise")
+		return (gentity_s*)0x82F76380;
+	if (mapName == "mp_invasion")
+		return (gentity_s*)0x82F73180;
+	if (mapName == "mp_checkpoint")
+		return (gentity_s*)0x82F6D280;
+	if (mapName == "mp_quarry")
+		return (gentity_s*)0x82F99600;
+	if (mapName == "mp_rundown")
+		return (gentity_s*)0x82F65800;
+	if (mapName == "mp_rust")
+		return (gentity_s*)0x82F3C900;
+	if (mapName == "mp_boneyard")
+		return (gentity_s*)0x82F0B300;
+	if (mapName == "mp_nightshift")
+		return (gentity_s*)0x82F3A880;
+	if (mapName == "mp_subbase")
+		return (gentity_s*)0x82F59780;
+	if (mapName == "mp_terminal")
+		return (gentity_s*)0x82F0DD80;
+	if (mapName == "mp_underpass")
+		return (gentity_s*)0x82F66C00;
+	if (mapName == "mp_brecourt")
+		return (gentity_s*)0x82F15580;
+	else
+		return nullptr;
 }

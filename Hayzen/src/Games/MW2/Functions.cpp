@@ -6,43 +6,43 @@
 
 namespace MW2
 {
-	void(__cdecl *Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82225858;
+	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82225858;
 
-	const char*(__cdecl *SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x82241898;
+	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x82241898;
 
-	void(__cdecl *SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
+	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
 
-	bool(__cdecl *Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
+	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
 
-	int(__cdecl *Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
+	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
 
-	const char*(__cdecl *Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
+	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
 
-	game_hudelem_s*(__cdecl *HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
+	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
 
-	void(__cdecl *HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x821DF9C0;
+	void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x821DF9C0;
 
-	int(__cdecl *G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
+	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
 
-	int(__cdecl *G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
+	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
 
-	clientState_s*(__cdecl *GetClientState)(int clientNum) = (clientState_s*(*)(int))0x821E6610;
+	clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x821E6610;
 
-	playerState_s*(__cdecl *GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x821E6628;
+	playerState_s* (*GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x821E6628;
 
-	bool(__cdecl *Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
+	bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
 
-	void(__cdecl *SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82206D88;
+	void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82206D88;
 
-	gentity_s*(__cdecl *G_Spawn)() = (gentity_s*(*)())0x8220DB50;
+	gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x8220DB50;
 
-	void(__cdecl *G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x8220D278;
+	void (*G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x8220D278;
 
-	void(__cdecl *SV_LinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F518;
+	void (*SV_LinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F518;
 
-	void(__cdecl *SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F430;
+	void (*SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F430;
 
-	void(__cdecl *SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x82254B50;
+	void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x82254B50;
 
 	gclient_s* GetGClient(int clientNum)
 	{

@@ -44,22 +44,19 @@ namespace MW2
 
 	void Init()
 	{
-		if (!strcmp((char*)0x82001D38, "multiplayer"))
-		{
-			Utils::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
+		Utils::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
-			Sleep(200);
+		Sleep(200);
 
-			// Precache all shaders
-			Utils::Write<int>(0x82F3F280 + 0x1C, 1);
+		// Precache all shaders
+		Utils::Write<int>(0x82F3F280 + 0x1C, 1);
 
-			// NOP cheat protection
-			Utils::Write<int>(0x821A9484, 0x60000000);
-			Utils::Write<int>(0x821A94FC, 0x60000000);
+		// NOP cheat protection
+		Utils::Write<int>(0x821A9484, 0x60000000);
+		Utils::Write<int>(0x821A94FC, 0x60000000);
 
-			Utils::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-			Utils::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
-		}
+		Utils::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+		Utils::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 	}
 
 	void SetupGame(int clientNum)

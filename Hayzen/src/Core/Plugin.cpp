@@ -40,7 +40,10 @@ void Plugin::InitNewGame(DWORD titleId)
 			Dashboard::Init();
 			break;
 		case MW2:
-			MW2::Init();
+			if (!strcmp((char*)0x82001270, "multiplayer"))
+				MW2::Init();
+			else if (!strcmp((char*)0x82001D38, "multiplayer"))
+				Alpha::MW2::Init();
 			break;
 		default:
 			return;

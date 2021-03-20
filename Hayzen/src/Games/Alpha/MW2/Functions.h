@@ -12,6 +12,8 @@ namespace MW2
 
 	extern void (*SV)(int clientNum, int type, const char* text);
 
+	extern void (*Cbuf_AddText)(int localClientNum, const char* text);
+
 	extern bool (*Dvar_GetBool)(const char* dvarName);
 
 	extern int (*Dvar_GetInt)(const char* dvarName);

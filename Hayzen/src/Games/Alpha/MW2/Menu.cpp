@@ -4,6 +4,7 @@
 #include "Games\Alpha\MW2\Functions.h"
 #include "Utils\Utils.h"
 #include "Games\Alpha\MW2\MW2.h"
+#include "Utils\Formatter.h"
 
 namespace Alpha
 {
@@ -12,7 +13,7 @@ namespace MW2
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
 		m_Background = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
@@ -144,19 +145,20 @@ namespace MW2
 	void Menu::SavePosition()
 	{
 		m_SavedPos = GetPlayerState(m_ClientNum)->origin;
+		m_SavedAngles = GetPlayerState(m_ClientNum)->viewAngles;
 
 		iPrintLn(m_ClientNum, "Position ^2Saved");
 	}
 
 	void Menu::LoadPosition()
 	{
-		if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f))
+		if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f) || m_SavedAngles == vec3(0.0f, 0.0f, 0.0f))
 		{
 			iPrintLn(m_ClientNum, "^1Save a position first!");
 			return;
 		}
 		
-		GetPlayerState(m_ClientNum)->origin = m_SavedPos;
+		Cbuf_AddText(m_ClientNum, Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z, (int)m_SavedAngles.x, (int)m_SavedAngles.y).c_str());
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}

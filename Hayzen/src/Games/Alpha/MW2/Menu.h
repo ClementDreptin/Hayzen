@@ -19,6 +19,7 @@ namespace MW2
 		bool m_Open;
 		int m_CurrentScrollerPos;
 		vec3 m_SavedPos;
+		vec3 m_SavedAngles;
 		bool m_BindsEnabled;
 
 		game_hudelem_s* m_Background;

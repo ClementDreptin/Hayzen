@@ -14,6 +14,8 @@ namespace MW2
 
 	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822B6140;
 
+	void (*Cbuf_AddText)(int localClientNum, const char* text) = (void(*)(int, const char*))0x8226F590;
+
 	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x82303B00;
 
 	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x82303B68;

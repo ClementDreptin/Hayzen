@@ -3,7 +3,10 @@
 
 #include "Utils\Utils.h"
 
-void Dashboard::Init()
+namespace Dashboard
 {
-	Utils::XNotify("Hayzen - Dashboard Detected");
+	void Init()
+	{
+		Utils::XNotify("Hayzen - Dashboard Detected");
+	}
 }

@@ -28,24 +28,6 @@ namespace MW2
 		GoToMenu("Cod Jumper");
 	}
 
-	void Menu::ToggleElevators()
-	{
-		DWORD branchAddress = 0x820D8360;
-		unsigned short defaultValue = 0x419A;
-		unsigned short modifiedValue = 0x4800;
-
-		if (Utils::Read<unsigned short>(branchAddress) == defaultValue)
-		{
-			Utils::Write<unsigned short>(branchAddress, modifiedValue);
-			iPrintLn(m_ClientNum, "Elevators ^2On");
-		}
-		else
-		{
-			Utils::Write<unsigned short>(branchAddress, defaultValue);
-			iPrintLn(m_ClientNum, "Elevators ^1Off");
-		}
-	}
-
 	void Menu::Knockback()
 	{
 		XOVERLAPPED Overlapped;
@@ -260,13 +242,12 @@ namespace MW2
 		s_Structure["Cod Jumper"].emplace_back("Admin");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(8);
+		s_Structure["Main"].reserve(7);
 		s_Structure["Main"].emplace_back("God Mode");
 		s_Structure["Main"].emplace_back("Fall Damage");
 		s_Structure["Main"].emplace_back("Ammo");
 		s_Structure["Main"].emplace_back("Blast Marks");
 		s_Structure["Main"].emplace_back("Old School");
-		s_Structure["Main"].emplace_back("Elevators");
 		s_Structure["Main"].emplace_back("Depatch Bounces");
 		s_Structure["Main"].emplace_back("Spawn Care Package");
 
@@ -300,8 +281,6 @@ namespace MW2
 		}
 		else if ((pos = optionName.find("(")) != std::string::npos)
 			Verify(std::stoi(optionName.substr(pos + 1, 1)));
-		else if (optionName == "Elevators")
-			ToggleElevators();
 		else if (optionName == "Knockback")
 			_Knockback();
 		else if (optionName == "Depatch Bounces")

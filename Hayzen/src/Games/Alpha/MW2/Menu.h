@@ -28,7 +28,6 @@ namespace MW2
 		std::vector<Option> m_Options;
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
 
-		void ToggleElevators();
 		void Knockback();
 		void ToggleDepatchBounces();
 		void ToggleFallDamage();

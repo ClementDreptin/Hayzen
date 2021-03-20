@@ -84,8 +84,7 @@ namespace MW2
 		if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
 			return false;
 
-		SetClientDvar(clientNum, "loc_warnings", "0");
-		SetClientDvar(clientNum, "loc_warningsUI", "0");
+		Cbuf_AddText(clientNum, "loc_warnings 0;loc_warningsAsErrors 0");
 
 		Cmd_RegisterNotification(clientNum, "+actionslot 1", "dpad_up");
 		Cmd_RegisterNotification(clientNum, "+actionslot 2", "dpad_down");

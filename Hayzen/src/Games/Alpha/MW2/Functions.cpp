@@ -8,52 +8,52 @@ namespace Alpha
 {
 namespace MW2
 {
-	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82225858;
+	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82270880;
 
-	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x82241898;
+	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x8229A730;
 
-	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
+	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822B6140;
 
-	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
+	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x82303B00;
 
-	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
+	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x82303B68;
 
-	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
+	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x82303CC0;
 
-	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
+	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x82224DD8;
 
-	void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x821DF9C0;
+	void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x82224E70;
 
-	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
+	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x82257000;
 
-	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
+	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x82256D50;
 
-	clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x821E6610;
+	clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x8222C0F0;
 
-	playerState_s* (*GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x821E6628;
+	playerState_s* (*GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x8222C108;
 
-	bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
+	bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82388338;
 
-	void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82206D88;
+	void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82250A20;
 
-	gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x8220DB50;
+	gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x82258508;
 
-	void (*G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x8220D278;
+	void (*G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x82257B90;
 
-	void (*SV_LinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F518;
+	void (*SV_LinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x822C1598;
 
-	void (*SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F430;
+	void (*SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x822C14B0;
 
-	void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x82254B50;
+	void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x822B63B8;
 
 	gclient_s* GetGClient(int clientNum)
 	{
-		return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
+		return (gclient_s*)(0x82F01480 + sizeof(gclient_s) * clientNum);
 	}
 
 	gentity_s* GetPlayerEntity(int clientNum)
 	{
-		return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * clientNum);
+		return (gentity_s*)(0x82D47D80 + sizeof(gentity_s) * clientNum);
 	}
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -68,14 +68,14 @@ namespace MW2
 
 	bool IsHost(int clientNum)
 	{
-		return Session_IsHost(0x83AC3DB0, clientNum);
+		return Session_IsHost(0x83A06F28, clientNum);
 	}
 
 	gentity_s* GetCurrentMapEntity()
 	{
 		std::string mapName = Dvar_GetString("ui_mapname");
 
-		if (mapName == "mp_afghan")
+		/*if (mapName == "mp_afghan")
 			return (gentity_s*)0x82F7E800;
 		if (mapName == "mp_derail")
 			return (gentity_s*)0x82F5F680;
@@ -107,7 +107,7 @@ namespace MW2
 			return (gentity_s*)0x82F66C00;
 		if (mapName == "mp_brecourt")
 			return (gentity_s*)0x82F15580;
-		else
+		else*/
 			return nullptr;
 	}
 }

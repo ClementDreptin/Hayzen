@@ -69,7 +69,7 @@ namespace MW2
 
 	void Menu::ToggleDepatchBounces()
 	{
-		DWORD branchAddress = 0x820DABE4;
+		DWORD branchAddress = 0x8210CBDC;
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
@@ -87,50 +87,46 @@ namespace MW2
 
 	void Menu::ToggleFallDamage()
 	{
-		DWORD address = 0x82019C48;
-
-		if (Utils::Read<float>(address) == 128.0f)
+		if (Dvar_GetInt("bg_fallDamageMinHeight") == 128)
 		{
-			Utils::Write<float>(address, 9999.0f);
+			SetClientDvar(-1, "bg_fallDamageMinHeight", "9998");
+			SetClientDvar(-1, "bg_fallDamageMaxHeight", "9999");
 			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
 		}
 		else
 		{
-			Utils::Write<float>(address, 128.0f);
+			SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
+			SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
 			iPrintLn(m_ClientNum, "Fall Damage ^1On");
 		}
 	}
 
 	void Menu::ToggleAmmo()
 	{
-		DWORD address = 0x820E1724;
-		unsigned int defaultValue = 0x7D1D4850;
-		unsigned int modifiedValue = 0x7D284B78;
-
-		if (Utils::Read<unsigned int>(address) == defaultValue)
+		if (!Dvar_GetBool("player_sustainAmmo"))
 		{
-			Utils::Write<unsigned int>(address, modifiedValue);
+			SetClientDvar(-1, "player_sustainAmmo", "1");
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned int>(address, defaultValue);
+			SetClientDvar(-1, "player_sustainAmmo", "0");
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
 		}
 	}
 
 	void Menu::ToggleOldSchool()
 	{
-		DWORD address = 0x82001A34;
-
-		if (Utils::Read<float>(address) == 39.0f)
+		if (Dvar_GetInt("jump_height") != 64)
 		{
-			Utils::Write<float>(address, 64.0f);
+			SetClientDvar(-1, "jump_height", "64");
+			SetClientDvar(-1, "jump_slowdownEnable", "0");
 			iPrintLn(m_ClientNum, "Old School ^2On");
 		}
 		else
 		{
-			Utils::Write<float>(address, 39.0f);
+			SetClientDvar(-1, "jump_height", "39");
+			SetClientDvar(-1, "jump_slowdownEnable", "1");
 			iPrintLn(m_ClientNum, "Old School ^1Off");
 		}
 	}

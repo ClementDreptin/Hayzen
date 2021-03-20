@@ -71,15 +71,14 @@ namespace MW2
 	struct hudelem_s
 	{
 		he_type_t type;
-		float y;
 		float x;
+		float y;
 		float z;
 		int targetEntNum;
 		float fontScale;
 		float fromFontScale;
 		int fontScaleStartTime;
 		int fontScaleTime;
-		int label;
 		int font;
 		align_t alignOrg;
 		align_t alignScreen;
@@ -87,22 +86,23 @@ namespace MW2
 		hudelem_color_t fromColor;
 		int fadeStartTime;
 		int fadeTime;
-		int height;
+		int label;
 		int width;
+		int height;
 		int materialIndex;
-		int fromHeight;
 		int fromWidth;
+		int fromHeight;
 		int scaleStartTime;
 		int scaleTime;
-		float fromY;
 		float fromX;
+		float fromY;
 		int fromAlignOrg;
 		int fromAlignScreen;
 		int moveStartTime;
 		int moveTime;
-		float value;
 		int time;
 		int duration;
+		float value;
 		int text;
 		float sort;
 		hudelem_color_t glowColor;
@@ -705,16 +705,21 @@ namespace MW2
 	struct playerState_s {
 		int commandTime; // 0x0
 		int pm_type; // 0x4
-		int bobCycle; // 0x8
+		int pm_time; // 0x8
 		int pm_flags; // 0xC
 		int otherFlags; // 0x10
 		int linkFlags; // 0x14
-		int pm_time; // 0x18
+		int bobCycle; // 0x18
 		vec3 origin; // 0x1C
 		vec3 velocity; // 0x28
 		int grenadeTimerLeft; // 0x34
 		int throwBackGrenadeOwner; // 0x38
-		char padding[0x18]; // 0x3C
+		int throwbackGrenadeTimeLeft; // 0x3C
+		int throwbackWeaponIndex; // 0x40
+		int remoteEyesEnt; // 0x44
+		int remoteEyesTagname; // 0x48
+		int remoteControlEnt; // 0x4C
+		int foliageSoundTime; // 0x50
 		int gravity; // 0x54
 		float leanf; // 0x58
 		int speed; // 0x5C
@@ -758,22 +763,23 @@ namespace MW2
 		int shellshockDuration; // 0x494
 		char padding14[0x3B0]; // 0x370
 		hudData_s hud; // 0x848
-		char padding15[0x98]; // 0x318C
+		char padding15[0x88]; // 0x318C
 	};
 	
 	struct usercmd_s {
-		int serverTime; // 0x0
-		int buttons; // 0x4
-		int angles[3]; // 0x8
-		char forwardmove; // 0x14
-		char rightmove; // 0x15
-		char undefined2[2]; // 0x16
-		float meleeChargeYaw; // 0x18
-		char meleeChargeDist; // 0x1C
-		char _padding[4]; // 0x1D
-		char selectedLoc[2]; // 0x21
-		char selectedLocAngle; // 0x3
-		int unknown; // 0x24
+		int serverTime;
+		int buttons;
+		int angles[3];
+		short weapon;
+		short primaryWeaponForAltMode;
+		short offHandIndex;
+		char forwardmove;
+		char rightmove;
+		float meleeChargeYaw;
+		char meleeChargeDist;
+		char selectedLoc[2];
+		char selectedLocAngle;
+		int unknown;
 	};
 	
 	struct pmove_t {
@@ -812,41 +818,48 @@ namespace MW2
 		int rank; // 0x68
 		int prestige; // 0x6C
 		int perks[2]; // 0x70
-		int voiceConnectivityBits; // 0x78
-		int clanIndex; // 0x7C
-		char clanName[4]; // 0x80
-		int attachedVehEntNum; // 0x84
-		int attachedVehSlotIndex; // 0x88
+		int diveState; // 0x78
+		int voiceConnectivityBits; // 0x7C
+		char clanAbbrev[8]; // 0x80
+		int playerCardIcon; // 0x88
+		int playerCardTitle; // 0x8C
+		int playerCardNameplate; // 0x90
 	};
 	
 	struct clientSession_s {
-		sessionState_t sessionState; // 0x3190
-		int clientNum; // 0x3194
-		int score; // 0x3198
-		int deaths; // 0x319C
-		int kills; // 0x31A0
-		int assists; // 0x31A4
-		short scriptPersId; // 0x31A8
-		short undefined; // 0x31AA
-		clientConnected_t connect; // 0x31AC
-		usercmd_s cmd; // 0x3200
-		usercmd_s oldCmd; // 0x31D8
-		int isLocalClient; // 0x31F8
-		int predictItemPickup; // 0x31FC
-		char name[32]; // 0x31DC
-		int maxHealth; // 0x3228
-		int enterTime; // 0x322C
-		playerTeamState_t teamState; // 0x3230
-		int voteCount; // 0x3234
-		int teamVoteCount; // 0x3238
-		float moveSpeedScaleMultiplier; // 0x323C
-		int viewmodelIndex; // 0x3240
-		int noSpectate; // 0x3244
-		int teamInfo; // 0x3248
-		clientState_s cs; // 0x324C
-		char padding2[16]; // 0x3250
-		int psOffsetTime; // 0x32E8
-		char padding3[0x130]; // 0x32EC
+		sessionState_t sessionState;
+		int forceSpectatorClient;
+		int killCamEntity;
+		int killCamLookAtEntity;
+		int status_icon;
+		int archiveTime;
+		int score;
+		int deaths;
+		int kills;
+		int assists;
+		short scriptPersId;
+		short undefined;
+		clientConnected_t connected;
+		usercmd_s cmd;
+		usercmd_s oldCmd;
+		int localClient;
+		int predictItemPickup;
+		char newnetname[32];
+		int maxHealth;
+		int enterTime;
+		playerTeamState_t teamState;
+		int voteCount;
+		int teamVoteCount;
+		float moveSpeedScaleMultiplier;
+		int viewmodelIndex;
+		int noSpectate;
+		int teamInfo;
+		clientState_s cs;
+		int psOffsetTime;
+		int hasRadar;
+		int isRadarBlocked;
+		int radarMode;
+		char padding[0x124];
 	};
 	
 	struct viewClamp {
@@ -867,9 +880,8 @@ namespace MW2
 	struct gclient_s {
 		playerState_s ps; // 0x0
 		clientSession_s sess; // 0x3180
-		int spectatorClient; // 0x341C
-		int mFlags; // 0x3420
-		char padding[4]; // 0x3424
+		int flags; // 0x3420
+		int spectatorClient;
 		int lastCmdTime; // 0x3428
 		int buttons; // 0x342C
 		int oldButtons; // 0x3430
@@ -896,6 +908,7 @@ namespace MW2
 		bool link_useBaseAnglesForViewClamp; // 0x349B
 		float linkAnglesFrac; // 0x349C
 		viewClampState link_viewClamp; // 0x34A0
+		char padding[0x220];
 	};
 	
 	struct turretInfo_s {

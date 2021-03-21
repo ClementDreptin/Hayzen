@@ -70,7 +70,7 @@ namespace MW2
 
 	void Menu::ToggleFallDamage()
 	{
-		if (Dvar_GetInt("bg_fallDamageMinHeight") == 128)
+		if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
 		{
 			SetClientDvar(-1, "bg_fallDamageMinHeight", "9998");
 			SetClientDvar(-1, "bg_fallDamageMaxHeight", "9999");
@@ -100,7 +100,7 @@ namespace MW2
 
 	void Menu::ToggleOldSchool()
 	{
-		if (Dvar_GetInt("jump_height") != 64)
+		if (Dvar_GetFloat("jump_height") != 64.0f)
 		{
 			SetClientDvar(-1, "jump_height", "64");
 			SetClientDvar(-1, "jump_slowdownEnable", "0");

@@ -18,7 +18,7 @@ namespace MW2
 
 	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x82303B00;
 
-	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x82303B68;
+	float (*Dvar_GetFloat)(const char *dvarName) = (float(*)(const char*))0x82303BD0;
 
 	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x82303CC0;
 
@@ -60,7 +60,7 @@ namespace MW2
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 	{
-		SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
+		SV(clientNum, 0, Formatter::Format("v %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 	}
 
 	void iPrintLn(int clientNum, const std::string& text)

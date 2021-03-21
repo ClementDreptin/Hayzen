@@ -16,7 +16,7 @@ namespace MW2
 
 	extern bool (*Dvar_GetBool)(const char* dvarName);
 
-	extern int (*Dvar_GetInt)(const char* dvarName);
+	extern float (*Dvar_GetFloat)(const char *dvarName);
 
 	extern const char* (*Dvar_GetString)(const char* dvarName);
 

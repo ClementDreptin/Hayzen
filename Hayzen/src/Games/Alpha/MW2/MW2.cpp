@@ -120,9 +120,9 @@ namespace MW2
 	{
 		SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
-		int clientNum = (client - Utils::Read<int>(0x83577D94)) / 0x97F80;
+		int clientNum = (client - Utils::Read<int>(0x83577D98)) / 0x97F80;
 
-		if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
+		if (!strcmp(s, "matchdatadone") && Clients.find(clientNum) != Clients.end())
 			ResetGame(clientNum);
 	}
 }

@@ -50,7 +50,6 @@ namespace MW2
 		void GetAllPlayers();
 		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);  
 		void _Knockback();
-		void ToDo(); // Remove when all features are implemented
 		void MoveScroller(int position);
 		void Cleanup();
 	};

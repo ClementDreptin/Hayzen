@@ -328,8 +328,6 @@ namespace MW2
 			ToggleGodMode();
 		else if (optionName == "Spawn Care Package")
 			SpawnCP();
-		else
-			ToDo();
 	}
 
 	void Menu::OnBPressed(const std::string& optionName)
@@ -406,11 +404,6 @@ namespace MW2
 	void Menu::_Knockback()
 	{
 		Utils::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
-	}
-
-	void Menu::ToDo()
-	{
-		iPrintLn(m_ClientNum, "^1Not Implemented Yet!");
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

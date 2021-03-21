@@ -149,7 +149,8 @@ namespace MW2
 			return;
 		}
 		
-		Cbuf_AddText(m_ClientNum, Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z, (int)m_SavedAngles.x, (int)m_SavedAngles.y).c_str());
+		// setviewpos uses the position of the head instead of the origin of the character, which is why we need to add 60 on the z axis. The viewX and viewY are flipped for some reason.
+		Cbuf_AddText(m_ClientNum, Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z + 60, (int)m_SavedAngles.y, (int)m_SavedAngles.x).c_str());
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}

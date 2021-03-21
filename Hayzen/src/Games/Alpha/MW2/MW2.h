@@ -16,6 +16,7 @@ namespace MW2
 	void SetupGame(int clientNum);
 	void ResetGame(int clientNum);
 	bool Verify(int clientNum);
+	void SafeReset(); // Resets everything when the game was not reset properly
 
 	// Hooks and their stubs
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);

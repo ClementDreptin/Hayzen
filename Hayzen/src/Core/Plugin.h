@@ -16,4 +16,7 @@ namespace Plugin
 
 	DWORD MonitorTitleId(LPVOID lpThreadParameter);
 	void InitNewGame(DWORD titleId);
+
+	// Makes sure games get reset properly
+	void Cleanup();
 }

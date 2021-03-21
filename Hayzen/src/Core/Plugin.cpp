@@ -32,6 +32,8 @@ DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
 
 void Plugin::InitNewGame(DWORD titleId)
 {
+	Cleanup();
+
 	CurrentTitle = titleId;
 
 	switch (titleId)
@@ -48,4 +50,10 @@ void Plugin::InitNewGame(DWORD titleId)
 		default:
 			return;
 	}
+}
+
+void Plugin::Cleanup()
+{
+	MW2::SafeReset();
+	Alpha::MW2::SafeReset();
 }

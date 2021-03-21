@@ -99,6 +99,15 @@ namespace MW2
 		return true;
 	}
 
+	void SafeReset()
+	{
+		if (Clients.size() != 0)
+			Clients.clear();
+
+		if (HasGameBegun)
+			HasGameBegun = false;
+	}
+
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 	{
 		Scr_NotifyStub(entity, stringValue, paramCount);

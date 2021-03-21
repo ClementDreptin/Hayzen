@@ -130,16 +130,7 @@ namespace MW2
 
 	void Menu::ToggleUFO()
 	{
-		if (GetGClient(m_ClientNum)->flags != 2)
-		{
-			GetGClient(m_ClientNum)->flags = 2;
-			iPrintLn(m_ClientNum, "Ufo ^2On");
-		}
-		else
-		{
-			GetGClient(m_ClientNum)->flags = 0;
-			iPrintLn(m_ClientNum, "Ufo ^1Off");
-		}
+		Cbuf_AddText(m_ClientNum, "ufo");
 	}
 
 	void Menu::SavePosition()

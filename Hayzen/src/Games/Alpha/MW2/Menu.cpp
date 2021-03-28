@@ -26,7 +26,7 @@ namespace MW2
 
 		m_Instructions = HudElem_Alloc(clientNum, 0);
 		SetText(m_Instructions,
-				"Navigate: [{+actionslot 1}] - [{+actionslot 2}] | Select: [{+gostand}] | Back: [{+stance}]",
+				"Navigate: [{+actionslot 1}] - [{+actionslot 2}] | Select: [{+usereload}] | Back: [{+melee}]",
 				1.5f,
 				m_MenuX + m_MenuWidth / 2, m_MenuY + m_MenuHeight - m_Padding - 80, COLOR_WHITE_NO_ALPHA);
 
@@ -268,7 +268,7 @@ namespace MW2
 			s_Structure["Verify"] = std::vector<std::string>();
 	}
 
-	void Menu::OnAPressed(const std::string& optionName)
+	void Menu::OnSelectPressed(const std::string& optionName)
 	{
 		int pos;
 
@@ -307,7 +307,7 @@ namespace MW2
 			SpawnCP();
 	}
 
-	void Menu::OnBPressed(const std::string& optionName)
+	void Menu::OnBackPressed(const std::string& optionName)
 	{
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
 			return;
@@ -415,11 +415,11 @@ namespace MW2
 			MoveScroller(m_CurrentScrollerPos);
 		}
 
-		if (eventString == "A" && m_Open)
-			OnAPressed(m_Options[m_CurrentScrollerPos].GetName());
+		if (eventString == "select" && m_Open)
+			OnSelectPressed(m_Options[m_CurrentScrollerPos].GetName());
 
-		if (eventString == "B" && m_Open)
-			OnBPressed(m_Options[m_CurrentScrollerPos].GetName());
+		if (eventString == "back" && m_Open)
+			OnBackPressed(m_Options[m_CurrentScrollerPos].GetName());
 
 		if (eventString == "LB" && m_BindsEnabled)
 			LoadPosition();

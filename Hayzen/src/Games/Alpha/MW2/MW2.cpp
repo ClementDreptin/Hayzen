@@ -91,8 +91,8 @@ namespace MW2
 		Cmd_RegisterNotification(clientNum, "+actionslot 2", "dpad_down");
 		Cmd_RegisterNotification(clientNum, "+actionslot 3", "dpad_left");
 		Cmd_RegisterNotification(clientNum, "+actionslot 4", "dpad_right");
-		Cmd_RegisterNotification(clientNum, "+gostand", "A");
-		Cmd_RegisterNotification(clientNum, "+stance", "B");
+		Cmd_RegisterNotification(clientNum, "+usereload", "select");
+		Cmd_RegisterNotification(clientNum, "+melee", "back");
 		Cmd_RegisterNotification(clientNum, "+smoke", "LB");
 		Cmd_RegisterNotification(clientNum, "+frag", "RB");
 

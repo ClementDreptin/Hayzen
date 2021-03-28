@@ -43,8 +43,8 @@ namespace MW2
 		void SpawnCP();
 
 		static void CreateStructure();
-		void OnAPressed(const std::string& optionName);
-		void OnBPressed(const std::string& optionName);
+		void OnSelectPressed(const std::string& optionName);
+		void OnBackPressed(const std::string& optionName);
 		void Open();
 		void Close();
 		void GoToMenu(const std::string& menuName);

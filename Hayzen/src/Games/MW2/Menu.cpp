@@ -21,6 +21,12 @@ namespace MW2
 		m_Scroller = HudElem_Alloc(clientNum, 0);
 		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA, 0.5f);
 
+		m_Instructions = HudElem_Alloc(clientNum, 0);
+		SetText(m_Instructions,
+				"Navigate: [{+actionslot 1}] - [{+actionslot 2}] | Select: [{+gostand}] | Back: [{+stance}]",
+				1.5f,
+				m_MenuX + m_MenuWidth / 2, m_MenuY + m_MenuHeight - m_Padding - 80, COLOR_WHITE_NO_ALPHA);
+
 		CreateStructure();
 
 		GoToMenu("Cod Jumper");
@@ -349,6 +355,7 @@ namespace MW2
 		MakeAppear(m_Background, 180);
 		MakeAppear(m_Title);
 		MakeAppear(m_Scroller, 180);
+		MakeAppear(m_Instructions);
 
 		for (size_t i = 0; i < m_Options.size(); i++)
 			m_Options[i].Activate();
@@ -361,6 +368,7 @@ namespace MW2
 		MakeDisappear(m_Background);
 		MakeDisappear(m_Title);
 		MakeDisappear(m_Scroller);
+		MakeDisappear(m_Instructions);
 
 		for (size_t i = 0; i < m_Options.size(); i++)
 			m_Options[i].Deactivate();

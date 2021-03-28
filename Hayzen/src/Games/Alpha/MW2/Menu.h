@@ -25,6 +25,7 @@ namespace MW2
 		game_hudelem_s* m_Background;
 		game_hudelem_s* m_Title;
 		game_hudelem_s* m_Scroller;
+		game_hudelem_s* m_Instructions;
 
 		std::vector<Option> m_Options;
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;

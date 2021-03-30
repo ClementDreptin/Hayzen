@@ -1,6 +1,6 @@
 #pragma once
-#include "Games\MW2\HudElem.h"
 
+#include "Games\MW2\HudElem.h"
 #include "Games\MW2\Option.h"
 
 namespace MW2

@@ -1,6 +1,8 @@
 #pragma once
 
-namespace Utils
+namespace XexUtils
+{
+namespace Memory
 {
 	DWORD ResolveFunction(const std::string& moduleName, DWORD ordinal);
 
@@ -11,10 +13,6 @@ namespace Utils
 	void HookFunctionStart(DWORD* address, DWORD* saveStub, DWORD destination);
 
 	DWORD RelinkGPLR(int offset, DWORD* saveStubAddr, DWORD* orgAddr);
-
-	void XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type = XNOTIFYUI_TYPE_PREFERRED_REVIEW);
-
-	double Radians(double degrees);
 
 	template<typename T>
 	void Write(DWORD address, T data)
@@ -39,4 +37,5 @@ namespace Utils
 
 		return *(T*)address;
 	}
+}
 }

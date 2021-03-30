@@ -3,7 +3,6 @@
 
 #include "Games\Alpha\MW2\Structs.h"
 #include "Games\Alpha\MW2\Functions.h"
-#include "Utils\Utils.h"
 
 namespace Alpha
 {
@@ -44,19 +43,19 @@ namespace MW2
 
 	void Init()
 	{
-		Utils::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
+		XexUtils::Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
 		Sleep(200);
 
 		// Precache all shaders
-		Utils::Write<int>(0x82F3F280 + 0x1C, 1);
+		XexUtils::Memory::Write<int>(0x82F3F280 + 0x1C, 1);
 
 		// NOP cheat protection
-		Utils::Write<int>(0x821A9484, 0x60000000);
-		Utils::Write<int>(0x821A94FC, 0x60000000);
+		XexUtils::Memory::Write<int>(0x821A9484, 0x60000000);
+		XexUtils::Memory::Write<int>(0x821A94FC, 0x60000000);
 
-		Utils::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-		Utils::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+		XexUtils::Memory::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+		XexUtils::Memory::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 	}
 
 	void SetupGame(int clientNum)
@@ -129,7 +128,7 @@ namespace MW2
 	{
 		SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
-		int clientNum = (client - Utils::Read<int>(0x83577D98)) / 0x97F80;
+		int clientNum = (client - XexUtils::Memory::Read<int>(0x83577D98)) / 0x97F80;
 
 		if (!strcmp(s, "matchdatadone") && Clients.find(clientNum) != Clients.end())
 			ResetGame(clientNum);

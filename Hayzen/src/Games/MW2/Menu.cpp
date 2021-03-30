@@ -2,7 +2,6 @@
 #include "Games\MW2\Menu.h"
 
 #include "Games\MW2\Functions.h"
-#include "Utils\Utils.h"
 #include "Games\MW2\MW2.h"
 
 namespace MW2
@@ -38,14 +37,14 @@ namespace MW2
 		unsigned short defaultValue = 0x419A;
 		unsigned short modifiedValue = 0x4800;
 
-		if (Utils::Read<unsigned short>(branchAddress) == defaultValue)
+		if (XexUtils::Memory::Read<unsigned short>(branchAddress) == defaultValue)
 		{
-			Utils::Write<unsigned short>(branchAddress, modifiedValue);
+			XexUtils::Memory::Write<unsigned short>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Elevators ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned short>(branchAddress, defaultValue);
+			XexUtils::Memory::Write<unsigned short>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Elevators ^1Off");
 		}
 	}
@@ -77,14 +76,14 @@ namespace MW2
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
-		if (Utils::Read<unsigned int>(branchAddress) == defaultValue)
+		if (XexUtils::Memory::Read<unsigned int>(branchAddress) == defaultValue)
 		{
-			Utils::Write<unsigned int>(branchAddress, modifiedValue);
+			XexUtils::Memory::Write<unsigned int>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned int>(branchAddress, defaultValue);
+			XexUtils::Memory::Write<unsigned int>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
 		}
 	}
@@ -93,14 +92,14 @@ namespace MW2
 	{
 		DWORD address = 0x82019C48;
 
-		if (Utils::Read<float>(address) == 128.0f)
+		if (XexUtils::Memory::Read<float>(address) == 128.0f)
 		{
-			Utils::Write<float>(address, 9999.0f);
+			XexUtils::Memory::Write<float>(address, 9999.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
 		}
 		else
 		{
-			Utils::Write<float>(address, 128.0f);
+			XexUtils::Memory::Write<float>(address, 128.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^1On");
 		}
 	}
@@ -111,14 +110,14 @@ namespace MW2
 		unsigned int defaultValue = 0x7D1D4850;
 		unsigned int modifiedValue = 0x7D284B78;
 
-		if (Utils::Read<unsigned int>(address) == defaultValue)
+		if (XexUtils::Memory::Read<unsigned int>(address) == defaultValue)
 		{
-			Utils::Write<unsigned int>(address, modifiedValue);
+			XexUtils::Memory::Write<unsigned int>(address, modifiedValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned int>(address, defaultValue);
+			XexUtils::Memory::Write<unsigned int>(address, defaultValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
 		}
 	}
@@ -127,14 +126,14 @@ namespace MW2
 	{
 		DWORD address = 0x82001A34;
 
-		if (Utils::Read<float>(address) == 39.0f)
+		if (XexUtils::Memory::Read<float>(address) == 39.0f)
 		{
-			Utils::Write<float>(address, 64.0f);
+			XexUtils::Memory::Write<float>(address, 64.0f);
 			iPrintLn(m_ClientNum, "Old School ^2On");
 		}
 		else
 		{
-			Utils::Write<float>(address, 39.0f);
+			XexUtils::Memory::Write<float>(address, 39.0f);
 			iPrintLn(m_ClientNum, "Old School ^1Off");
 		}
 	}
@@ -237,8 +236,8 @@ namespace MW2
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
 		vec3 cratePos;
-		cratePos.x = origin.x + (float)(distance * cos(Utils::Radians(viewY)));
-		cratePos.y = origin.y + (float)(distance * sin(Utils::Radians(viewY)));
+		cratePos.x = origin.x + (float)(distance * cos(XexUtils::Math::Radians(viewY)));
+		cratePos.y = origin.y + (float)(distance * sin(XexUtils::Math::Radians(viewY)));
 		cratePos.z = origin.z;
 
 		gentity_s* entity = G_Spawn();
@@ -411,7 +410,7 @@ namespace MW2
 
 	void Menu::_Knockback()
 	{
-		Utils::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

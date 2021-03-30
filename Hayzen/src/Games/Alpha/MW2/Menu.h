@@ -1,6 +1,6 @@
 #pragma once
-#include "Games\Alpha\MW2\HudElem.h"
 
+#include "Games\Alpha\MW2\HudElem.h"
 #include "Games\Alpha\MW2\Option.h"
 
 namespace Alpha

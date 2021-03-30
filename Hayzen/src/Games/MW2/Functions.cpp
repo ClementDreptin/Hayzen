@@ -2,7 +2,6 @@
 #include "Games\MW2\Functions.h"
 
 #include "Games\MW2\Structs.h"
-#include "Utils\Formatter.h"
 
 namespace MW2
 {
@@ -56,12 +55,12 @@ namespace MW2
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 	{
-		SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
+		SV(clientNum, 0, XexUtils::Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 	}
 
 	void iPrintLn(int clientNum, const std::string& text)
 	{
-		SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
+		SV(clientNum, 0, XexUtils::Formatter::Format("f \"%s\"", text.c_str()).c_str());
 	}
 
 	bool IsHost(int clientNum)

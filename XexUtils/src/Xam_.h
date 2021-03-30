@@ -1,5 +1,7 @@
 #pragma once
 
+namespace XexUtils
+{
 namespace Xam
 {
 	typedef enum
@@ -79,4 +81,7 @@ namespace Xam
 	} XNOTIFYQUEUEUI_TYPE;
 
 	void XNotifyQueueUI(XNOTIFYQUEUEUI_TYPE exnq, DWORD dwUserIndex, ULONGLONG qwAreas, PWCHAR displayText, PVOID contextData);
+
+	void XNotify(const std::string& text, XNOTIFYQUEUEUI_TYPE type = Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW);
+}
 }

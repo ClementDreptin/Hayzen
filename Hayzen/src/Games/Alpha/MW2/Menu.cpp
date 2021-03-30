@@ -2,9 +2,7 @@
 #include "Games\Alpha\MW2\Menu.h"
 
 #include "Games\Alpha\MW2\Functions.h"
-#include "Utils\Utils.h"
 #include "Games\Alpha\MW2\MW2.h"
-#include "Utils\Formatter.h"
 
 namespace Alpha
 {
@@ -62,14 +60,14 @@ namespace MW2
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
-		if (Utils::Read<unsigned int>(branchAddress) == defaultValue)
+		if (XexUtils::Memory::Read<unsigned int>(branchAddress) == defaultValue)
 		{
-			Utils::Write<unsigned int>(branchAddress, modifiedValue);
+			XexUtils::Memory::Write<unsigned int>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
 		}
 		else
 		{
-			Utils::Write<unsigned int>(branchAddress, defaultValue);
+			XexUtils::Memory::Write<unsigned int>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
 		}
 	}
@@ -156,7 +154,7 @@ namespace MW2
 		}
 		
 		// setviewpos uses the position of the head instead of the origin of the character, which is why we need to add 60 on the z axis. The viewX and viewY are flipped for some reason.
-		Cbuf_AddText(m_ClientNum, Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z + 60, (int)m_SavedAngles.y, (int)m_SavedAngles.x).c_str());
+		Cbuf_AddText(m_ClientNum, XexUtils::Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z + 60, (int)m_SavedAngles.y, (int)m_SavedAngles.x).c_str());
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}
@@ -211,8 +209,8 @@ namespace MW2
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
 		vec3 cratePos;
-		cratePos.x = origin.x + (float)(distance * cos(Utils::Radians(viewY)));
-		cratePos.y = origin.y + (float)(distance * sin(Utils::Radians(viewY)));
+		cratePos.x = origin.x + (float)(distance * cos(XexUtils::Math::Radians(viewY)));
+		cratePos.y = origin.y + (float)(distance * sin(XexUtils::Math::Radians(viewY)));
 		cratePos.z = origin.z;
 
 		gentity_s* entity = G_Spawn();
@@ -382,7 +380,7 @@ namespace MW2
 
 	void Menu::_Knockback()
 	{
-		Utils::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

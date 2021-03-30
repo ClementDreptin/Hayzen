@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Games\Alpha\MW2\HudElem.h"
 
 namespace Alpha

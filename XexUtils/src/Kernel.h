@@ -1,5 +1,7 @@
 #pragma once
 
+namespace XexUtils
+{
 namespace Kernel
 {
 	extern "C"
@@ -27,4 +29,5 @@ namespace Kernel
 
 		#define __isync() __emit(0x4C00012C)
 	}
+}
 }

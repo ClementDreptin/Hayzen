@@ -27,33 +27,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}</ProjectGuid>
+    <ProjectGuid>{C598D106-4F6D-4505-95DE-AA896A0AC7FA}</ProjectGuid>
     <Keyword>Xbox360Proj</Keyword>
-    <ProjectName>Hayzen</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CodeAnalysis|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile_FastCap|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -80,58 +79,34 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">
-    <LinkIncremental>true</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='CodeAnalysis|Xbox 360'">
-    <LinkIncremental>true</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Xbox 360'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Profile_FastCap|Xbox 360'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">
-    <LinkIncremental>false</LinkIncremental>
+    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)bin-int\$(Configuration)\</IntDir>
-    <RemoteRoot>hdd:\Plugins</RemoteRoot>
-    <OutputFile>$(SolutionDir)bin\$(Configuration)\$(TargetName)$(TargetExt)</OutputFile>
-    <ImageXexOutput>$(SolutionDir)bin\$(Configuration)\$(ProjectName).xex</ImageXexOutput>
-    <PostBuildEventUseInBuild>true</PostBuildEventUseInBuild>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">
     <ClCompile>
@@ -144,26 +119,15 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_XBOX;_LIB</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
-      <AdditionalOptions>/dll /entry:"_DllMainCRTStartup" /include:"XboxKrnlBuildNumber" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
-      <Message>Will unload then load the module after it's built.</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='CodeAnalysis|Xbox 360'">
     <ClCompile>
@@ -177,25 +141,15 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PreprocessorDefinitions>_DEBUG;_XBOX</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_XBOX;_LIB</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
-      <Message>Will unload then load the module after it's built.</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile|Xbox 360'">
     <ClCompile>
@@ -210,9 +164,10 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;_LIB</PreprocessorDefinitions>
       <CallAttributedProfiling>Callcap</CallAttributedProfiling>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -220,19 +175,7 @@
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <IgnoreSpecificDefaultLibraries>xapilib.lib</IgnoreSpecificDefaultLibraries>
       <OptimizeReferences>true</OptimizeReferences>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
-      <Message>Will unload then load the module after it's built.</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Profile_FastCap|Xbox 360'">
     <ClCompile>
@@ -248,27 +191,16 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;FASTCAP</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;PROFILE;FASTCAP;_LIB</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
-      <Message>Will unload then load the module after it's built.</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">
     <ClCompile>
@@ -283,27 +215,16 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;_LIB</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>d3d9.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <PostBuildEvent>
-      <Command>"$(SolutionDir)tools\ModuleLoader\ModuleLoader" $(RemotePath)</Command>
-      <Message>Will unload then load the module after it's built.</Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">
     <ClCompile>
@@ -318,74 +239,32 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <PrecompiledHeaderOutputFile>$(OutDir)$(ProjectName).pch</PrecompiledHeaderOutputFile>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX;LTCG</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>src;$(SolutionDir)XexUtils\include</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_XBOX;LTCG;_LIB</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>src</AdditionalIncludeDirectories>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <ObjectFileName>$(IntDir)/%(RelativeDir)</ObjectFileName>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <ProgramDatabaseFile>$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
-      <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>xapilibd.lib;d3d9d.lib;d3dx9d.lib;xgraphicsd.lib;xboxkrnl.lib;xnetd.lib;xaudiod2.lib;xactd3.lib;x3daudiod.lib;xmcored.lib;xbdm.lib</AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
-      <AdditionalOptions>/dll /entry:"_DllMainCRTStartup" /include:"XboxKrnlBuildNumber" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>Hayzen.xml</ConfigurationFile>
-    </ImageXex>
-    <Deploy>
-      <DeploymentType>CopyToHardDrive</DeploymentType>
-      <ExcludedFromBuild>false</ExcludedFromBuild>
-    </Deploy>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Message>
-      </Message>
-    </PostBuildEvent>
+    <Lib>
+      <AdditionalDependencies>xapilibd.lib;d3d9d.lib;d3dx9d.lib;xgraphicsd.lib;xboxkrnl.lib;xnetd.lib;xactd3.lib;x3daudiod.lib;xmcored.lib;xbdm.lib</AdditionalDependencies>
+      <AdditionalOptions>/ignore:4006 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\Client.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\Functions.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\HudElem.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\Menu.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\MW2.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\Option.h" />
-    <ClInclude Include="src\Games\Alpha\MW2\Structs.h" />
-    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
-    <ClInclude Include="src\Games\Games.h" />
-    <ClInclude Include="src\Games\MW2\Client.h" />
-    <ClInclude Include="src\Games\MW2\Functions.h" />
-    <ClInclude Include="src\Games\MW2\Menu.h" />
-    <ClInclude Include="src\Games\MW2\Option.h" />
-    <ClInclude Include="src\Games\MW2\Structs.h" />
-    <ClInclude Include="src\Games\MW2\MW2.h" />
+    <ClInclude Include="include\XexUtils.h" />
+    <ClInclude Include="src\Math_.h" />
+    <ClInclude Include="src\Memory.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Games\MW2\HudElem.h" />
+    <ClInclude Include="src\Formatter.h" />
+    <ClInclude Include="src\Kernel.h" />
+    <ClInclude Include="src\Xam_.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\Plugin.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\Client.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\Functions.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\HudElem.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\Menu.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\MW2.cpp" />
-    <ClCompile Include="src\Games\Alpha\MW2\Option.cpp" />
-    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
-    <ClCompile Include="src\Games\MW2\Client.cpp" />
-    <ClCompile Include="src\Games\MW2\Functions.cpp" />
-    <ClCompile Include="src\Games\MW2\HudElem.cpp" />
-    <ClCompile Include="src\Games\MW2\Menu.cpp" />
-    <ClCompile Include="src\Games\MW2\MW2.cpp" />
-    <ClCompile Include="src\Games\MW2\Option.cpp" />
-    <ClCompile Include="src\Hayzen.cpp" />
+    <ClCompile Include="src\Math_.cpp" />
+    <ClCompile Include="src\Memory.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='CodeAnalysis|Xbox 360'">Create</PrecompiledHeader>
@@ -393,13 +272,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Profile_FastCap|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">Create</PrecompiledHeader>
-      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release_LTCG|Xbox 360'">pch.h</PrecompiledHeaderFile>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\XexUtils\XexUtils.vcxproj">
-      <Project>{c598d106-4f6d-4505-95de-aa896a0ac7fa}</Project>
-    </ProjectReference>
+    <ClCompile Include="src\Formatter.cpp" />
+    <ClCompile Include="src\Xam_.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

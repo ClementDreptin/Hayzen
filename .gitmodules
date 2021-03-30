@@ -1,0 +1,3 @@
+[submodule "XexUtils"]
+	path = XexUtils
+	url = ./XexUtils

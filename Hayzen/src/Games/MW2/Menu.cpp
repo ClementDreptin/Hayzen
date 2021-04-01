@@ -51,23 +51,14 @@ namespace MW2
 
 	void Menu::Knockback()
 	{
-		XOVERLAPPED Overlapped;
-		wchar_t wideBuffer[7];
-		char buffer[7];
-		ZeroMemory(&Overlapped, sizeof(Overlapped));
-		XShowKeyboardUI(0, VKBD_LATIN_NUMERIC, L"30000", L"Knockback", L"Recommended value: 30000", wideBuffer, 7, &Overlapped);
+		std::string value = XexUtils::Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
 
-		while (!XHasOverlappedIoCompleted(&Overlapped))
-			Sleep(100);
+		if (value == "")
+			value = "1000";
 
-		wcstombs(buffer, wideBuffer, 7);
+		SetClientDvar(-1, "g_knockback", value);
 
-		if (!strcmp(buffer, ""))
-			return;
-
-		SetClientDvar(-1, "g_knockback", buffer);
-
-		iPrintLn(-1, "Knockback set to ^2" + std::string(buffer));
+		iPrintLn(-1, "Knockback set to ^2" + value);
 	}
 
 	void Menu::ToggleDepatchBounces()

@@ -222,17 +222,11 @@ namespace MW2
 		}
 
 		float distance = 100.0f;
-
 		vec3 origin = GetPlayerState(m_ClientNum)->origin;
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
-		vec3 cratePos;
-		cratePos.x = origin.x + (float)(distance * cos(XexUtils::Math::Radians(viewY)));
-		cratePos.y = origin.y + (float)(distance * sin(XexUtils::Math::Radians(viewY)));
-		cratePos.z = origin.z;
-
 		gentity_s* entity = G_Spawn();
-		entity->r.currentOrigin = cratePos;
+		entity->r.currentOrigin = XexUtils::Math::ToFront(origin, viewY, distance);
 		entity->r.currentAngles.y = viewY;
 
 		G_SetModel(entity, "com_plasticcase_friendly");

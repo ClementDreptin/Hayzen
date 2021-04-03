@@ -58,7 +58,6 @@ namespace MW2
 		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);
 		static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
 		void _Knockback();
-		void _SpawnBot();
 		void MoveScroller(int position);
 		void Cleanup();
 	};

@@ -252,22 +252,8 @@ namespace MW2
 			return;
 		}
 
-		int serverId = XexUtils::Memory::Read<int>(0x8360922C);
-		std::string chooseTeamCmd = XexUtils::Formatter::Format("mr %i 3 autoassign", serverId);
-		std::string chooseClassCmd = XexUtils::Formatter::Format("mr %i 10 class0", serverId);
-
 		s_Bot = SV_AddTestClient();
-		Sleep(150);
-
-		int botPtr = XexUtils::Memory::Read<int>(0x83623B98) + s_Bot->state.number * 0x97F80;
-
-		SV_ExecuteClientCommand(botPtr, chooseTeamCmd.c_str(), 1, 0);
-		Sleep(150);
-
-		SV_ExecuteClientCommand(botPtr, chooseClassCmd.c_str(), 1, 0);
-		Sleep(150);
-
-		TeleportBotToMe();
+		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
 	}
 
 	void Menu::TeleportBotToMe()
@@ -363,7 +349,7 @@ namespace MW2
 		else if (optionName == "Spawn Care Package")
 			SpawnCP();
 		else if (optionName == "Spawn Bot")
-			_SpawnBot();
+			SpawnBot();
 		else if (optionName == "Teleport Bot To Me")
 			TeleportBotToMe();
 	}
@@ -444,18 +430,27 @@ namespace MW2
 	DWORD Menu::StaticSpawnBotThread(LPVOID lpThreadParameter)
 	{
 		Menu* This = (Menu*)lpThreadParameter;
-		This->SpawnBot();
+		int serverId = XexUtils::Memory::Read<int>(0x8360922C);
+		std::string chooseTeamCmd = XexUtils::Formatter::Format("mr %i 3 autoassign", serverId);
+		std::string chooseClassCmd = XexUtils::Formatter::Format("mr %i 10 class0", serverId);
+
+		Sleep(150);
+
+		int botPtr = XexUtils::Memory::Read<int>(0x83623B98) + s_Bot->state.number * 0x97F80;
+
+		SV_ExecuteClientCommand(botPtr, chooseTeamCmd.c_str(), 1, 0);
+		Sleep(150);
+
+		SV_ExecuteClientCommand(botPtr, chooseClassCmd.c_str(), 1, 0);
+		Sleep(150);
+
+		This->TeleportBotToMe();
 		return 0;
 	}
 
 	void Menu::_Knockback()
 	{
 		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
-	}
-
-	void Menu::_SpawnBot()
-	{
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

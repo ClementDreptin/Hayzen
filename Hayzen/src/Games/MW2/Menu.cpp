@@ -161,19 +161,23 @@ namespace MW2
 	void Menu::SavePosition()
 	{
 		m_SavedPos = GetPlayerState(m_ClientNum)->origin;
+		m_SavedAngles = GetPlayerState(m_ClientNum)->viewAngles;
 
 		iPrintLn(m_ClientNum, "Position ^2Saved");
 	}
 
 	void Menu::LoadPosition()
 	{
-		if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f))
+		if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f) || m_SavedAngles == vec3(0.0f, 0.0f, 0.0f))
 		{
 			iPrintLn(m_ClientNum, "^1Save a position first!");
 			return;
 		}
-		
-		GetPlayerState(m_ClientNum)->origin = m_SavedPos;
+
+		float origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
+		float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
+
+		TeleportPlayer(GetPlayerEntity(m_ClientNum), origin, angles);
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}

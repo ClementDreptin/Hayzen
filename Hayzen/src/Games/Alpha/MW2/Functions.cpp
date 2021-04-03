@@ -51,6 +51,8 @@ namespace MW2
 
 	void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer) = (void(*)(int, const char*, int, int))0x822B4700;
 
+	void (*TeleportPlayer)(gentity_s* player, float* origin, float* angles) = (void(*)(gentity_s*, float*, float*))0x8222E5A0;
+
 	gclient_s* GetGClient(int clientNum)
 	{
 		return (gclient_s*)(0x82F01480 + sizeof(gclient_s) * clientNum);

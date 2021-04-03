@@ -145,8 +145,10 @@ namespace MW2
 			return;
 		}
 		
-		// setviewpos uses the position of the head instead of the origin of the character, which is why we need to add 60 on the z axis. The viewX and viewY are flipped for some reason.
-		Cbuf_AddText(m_ClientNum, XexUtils::Formatter::Format("setviewpos %i %i %i %i %i", (int)m_SavedPos.x, (int)m_SavedPos.y, (int)m_SavedPos.z + 60, (int)m_SavedAngles.y, (int)m_SavedAngles.x).c_str());
+		float origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
+		float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
+
+		TeleportPlayer(GetPlayerEntity(m_ClientNum), origin, angles);
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}

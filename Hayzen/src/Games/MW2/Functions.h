@@ -46,6 +46,8 @@ namespace MW2
 
 	extern void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer);
 
+	extern void (*TeleportPlayer)(gentity_s* player, float* origin, float* angles);
+
 	extern gclient_s* GetGClient(int clientNum);
 
 	extern gentity_s* GetPlayerEntity(int clientNum);

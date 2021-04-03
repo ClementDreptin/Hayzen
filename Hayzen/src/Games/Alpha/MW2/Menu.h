@@ -14,6 +14,8 @@ namespace MW2
 		Menu(int clientNum);
 
 		void OnEvent(const std::string& eventString);
+
+		static void FreeBot();
 	private:
 		int m_ClientNum;
 		bool m_Open;
@@ -26,6 +28,8 @@ namespace MW2
 		game_hudelem_s* m_Title;
 		game_hudelem_s* m_Scroller;
 		game_hudelem_s* m_Instructions;
+
+		static gentity_s* s_Bot;
 
 		std::vector<Option> m_Options;
 		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
@@ -43,6 +47,8 @@ namespace MW2
 		void ToggleGodMode();
 		void Verify(int clientNum);
 		void SpawnCP();
+		void SpawnBot();
+		void TeleportBotToMe();
 
 		static void CreateStructure();
 		void OnSelectPressed(const std::string& optionName);
@@ -51,7 +57,8 @@ namespace MW2
 		void Close();
 		void GoToMenu(const std::string& menuName);
 		void GetAllPlayers();
-		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);  
+		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);
+		static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
 		void _Knockback();
 		void MoveScroller(int position);
 		void Cleanup();

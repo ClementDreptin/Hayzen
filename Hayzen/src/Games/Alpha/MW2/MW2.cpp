@@ -72,7 +72,10 @@ namespace MW2
 		Clients.erase(clientNum);
 
 		if (IsHost(clientNum))
+		{
+			Menu::FreeBot();
 			HasGameBegun = false;
+		}
 	}
 
 	bool Verify(int clientNum)
@@ -106,7 +109,10 @@ namespace MW2
 			Clients.clear();
 
 		if (HasGameBegun)
+		{
+			Menu::FreeBot();
 			HasGameBegun = false;
+		}
 	}
 
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)

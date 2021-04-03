@@ -37,7 +37,7 @@ namespace MW2
 
 	void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82250A20;
 
-	gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x82258508;
+	gentity_s* (*G_Spawn)() = (gentity_s*(*)())0x82258508;
 
 	void (*G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x82257B90;
 
@@ -46,6 +46,10 @@ namespace MW2
 	void (*SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x822C14B0;
 
 	void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x822B63B8;
+
+	gentity_s* (*SV_AddTestClient)() = (gentity_s*(*)())0x822B5F00;
+
+	void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer) = (void(*)(int, const char*, int, int))0x822B4700;
 
 	gclient_s* GetGClient(int clientNum)
 	{

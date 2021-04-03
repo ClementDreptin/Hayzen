@@ -9,6 +9,7 @@ namespace Alpha
 namespace MW2
 {
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
+	gentity_s* Menu::s_Bot;
 
 	Menu::Menu(int clientNum)
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
@@ -195,17 +196,11 @@ namespace MW2
 		}
 
 		float distance = 100.0f;
-
 		vec3 origin = GetPlayerState(m_ClientNum)->origin;
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
-		vec3 cratePos;
-		cratePos.x = origin.x + (float)(distance * cos(XexUtils::Math::Radians(viewY)));
-		cratePos.y = origin.y + (float)(distance * sin(XexUtils::Math::Radians(viewY)));
-		cratePos.z = origin.z;
-
 		gentity_s* entity = G_Spawn();
-		entity->r.currentOrigin = cratePos;
+		entity->r.currentOrigin = XexUtils::Math::ToFront(origin, viewY, distance);
 		entity->r.currentAngles.y = viewY;
 
 		G_SetModel(entity, "com_plasticcase_friendly");
@@ -222,6 +217,33 @@ namespace MW2
 		SV_LinkEntity(entity);
 	}
 
+	void Menu::SpawnBot()
+	{
+		if (s_Bot)
+		{
+			iPrintLn(m_ClientNum, "^1There is already a bot in the game!");
+			return;
+		}
+
+		s_Bot = SV_AddTestClient();
+		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
+	}
+
+	void Menu::TeleportBotToMe()
+	{
+		if (!s_Bot)
+		{
+			iPrintLn(m_ClientNum, "^1There is no bot in the game!");
+			return;
+		}
+
+		float distance = 100.0f;
+		vec3 origin = GetPlayerState(m_ClientNum)->origin;
+		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
+
+		s_Bot->client->ps.origin = XexUtils::Math::ToFront(origin, viewY, distance);
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
@@ -231,7 +253,7 @@ namespace MW2
 		s_Structure["Cod Jumper"].emplace_back("Admin");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(7);
+		s_Structure["Main"].reserve(8);
 		s_Structure["Main"].emplace_back("God Mode");
 		s_Structure["Main"].emplace_back("Fall Damage");
 		s_Structure["Main"].emplace_back("Ammo");
@@ -239,13 +261,15 @@ namespace MW2
 		s_Structure["Main"].emplace_back("Old School");
 		s_Structure["Main"].emplace_back("Depatch Bounces");
 		s_Structure["Main"].emplace_back("Spawn Care Package");
+		s_Structure["Main"].emplace_back("Spawn Bot");
 
 		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].reserve(4);
+		s_Structure["Teleport"].reserve(5);
 		s_Structure["Teleport"].emplace_back("Save/Load Binds");
 		s_Structure["Teleport"].emplace_back("Save Position");
 		s_Structure["Teleport"].emplace_back("Load Position");
 		s_Structure["Teleport"].emplace_back("UFO");
+		s_Structure["Teleport"].emplace_back("Teleport Bot To Me");
 
 		s_Structure["Admin"] = std::vector<std::string>();
 		s_Structure["Admin"].reserve(2);
@@ -294,6 +318,10 @@ namespace MW2
 			ToggleGodMode();
 		else if (optionName == "Spawn Care Package")
 			SpawnCP();
+		else if (optionName == "Spawn Bot")
+			SpawnBot();
+		else if (optionName == "Teleport Bot To Me")
+			TeleportBotToMe();
 	}
 
 	void Menu::OnBackPressed(const std::string& optionName)
@@ -369,9 +397,35 @@ namespace MW2
 		return 0;
 	}
 
+	DWORD Menu::StaticSpawnBotThread(LPVOID lpThreadParameter)
+	{
+		Menu* This = (Menu*)lpThreadParameter;
+		int serverId = XexUtils::Memory::Read<int>(0x8355D5C4);
+		std::string chooseTeamCmd = XexUtils::Formatter::Format("mr %i 4 autoassign", serverId);
+		std::string chooseClassCmd = XexUtils::Formatter::Format("mr %i 11 class0", serverId);
+		int botPtr = XexUtils::Memory::Read<int>(0x83577D98) + s_Bot->state.number * 0x97F80;
+
+		Sleep(150);
+		
+		SV_ExecuteClientCommand(botPtr, chooseTeamCmd.c_str(), 1, 0);
+		Sleep(150);
+		
+		SV_ExecuteClientCommand(botPtr, chooseClassCmd.c_str(), 1, 0);
+		Sleep(150);
+		
+		This->TeleportBotToMe();
+
+		return 0;
+	}
+
 	void Menu::_Knockback()
 	{
 		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+	}
+
+	void Menu::FreeBot()
+	{
+		s_Bot = nullptr;
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

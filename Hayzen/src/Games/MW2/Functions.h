@@ -42,6 +42,10 @@ namespace MW2
 
 	extern void (*SV_SetBrushModel)(gentity_s* ent);
 
+	extern gentity_s* (*SV_AddTestClient)();
+
+	extern void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer);
+
 	extern gclient_s* GetGClient(int clientNum);
 
 	extern gentity_s* GetPlayerEntity(int clientNum);

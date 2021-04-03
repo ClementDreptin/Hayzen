@@ -43,6 +43,10 @@ namespace MW2
 
 	void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x82254B50;
 
+	gentity_s* (*SV_AddTestClient)() = (gentity_s*(*)())0x82254690;
+
+	void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer) = (void(*)(int, const char*, int, int))0x82253140;
+
 	gclient_s* GetGClient(int clientNum)
 	{
 		return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);

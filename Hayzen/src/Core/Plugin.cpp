@@ -46,6 +46,9 @@ void Plugin::InitNewGame(DWORD titleId)
 			else if (!strcmp((char*)0x82001D38, "multiplayer"))
 				Alpha::MW2::Init();
 			break;
+		case MW3:
+			if (!strcmp((char*)0x82001458, "multiplayer"))
+				MW3::Init();
 		default:
 			return;
 	}

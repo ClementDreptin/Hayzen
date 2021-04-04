@@ -9,6 +9,7 @@ namespace Plugin
 	{
 		DASHBOARD = 0xFFFE07D1,
 		MW2 = 0x41560817,
+		MW3 = 0x415608CB
 	};
 
 	void Start();

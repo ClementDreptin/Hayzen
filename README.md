@@ -11,6 +11,7 @@ A mod menu:
 ## Supported games
 - Call of Duty: Modern Warfare 2 - TU9 (latest version)
 - Call of Duty: Modern Warfare 2 - Alpha 482
+- Call of Duty: Modern Warfare 3 - TU24 (latest version)
 
 ## Installation
 

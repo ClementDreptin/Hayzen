@@ -34,7 +34,7 @@ namespace MW3
 		void ToggleAmmo();
 		void ToggleOldSchool();
 		void ToggleBlastMarks();
-		void ToggleNoClip();
+		void ToggleUFO();
 		void SavePosition();
 		void LoadPosition();
 		void ToggleSaveLoadBinds();

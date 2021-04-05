@@ -125,21 +125,17 @@ namespace MW3
 		}
 	}
 
-	void Menu::ToggleNoClip()
+	void Menu::ToggleUFO()
 	{
-		DWORD address = 0x820EA214;
-		unsigned int defaultValue = 0x2B0B0008;
-		unsigned int modifiedValue = 0x39600002;
-
-		if (XexUtils::Memory::Read<unsigned int>(address) == defaultValue)
+		if (GetGClient(m_ClientNum)->mFlags != 2)
 		{
-			XexUtils::Memory::Write<unsigned int>(address, modifiedValue);
-			iPrintLn(m_ClientNum, "No Clip ^2On");
+			GetGClient(m_ClientNum)->mFlags = 2;
+			iPrintLn(m_ClientNum, "Ufo ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(address, defaultValue);
-			iPrintLn(m_ClientNum, "No Clip ^1Off");
+			GetGClient(m_ClientNum)->mFlags = 0;
+			iPrintLn(m_ClientNum, "Ufo ^1Off");
 		}
 	}
 
@@ -256,7 +252,7 @@ namespace MW3
 		s_Structure["Teleport"].emplace_back("Save/Load Binds");
 		s_Structure["Teleport"].emplace_back("Save Position");
 		s_Structure["Teleport"].emplace_back("Load Position");
-		s_Structure["Teleport"].emplace_back("No Clip");
+		s_Structure["Teleport"].emplace_back("UFO");
 
 		s_Structure["Admin"] = std::vector<std::string>();
 		s_Structure["Admin"].reserve(2);
@@ -293,8 +289,8 @@ namespace MW3
 			ToggleOldSchool();
 		else if (optionName == "Blast Marks")
 			ToggleBlastMarks();
-		else if (optionName == "No Clip")
-			ToggleNoClip();
+		else if (optionName == "UFO")
+			ToggleUFO();
 		else if (optionName == "Save Position")
 			SavePosition();
 		else if (optionName == "Load Position")

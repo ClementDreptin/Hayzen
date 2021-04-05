@@ -847,8 +847,9 @@ namespace MW3
 	struct gclient_s {
 		playerState_s ps; // 0x0
 		clientSession_s sess; // 0x3300
-		int mFlags; // 0x35F8
-		int spectatorClient; // 0x35FC
+		int spectatorClient; // 0x35F8
+		char unknown1[3]; // 0x35FC
+		byte mFlags; // 0x35FF
 		int lastCmdTime; // 0x3600
 		int buttons; // 0x3604
 		int oldButtons; // 0x3608
@@ -870,7 +871,7 @@ namespace MW3
 		int switchTeamTime; // 0x3658
 		float currentAimSpreadScale; // 0x365C
 		float prevLinkedInvQuat[4]; // 0x3660
-		char unknown[0x310]; // 0x3670
+		char unknown2[0x310]; // 0x3670
 	};
 	
 	struct turretInfo_s {

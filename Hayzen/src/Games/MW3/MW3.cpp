@@ -126,9 +126,9 @@ namespace MW3
 	{
 		SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
-		int clientNum = (client - XexUtils::Memory::Read<int>(0x83623B98)) / 0x97F80;
+		int clientNum = (client - XexUtils::Memory::Read<int>(0x836C6310)) / 0x68B80;
 
-		if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
+		if (!strcmp(s, "matchdatadone") && Clients.find(clientNum) != Clients.end())
 			ResetGame(clientNum);
 	}
 }

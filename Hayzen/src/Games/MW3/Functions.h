@@ -46,7 +46,7 @@ namespace MW3
 
 	extern gclient_s* GetGClient(int clientNum);
 
-	extern gentity_s* GetPlayerEntity(int clientNum);
+	extern gentity_s* GetEntity(int entNum);
 
 	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
 
@@ -54,5 +54,5 @@ namespace MW3
 
 	extern bool IsHost(int clientNum);
 
-	extern gentity_s* GetCurrentMapEntity();
+	extern gentity_s* GetCurrentMapBrushModel();
 }

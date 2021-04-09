@@ -626,14 +626,9 @@ namespace MW2
 		int otherEntityNum; // 0x7C
 		int attackerEntityNum; // 0x80
 		int groundEntityNum; // 0x84
-		union {
-			int brushmodel;
-			int item;
-			int xmodel;
-			int primaryLight;
-		} index; // 0x88
-		int loopSound; // 0x8C
-		int surfType; // 0x90
+		int loopSound; // 0x88
+		int surfType; // 0x8C
+		int index; // 0x90
 		int clientNum; // 0x94
 		int headIconTeam; // 0x98
 		int headIcon; // 0x9C
@@ -988,8 +983,8 @@ namespace MW2
 		char padding3[2]; // 0x170
 		short classname; // 0x172
 		short code_classname; // 0x174
-		short target; // 0x178
-		short targetname; // 0x17A
+		short target; // 0x176
+		short targetname; // 0x178
 		int attachIgnoreCollision; // 0x17C
 		int spawnFlags; // 0x180
 		int flags; // 0x184

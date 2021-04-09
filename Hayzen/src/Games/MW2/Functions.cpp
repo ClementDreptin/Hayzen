@@ -54,9 +54,9 @@ namespace MW2
 		return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
 	}
 
-	gentity_s* GetPlayerEntity(int clientNum)
+	gentity_s* GetEntity(int entNum)
 	{
-		return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * clientNum);
+		return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * entNum);
 	}
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -74,7 +74,7 @@ namespace MW2
 		return Session_IsHost(0x83AC3DB0, clientNum);
 	}
 
-	gentity_s* GetCurrentMapEntity()
+	gentity_s* GetCurrentMapBrushModel()
 	{
 		std::string mapName = Dvar_GetString("ui_mapname");
 

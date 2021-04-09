@@ -177,7 +177,7 @@ namespace MW2
 		float origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
 		float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
 
-		TeleportPlayer(GetPlayerEntity(m_ClientNum), origin, angles);
+		TeleportPlayer(GetEntity(m_ClientNum), origin, angles);
 		
 		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}
@@ -197,14 +197,14 @@ namespace MW2
 		int GOD_MODE_ON = 4097;
 		int GOD_MODE_OFF = 4096;
 
-		if (GetPlayerEntity(m_ClientNum)->flags == GOD_MODE_OFF)
+		if (GetEntity(m_ClientNum)->flags == GOD_MODE_OFF)
 		{
-			GetPlayerEntity(m_ClientNum)->flags = GOD_MODE_ON;
+			GetEntity(m_ClientNum)->flags = GOD_MODE_ON;
 			iPrintLn(m_ClientNum, "God Mode ^2On");
 		}
 		else
 		{
-			GetPlayerEntity(m_ClientNum)->flags = GOD_MODE_OFF;
+			GetEntity(m_ClientNum)->flags = GOD_MODE_OFF;
 			iPrintLn(m_ClientNum, "God Mode ^1Off");
 		}
 	}
@@ -219,7 +219,7 @@ namespace MW2
 
 	void Menu::SpawnCP()
 	{
-		gentity_s* currentMapEntity = GetCurrentMapEntity();
+		gentity_s* currentMapEntity = GetCurrentMapBrushModel();
 		if (!currentMapEntity)
 		{
 			iPrintLn(m_ClientNum, "^1You cannot spawn a Care Package on this map!");

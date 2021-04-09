@@ -58,9 +58,9 @@ namespace MW2
 		return (gclient_s*)(0x82F01480 + sizeof(gclient_s) * clientNum);
 	}
 
-	gentity_s* GetPlayerEntity(int clientNum)
+	gentity_s* GetEntity(int entNum)
 	{
-		return (gentity_s*)(0x82D47D80 + sizeof(gentity_s) * clientNum);
+		return (gentity_s*)(0x82D47D80 + sizeof(gentity_s) * entNum);
 	}
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -78,43 +78,41 @@ namespace MW2
 		return Session_IsHost(0x83A06F28, clientNum);
 	}
 
-	gentity_s* GetCurrentMapEntity()
+	gentity_s* GetCurrentMapBrushModel()
 	{
 		std::string mapName = Dvar_GetString("ui_mapname");
 
-		/*if (mapName == "mp_afghan")
-			return (gentity_s*)0x82F7E800;
-		if (mapName == "mp_derail")
-			return (gentity_s*)0x82F5F680;
-		if (mapName == "mp_estate")
-			return (gentity_s*)0x82F4AF00;
-		if (mapName == "mp_favela")
-			return (gentity_s*)0x82F70C00;
-		if (mapName == "mp_highrise")
-			return (gentity_s*)0x82F76380;
-		if (mapName == "mp_invasion")
-			return (gentity_s*)0x82F73180;
+		if (mapName == "mp_afghan")
+			return (gentity_s*)0x82D60880;
 		if (mapName == "mp_checkpoint")
-			return (gentity_s*)0x82F6D280;
+			return (gentity_s*)0x82D76B80;
+		if (mapName == "mp_derail")
+			return (gentity_s*)0x82D95800;
+		if (mapName == "mp_estate")
+			return (gentity_s*)0x82D5B600;
+		if (mapName == "mp_favela")
+			return (gentity_s*)0x82D9A300;
+		if (mapName == "mp_highrise")
+			return (gentity_s*)0x82DC4380;
+		if (mapName == "mp_invasion")
+			return (gentity_s*)0x82D7E100;
 		if (mapName == "mp_quarry")
-			return (gentity_s*)0x82F99600;
+			return (gentity_s*)0x82D70F00;
 		if (mapName == "mp_rundown")
-			return (gentity_s*)0x82F65800;
+			return (gentity_s*)0x82D93780;
 		if (mapName == "mp_rust")
-			return (gentity_s*)0x82F3C900;
+			return (gentity_s*)0x82D5A980;
 		if (mapName == "mp_boneyard")
-			return (gentity_s*)0x82F0B300;
+			return (gentity_s*)0x82D64E80;
 		if (mapName == "mp_nightshift")
-			return (gentity_s*)0x82F3A880;
+			return (gentity_s*)0x82D58180;
 		if (mapName == "mp_subbase")
-			return (gentity_s*)0x82F59780;
+			return (gentity_s*)0x82D7CF80;
 		if (mapName == "mp_terminal")
-			return (gentity_s*)0x82F0DD80;
+			return (gentity_s*)0x82D61A00;
 		if (mapName == "mp_underpass")
-			return (gentity_s*)0x82F66C00;
-		if (mapName == "mp_brecourt")
-			return (gentity_s*)0x82F15580;
-		else*/
+			return (gentity_s*)0x82D52000;
+		else
 			return nullptr;
 	}
 }

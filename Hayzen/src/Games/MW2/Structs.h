@@ -624,12 +624,7 @@ namespace MW2
 		int otherEntityNum; // 0x7C
 		int attackerEntityNum; // 0x80
 		int groundEntityNum; // 0x84
-		union {
-			int brushmodel;
-			int item;
-			int xmodel;
-			int primaryLight;
-		} index; // 0x88
+		int index; // 0x88
 		int loopSound; // 0x8C
 		int surfType; // 0x90
 		int clientNum; // 0x94
@@ -658,7 +653,7 @@ namespace MW2
 		int partBits[6]; // 0xE4
 	};
 	
-	struct enitityShared_t {
+	struct entityShared_t {
 		int clientMask; // 0x0
 		bool linked; // 0x4
 		char bmodel; // 0x5
@@ -958,7 +953,7 @@ namespace MW2
 	
 	struct gentity_s {
 		entityState_s state; // 0x0
-		enitityShared_t r; // 0xFC
+		entityShared_t r; // 0xFC
 		gclient_s* client; // 0x158
 		char padding[4]; // 0x15C
 		scr_vehicle_s* vehicle; // 0x160
@@ -973,8 +968,8 @@ namespace MW2
 		char padding3[2]; // 0x170
 		short classname; // 0x172
 		short code_classname; // 0x174
-		short target; // 0x178
-		short targetname; // 0x17A
+		short target; // 0x176
+		short targetname; // 0x178
 		int attachIgnoreCollision; // 0x17C
 		int spawnFlags; // 0x180
 		int flags; // 0x184

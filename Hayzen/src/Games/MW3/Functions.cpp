@@ -50,9 +50,9 @@ namespace MW3
 		return (gclient_s*)(0x82F99580 + sizeof(gclient_s) * clientNum);
 	}
 
-	gentity_s* GetPlayerEntity(int clientNum)
+	gentity_s* GetEntity(int entNum)
 	{
-		return (gentity_s*)(0x82DCCC80 + sizeof(gentity_s) * clientNum);
+		return (gentity_s*)(0x82DCCC80 + sizeof(gentity_s) * entNum);
 	}
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
@@ -70,43 +70,21 @@ namespace MW3
 		return Session_IsHost(0x83BC0148, clientNum);
 	}
 
-	gentity_s* GetCurrentMapEntity()
+	gentity_s* GetCurrentMapBrushModel()
 	{
 		std::string mapName = Dvar_GetString("ui_mapname");
 
-		/*if (mapName == "mp_afghan")
-			return (gentity_s*)0x82F7E800;
-		if (mapName == "mp_derail")
-			return (gentity_s*)0x82F5F680;
-		if (mapName == "mp_estate")
-			return (gentity_s*)0x82F4AF00;
-		if (mapName == "mp_favela")
-			return (gentity_s*)0x82F70C00;
-		if (mapName == "mp_highrise")
-			return (gentity_s*)0x82F76380;
-		if (mapName == "mp_invasion")
-			return (gentity_s*)0x82F73180;
-		if (mapName == "mp_checkpoint")
-			return (gentity_s*)0x82F6D280;
-		if (mapName == "mp_quarry")
-			return (gentity_s*)0x82F99600;
-		if (mapName == "mp_rundown")
-			return (gentity_s*)0x82F65800;
-		if (mapName == "mp_rust")
-			return (gentity_s*)0x82F3C900;
-		if (mapName == "mp_boneyard")
-			return (gentity_s*)0x82F0B300;
-		if (mapName == "mp_nightshift")
-			return (gentity_s*)0x82F3A880;
-		if (mapName == "mp_subbase")
-			return (gentity_s*)0x82F59780;
-		if (mapName == "mp_terminal")
-			return (gentity_s*)0x82F0DD80;
-		if (mapName == "mp_underpass")
-			return (gentity_s*)0x82F66C00;
-		if (mapName == "mp_brecourt")
-			return (gentity_s*)0x82F15580;
-		else*/
-			return nullptr;
+		if (mapName == "mp_seatown")
+			return (gentity_s*)0x82DD1280;
+		if (mapName == "mp_mogadishu")
+			return (gentity_s*)0x82E08A00;
+		if (mapName == "mp_exchange")
+			return (gentity_s*)0x82E14580;
+		if (mapName == "mp_radar")
+			return (gentity_s*)0x82DD3A80;
+		if (mapName == "mp_terminal_cls")
+			return (gentity_s*)0x82DF9C80;
+		else
+			return (gentity_s*)0x82DD1500;
 	}
 }

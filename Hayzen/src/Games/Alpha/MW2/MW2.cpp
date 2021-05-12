@@ -124,7 +124,14 @@ namespace MW2
 		const char* notify = SL_ConvertToString(stringValue);
 
 		if (!strcmp(notify, "begin"))
+		{
+			// "begin" can happen multiple times a game in round-based gamemodes so we need to reset the menu
+			// and recreate it at the beggining of each round if we want the menu to work after the first round
+			if (HasGameBegun)
+				ResetGame(clientNum);
+
 			SetupGame(clientNum);
+		}
 
 		if (HasGameBegun && Clients.find(clientNum) != Clients.end())
 			Clients[clientNum].GetMenu().OnEvent(notify);

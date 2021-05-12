@@ -12,7 +12,7 @@ namespace MW2
 	// Functions
 	void Init();
 	void SetupGame(int clientNum);
-	void ResetGame(int clientNum);
+	void ResetGame(int clientNum, bool resetBot = true);
 	bool Verify(int clientNum);
 	void SafeReset(); // Resets everything when the game was not reset properly
 

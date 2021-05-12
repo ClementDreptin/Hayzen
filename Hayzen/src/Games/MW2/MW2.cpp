@@ -65,13 +65,15 @@ namespace MW2
 		}
 	}
 
-	void ResetGame(int clientNum)
+	void ResetGame(int clientNum, bool resetBot)
 	{
 		Clients.erase(clientNum);
 
 		if (IsHost(clientNum))
 		{
-			Menu::FreeBot();
+			if (resetBot)
+				Menu::FreeBot();
+
 			HasGameBegun = false;
 		}
 	}
@@ -126,7 +128,7 @@ namespace MW2
 			// "begin" can happen multiple times a game in round-based gamemodes so we need to reset the menu
 			// and recreate it at the beggining of each round if we want the menu to work after the first round
 			if (HasGameBegun)
-				ResetGame(clientNum);
+				ResetGame(clientNum, false);
 
 			SetupGame(clientNum);
 		}

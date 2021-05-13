@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "Games\Dashboard\Dashboard.h"
 
+using namespace XexUtils;
+
 namespace Dashboard
 {
 	void Init()
 	{
-		XexUtils::Xam::XNotify("Hayzen - Dashboard Detected");
+		Xam::XNotify("Hayzen - Dashboard Detected");
 	}
 }

@@ -4,6 +4,8 @@
 #include "Games\MW2\Functions.h"
 #include "Games\MW2\MW2.h"
 
+using namespace XexUtils;
+
 namespace MW2
 {
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
@@ -38,21 +40,21 @@ namespace MW2
 		unsigned short defaultValue = 0x419A;
 		unsigned short modifiedValue = 0x4800;
 
-		if (XexUtils::Memory::Read<unsigned short>(branchAddress) == defaultValue)
+		if (Memory::Read<unsigned short>(branchAddress) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned short>(branchAddress, modifiedValue);
+			Memory::Write<unsigned short>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Elevators ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned short>(branchAddress, defaultValue);
+			Memory::Write<unsigned short>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Elevators ^1Off");
 		}
 	}
 
 	void Menu::Knockback()
 	{
-		std::string value = XexUtils::Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
+		std::string value = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
 
 		if (value == "")
 			value = "1000";
@@ -68,14 +70,14 @@ namespace MW2
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
-		if (XexUtils::Memory::Read<unsigned int>(branchAddress) == defaultValue)
+		if (Memory::Read<unsigned int>(branchAddress) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, modifiedValue);
+			Memory::Write<unsigned int>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, defaultValue);
+			Memory::Write<unsigned int>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
 		}
 	}
@@ -84,14 +86,14 @@ namespace MW2
 	{
 		DWORD address = 0x82019C48;
 
-		if (XexUtils::Memory::Read<float>(address) == 128.0f)
+		if (Memory::Read<float>(address) == 128.0f)
 		{
-			XexUtils::Memory::Write<float>(address, 9999.0f);
+			Memory::Write<float>(address, 9999.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
 		}
 		else
 		{
-			XexUtils::Memory::Write<float>(address, 128.0f);
+			Memory::Write<float>(address, 128.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^1On");
 		}
 	}
@@ -102,14 +104,14 @@ namespace MW2
 		unsigned int defaultValue = 0x7D1D4850;
 		unsigned int modifiedValue = 0x7D284B78;
 
-		if (XexUtils::Memory::Read<unsigned int>(address) == defaultValue)
+		if (Memory::Read<unsigned int>(address) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned int>(address, modifiedValue);
+			Memory::Write<unsigned int>(address, modifiedValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(address, defaultValue);
+			Memory::Write<unsigned int>(address, defaultValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
 		}
 	}
@@ -118,14 +120,14 @@ namespace MW2
 	{
 		DWORD address = 0x82001A34;
 
-		if (XexUtils::Memory::Read<float>(address) == 39.0f)
+		if (Memory::Read<float>(address) == 39.0f)
 		{
-			XexUtils::Memory::Write<float>(address, 64.0f);
+			Memory::Write<float>(address, 64.0f);
 			iPrintLn(m_ClientNum, "Old School ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<float>(address, 39.0f);
+			Memory::Write<float>(address, 39.0f);
 			iPrintLn(m_ClientNum, "Old School ^1Off");
 		}
 	}
@@ -231,7 +233,7 @@ namespace MW2
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
 		gentity_s* entity = G_Spawn();
-		entity->r.currentOrigin = XexUtils::Math::ToFront(origin, viewY, distance);
+		entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
 		entity->r.currentAngles.y = viewY;
 
 		G_SetModel(entity, "com_plasticcase_friendly");
@@ -257,7 +259,7 @@ namespace MW2
 		}
 
 		s_Bot = SV_AddTestClient();
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
+		Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
 	}
 
 	void Menu::TeleportBotToMe()
@@ -272,7 +274,7 @@ namespace MW2
 		vec3 origin = GetPlayerState(m_ClientNum)->origin;
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
-		s_Bot->client->ps.origin = XexUtils::Math::ToFront(origin, viewY, distance);
+		s_Bot->client->ps.origin = Math::ToFront(origin, viewY, distance);
 	}
 
 	void Menu::CreateStructure()
@@ -434,13 +436,13 @@ namespace MW2
 	DWORD Menu::StaticSpawnBotThread(LPVOID lpThreadParameter)
 	{
 		Menu* This = (Menu*)lpThreadParameter;
-		int serverId = XexUtils::Memory::Read<int>(0x8360922C);
-		std::string chooseTeamCmd = XexUtils::Formatter::Format("mr %i 3 autoassign", serverId);
-		std::string chooseClassCmd = XexUtils::Formatter::Format("mr %i 10 class0", serverId);
+		int serverId = Memory::Read<int>(0x8360922C);
+		std::string chooseTeamCmd = Formatter::Format("mr %i 3 autoassign", serverId);
+		std::string chooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
 
 		Sleep(150);
 
-		int botPtr = XexUtils::Memory::Read<int>(0x83623B98) + s_Bot->state.number * 0x97F80;
+		int botPtr = Memory::Read<int>(0x83623B98) + s_Bot->state.number * 0x97F80;
 
 		SV_ExecuteClientCommand(botPtr, chooseTeamCmd.c_str(), 1, 0);
 		Sleep(150);
@@ -454,7 +456,7 @@ namespace MW2
 
 	void Menu::_Knockback()
 	{
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+		Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

@@ -3,6 +3,8 @@
 
 #include "Games\MW3\Structs.h"
 
+using namespace XexUtils;
+
 namespace MW3
 {
 	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82288FF0;
@@ -57,12 +59,12 @@ namespace MW3
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 	{
-		SV(clientNum, 0, XexUtils::Formatter::Format("q %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
+		SV(clientNum, 0, Formatter::Format("q %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 	}
 
 	void iPrintLn(int clientNum, const std::string& text)
 	{
-		SV(clientNum, 0, XexUtils::Formatter::Format("f \"%s\"", text.c_str()).c_str());
+		SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
 	}
 
 	bool IsHost(int clientNum)

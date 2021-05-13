@@ -3,6 +3,8 @@
 
 #include "Games\Alpha\MW2\Structs.h"
 
+using namespace XexUtils;
+
 namespace Alpha
 {
 namespace MW2
@@ -65,12 +67,12 @@ namespace MW2
 
 	void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
 	{
-		SV(clientNum, 0, XexUtils::Formatter::Format("v %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
+		SV(clientNum, 0, Formatter::Format("v %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 	}
 
 	void iPrintLn(int clientNum, const std::string& text)
 	{
-		SV(clientNum, 0, XexUtils::Formatter::Format("f \"%s\"", text.c_str()).c_str());
+		SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
 	}
 
 	bool IsHost(int clientNum)

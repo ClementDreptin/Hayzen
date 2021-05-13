@@ -4,6 +4,8 @@
 #include "Games\MW2\Structs.h"
 #include "Games\MW2\Functions.h"
 
+using namespace XexUtils;
+
 namespace MW2
 {
 	bool HasGameBegun = false;
@@ -41,19 +43,19 @@ namespace MW2
 
 	void Init()
 	{
-		XexUtils::Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
+		Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
 
 		Sleep(200);
 
 		// Precache all shaders
-		XexUtils::Memory::Write<int>(0x83109D80 + 0x1C, 1);
+		Memory::Write<int>(0x83109D80 + 0x1C, 1);
 
 		// NOP cheat protection
-		XexUtils::Memory::Write<int>(0x8216906C, 0x60000000);
-		XexUtils::Memory::Write<int>(0x821690E4, 0x60000000);
+		Memory::Write<int>(0x8216906C, 0x60000000);
+		Memory::Write<int>(0x821690E4, 0x60000000);
 
-		XexUtils::Memory::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-		XexUtils::Memory::HookFunctionStart((DWORD*)0x82253140, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+		Memory::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+		Memory::HookFunctionStart((DWORD*)0x82253140, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 	}
 
 	void SetupGame(int clientNum)
@@ -141,7 +143,7 @@ namespace MW2
 	{
 		SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
-		int clientNum = (client - XexUtils::Memory::Read<int>(0x83623B98)) / 0x97F80;
+		int clientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
 
 		if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
 			ResetGame(clientNum);

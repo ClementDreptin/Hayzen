@@ -4,6 +4,8 @@
 #include "Games\Alpha\MW2\Functions.h"
 #include "Games\Alpha\MW2\MW2.h"
 
+using namespace XexUtils;
+
 namespace Alpha
 {
 namespace MW2
@@ -36,7 +38,7 @@ namespace MW2
 
 	void Menu::Knockback()
 	{
-		std::string value = XexUtils::Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
+		std::string value = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
 
 		if (value == "")
 			value = "1000";
@@ -52,14 +54,14 @@ namespace MW2
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
-		if (XexUtils::Memory::Read<unsigned int>(branchAddress) == defaultValue)
+		if (Memory::Read<unsigned int>(branchAddress) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, modifiedValue);
+			Memory::Write<unsigned int>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, defaultValue);
+			Memory::Write<unsigned int>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
 		}
 	}
@@ -202,7 +204,7 @@ namespace MW2
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
 		gentity_s* entity = G_Spawn();
-		entity->r.currentOrigin = XexUtils::Math::ToFront(origin, viewY, distance);
+		entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
 		entity->r.currentAngles.y = viewY;
 
 		G_SetModel(entity, "com_plasticcase_friendly");
@@ -228,7 +230,7 @@ namespace MW2
 		}
 
 		s_Bot = SV_AddTestClient();
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
+		Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
 	}
 
 	void Menu::TeleportBotToMe()
@@ -243,7 +245,7 @@ namespace MW2
 		vec3 origin = GetPlayerState(m_ClientNum)->origin;
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
-		s_Bot->client->ps.origin = XexUtils::Math::ToFront(origin, viewY, distance);
+		s_Bot->client->ps.origin = Math::ToFront(origin, viewY, distance);
 	}
 
 	void Menu::CreateStructure()
@@ -402,10 +404,10 @@ namespace MW2
 	DWORD Menu::StaticSpawnBotThread(LPVOID lpThreadParameter)
 	{
 		Menu* This = (Menu*)lpThreadParameter;
-		int serverId = XexUtils::Memory::Read<int>(0x8355D5C4);
-		std::string chooseTeamCmd = XexUtils::Formatter::Format("mr %i 4 autoassign", serverId);
-		std::string chooseClassCmd = XexUtils::Formatter::Format("mr %i 11 class0", serverId);
-		int botPtr = XexUtils::Memory::Read<int>(0x83577D98) + s_Bot->state.number * 0x97F80;
+		int serverId = Memory::Read<int>(0x8355D5C4);
+		std::string chooseTeamCmd = Formatter::Format("mr %i 4 autoassign", serverId);
+		std::string chooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
+		int botPtr = Memory::Read<int>(0x83577D98) + s_Bot->state.number * 0x97F80;
 
 		Sleep(150);
 		
@@ -422,7 +424,7 @@ namespace MW2
 
 	void Menu::_Knockback()
 	{
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+		Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::FreeBot()

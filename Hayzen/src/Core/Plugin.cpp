@@ -3,13 +3,15 @@
 
 #include "Games\Games.h"
 
+using namespace XexUtils;
+
 bool Plugin::Running = false;
 DWORD Plugin::CurrentTitle = 0;
 
 void Plugin::Start()
 {
 	Running = true;
-	XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
+	Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
 }
 
 void Plugin::Stop()
@@ -21,7 +23,7 @@ DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
 {
 	while (Running)
 	{
-		DWORD newTitle = XexUtils::Kernel::XamGetCurrentTitleId();
+		DWORD newTitle = Kernel::XamGetCurrentTitleId();
 		if (newTitle != CurrentTitle)
 			InitNewGame(newTitle);
 	}

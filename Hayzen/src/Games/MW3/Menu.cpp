@@ -4,6 +4,8 @@
 #include "Games\MW3\Functions.h"
 #include "Games\MW3\MW3.h"
 
+using namespace XexUtils;
+
 namespace MW3
 {
 	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
@@ -33,7 +35,7 @@ namespace MW3
 
 	void Menu::Knockback()
 	{
-		std::string value = XexUtils::Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
+		std::string value = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
 
 		if (value == "")
 			value = "1000";
@@ -49,14 +51,14 @@ namespace MW3
 		unsigned int defaultValue = 0x409AFFB0;
 		unsigned int modifiedValue = 0x6060FFB0;
 
-		if (XexUtils::Memory::Read<unsigned int>(branchAddress) == defaultValue)
+		if (Memory::Read<unsigned int>(branchAddress) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, modifiedValue);
+			Memory::Write<unsigned int>(branchAddress, modifiedValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(branchAddress, defaultValue);
+			Memory::Write<unsigned int>(branchAddress, defaultValue);
 			iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
 		}
 	}
@@ -65,14 +67,14 @@ namespace MW3
 	{
 		DWORD address = 0x82000C04;
 
-		if (XexUtils::Memory::Read<float>(address) == 128.0f)
+		if (Memory::Read<float>(address) == 128.0f)
 		{
-			XexUtils::Memory::Write<float>(address, 9999.0f);
+			Memory::Write<float>(address, 9999.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
 		}
 		else
 		{
-			XexUtils::Memory::Write<float>(address, 128.0f);
+			Memory::Write<float>(address, 128.0f);
 			iPrintLn(m_ClientNum, "Fall Damage ^1On");
 		}
 	}
@@ -83,14 +85,14 @@ namespace MW3
 		unsigned int defaultValue = 0x7D3D5050;
 		unsigned int modifiedValue = 0x7D495378;
 
-		if (XexUtils::Memory::Read<unsigned int>(address) == defaultValue)
+		if (Memory::Read<unsigned int>(address) == defaultValue)
 		{
-			XexUtils::Memory::Write<unsigned int>(address, modifiedValue);
+			Memory::Write<unsigned int>(address, modifiedValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<unsigned int>(address, defaultValue);
+			Memory::Write<unsigned int>(address, defaultValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
 		}
 	}
@@ -99,14 +101,14 @@ namespace MW3
 	{
 		DWORD address = 0x82001D6C;
 
-		if (XexUtils::Memory::Read<float>(address) == 39.0f)
+		if (Memory::Read<float>(address) == 39.0f)
 		{
-			XexUtils::Memory::Write<float>(address, 64.0f);
+			Memory::Write<float>(address, 64.0f);
 			iPrintLn(m_ClientNum, "Old School ^2On");
 		}
 		else
 		{
-			XexUtils::Memory::Write<float>(address, 39.0f);
+			Memory::Write<float>(address, 39.0f);
 			iPrintLn(m_ClientNum, "Old School ^1Off");
 		}
 	}
@@ -212,7 +214,7 @@ namespace MW3
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
 		gentity_s* entity = G_Spawn();
-		entity->r.currentOrigin = XexUtils::Math::ToFront(origin, viewY, distance);
+		entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
 		entity->r.currentAngles.y = viewY;
 
 		G_SetModel(entity, "com_plasticcase_friendly");
@@ -378,7 +380,7 @@ namespace MW3
 
 	void Menu::_Knockback()
 	{
-		XexUtils::Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
+		Memory::Thread((LPTHREAD_START_ROUTINE)StaticKnockbackThread, (void*)this);
 	}
 
 	void Menu::OnEvent(const std::string& eventString)

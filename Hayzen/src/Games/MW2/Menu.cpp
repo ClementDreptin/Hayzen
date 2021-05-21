@@ -226,7 +226,7 @@ namespace MW2
 			return;
 		}
 
-		float distance = 100.0f;
+		float distance = 150.0f;
 		vec3 origin = GetPlayerState(m_ClientNum)->origin;
 		float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 

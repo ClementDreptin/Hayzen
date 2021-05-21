@@ -161,8 +161,6 @@ namespace MW3
 		float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
 
 		TeleportPlayer(GetEntity(m_ClientNum), origin, angles);
-		
-		iPrintLn(m_ClientNum, "Position ^2Loaded");
 	}
 
 	void Menu::ToggleSaveLoadBinds()

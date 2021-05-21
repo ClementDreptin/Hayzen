@@ -192,8 +192,8 @@ namespace MW2
 
 	void Menu::SpawnCP()
 	{
-		gentity_s* currentMapEntity = GetCurrentMapBrushModel();
-		if (!currentMapEntity)
+		gentity_s* currentMapBrushModel = GetCurrentMapBrushModel();
+		if (!currentMapBrushModel)
 		{
 			iPrintLn(m_ClientNum, "^1You cannot spawn a Care Package on this map!");
 			return;
@@ -211,7 +211,7 @@ namespace MW2
 		SP_script_model(entity);
 		SV_UnlinkEntity(entity);
 		entity->r.bmodel = 4;
-		entity->state.index = currentMapEntity->state.index;
+		entity->state.index = currentMapBrushModel->state.index;
 		
 		int contents = entity->r.contents;
 		SV_SetBrushModel(entity);

@@ -12,6 +12,12 @@ namespace MW2
 		SetText(m_HudElem, name.c_str(), 2, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding * 2 + m_TitleHeight + m_LineHeight * index, active ? COLOR_WHITE : COLOR_WHITE_NO_ALPHA);
 	}
 
+	void Option::SetName(const std::string& name)
+	{
+		m_Name = name;
+		SetText(m_HudElem, m_Name.c_str(), m_HudElem->elem.fontScale, (int)m_HudElem->elem.x, (int)m_HudElem->elem.y);
+	}
+
 	void Option::FreeHudElem()
 	{
 		HudElem_Free(m_HudElem);

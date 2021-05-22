@@ -49,6 +49,7 @@ namespace MW2
 		void SpawnCP();
 		void SpawnBot();
 		void TeleportBotToMe();
+		void ToggleBotMovement();
 
 		static void CreateStructure();
 		void OnSelectPressed(const std::string& optionName);

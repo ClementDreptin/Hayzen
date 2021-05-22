@@ -275,16 +275,37 @@ namespace MW2
 		s_Bot->client->ps.origin = Math::ToFront(origin, viewY, distance);
 	}
 
+	void Menu::ToggleBotMovement()
+	{
+		if (!s_Bot)
+		{
+			iPrintLn(m_ClientNum, "^1There is no bot in the game!");
+			return;
+		}
+
+		if (Dvar_GetBool("testClients_doMove"))
+		{
+			SetClientDvar(-1, "testClients_doMove", "0");
+			m_Options[m_CurrentScrollerPos].SetName("Unfreeze Bot");
+		}
+		else
+		{
+			SetClientDvar(-1, "testClients_doMove", "1");
+			m_Options[m_CurrentScrollerPos].SetName("Freeze Bot");
+		}
+	}
+
 	void Menu::CreateStructure()
 	{
 		s_Structure["Cod Jumper"] = std::vector<std::string>();
-		s_Structure["Cod Jumper"].reserve(3);
+		s_Structure["Cod Jumper"].reserve(4);
 		s_Structure["Cod Jumper"].emplace_back("Main");
 		s_Structure["Cod Jumper"].emplace_back("Teleport");
+		s_Structure["Cod Jumper"].emplace_back("Bot");
 		s_Structure["Cod Jumper"].emplace_back("Admin");
 
 		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(9);
+		s_Structure["Main"].reserve(8);
 		s_Structure["Main"].emplace_back("God Mode");
 		s_Structure["Main"].emplace_back("Fall Damage");
 		s_Structure["Main"].emplace_back("Ammo");
@@ -293,15 +314,19 @@ namespace MW2
 		s_Structure["Main"].emplace_back("Elevators");
 		s_Structure["Main"].emplace_back("Depatch Bounces");
 		s_Structure["Main"].emplace_back("Spawn Care Package");
-		s_Structure["Main"].emplace_back("Spawn Bot");
 
 		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].reserve(5);
+		s_Structure["Teleport"].reserve(4);
 		s_Structure["Teleport"].emplace_back("Save/Load Binds");
 		s_Structure["Teleport"].emplace_back("Save Position");
 		s_Structure["Teleport"].emplace_back("Load Position");
 		s_Structure["Teleport"].emplace_back("UFO");
-		s_Structure["Teleport"].emplace_back("Teleport Bot To Me");
+
+		s_Structure["Bot"] = std::vector<std::string>();
+		s_Structure["Bot"].reserve(3);
+		s_Structure["Bot"].emplace_back("Spawn Bot");
+		s_Structure["Bot"].emplace_back("Teleport Bot To Me");
+		s_Structure["Bot"].emplace_back("Unfreeze Bot");
 
 		s_Structure["Admin"] = std::vector<std::string>();
 		s_Structure["Admin"].reserve(2);
@@ -317,7 +342,7 @@ namespace MW2
 	{
 		int pos;
 
-		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
+		if (optionName == "Main" || optionName == "Teleport" || optionName == "Bot" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
 		else if (optionName == "Verify")
 		{
@@ -356,11 +381,13 @@ namespace MW2
 			SpawnBot();
 		else if (optionName == "Teleport Bot To Me")
 			TeleportBotToMe();
+		else if (optionName == "Unfreeze Bot" || optionName == "Freeze Bot")
+			ToggleBotMovement();
 	}
 
 	void Menu::OnBackPressed(const std::string& optionName)
 	{
-		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
+		if (optionName == "Main" || optionName == "Teleport" || optionName == "Bot" || optionName == "Admin")
 			return;
 
 		if (optionName == "Knockback" || optionName.find("(") != std::string::npos)
@@ -448,7 +475,12 @@ namespace MW2
 		SV_ExecuteClientCommand(botPtr, chooseClassCmd.c_str(), 1, 0);
 		Sleep(150);
 
+		SetClientDvar(-1, "testClients_doMove", "0");
+		SetClientDvar(-1, "testClients_doAttack", "0");
+		SetClientDvar(-1, "testClients_watchKillcam", "0");
+
 		This->TeleportBotToMe();
+
 		return 0;
 	}
 

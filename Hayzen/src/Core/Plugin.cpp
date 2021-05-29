@@ -51,6 +51,8 @@ void Plugin::InitNewGame(DWORD titleId)
 		case MW3:
 			if (!strcmp((char*)0x82001458, "multiplayer"))
 				MW3::Init();
+			else if (!strcmp((char*)0x8200BEA8, "startMultiplayer"))
+				SpecOps::MW3::Init();
 		default:
 			return;
 	}

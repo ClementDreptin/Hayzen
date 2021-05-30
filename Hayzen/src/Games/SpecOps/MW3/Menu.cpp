@@ -20,14 +20,16 @@ namespace MW3
 	Menu::Menu(int clientNum)
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
-		m_Background = RectangleElem(s_MenuX, s_MenuY, s_MenuWidth, s_MenuHeight, HudElem::s_ColorBlackNoAlpha);
+		m_Background = RectangleElem(s_MenuX, s_MenuY, s_MenuWidth, s_MenuHeight, HudElem::s_ColorBlack);
+		m_Background.SetAlpha(0.7f);
 
-		m_Title = TextElem("Cod Jumper", s_MenuX + s_Padding, s_Padding + s_TitleHeight, HudElem::s_ColorWhiteNoAlpha, 1.7f);
+		m_Title = TextElem("Cod Jumper", s_MenuX + s_Padding, s_Padding + s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
 
-		m_Scroller = RectangleElem(s_MenuX, s_MenuY + (s_Padding * 2) + s_TitleHeight, s_MenuWidth, s_LineHeight, HudElem::s_ColorWhiteNoAlpha);
+		m_Scroller = RectangleElem(s_MenuX, s_MenuY + (s_Padding * 2) + s_TitleHeight, s_MenuWidth, s_LineHeight, HudElem::s_ColorWhite);
+		m_Scroller.SetAlpha(0.7f);
 
 		m_Instructions = TextElem("Navigate: UP - DOWN | Select: X | Back: RS",
-			s_MenuX + s_Padding, s_MenuY + s_MenuHeight - s_Padding - 80, HudElem::s_ColorWhiteNoAlpha, 0.7f);
+			s_MenuX + s_Padding, s_MenuY + s_MenuHeight - s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
 
 		CreateStructure();
 	}
@@ -158,32 +160,6 @@ namespace MW3
 		GoToMenu("Cod Jumper");
 	}
 
-	void Menu::Open()
-	{
-		m_Background.MakeAppear(0.7f);
-		m_Title.MakeAppear();
-		m_Scroller.MakeAppear(0.7f);
-		m_Instructions.MakeAppear();
-
-		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
-			m_Structure[m_Title.GetText()][i].MakeAppear();
-
-		m_Open = true;
-	}
-
-	void Menu::Close()
-	{
-		m_Background.MakeDisappear();
-		m_Title.MakeDisappear();
-		m_Scroller.MakeDisappear();
-		m_Instructions.MakeDisappear();
-
-		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
-			m_Structure[m_Title.GetText()][i].MakeDisappear();
-
-		m_Open = false;
-	}
-
 	void Menu::GoToMenu(const std::string& menuName)
 	{
 		ResetCursor();
@@ -193,6 +169,9 @@ namespace MW3
 
 	void Menu::Update()
 	{
+		if (!m_Open)
+			return;
+
 		m_Background.Draw();
 		m_Title.Draw();
 		m_Scroller.Draw();
@@ -206,12 +185,7 @@ namespace MW3
 	void Menu::OnEvent(const std::string& eventString)
 	{
 		if (eventString == DPAD_LEFT)
-		{
-			if (!m_Open)
-				Open();
-			else
-				Close();
-		}
+			m_Open = !m_Open;
 
 		if (eventString == DPAD_UP && m_Open)
 		{

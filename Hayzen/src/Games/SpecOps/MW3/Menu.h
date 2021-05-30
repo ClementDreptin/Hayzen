@@ -31,9 +31,8 @@ namespace MW3
 		RectangleElem m_Scroller;
 		TextElem m_Instructions;
 
-		std::vector<Option> m_Options;
 		std::queue<std::string> m_MenuChangeRequestQueue;
-		static std::unordered_map<std::string, std::vector<std::string>> s_Structure;
+		std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
 		static const float s_MenuX;
 		static const float s_MenuY;
@@ -43,16 +42,14 @@ namespace MW3
 		static const float s_TitleHeight;
 		static const float s_LineHeight;
 
-		void ToggleFallDamage();
+		void ToggleGodMode();
 		void ToggleAmmo();
-		void ToggleOldSchool();
-		void ToggleBlastMarks();
 		void ToggleUFO();
 		void SavePosition();
 		void LoadPosition();
 		void ToggleSaveLoadBinds();
 
-		static void CreateStructure();
+		void CreateStructure();
 		void OnSelectPressed(const std::string& optionName);
 		void OnBackPressed(const std::string& optionName);
 		void Open();
@@ -60,7 +57,7 @@ namespace MW3
 		void RequestMenuChange(const std::string& menuName);
 		void GoToMenu(const std::string& menuName);
 		void MoveScroller(int position);
-		void Cleanup();
+		void ResetCursor();
 	};
 }
 }

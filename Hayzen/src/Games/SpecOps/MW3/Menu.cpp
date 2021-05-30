@@ -3,7 +3,7 @@
 
 #include "Games\SpecOps\MW3\Functions.h"
 #include "Games\SpecOps\MW3\MW3.h"
-#include "Games\SpecOps\MW3\Events.h"
+#include "Core\Events.h"
 
 using namespace XexUtils;
 
@@ -11,8 +11,6 @@ namespace SpecOps
 {
 namespace MW3
 {
-	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
-
 	const float Menu::s_MenuX = 875.0f;
 	const float Menu::s_MenuY = 5.0f;
 	const float Menu::s_MenuWidth = 400.0f;
@@ -34,23 +32,21 @@ namespace MW3
 			s_MenuX + s_Padding, s_MenuY + s_MenuHeight - s_Padding - 80, HudElem::s_ColorWhiteNoAlpha, 0.7f);
 
 		CreateStructure();
-
-		RequestMenuChange("Cod Jumper");
 	}
 
-	void Menu::ToggleFallDamage()
+	void Menu::ToggleGodMode()
 	{
-		DWORD address = 0x82000D68;
+		playerState_s* playerState = SV_GetPlayerstateForClientNum(m_ClientNum);
 
-		if (Memory::Read<float>(address) == 128.0f)
+		if (playerState->otherFlags == 0)
 		{
-			Memory::Write<float>(address, 9999.0f);
-			iPrintLn(m_ClientNum, "Fall Damage ^2Off");
+			playerState->otherFlags = 1;
+			iPrintLn(m_ClientNum, "God Mode ^2On");
 		}
 		else
 		{
-			Memory::Write<float>(address, 128.0f);
-			iPrintLn(m_ClientNum, "Fall Damage ^1On");
+			playerState->otherFlags = 0;
+			iPrintLn(m_ClientNum, "God Mode ^1Off");
 		}
 	}
 
@@ -69,36 +65,6 @@ namespace MW3
 		{
 			Memory::Write<unsigned int>(address, defaultValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
-		}
-	}
-
-	void Menu::ToggleOldSchool()
-	{
-		DWORD address = 0x8202E160;
-
-		if (Memory::Read<float>(address) == 39.0f)
-		{
-			Memory::Write<float>(address, 64.0f);
-			iPrintLn(m_ClientNum, "Old School ^2On");
-		}
-		else
-		{
-			Memory::Write<float>(address, 39.0f);
-			iPrintLn(m_ClientNum, "Old School ^1Off");
-		}
-	}
-
-	void Menu::ToggleBlastMarks()
-	{
-		if (Dvar_GetBool("fx_marks"))
-		{
-			SetClientDvar(m_ClientNum, "fx_marks", "0");
-			iPrintLn(m_ClientNum, "Blast Marks ^2Off");
-		}
-		else
-		{
-			SetClientDvar(m_ClientNum, "fx_marks", "1");
-			iPrintLn(m_ClientNum, "Blast Marks ^1On");
 		}
 	}
 
@@ -141,7 +107,7 @@ namespace MW3
 	void Menu::ToggleSaveLoadBinds()
 	{
 		if (!m_BindsEnabled)
-			iPrintLn(m_ClientNum, "Press [{+frag}] to ^2Save^7 and [{+smoke}] to ^2Load");
+			iPrintLn(m_ClientNum, "Press RB to ^2Save^7 and LB to ^2Load");
 		else
 			iPrintLn(m_ClientNum, "Save and Load binds ^1Off");
 
@@ -150,47 +116,32 @@ namespace MW3
 
 	void Menu::CreateStructure()
 	{
-		s_Structure["Cod Jumper"] = std::vector<std::string>();
-		s_Structure["Cod Jumper"].reserve(3);
-		s_Structure["Cod Jumper"].emplace_back("Main");
-		s_Structure["Cod Jumper"].emplace_back("Teleport");
-		s_Structure["Cod Jumper"].emplace_back("Admin");
+		m_Structure["Cod Jumper"] = std::vector<Option>();
+		m_Structure["Cod Jumper"].reserve(2);
+		m_Structure["Cod Jumper"].emplace_back(Option("Main", 0));
+		m_Structure["Cod Jumper"].emplace_back(Option("Teleport", 1));
 
-		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(5);
-		s_Structure["Main"].emplace_back("Fall Damage");
-		s_Structure["Main"].emplace_back("Ammo");
-		s_Structure["Main"].emplace_back("Blast Marks");
-		s_Structure["Main"].emplace_back("Old School");
-		s_Structure["Main"].emplace_back("Depatch Bounces");
+		m_Structure["Main"] = std::vector<Option>();
+		m_Structure["Main"].reserve(2);
+		m_Structure["Main"].emplace_back(Option("God Mode", 0));
+		m_Structure["Main"].emplace_back(Option("Ammo", 1));
 
-		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].reserve(4);
-		s_Structure["Teleport"].emplace_back("Save/Load Binds");
-		s_Structure["Teleport"].emplace_back("Save Position");
-		s_Structure["Teleport"].emplace_back("Load Position");
-		s_Structure["Teleport"].emplace_back("UFO");
-
-		s_Structure["Admin"] = std::vector<std::string>();
-		s_Structure["Admin"].reserve(2);
-		s_Structure["Admin"].emplace_back("Infect");
-			s_Structure["Infect"] = std::vector<std::string>();
-			s_Structure["Infect"].reserve(1);
-			s_Structure["Infect"].emplace_back("Knockback");
+		m_Structure["Teleport"] = std::vector<Option>();
+		m_Structure["Teleport"].reserve(4);
+		m_Structure["Teleport"].emplace_back(Option("Save/Load Binds", 0));
+		m_Structure["Teleport"].emplace_back(Option("Save Position", 1));
+		m_Structure["Teleport"].emplace_back(Option("Load Position", 2));
+		m_Structure["Teleport"].emplace_back(Option("UFO", 3));
 	}
 
 	void Menu::OnSelectPressed(const std::string& optionName)
 	{
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
 			RequestMenuChange(optionName);
-		else if (optionName == "Fall Damage")
-			ToggleFallDamage();
+		else if (optionName == "God Mode")
+			ToggleGodMode();
 		else if (optionName == "Ammo")
 			ToggleAmmo();
-		else if (optionName == "Old School")
-			ToggleOldSchool();
-		else if (optionName == "Blast Marks")
-			ToggleBlastMarks();
 		else if (optionName == "UFO")
 			ToggleUFO();
 		else if (optionName == "Save Position")
@@ -216,8 +167,8 @@ namespace MW3
 		m_Scroller.MakeAppear(0.7f);
 		m_Instructions.MakeAppear();
 
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Activate();
+		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
+			m_Structure[m_Title.GetText()][i].MakeAppear();
 
 		m_Open = true;
 	}
@@ -229,8 +180,8 @@ namespace MW3
 		m_Scroller.MakeDisappear();
 		m_Instructions.MakeDisappear();
 
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Deactivate();
+		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
+			m_Structure[m_Title.GetText()][i].MakeDisappear();
 
 		m_Open = false;
 	}
@@ -242,15 +193,9 @@ namespace MW3
 
 	void Menu::GoToMenu(const std::string& menuName)
 	{
-		Cleanup();
+		ResetCursor();
 
-		if (m_Open) // If m_Open is false, it means this is the call from the constructor and the title has already been set.
-			m_Title.SetText(menuName);
-
-		m_Options.reserve(s_Structure[menuName].size());
-
-		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
-			m_Options.emplace_back(Option(s_Structure[menuName][i], i, m_Open));
+		m_Title.SetText(menuName);
 	}
 
 	void Menu::Update()
@@ -260,8 +205,8 @@ namespace MW3
 		m_Scroller.Draw();
 		m_Instructions.Draw();
 		
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Draw();
+		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
+			m_Structure[m_Title.GetText()][i].Draw();
 
 		if (!m_MenuChangeRequestQueue.empty())
 		{
@@ -287,7 +232,7 @@ namespace MW3
 			m_CurrentScrollerPos--;
 
 			if (m_CurrentScrollerPos < 0)
-				m_CurrentScrollerPos = m_Options.size() - 1;
+				m_CurrentScrollerPos = m_Structure[m_Title.GetText()].size() - 1;
 
 			MoveScroller(m_CurrentScrollerPos);
 		}
@@ -296,17 +241,17 @@ namespace MW3
 		{
 			m_CurrentScrollerPos++;
 
-			if (m_CurrentScrollerPos >= (int)m_Options.size())
+			if (m_CurrentScrollerPos >= (int)m_Structure[m_Title.GetText()].size())
 				m_CurrentScrollerPos = 0;
 
 			MoveScroller(m_CurrentScrollerPos);
 		}
 
 		if (eventString == SELECT && m_Open)
-			OnSelectPressed(m_Options[m_CurrentScrollerPos].GetName());
-
+			OnSelectPressed(m_Structure[m_Title.GetText()][m_CurrentScrollerPos].GetText());
+		
 		if (eventString == BACK && m_Open)
-			OnBackPressed(m_Options[m_CurrentScrollerPos].GetName());
+			OnBackPressed(m_Structure[m_Title.GetText()][m_CurrentScrollerPos].GetText());
 
 		if (eventString == LB && m_BindsEnabled)
 			LoadPosition();
@@ -320,12 +265,10 @@ namespace MW3
 		m_Scroller.SetY(s_MenuY + s_Padding * 2 + s_TitleHeight + s_LineHeight * position);
 	}
 
-	void Menu::Cleanup()
+	void Menu::ResetCursor()
 	{
 		m_CurrentScrollerPos = 0;
 		MoveScroller(m_CurrentScrollerPos);
-
-		m_Options.clear();
 	}
 }
 }

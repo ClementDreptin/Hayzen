@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Games\SpecOps\MW3\Structs.h"
 #include "Games\SpecOps\MW3\Client.h"
 
 namespace SpecOps

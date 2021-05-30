@@ -376,9 +376,9 @@
     <ClInclude Include="src\Games\MW3\Option.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Client.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\Events.h" />
+    <ClInclude Include="src\Core\Events.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Functions.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\HudElem.h" />
+    <ClInclude Include="src\Core\HudElem.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Menu.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\MW3.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Option.h" />
@@ -411,7 +411,7 @@
     <ClCompile Include="src\Games\MW3\Option.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\Client.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\Functions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW3\HudElem.cpp" />
+    <ClCompile Include="src\Core\HudElem.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\Menu.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\MW3.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\Option.cpp" />

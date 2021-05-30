@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Games\SpecOps\MW3\MW3.h"
 
-#include "Games\SpecOps\MW3\Functions.h"
-#include "Games\SpecOps\MW3\Events.h"
+#include "Core\Events.h"
 
 using namespace XexUtils;
 
@@ -75,9 +74,6 @@ namespace MW3
 
 		if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
 			return false;
-
-		// SetClientDvar(clientNum, "loc_warnings", "0");
-		// SetClientDvar(clientNum, "loc_warningsUI", "0");
 
 		Clients[clientNum] = Client(clientNum);
 

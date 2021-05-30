@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Games\SpecOps\MW3\HudElem.h"
+#include "Core\HudElem.h"
 
 namespace SpecOps
 {

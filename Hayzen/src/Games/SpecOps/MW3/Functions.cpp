@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Games\SpecOps\MW3\Functions.h"
 
-using namespace XexUtils;
-
 namespace SpecOps
 {
 namespace MW3

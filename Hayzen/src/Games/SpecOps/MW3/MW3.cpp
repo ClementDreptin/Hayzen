@@ -3,8 +3,6 @@
 
 #include "Core\Events.h"
 
-using namespace XexUtils;
-
 namespace SpecOps
 {
 namespace MW3

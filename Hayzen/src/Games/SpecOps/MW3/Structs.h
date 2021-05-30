@@ -4,8 +4,8 @@ namespace SpecOps
 {
 namespace MW3
 {
-	using XexUtils::Math::vec2;
-	using XexUtils::Math::vec3;
+	using Math::vec2;
+	using Math::vec3;
 
 	struct Font_s
 	{

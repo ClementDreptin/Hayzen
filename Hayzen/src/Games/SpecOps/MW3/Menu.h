@@ -31,7 +31,6 @@ namespace MW3
 		RectangleElem m_Scroller;
 		TextElem m_Instructions;
 
-		std::queue<std::string> m_MenuChangeRequestQueue;
 		std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
 		static const float s_MenuX;
@@ -54,7 +53,6 @@ namespace MW3
 		void OnBackPressed(const std::string& optionName);
 		void Open();
 		void Close();
-		void RequestMenuChange(const std::string& menuName);
 		void GoToMenu(const std::string& menuName);
 		void MoveScroller(int position);
 		void ResetCursor();

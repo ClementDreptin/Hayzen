@@ -3,8 +3,6 @@
 
 #include "Games\SpecOps\MW3\Menu.h"
 
-using namespace XexUtils;
-
 namespace SpecOps
 {
 namespace MW3

@@ -5,8 +5,6 @@
 #include "Games\SpecOps\MW3\MW3.h"
 #include "Core\Events.h"
 
-using namespace XexUtils;
-
 namespace SpecOps
 {
 namespace MW3
@@ -136,8 +134,8 @@ namespace MW3
 
 	void Menu::OnSelectPressed(const std::string& optionName)
 	{
-		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin" || optionName == "Infect")
-			RequestMenuChange(optionName);
+		if (optionName == "Main" || optionName == "Teleport")
+			GoToMenu(optionName);
 		else if (optionName == "God Mode")
 			ToggleGodMode();
 		else if (optionName == "Ammo")
@@ -154,10 +152,10 @@ namespace MW3
 
 	void Menu::OnBackPressed(const std::string& optionName)
 	{
-		if (optionName == "Main" || optionName == "Teleport" || optionName == "Admin")
+		if (optionName == "Main" || optionName == "Teleport")
 			return;
 
-		RequestMenuChange("Cod Jumper");
+		GoToMenu("Cod Jumper");
 	}
 
 	void Menu::Open()
@@ -186,11 +184,6 @@ namespace MW3
 		m_Open = false;
 	}
 
-	void Menu::RequestMenuChange(const std::string& menuName)
-	{
-		m_MenuChangeRequestQueue.push(menuName);
-	}
-
 	void Menu::GoToMenu(const std::string& menuName)
 	{
 		ResetCursor();
@@ -207,13 +200,6 @@ namespace MW3
 		
 		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
 			m_Structure[m_Title.GetText()][i].Draw();
-
-		if (!m_MenuChangeRequestQueue.empty())
-		{
-			std::string& menuName = m_MenuChangeRequestQueue.front();
-			GoToMenu(menuName);
-			m_MenuChangeRequestQueue.pop();
-		}
 
 	}
 

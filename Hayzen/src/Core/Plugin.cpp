@@ -63,4 +63,5 @@ void Plugin::Cleanup()
 	MW2::SafeReset();
 	Alpha::MW2::SafeReset();
 	MW3::SafeReset();
+	SpecOps::MW3::SafeReset();
 }

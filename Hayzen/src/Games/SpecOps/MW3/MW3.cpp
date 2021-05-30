@@ -61,12 +61,6 @@ namespace MW3
 		HasGameBegun = true;
 	}
 
-	void ResetGame(int clientNum)
-	{
-		Clients.erase(clientNum);
-		HasGameBegun = false;
-	}
-
 	bool Verify(int clientNum)
 	{
 		if (clientNum < 0 || clientNum > 17)

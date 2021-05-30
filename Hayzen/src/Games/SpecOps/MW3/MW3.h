@@ -13,7 +13,6 @@ namespace MW3
 	// Functions
 	void Init();
 	void SetupGame(int clientNum);
-	void ResetGame(int clientNum);
 	bool Verify(int clientNum);
 	void SafeReset(); // Resets everything when the game was not reset properly
 

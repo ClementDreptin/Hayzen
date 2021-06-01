@@ -6,3 +6,5 @@
 #include <unordered_map>
 
 #include "XexUtils.h"
+
+using namespace XexUtils;

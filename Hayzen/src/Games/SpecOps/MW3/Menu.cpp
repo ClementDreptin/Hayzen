@@ -3,7 +3,7 @@
 
 #include "Games\SpecOps\MW3\Functions.h"
 #include "Games\SpecOps\MW3\MW3.h"
-#include "Core\Events.h"
+#include "Games\SpecOps\MW3\Events.h"
 
 namespace SpecOps
 {
@@ -18,7 +18,7 @@ namespace MW3
 	const float Menu::s_LineHeight = 40.0f;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
 		m_Background = RectangleElem(s_MenuX, s_MenuY, s_MenuWidth, s_MenuHeight, HudElem::s_ColorBlack);
 		m_Background.SetAlpha(0.7f);

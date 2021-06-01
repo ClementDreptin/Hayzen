@@ -40,16 +40,17 @@ namespace MW3
 	{
 		char padding1[0x84];
 		short number;
-		char padding2[0x4];
-		int index;
+		short otherEntityNum;
+		short groundEntityNum;
+		short index;
 		char padding3[0x24];
 	};
 
 	struct entityShared_t
 	{
-		int clientMask;
 		bool linked;
 		char bmodel;
+		int clientMask;
 		char svFlags;
 		bool inuse;
 		vec3 mins;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core\HudElem.h"
+#include "Games\MW2\HudElem.h"
 
 namespace MW2
 {
@@ -8,17 +8,12 @@ namespace MW2
 	{
 	public:
 		RectangleElem() {}
-		RectangleElem(float x, float y, float width, float height, const Color& color);
+		RectangleElem(int clientNum, float x, float y, int width, int height, const hudelem_color_t& color);
 
-		virtual void Draw() const;
+		int GetWidth() const { return m_InternalHudElem->elem.width; }
+		int GetHeight() const { return m_InternalHudElem->elem.height; }
 
-		float GetWidth() const { return m_Width; }
-		float GetHeight() const { return m_Height; }
-
-		void SetWidth(float width) { m_Width = width; }
-		void SetHeight(float height) { m_Height = height; }
-	private:
-		float m_Width, m_Height;
-		void* m_MaterialHandle;
+		void SetWidth(int width) { m_InternalHudElem->elem.width = width; }
+		void SetHeight(int height) { m_InternalHudElem->elem.height = height; }
 	};
 }

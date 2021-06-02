@@ -17,9 +17,6 @@ namespace MW2
 	void SafeReset(); // Resets everything when the game was not reset properly
 
 	// Hooks and their stubs
-	void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI);
-	void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
-
 	void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
 

@@ -15,7 +15,6 @@ namespace MW2
 		Menu(int clientNum);
 
 		void OnEvent(const std::string& eventString);
-		void Update();
 
 		static void FreeBot();
 	private:
@@ -33,7 +32,6 @@ namespace MW2
 
 		static gentity_s* s_Bot;
 
-		std::queue<std::vector<std::string>> m_ClientListUpdateQueue;
 		std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
 		void ToggleElevators();
@@ -55,9 +53,10 @@ namespace MW2
 		void CreateStructure();
 		void OnSelectPressed(const std::string& optionName);
 		void OnBackPressed(const std::string& optionName);
+		void Open();
+		void Close();
 		void GoToMenu(const std::string& menuName);
-		void RequestClientListUpdate();
-		std::vector<std::string> GetAllPlayers();
+		void GetAllPlayers();
 		static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);
 		static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
 		void _Knockback();

@@ -9,15 +9,13 @@ namespace MW2
 
 	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
 
-	void (*R_AddCmdDrawText)(const char* text, int maxChars, Font_s* font, float x, float y, float xScale, float yScale, float rotation, const float* color, int style) =
-		(void(*)(const char* , int, Font_s* , float, float, float, float, float, const float*, int))0x82350278;
+	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
 
-	void (*R_AddCmdDrawStretchPic)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float* color, void* material) =
-		(void(*)(float, float, float, float, float, float, float, float, const float*, void*))0x8234F9B8;
+	void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x821DF9C0;
 
-	Font_s* (*R_RegisterFont)(const char* font, int imageTrack) = (Font_s*(*)(const char*, int))0x8234DCB0;
+	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
 
-	void* (*Material_RegisterHandle)(const char* name, int imageTrack) = (void*(*)(const char *, int))0x8234E510;
+	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
 
 	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
 

@@ -5,15 +5,16 @@
 
 namespace MW2
 {
-	TextElem::TextElem(const std::string& text, float x, float y, const Color& color, float fontScale)
-		: HudElem(x, y, color), m_FontScale(fontScale), m_Text(text)
+	TextElem::TextElem(int clientNum, const std::string& text, float x, float y, const hudelem_color_t& color, float fontScale)
+		: HudElem(clientNum, x, y, color), m_Text(text)
 	{
-		m_Font = R_RegisterFont("fonts/normalFont", 0);
-	}
+		SetText(text);
+		SetFontScale(fontScale);
 
-	void TextElem::Draw() const
-	{
-		if (m_Color.a > 0.0f)
-			R_AddCmdDrawText(m_Text.c_str(), strlen(m_Text.c_str()), m_Font, m_X, m_Y, m_FontScale, m_FontScale, 0, (float*)&m_Color, 0);
+		m_InternalHudElem->elem.type = HE_TYPE_TEXT;
+		m_InternalHudElem->elem.alignOrg = ALIGN_BOTTOM_LEFT;
+		m_InternalHudElem->elem.alignScreen = ALIGN_TOP_LEFT;
+		m_InternalHudElem->elem.font = 4;
+		m_InternalHudElem->elem.sort = 1.0f;
 	}
 }

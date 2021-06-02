@@ -8,13 +8,13 @@ namespace MW2
 
 	extern void (*SV)(int clientNum, int type, const char* text);
 
-	extern void (*R_AddCmdDrawText)(const char* text, int maxChars, Font_s* font, float x, float y, float xScale, float yScale, float rotation, const float* color, int style);
+	extern game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum);
 
-	extern void (*R_AddCmdDrawStretchPic)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float* color, void* material);
+	extern void (*HudElem_Free)(game_hudelem_s* hud);
 
-	extern Font_s* (*R_RegisterFont)(const char* font, int imageTrack);
+	extern int (*G_MaterialIndex)(const char* name);
 
-	extern void* (*Material_RegisterHandle)(const char* name, int imageTrack);
+	extern int (*G_LocalizedStringIndex)(const char* string);
 
 	extern bool (*Dvar_GetBool)(const char* dvarName);
 

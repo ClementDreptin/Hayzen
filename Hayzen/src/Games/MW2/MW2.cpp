@@ -9,7 +9,7 @@ namespace MW2
 	bool HasGameBegun = false;
 	std::unordered_map<int, Client> Clients;
 
-	__declspec(naked) void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
+	__declspec(naked) void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
 	{
 		__asm
 		{
@@ -24,21 +24,6 @@ namespace MW2
 		}
 	}
 
-	__declspec(naked) void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
-	{
-		__asm
-		{
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			nop
-			li r3, 2
-		}
-	}
-
 	__declspec(naked) void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer)
 	{
 		__asm
@@ -50,7 +35,7 @@ namespace MW2
 			nop
 			nop
 			nop
-			li r3, 3
+			li r3, 2
 		}
 	}
 
@@ -67,7 +52,6 @@ namespace MW2
 		Memory::Write<int>(0x8216906C, 0x60000000);
 		Memory::Write<int>(0x821690E4, 0x60000000);
 
-		Memory::HookFunctionStart((DWORD*)0x8214BEB8, (DWORD*)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
 		Memory::HookFunctionStart((DWORD*)0x82209710, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
 		Memory::HookFunctionStart((DWORD*)0x82253140, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 	}
@@ -120,14 +104,6 @@ namespace MW2
 			Menu::FreeBot();
 			HasGameBegun = false;
 		}
-	}
-
-	void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
-	{
-		SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
-
-		for (size_t i = 0; i < Clients.size(); i++)
-			Clients[i].GetMenu().Update();
 	}
 
 	void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)

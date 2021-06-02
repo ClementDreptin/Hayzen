@@ -5,15 +5,16 @@
 
 namespace MW2
 {
-	RectangleElem::RectangleElem(float x, float y, float width, float height, const Color& color)
-		: HudElem(x, y, color), m_Width(width), m_Height(height)
+	RectangleElem::RectangleElem(int clientNum, float x, float y, int width, int height, const hudelem_color_t& color)
+		: HudElem(clientNum, x, y, color)
 	{
-		m_MaterialHandle = Material_RegisterHandle("white", 0);
-	}
+		SetWidth(width);
+		SetHeight(height);
 
-	void RectangleElem::Draw() const
-	{
-		if (m_Color.a > 0.0f)
-			R_AddCmdDrawStretchPic(m_X, m_Y, m_Width, m_Height, 0.0f, 0.0f, 1.0f, 1.0f, (float*)&m_Color, m_MaterialHandle);
+		m_InternalHudElem->elem.type = HE_TYPE_MATERIAL;
+		m_InternalHudElem->elem.alignOrg = ALIGN_TOP_LEFT;
+		m_InternalHudElem->elem.alignScreen = ALIGN_TOP_LEFT;
+		m_InternalHudElem->elem.sort = 0.0f;
+		m_InternalHudElem->elem.materialIndex = G_MaterialIndex("white");
 	}
 }

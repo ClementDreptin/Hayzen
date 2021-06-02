@@ -9,9 +9,10 @@ A mod menu:
 ![MW2 Multiplayer Detected](https://github.com/ClementDreptin/Hayzen/blob/master/Resources/Screenshots/mw2-menu.png?raw=true)
 
 ## Supported games
-- Call of Duty: Modern Warfare 2 - TU9 (latest version)
-- Call of Duty: Modern Warfare 2 - Alpha 482
-- Call of Duty: Modern Warfare 3 - TU24 (latest version)
+- Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 2 - Alpha 482 Multiplayer
+- Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
 
 ## Installation
 

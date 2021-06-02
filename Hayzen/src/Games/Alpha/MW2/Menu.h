@@ -37,14 +37,6 @@ namespace MW2
 
 		std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
-		static const float s_MenuX;
-		static const float s_MenuY;
-		static const float s_MenuWidth;
-		static const float s_MenuHeight;
-		static const float s_Padding;
-		static const float s_TitleHeight;
-		static const float s_LineHeight;
-
 		void ToggleDepatchBounces();
 		void ToggleFallDamage();
 		void ToggleAmmo();

@@ -13,6 +13,13 @@ class HudElem
 public:
 	static const Color s_ColorWhite;
 	static const Color s_ColorBlack;
+	static const float s_MenuX;
+	static const float s_MenuY;
+	static const float s_MenuWidth;
+	static const float s_MenuHeight;
+	static const float s_Padding;
+	static const float s_TitleHeight;
+	static const float s_LineHeight;
 
 	HudElem() {}
 	HudElem(float x, float y, const Color& color);

@@ -3,35 +3,27 @@
 
 #include "Games\MW2\Functions.h"
 #include "Games\MW2\MW2.h"
-
-using namespace XexUtils;
+#include "Games\MW2\Events.h"
 
 namespace MW2
 {
-	std::unordered_map<std::string, std::vector<std::string>> Menu::s_Structure;
 	gentity_s* Menu::s_Bot;
 
 	Menu::Menu(int clientNum)
-		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
+		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
-		m_Background = HudElem_Alloc(clientNum, 0);
-		SetShader(m_Background, "white", m_MenuX, m_MenuY, m_MenuWidth, m_MenuHeight, COLOR_BLACK_NO_ALPHA);
+		m_Background = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
+		m_Background.SetAlpha(0.7f);
 
-		m_Title = HudElem_Alloc(clientNum, 0);
-		SetText(m_Title, "Cod Jumper", 3.0f, m_MenuX + m_MenuWidth / 2, m_MenuY + m_Padding, COLOR_WHITE_NO_ALPHA);
+		m_Title = TextElem("Cod Jumper", HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_Padding + HudElem::s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
 
-		m_Scroller = HudElem_Alloc(clientNum, 0);
-		SetShader(m_Scroller, "white", m_MenuX, m_MenuY + (m_Padding * 2) + m_TitleHeight, m_MenuWidth, m_LineHeight, COLOR_WHITE_NO_ALPHA, 0.5f);
+		m_Scroller = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY + (HudElem::s_Padding * 2) + HudElem::s_TitleHeight, HudElem::s_MenuWidth, HudElem::s_LineHeight, HudElem::s_ColorWhite);
+		m_Scroller.SetAlpha(0.7f);
 
-		m_Instructions = HudElem_Alloc(clientNum, 0);
-		SetText(m_Instructions,
-				"Navigate: [{+actionslot 1}] - [{+actionslot 2}] | Select: [{+usereload}] | Back: [{+melee}]",
-				1.5f,
-				m_MenuX + m_MenuWidth / 2, m_MenuY + m_MenuHeight - m_Padding - 80, COLOR_WHITE_NO_ALPHA);
+		m_Instructions = TextElem("Navigate: UP - DOWN | Select: X | Back: RS",
+			HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
 
 		CreateStructure();
-
-		GoToMenu("Cod Jumper");
 	}
 
 	void Menu::ToggleElevators()
@@ -113,36 +105,6 @@ namespace MW2
 		{
 			Memory::Write<unsigned int>(address, defaultValue);
 			iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
-		}
-	}
-
-	void Menu::ToggleOldSchool()
-	{
-		DWORD address = 0x82001A34;
-
-		if (Memory::Read<float>(address) == 39.0f)
-		{
-			Memory::Write<float>(address, 64.0f);
-			iPrintLn(m_ClientNum, "Old School ^2On");
-		}
-		else
-		{
-			Memory::Write<float>(address, 39.0f);
-			iPrintLn(m_ClientNum, "Old School ^1Off");
-		}
-	}
-
-	void Menu::ToggleBlastMarks()
-	{
-		if (Dvar_GetBool("fx_marks"))
-		{
-			SetClientDvar(m_ClientNum, "fx_marks", "0");
-			iPrintLn(m_ClientNum, "Blast Marks ^2Off");
-		}
-		else
-		{
-			SetClientDvar(m_ClientNum, "fx_marks", "1");
-			iPrintLn(m_ClientNum, "Blast Marks ^1On");
 		}
 	}
 
@@ -286,56 +248,54 @@ namespace MW2
 		if (Dvar_GetBool("testClients_doMove"))
 		{
 			SetClientDvar(-1, "testClients_doMove", "0");
-			m_Options[m_CurrentScrollerPos].SetName("Unfreeze Bot");
+			m_Structure[m_Title.GetText()][m_CurrentScrollerPos].SetText("Unfreeze Bot");
 		}
 		else
 		{
 			SetClientDvar(-1, "testClients_doMove", "1");
-			m_Options[m_CurrentScrollerPos].SetName("Freeze Bot");
+			m_Structure[m_Title.GetText()][m_CurrentScrollerPos].SetText("Freeze Bot");
 		}
 	}
 
 	void Menu::CreateStructure()
 	{
-		s_Structure["Cod Jumper"] = std::vector<std::string>();
-		s_Structure["Cod Jumper"].reserve(4);
-		s_Structure["Cod Jumper"].emplace_back("Main");
-		s_Structure["Cod Jumper"].emplace_back("Teleport");
-		s_Structure["Cod Jumper"].emplace_back("Bot");
-		s_Structure["Cod Jumper"].emplace_back("Admin");
+		m_Structure["Cod Jumper"] = std::vector<Option>();
+		m_Structure["Cod Jumper"].reserve(4);
+		m_Structure["Cod Jumper"].emplace_back(Option("Main", 0));
+		m_Structure["Cod Jumper"].emplace_back(Option("Teleport", 1));
+		m_Structure["Cod Jumper"].emplace_back(Option("Bot", 2));
+		m_Structure["Cod Jumper"].emplace_back(Option("Admin", 3));
 
-		s_Structure["Main"] = std::vector<std::string>();
-		s_Structure["Main"].reserve(8);
-		s_Structure["Main"].emplace_back("God Mode");
-		s_Structure["Main"].emplace_back("Fall Damage");
-		s_Structure["Main"].emplace_back("Ammo");
-		s_Structure["Main"].emplace_back("Blast Marks");
-		s_Structure["Main"].emplace_back("Old School");
-		s_Structure["Main"].emplace_back("Elevators");
-		s_Structure["Main"].emplace_back("Depatch Bounces");
-		s_Structure["Main"].emplace_back("Spawn Care Package");
+		m_Structure["Main"] = std::vector<Option>();
+		m_Structure["Main"].reserve(6);
+		m_Structure["Main"].emplace_back(Option("God Mode", 0));
+		m_Structure["Main"].emplace_back(Option("Fall Damage", 1));
+		m_Structure["Main"].emplace_back(Option("Ammo", 2));
+		m_Structure["Main"].emplace_back(Option("Elevators", 3));
+		m_Structure["Main"].emplace_back(Option("Depatch Bounces", 4));
+		m_Structure["Main"].emplace_back(Option("Spawn Care Package", 5));
 
-		s_Structure["Teleport"] = std::vector<std::string>();
-		s_Structure["Teleport"].reserve(4);
-		s_Structure["Teleport"].emplace_back("Save/Load Binds");
-		s_Structure["Teleport"].emplace_back("Save Position");
-		s_Structure["Teleport"].emplace_back("Load Position");
-		s_Structure["Teleport"].emplace_back("UFO");
+		m_Structure["Teleport"] = std::vector<Option>();
+		m_Structure["Teleport"].reserve(4);
+		m_Structure["Teleport"].emplace_back(Option("Save/Load Binds", 0));
+		m_Structure["Teleport"].emplace_back(Option("Save Position", 1));
+		m_Structure["Teleport"].emplace_back(Option("Load Position", 2));
+		m_Structure["Teleport"].emplace_back(Option("UFO", 3));
 
-		s_Structure["Bot"] = std::vector<std::string>();
-		s_Structure["Bot"].reserve(3);
-		s_Structure["Bot"].emplace_back("Spawn Bot");
-		s_Structure["Bot"].emplace_back("Teleport Bot To Me");
-		s_Structure["Bot"].emplace_back("Unfreeze Bot");
+		m_Structure["Bot"] = std::vector<Option>();
+		m_Structure["Bot"].reserve(3);
+		m_Structure["Bot"].emplace_back(Option("Spawn Bot", 0));
+		m_Structure["Bot"].emplace_back(Option("Teleport Bot To Me", 1));
+		m_Structure["Bot"].emplace_back(Option("Unfreeze Bot", 2));
 
-		s_Structure["Admin"] = std::vector<std::string>();
-		s_Structure["Admin"].reserve(2);
-		s_Structure["Admin"].emplace_back("Infect");
-			s_Structure["Infect"] = std::vector<std::string>();
-			s_Structure["Infect"].reserve(1);
-			s_Structure["Infect"].emplace_back("Knockback");
-		s_Structure["Admin"].emplace_back("Verify");
-			s_Structure["Verify"] = std::vector<std::string>();
+		m_Structure["Admin"] = std::vector<Option>();
+		m_Structure["Admin"].reserve(2);
+		m_Structure["Admin"].emplace_back(Option("Infect", 0));
+			m_Structure["Infect"] = std::vector<Option>();
+			m_Structure["Infect"].reserve(1);
+			m_Structure["Infect"].emplace_back(Option("Knockback", 0));
+		m_Structure["Admin"].emplace_back(Option("Verify", 1));
+			m_Structure["Verify"] = std::vector<Option>();
 	}
 
 	void Menu::OnSelectPressed(const std::string& optionName)
@@ -344,13 +304,6 @@ namespace MW2
 
 		if (optionName == "Main" || optionName == "Teleport" || optionName == "Bot" || optionName == "Admin" || optionName == "Infect")
 			GoToMenu(optionName);
-		else if (optionName == "Verify")
-		{
-			GetAllPlayers();
-			GoToMenu(optionName);
-		}
-		else if ((pos = optionName.find("(")) != std::string::npos)
-			Verify(std::stoi(optionName.substr(pos + 1, 1)));
 		else if (optionName == "Elevators")
 			ToggleElevators();
 		else if (optionName == "Knockback")
@@ -361,10 +314,6 @@ namespace MW2
 			ToggleFallDamage();
 		else if (optionName == "Ammo")
 			ToggleAmmo();
-		else if (optionName == "Old School")
-			ToggleOldSchool();
-		else if (optionName == "Blast Marks")
-			ToggleBlastMarks();
 		else if (optionName == "UFO")
 			ToggleUFO();
 		else if (optionName == "Save Position")
@@ -383,6 +332,10 @@ namespace MW2
 			TeleportBotToMe();
 		else if (optionName == "Unfreeze Bot" || optionName == "Freeze Bot")
 			ToggleBotMovement();
+		else if (optionName == "Verify")
+			RequestClientListUpdate();
+		else if ((pos = optionName.find("(")) != std::string::npos)
+			Verify(std::stoi(optionName.substr(pos + 1, 1)));
 	}
 
 	void Menu::OnBackPressed(const std::string& optionName)
@@ -399,56 +352,32 @@ namespace MW2
 		GoToMenu("Cod Jumper");
 	}
 
-	void Menu::Open()
-	{
-		MakeAppear(m_Background, 180);
-		MakeAppear(m_Title);
-		MakeAppear(m_Scroller, 180);
-		MakeAppear(m_Instructions);
-
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Activate();
-
-		m_Open = true;
-	}
-
-	void Menu::Close()
-	{
-		MakeDisappear(m_Background);
-		MakeDisappear(m_Title);
-		MakeDisappear(m_Scroller);
-		MakeDisappear(m_Instructions);
-
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].Deactivate();
-
-		m_Open = false;
-	}
-
 	void Menu::GoToMenu(const std::string& menuName)
 	{
-		Cleanup();
+		ResetCursor();
 
-		if (m_Open) // If m_Open is false, it means this is the call from the constructor and the title has already been set.
-			SetText(m_Title, menuName.c_str(), m_Title->elem.fontScale, (int)m_Title->elem.x, (int)m_Title->elem.y);
-
-		m_Options.reserve(s_Structure[menuName].size());
-
-		for (size_t i = 0; i < s_Structure[menuName].size(); i++)
-			m_Options.emplace_back(Option(m_ClientNum, s_Structure[menuName][i], i, m_Open));
+		m_Title.SetText(menuName);
 	}
 
-	void Menu::GetAllPlayers()
+	void Menu::RequestClientListUpdate()
 	{
-		s_Structure["Verify"].clear();
+		m_ClientListUpdateQueue.push(GetAllPlayers());
+	}
+
+	std::vector<std::string> Menu::GetAllPlayers()
+	{
+		std::vector<std::string> clientList;
 
 		for (int i = 0; i < 18; i++)
 		{
 			if (!strcmp(GetClientState(i)->name, ""))
 				continue;
 
-			s_Structure["Verify"].emplace_back(std::string(GetClientState(i)->name) + " (" + std::to_string((long long)i) + ")");
+			std::string optionName = std::string(GetClientState(i)->name) + " (" + std::to_string((long long)i) + ")";
+			clientList.emplace_back(optionName);
 		}
+
+		return clientList;
 	}
 
 	DWORD Menu::StaticKnockbackThread(LPVOID lpThreadParameter)
@@ -491,44 +420,39 @@ namespace MW2
 
 	void Menu::OnEvent(const std::string& eventString)
 	{
-		if (eventString == "dpad_left")
-		{
-			if (!m_Open)
-				Open();
-			else
-				Close();
-		}
+		if (eventString == DPAD_LEFT)
+			m_Open = !m_Open;
 
-		if (eventString == "dpad_up" && m_Open)
+		if (eventString == DPAD_UP && m_Open)
 		{
 			m_CurrentScrollerPos--;
 
 			if (m_CurrentScrollerPos < 0)
-				m_CurrentScrollerPos = m_Options.size() - 1;
+				m_CurrentScrollerPos = m_Structure[m_Title.GetText()].size() - 1;
 
 			MoveScroller(m_CurrentScrollerPos);
 		}
 
-		if (eventString == "dpad_down" && m_Open)
+		if (eventString == DPAD_DOWN && m_Open)
 		{
 			m_CurrentScrollerPos++;
 
-			if (m_CurrentScrollerPos >= (int)m_Options.size())
+			if (m_CurrentScrollerPos >= (int)m_Structure[m_Title.GetText()].size())
 				m_CurrentScrollerPos = 0;
 
 			MoveScroller(m_CurrentScrollerPos);
 		}
 
-		if (eventString == "select" && m_Open)
-			OnSelectPressed(m_Options[m_CurrentScrollerPos].GetName());
+		if (eventString == SELECT && m_Open)
+			OnSelectPressed(m_Structure[m_Title.GetText()][m_CurrentScrollerPos].GetText());
+		
+		if (eventString == BACK && m_Open)
+			OnBackPressed(m_Structure[m_Title.GetText()][m_CurrentScrollerPos].GetText());
 
-		if (eventString == "back" && m_Open)
-			OnBackPressed(m_Options[m_CurrentScrollerPos].GetName());
-
-		if (eventString == "LB" && m_BindsEnabled)
+		if (eventString == LB && m_BindsEnabled)
 			LoadPosition();
 
-		if (eventString == "RB" && m_BindsEnabled)
+		if (eventString == RB && m_BindsEnabled)
 			SavePosition();
 	}
 
@@ -537,19 +461,41 @@ namespace MW2
 		s_Bot = nullptr;
 	}
 
-	void Menu::MoveScroller(int position)
+	void Menu::Update()
 	{
-		m_Scroller->elem.y = (float)(m_MenuY + (m_Padding * 2) + m_TitleHeight + (m_LineHeight * position));
+		if (!m_Open)
+			return;
+
+		m_Background.Draw();
+		m_Title.Draw();
+		m_Scroller.Draw();
+		m_Instructions.Draw();
+		
+		for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
+			m_Structure[m_Title.GetText()][i].Draw();
+
+		if (!m_ClientListUpdateQueue.empty())
+		{
+			m_Structure["Verify"].clear();
+
+			std::vector<std::string>& clientList = m_ClientListUpdateQueue.front();
+			for (size_t i = 0; i < clientList.size(); i++)
+				m_Structure["Verify"].emplace_back(Option(clientList[i], i));
+
+			m_ClientListUpdateQueue.pop();
+
+			GoToMenu("Verify");
+		}
 	}
 
-	void Menu::Cleanup()
+	void Menu::MoveScroller(int position)
 	{
-		for (size_t i = 0; i < m_Options.size(); i++)
-			m_Options[i].FreeHudElem();
+		m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * position);
+	}
 
+	void Menu::ResetCursor()
+	{
 		m_CurrentScrollerPos = 0;
 		MoveScroller(m_CurrentScrollerPos);
-
-		m_Options.clear();
 	}
 }

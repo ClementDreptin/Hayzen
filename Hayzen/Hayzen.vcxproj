@@ -364,11 +364,14 @@
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\Games.h" />
     <ClInclude Include="src\Games\MW2\Client.h" />
+    <ClInclude Include="src\Games\MW2\Events.h" />
     <ClInclude Include="src\Games\MW2\Functions.h" />
     <ClInclude Include="src\Games\MW2\Menu.h" />
     <ClInclude Include="src\Games\MW2\Option.h" />
+    <ClInclude Include="src\Games\MW2\RectangleElem.h" />
     <ClInclude Include="src\Games\MW2\Structs.h" />
     <ClInclude Include="src\Games\MW2\MW2.h" />
+    <ClInclude Include="src\Games\MW2\TextElem.h" />
     <ClInclude Include="src\Games\MW3\Client.h" />
     <ClInclude Include="src\Games\MW3\Functions.h" />
     <ClInclude Include="src\Games\MW3\HudElem.h" />
@@ -388,7 +391,6 @@
     <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\TextElem.h" />
     <ClInclude Include="src\pch.h" />
-    <ClInclude Include="src\Games\MW2\HudElem.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Plugin.cpp" />
@@ -402,10 +404,11 @@
     <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
     <ClCompile Include="src\Games\MW2\Client.cpp" />
     <ClCompile Include="src\Games\MW2\Functions.cpp" />
-    <ClCompile Include="src\Games\MW2\HudElem.cpp" />
     <ClCompile Include="src\Games\MW2\Menu.cpp" />
     <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\Games\MW2\Option.cpp" />
+    <ClCompile Include="src\Games\MW2\RectangleElem.cpp" />
+    <ClCompile Include="src\Games\MW2\TextElem.cpp" />
     <ClCompile Include="src\Games\MW3\Client.cpp" />
     <ClCompile Include="src\Games\MW3\Functions.cpp" />
     <ClCompile Include="src\Games\MW3\HudElem.cpp" />

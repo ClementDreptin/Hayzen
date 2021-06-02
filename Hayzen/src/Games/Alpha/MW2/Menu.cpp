@@ -9,29 +9,21 @@ namespace Alpha
 {
 namespace MW2
 {
-	const float Menu::s_MenuX = 875.0f;
-	const float Menu::s_MenuY = 5.0f;
-	const float Menu::s_MenuWidth = 400.0f;
-	const float Menu::s_MenuHeight = 710.0f;
-	const float Menu::s_Padding = 20.0f;
-	const float Menu::s_TitleHeight = 60.0f;
-	const float Menu::s_LineHeight = 40.0f;
-
 	gentity_s* Menu::s_Bot;
 
 	Menu::Menu(int clientNum)
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
 	{
-		m_Background = RectangleElem(s_MenuX, s_MenuY, s_MenuWidth, s_MenuHeight, HudElem::s_ColorBlack);
+		m_Background = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
 		m_Background.SetAlpha(0.7f);
 
-		m_Title = TextElem("Cod Jumper", s_MenuX + s_Padding, s_Padding + s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
+		m_Title = TextElem("Cod Jumper", HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_Padding + HudElem::s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
 
-		m_Scroller = RectangleElem(s_MenuX, s_MenuY + (s_Padding * 2) + s_TitleHeight, s_MenuWidth, s_LineHeight, HudElem::s_ColorWhite);
+		m_Scroller = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY + (HudElem::s_Padding * 2) + HudElem::s_TitleHeight, HudElem::s_MenuWidth, HudElem::s_LineHeight, HudElem::s_ColorWhite);
 		m_Scroller.SetAlpha(0.7f);
 
 		m_Instructions = TextElem("Navigate: UP - DOWN | Select: X | Back: RS",
-			s_MenuX + s_Padding, s_MenuY + s_MenuHeight - s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
+			HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
 
 		CreateStructure();
 	}
@@ -376,7 +368,7 @@ namespace MW2
 
 	void Menu::MoveScroller(int position)
 	{
-		m_Scroller.SetY(s_MenuY + s_Padding * 2 + s_TitleHeight + s_LineHeight * position);
+		m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * position);
 	}
 
 	void Menu::ResetCursor()

@@ -1,10 +1,8 @@
 #include "pch.h"
 #include "Games\MW2\MW2.h"
 
-#include "Games\MW2\Structs.h"
+#include "Games\MW2\Events.h"
 #include "Games\MW2\Functions.h"
-
-using namespace XexUtils;
 
 namespace MW2
 {
@@ -91,15 +89,6 @@ namespace MW2
 		SetClientDvar(clientNum, "loc_warnings", "0");
 		SetClientDvar(clientNum, "loc_warningsUI", "0");
 
-		Cmd_RegisterNotification(clientNum, "+actionslot 1", "dpad_up");
-		Cmd_RegisterNotification(clientNum, "+actionslot 2", "dpad_down");
-		Cmd_RegisterNotification(clientNum, "+actionslot 3", "dpad_left");
-		Cmd_RegisterNotification(clientNum, "+actionslot 4", "dpad_right");
-		Cmd_RegisterNotification(clientNum, "+usereload", "select");
-		Cmd_RegisterNotification(clientNum, "+melee", "back");
-		Cmd_RegisterNotification(clientNum, "+smoke", "LB");
-		Cmd_RegisterNotification(clientNum, "+frag", "RB");
-
 		Clients[clientNum] = Client(clientNum);
 
 		return true;
@@ -125,7 +114,7 @@ namespace MW2
 
 		const char* notify = SL_ConvertToString(stringValue);
 
-		if (!strcmp(notify, "begin"))
+		if (!strcmp(notify, GAME_START))
 		{
 			// "begin" can happen multiple times a game in round-based gamemodes so we need to reset the menu
 			// and recreate it at the beggining of each round if we want the menu to work after the first round
@@ -134,9 +123,6 @@ namespace MW2
 
 			SetupGame(clientNum);
 		}
-
-		if (HasGameBegun && Clients.find(clientNum) != Clients.end())
-			Clients[clientNum].GetMenu().OnEvent(notify);
 	}
 
 	void SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer)
@@ -144,6 +130,9 @@ namespace MW2
 		SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
 		int clientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
+
+		if (HasGameBegun && Clients.find(clientNum) != Clients.end())
+			Clients[clientNum].GetMenu().OnEvent(s);
 
 		if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
 			ResetGame(clientNum);

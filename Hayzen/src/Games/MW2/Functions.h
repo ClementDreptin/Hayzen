@@ -4,17 +4,9 @@
 
 namespace MW2
 {
-	extern void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command);
-
 	extern const char* (*SL_ConvertToString)(unsigned int stringValue);
 
 	extern void (*SV)(int clientNum, int type, const char* text);
-
-	extern bool (*Dvar_GetBool)(const char* dvarName);
-
-	extern int (*Dvar_GetInt)(const char* dvarName);
-
-	extern const char* (*Dvar_GetString)(const char* dvarName);
 
 	extern game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum);
 
@@ -23,6 +15,10 @@ namespace MW2
 	extern int (*G_MaterialIndex)(const char* name);
 
 	extern int (*G_LocalizedStringIndex)(const char* string);
+
+	extern bool (*Dvar_GetBool)(const char* dvarName);
+
+	extern const char* (*Dvar_GetString)(const char* dvarName);
 
 	extern clientState_s* (*GetClientState)(int clientNum);
 

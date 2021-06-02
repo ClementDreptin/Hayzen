@@ -4,32 +4,35 @@
 
 namespace MW3
 {
-	extern const hudelem_color_t COLOR_WHITE;
-	extern const hudelem_color_t COLOR_WHITE_NO_ALPHA;
-	extern const hudelem_color_t COLOR_BLACK;
-	extern const hudelem_color_t COLOR_BLACK_NO_ALPHA;
-
 	class HudElem
 	{
 	public:
+		static const hudelem_color_t s_ColorWhite;
+		static const hudelem_color_t s_ColorWhiteNoAlpha;
+		static const hudelem_color_t s_ColorBlack;
+		static const hudelem_color_t s_ColorBlackNoAlpha;
+		static const float s_MenuX;
+		static const float s_MenuY;
+		static const int s_MenuWidth;
+		static const int s_MenuHeight;
+		static const float s_Padding;
+		static const float s_TitleHeight;
+		static const float s_LineHeight;
+
 		HudElem() {}
+		HudElem(int clientNum, float x, float y, const hudelem_color_t& color);
 		virtual ~HudElem() {}
 
+		float GetX() const { return m_InternalHudElem->elem.x; }
+		float GetY() const { return m_InternalHudElem->elem.y; }
+		const hudelem_color_t& GetColor() const { return m_InternalHudElem->elem.color; }
+
+		void SetX(float x) { m_InternalHudElem->elem.x = x; }
+		void SetY(float y) { m_InternalHudElem->elem.y = y; }
+		void SetColor(const hudelem_color_t& color) { m_InternalHudElem->elem.color = color; }
+		void SetColor(byte r, byte g, byte b, byte a);
+		void SetAlpha(byte alpha) { m_InternalHudElem->elem.color.a = alpha; }
 	protected:
-		static const int m_MenuX = 441;
-		static const int m_MenuY = 5;
-		static const int m_MenuWidth = 300;
-		static const int m_MenuHeight = 470;
-		static const int m_Padding = 10;
-		static const int m_TitleHeight = 30;
-		static const int m_LineHeight = 23;
-
-		void SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, hudelem_color_t color = COLOR_WHITE, float sort = 0.0f, align_t alignOrg = ALIGN_TOP_LEFT, align_t alignScreen = ALIGN_TOP_LEFT);
-
-		void SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, hudelem_color_t color = COLOR_WHITE, int font = 4, float sort = 1.0f, align_t alignOrg = ALIGN_TOP_MIDDLE, align_t alignScreen = ALIGN_TOP_LEFT);
-
-		void MakeAppear(game_hudelem_s* elem, byte alpha = 255);
-
-		void MakeDisappear(game_hudelem_s* elem);
+		game_hudelem_s* m_InternalHudElem;
 	};
 }

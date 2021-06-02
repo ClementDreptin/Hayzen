@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Games\SpecOps\MW3\MW3.h"
 
-#include "Core\Events.h"
+#include "Games\SpecOps\MW3\Events.h"
 
 namespace SpecOps
 {

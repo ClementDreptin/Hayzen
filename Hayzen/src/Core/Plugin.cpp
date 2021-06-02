@@ -3,8 +3,6 @@
 
 #include "Games\Games.h"
 
-using namespace XexUtils;
-
 bool Plugin::Running = false;
 DWORD Plugin::CurrentTitle = 0;
 

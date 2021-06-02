@@ -12,8 +12,8 @@ namespace MW3
 		Client() : m_Num(-1), m_Initialized(false) {}
 		Client(int clientNum);
 
-		inline Menu& GetMenu() { return m_Menu; }
-		inline bool IsInitialized() { return m_Initialized; }
+		Menu& GetMenu() { return m_Menu; }
+		bool IsInitialized() const { return m_Initialized; }
 	private:
 		int m_Num;
 		Menu m_Menu;

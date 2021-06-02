@@ -1,27 +1,15 @@
 #pragma once
 
-#include "Games\MW2\HudElem.h"
+#include "Games\MW2\TextElem.h"
 
 namespace MW2
 {
-	class Option : public HudElem
+	class Option : public TextElem
 	{
 	public:
 		Option() {};
-		Option(int clientNum, const std::string& name, int index, bool active = false);
-
-		inline std::string GetName() const { return m_Name; }
-		inline game_hudelem_s* GetHudElem() const { return m_HudElem; }
-
-		void SetName(const std::string& name);
-
-		void FreeHudElem();
-		void Activate();
-		void Deactivate();
+		Option(int clientNum, const std::string& name, int index);
 	private:
-		std::string m_Name;
 		int m_Index;
-		game_hudelem_s* m_HudElem;
-		bool m_Active;
 	};
 }

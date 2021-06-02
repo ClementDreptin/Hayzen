@@ -3,17 +3,23 @@
 
 #include "Games\Alpha\MW2\Structs.h"
 
-using namespace XexUtils;
-
 namespace Alpha
 {
 namespace MW2
 {
-	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82270880;
-
 	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x8229A730;
 
 	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822B6140;
+
+	void (*R_AddCmdDrawText)(const char* text, int maxChars, Font_s* font, float x, float y, float xScale, float yScale, float rotation, const float* color, int style) =
+		(void(*)(const char* , int, Font_s* , float, float, float, float, float, const float*, int))0x823BB4D8;
+
+	void (*R_AddCmdDrawStretchPic)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float* color, void* material) =
+		(void(*)(float, float, float, float, float, float, float, float, const float*, void*))0x823BAC18;
+
+	Font_s* (*R_RegisterFont)(const char* font, int imageTrack) = (Font_s*(*)(const char*, int))0x823B6D58;
+
+	void* (*Material_RegisterHandle)(const char* name, int imageTrack) = (void*(*)(const char *, int))0x823B6928;
 
 	void (*Cbuf_AddText)(int localClientNum, const char* text) = (void(*)(int, const char*))0x8226F590;
 
@@ -23,19 +29,7 @@ namespace MW2
 
 	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x82303CC0;
 
-	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x82224DD8;
-
-	void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x82224E70;
-
-	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x82257000;
-
-	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x82256D50;
-
-	clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x8222C0F0;
-
 	playerState_s* (*GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x8222C108;
-
-	bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82388338;
 
 	void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82250A20;
 
@@ -55,11 +49,6 @@ namespace MW2
 
 	void (*TeleportPlayer)(gentity_s* player, float* origin, float* angles) = (void(*)(gentity_s*, float*, float*))0x8222E5A0;
 
-	gclient_s* GetGClient(int clientNum)
-	{
-		return (gclient_s*)(0x82F01480 + sizeof(gclient_s) * clientNum);
-	}
-
 	gentity_s* GetEntity(int entNum)
 	{
 		return (gentity_s*)(0x82D47D80 + sizeof(gentity_s) * entNum);
@@ -73,11 +62,6 @@ namespace MW2
 	void iPrintLn(int clientNum, const std::string& text)
 	{
 		SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
-	}
-
-	bool IsHost(int clientNum)
-	{
-		return Session_IsHost(0x83A06F28, clientNum);
 	}
 
 	gentity_s* GetCurrentMapBrushModel()

@@ -3,19 +3,11 @@
 
 #include "Games\MW3\Structs.h"
 
-using namespace XexUtils;
-
 namespace MW3
 {
-	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82288FF0;
-
 	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x822B5120;
 
 	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822C9340;
-
-	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8232E2C8;
-
-	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8232E330;
 
 	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8232E488;
 

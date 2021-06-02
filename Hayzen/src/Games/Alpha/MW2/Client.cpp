@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Games\Alpha\MW2\Client.h"
 
-#include "Games\Alpha\MW2\Functions.h"
-
 namespace Alpha
 {
 namespace MW2

@@ -33,14 +33,6 @@ namespace MW3
 
 		std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
-		static const float s_MenuX;
-		static const float s_MenuY;
-		static const float s_MenuWidth;
-		static const float s_MenuHeight;
-		static const float s_Padding;
-		static const float s_TitleHeight;
-		static const float s_LineHeight;
-
 		void ToggleGodMode();
 		void ToggleAmmo();
 		void ToggleUFO();
@@ -53,7 +45,7 @@ namespace MW3
 		void OnBackPressed(const std::string& optionName);
 		void GoToMenu(const std::string& menuName);
 		void MoveScroller(int position);
-		void ResetCursor();
+		void ResetScroller();
 	};
 }
 }

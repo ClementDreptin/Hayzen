@@ -3,21 +3,11 @@
 
 #include "Games\MW2\Structs.h"
 
-using namespace XexUtils;
-
 namespace MW2
 {
-	void (*Cmd_RegisterNotification)(int clientNum, const char* notify, const char* command) = (void(*)(int, const char*, const char*))0x82225858;
-
 	const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x82241898;
 
 	void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
-
-	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
-
-	int (*Dvar_GetInt)(const char* dvarName) = (int(*)(const char*))0x8229EF50;
-
-	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
 
 	game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
 
@@ -26,6 +16,10 @@ namespace MW2
 	int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
 
 	int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
+
+	bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
+
+	const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
 
 	clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x821E6610;
 

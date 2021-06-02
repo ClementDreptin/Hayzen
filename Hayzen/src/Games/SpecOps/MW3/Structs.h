@@ -68,7 +68,7 @@ namespace MW3
 	{
 		entityState_s state;
 		entityShared_t r;
-		char padding[0x160];
+		char padding1[0x160];
 	};
 }
 }

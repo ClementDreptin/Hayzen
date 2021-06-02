@@ -61,6 +61,6 @@ namespace MW2
 		static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
 		void _Knockback();
 		void MoveScroller(int position);
-		void ResetCursor();
+		void ResetScroller();
 	};
 }

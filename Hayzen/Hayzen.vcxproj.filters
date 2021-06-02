@@ -34,6 +34,8 @@
     <ClCompile Include="src\Games\MW2\TextElem.cpp" />
     <ClCompile Include="src\Games\MW2\RectangleElem.cpp" />
     <ClCompile Include="src\Games\MW2\HudElem.cpp" />
+    <ClCompile Include="src\Games\MW3\TextElem.cpp" />
+    <ClCompile Include="src\Games\MW3\RectangleElem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\Games.h" />
@@ -76,5 +78,8 @@
     <ClInclude Include="src\Games\MW2\RectangleElem.h" />
     <ClInclude Include="src\Games\MW2\Events.h" />
     <ClInclude Include="src\Games\MW2\HudElem.h" />
+    <ClInclude Include="src\Games\MW3\TextElem.h" />
+    <ClInclude Include="src\Games\MW3\RectangleElem.h" />
+    <ClInclude Include="src\Games\MW3\Events.h" />
   </ItemGroup>
 </Project>

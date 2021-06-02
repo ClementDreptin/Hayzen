@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Games\MW3\Client.h"
 
-#include "Games\MW3\Functions.h"
-
 namespace MW3
 {
 	Client::Client(int clientNum)

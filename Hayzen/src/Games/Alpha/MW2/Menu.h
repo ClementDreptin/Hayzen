@@ -56,7 +56,7 @@ namespace MW2
 		void GoToMenu(const std::string& menuName);
 		static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
 		void MoveScroller(int position);
-		void ResetCursor();
+		void ResetScroller();
 	};
 }
 }

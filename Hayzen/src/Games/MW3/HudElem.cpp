@@ -5,46 +5,31 @@
 
 namespace MW3
 {
-	const hudelem_color_t COLOR_WHITE = { 255, 255, 255, 255 };
-	const hudelem_color_t COLOR_WHITE_NO_ALPHA = { 255, 255, 255, 0 };
-	const hudelem_color_t COLOR_BLACK = { 0, 0, 0, 255 };
-	const hudelem_color_t COLOR_BLACK_NO_ALPHA = { 0, 0, 0, 0 };
+	const hudelem_color_t HudElem::s_ColorWhite = { 255, 255, 255, 255 };
+	const hudelem_color_t HudElem::s_ColorWhiteNoAlpha = { 255, 255, 255, 0 };
+	const hudelem_color_t HudElem::s_ColorBlack = { 0, 0, 0, 255 };
+	const hudelem_color_t HudElem::s_ColorBlackNoAlpha = { 0, 0, 0, 0 };
+	const float HudElem::s_MenuX = 441.0f;
+	const float HudElem::s_MenuY = 5.0f;
+	const int HudElem::s_MenuWidth = 300;
+	const int HudElem::s_MenuHeight = 470;
+	const float HudElem::s_Padding = 10.0f;
+	const float HudElem::s_TitleHeight = 30.0f;
+	const float HudElem::s_LineHeight = 23.0f;
 
-	void HudElem::SetShader(game_hudelem_s* elem, const char* materialName, int x, int y, int width, int height, hudelem_color_t color, float sort, align_t alignOrg, align_t alignScreen)
+	HudElem::HudElem(int clientNum, float x, float y, const hudelem_color_t& color)
 	{
-		elem->elem.type = HE_TYPE_MATERIAL;
-		elem->elem.alignOrg = alignOrg;
-		elem->elem.alignScreen = alignScreen;
-		elem->elem.x = (float)x;
-		elem->elem.y = (float)y;
-		elem->elem.color = color;
-		elem->elem.width = width;
-		elem->elem.height = height;
-		elem->elem.sort = sort;
-		elem->elem.materialIndex = G_MaterialIndex(materialName);
+		m_InternalHudElem = HudElem_Alloc(clientNum, 0);
+		SetX(x);
+		SetY(y);
+		SetColor(color);
 	}
 
-	void HudElem::SetText(game_hudelem_s* elem, const char* text, float fontScale, int x, int y, hudelem_color_t color, int font, float sort, align_t alignOrg, align_t alignScreen)
+	void HudElem::SetColor(byte r, byte g, byte b, byte a)
 	{
-		elem->elem.type = HE_TYPE_TEXT;
-		elem->elem.alignOrg = alignOrg;
-		elem->elem.alignScreen = alignScreen;
-		elem->elem.font = font;
-		elem->elem.fontScale = fontScale;
-		elem->elem.x = (float)x;
-		elem->elem.y = (float)y;
-		elem->elem.color = color;
-		elem->elem.sort = sort;
-		elem->elem.text = G_LocalizedStringIndex(text);
-	}
-
-	void HudElem::MakeDisappear(game_hudelem_s* elem)
-	{
-		elem->elem.color.a = 0;
-	}
-
-	void HudElem::MakeAppear(game_hudelem_s* elem, byte alpha)
-	{
-		elem->elem.color.a = alpha;
+		m_InternalHudElem->elem.color.r = r;
+		m_InternalHudElem->elem.color.g = g;
+		m_InternalHudElem->elem.color.b = b;
+		m_InternalHudElem->elem.color.a = a;
 	}
 }

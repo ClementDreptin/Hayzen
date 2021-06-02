@@ -45,7 +45,7 @@ namespace MW3
 		void OnBackPressed(const std::string& optionName);
 		void GoToMenu(const std::string& menuName);
 		void MoveScroller(int position);
-		void ResetCursor();
+		void ResetScroller();
 	};
 }
 }

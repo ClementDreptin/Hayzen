@@ -381,7 +381,7 @@ namespace MW2
 
 	void Menu::GoToMenu(const std::string& menuName)
 	{
-		ResetCursor();
+		ResetScroller();
 
 		m_Title.SetText(menuName);
 
@@ -501,7 +501,7 @@ namespace MW2
 		m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * position);
 	}
 
-	void Menu::ResetCursor()
+	void Menu::ResetScroller()
 	{
 		m_CurrentScrollerPos = 0;
 		MoveScroller(m_CurrentScrollerPos);

@@ -157,5 +157,6 @@ namespace MW3
 		gclient_s* client;
 		char padding1[0x28];
 		int flags;
+		char padding2[0xF8];
 	};
 }

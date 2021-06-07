@@ -10,6 +10,7 @@ A mod menu:
 
 ## Supported games
 - Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 2 - TU9 Special Ops (latest version)
 - Call of Duty: Modern Warfare 2 - Alpha 482 Multiplayer
 - Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)

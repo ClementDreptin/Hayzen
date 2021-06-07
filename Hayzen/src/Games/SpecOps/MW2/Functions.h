@@ -26,8 +26,6 @@ namespace MW2
 
 	extern gentity_s* GetEntity(int entNum);
 
-	extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
-
 	extern void iPrintLn(int clientNum, const std::string& text);
 }
 }

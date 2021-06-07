@@ -46,9 +46,6 @@ namespace MW3
 
 		Sleep(200);
 
-		// Precache all shaders
-		Memory::Write<int>(0x83166220 + 0x24, 1);
-
 		Memory::HookFunctionStart((DWORD*)0x822E0488, (DWORD*)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
 		Memory::HookFunctionStart((DWORD*)0x821FEFB0, (DWORD*)ClientCommandStub, (DWORD)ClientCommandHook);
 	}

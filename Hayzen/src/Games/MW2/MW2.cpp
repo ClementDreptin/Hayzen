@@ -45,9 +45,6 @@ namespace MW2
 
 		Sleep(200);
 
-		// Precache all shaders
-		Memory::Write<int>(0x83109D80 + 0x1C, 1);
-
 		// NOP cheat protection
 		Memory::Write<int>(0x8216906C, 0x60000000);
 		Memory::Write<int>(0x821690E4, 0x60000000);

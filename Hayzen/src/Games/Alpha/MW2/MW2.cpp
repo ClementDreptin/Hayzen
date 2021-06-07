@@ -62,9 +62,6 @@ namespace MW2
 
 		Sleep(200);
 
-		// Precache all shaders
-		Memory::Write<int>(0x82F3F280 + 0x1C, 1);
-
 		Memory::HookFunctionStart((DWORD*)0x8218B5F0, (DWORD*)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
 		Memory::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
 		Memory::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);

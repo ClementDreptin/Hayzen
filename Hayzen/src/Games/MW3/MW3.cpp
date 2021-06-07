@@ -45,9 +45,6 @@ namespace MW3
 
 		Sleep(200);
 
-		// Precache all shaders
-		Memory::Write<int>(0x82FDA080 + 0x18, 1);
-
 		// NOP cheat protection
 		Memory::Write<int>(0x821ABA24, 0x60000000);
 		Memory::Write<int>(0x821ABA9C, 0x60000000);

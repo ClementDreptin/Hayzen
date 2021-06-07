@@ -43,6 +43,8 @@ void Plugin::InitNewGame(DWORD titleId)
 		case MW2:
 			if (!strcmp((char*)0x82001270, "multiplayer"))
 				MW2::Init();
+			else if (!strcmp((char*)0x8200EFE4, "startMultiplayer"))
+				SpecOps::MW2::Init();
 			else if (!strcmp((char*)0x82001D38, "multiplayer"))
 				Alpha::MW2::Init();
 			break;
@@ -62,4 +64,5 @@ void Plugin::Cleanup()
 	Alpha::MW2::SafeReset();
 	MW3::SafeReset();
 	SpecOps::MW3::SafeReset();
+	SpecOps::MW2::SafeReset();
 }

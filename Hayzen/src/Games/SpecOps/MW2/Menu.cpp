@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Games\SpecOps\MW3\Menu.h"
+#include "Games\SpecOps\MW2\Menu.h"
 
-#include "Games\SpecOps\MW3\Functions.h"
-#include "Games\SpecOps\MW3\Events.h"
+#include "Games\SpecOps\MW2\Functions.h"
+#include "Games\SpecOps\MW2\Events.h"
 
 namespace SpecOps
 {
-namespace MW3
+namespace MW2
 {
 	Menu::Menu(int clientNum)
 		: m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
@@ -43,9 +43,9 @@ namespace MW3
 
 	void Menu::ToggleAmmo()
 	{
-		DWORD address = 0x8235BB54;
-		unsigned int defaultValue = 0x7D3D5050;
-		unsigned int modifiedValue = 0x7D495378;
+		DWORD address = 0x82331F48;
+		unsigned int defaultValue = 0x7D1D4850;
+		unsigned int modifiedValue = 0x7D284B78;
 
 		if (Memory::Read<unsigned int>(address) == defaultValue)
 		{

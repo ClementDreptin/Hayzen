@@ -2,7 +2,6 @@
 #include "Games\SpecOps\MW3\Menu.h"
 
 #include "Games\SpecOps\MW3\Functions.h"
-#include "Games\SpecOps\MW3\MW3.h"
 #include "Games\SpecOps\MW3\Events.h"
 
 namespace SpecOps

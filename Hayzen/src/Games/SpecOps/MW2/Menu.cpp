@@ -2,7 +2,6 @@
 #include "Games\SpecOps\MW2\Menu.h"
 
 #include "Games\SpecOps\MW2\Functions.h"
-#include "Games\SpecOps\MW2\MW2.h"
 #include "Games\SpecOps\MW2\Events.h"
 
 namespace SpecOps

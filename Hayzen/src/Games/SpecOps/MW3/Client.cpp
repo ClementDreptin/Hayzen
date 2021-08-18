@@ -5,11 +5,11 @@ namespace SpecOps
 {
 namespace MW3
 {
-	Client::Client(int clientNum)
-		: m_Num(clientNum)
-	{
-		m_Menu = Menu(clientNum);
-		m_Initialized = true;
-	}
+    Client::Client(int clientNum)
+        : m_Num(clientNum)
+    {
+        m_Menu = Menu(clientNum);
+        m_Initialized = true;
+    }
 }
 }

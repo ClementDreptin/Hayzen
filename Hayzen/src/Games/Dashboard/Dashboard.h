@@ -2,5 +2,5 @@
 
 namespace Dashboard
 {
-	void Init();
+    void Init();
 }

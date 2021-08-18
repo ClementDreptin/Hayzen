@@ -40,6 +40,21 @@ namespace MW3
 		}
 	}
 
+	__declspec(naked) void PlayerCmd_AllowJumpStub()
+	{
+		__asm
+		{
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			nop
+			li r3, 3
+		}
+	}
+
 	void Init()
 	{
 		Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
@@ -48,6 +63,7 @@ namespace MW3
 
 		Memory::HookFunctionStart((DWORD*)0x822E0488, (DWORD*)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
 		Memory::HookFunctionStart((DWORD*)0x821FEFB0, (DWORD*)ClientCommandStub, (DWORD)ClientCommandHook);
+		Memory::HookFunctionStart((DWORD*)0x821FA680, (DWORD*)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
 	}
 
 	void SetupGame(int clientNum)
@@ -95,6 +111,15 @@ namespace MW3
 		
 		if (HasGameBegun && Clients.find(clientNum) != Clients.end())
 			Clients[clientNum].GetMenu().OnEvent(s);
+	}
+
+	void PlayerCmd_AllowJumpHook()
+	{
+		/**
+		 * Making the PlayerCmd_AllowJump function not do anything so that you can jump in
+		 * missions where you normally can't. This is a bad practice and may have side effects.
+		 */
+		return;
 	}
 }
 }

@@ -22,5 +22,8 @@ namespace MW3
 
 	void ClientCommandStub(int clientNum, const char* s);
 	void ClientCommandHook(int clientNum, const char* s);
+
+	void PlayerCmd_AllowJumpStub();
+	void PlayerCmd_AllowJumpHook();
 }
 }

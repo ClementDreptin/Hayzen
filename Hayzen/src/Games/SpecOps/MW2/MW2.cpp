@@ -8,10 +8,10 @@ namespace SpecOps
 {
 namespace MW2
 {
-    bool HasGameBegun = false;
-    std::unordered_map<int, Client> Clients;
+    BOOL HasGameBegun = FALSE;
+    std::unordered_map<INT, Client> Clients;
 
-    __declspec(naked) void SCR_DrawScreenFieldStub(int refreshedUI)
+    __declspec(naked) VOID SCR_DrawScreenFieldStub(INT refreshedUI)
     {
         __asm
         {
@@ -26,7 +26,7 @@ namespace MW2
         }
     }
 
-    __declspec(naked) void ClientCommandStub(int clientNum, const char* s)
+    __declspec(naked) VOID ClientCommandStub(INT clientNum, LPCSTR s)
     {
         __asm
         {
@@ -41,48 +41,48 @@ namespace MW2
         }
     }
 
-    void Init()
+    VOID Init()
     {
         Xam::XNotify("Hayzen - MW2 Spec Ops Detected");
 
         Sleep(200);
 
-        Memory::HookFunctionStart((DWORD*)0x821354B0, (DWORD*)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-        Memory::HookFunctionStart((DWORD*)0x821EFFD0, (DWORD*)ClientCommandStub, (DWORD)ClientCommandHook);
+        Memory::HookFunctionStart((DWORD*)0x821354B0, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
+        Memory::HookFunctionStart((DWORD*)0x821EFFD0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
     }
 
-    void SetupGame(int clientNum)
+    VOID SetupGame(INT clientNum)
     {
         Verify(clientNum);
-        HasGameBegun = true;
+        HasGameBegun = TRUE;
     }
 
-    bool Verify(int clientNum)
+    BOOL Verify(INT clientNum)
     {
         if (clientNum < 0 || clientNum > 17)
-            return false;
+            return FALSE;
 
         if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return false;
+            return FALSE;
 
         Cbuf_AddText(0, "set loc_warnings 0");
         Cbuf_AddText(0, "set loc_warningsUI 0");
 
         Clients[clientNum] = Client(clientNum);
 
-        return true;
+        return TRUE;
     }
 
-    void SafeReset()
+    VOID SafeReset()
     {
         if (Clients.size() != 0)
             Clients.clear();
 
         if (HasGameBegun)
-            HasGameBegun = false;
+            HasGameBegun = FALSE;
     }
 
-    void SCR_DrawScreenFieldHook(int refreshedUI)
+    VOID SCR_DrawScreenFieldHook(INT refreshedUI)
     {
         SCR_DrawScreenFieldStub(refreshedUI);
 
@@ -90,7 +90,7 @@ namespace MW2
             Clients[i].GetMenu().Update();
     }
 
-    void ClientCommandHook(int clientNum, const char* s)
+    VOID ClientCommandHook(INT clientNum, LPCSTR s)
     {
         ClientCommandStub(clientNum, s);
 

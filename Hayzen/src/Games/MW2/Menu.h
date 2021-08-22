@@ -12,18 +12,18 @@ namespace MW2
         friend class Option;
 
         Menu() {}
-        Menu(int clientNum);
+        Menu(INT clientNum);
 
-        void OnEvent(const std::string& eventString);
+        VOID OnEvent(CONST std::string& eventString);
 
-        static void FreeBot();
+        static VOID FreeBot();
     private:
-        int m_ClientNum;
-        bool m_Open;
-        int m_CurrentScrollerPos;
+        INT m_ClientNum;
+        BOOL m_Open;
+        INT m_CurrentScrollerPos;
         vec3 m_SavedPos;
         vec3 m_SavedAngles;
-        bool m_BindsEnabled;
+        BOOL m_BindsEnabled;
 
         RectangleElem m_Background;
         TextElem m_Title;
@@ -34,33 +34,33 @@ namespace MW2
 
         std::unordered_map<std::string, std::vector<Option>> m_Structure;
 
-        void ToggleElevators();
-        void Knockback();
-        void ToggleDepatchBounces();
-        void ToggleFallDamage();
-        void ToggleAmmo();
-        void ToggleUFO();
-        void SavePosition();
-        void LoadPosition();
-        void ToggleSaveLoadBinds();
-        void ToggleGodMode();
-        void Verify(int clientNum);
-        void SpawnCP();
-        void SpawnBot();
-        void TeleportBotToMe();
-        void ToggleBotMovement();
+        VOID ToggleElevators();
+        VOID Knockback();
+        VOID ToggleDepatchBounces();
+        VOID ToggleFallDamage();
+        VOID ToggleAmmo();
+        VOID ToggleUFO();
+        VOID SavePosition();
+        VOID LoadPosition();
+        VOID ToggleSaveLoadBinds();
+        VOID ToggleGodMode();
+        VOID Verify(INT clientNum);
+        VOID SpawnCP();
+        VOID SpawnBot();
+        VOID TeleportBotToMe();
+        VOID ToggleBotMovement();
 
-        void CreateStructure();
-        void OnSelectPressed(const std::string& optionName);
-        void OnBackPressed(const std::string& optionName);
-        void Open();
-        void Close();
-        void GoToMenu(const std::string& menuName);
-        void GetAllPlayers();
+        VOID CreateStructure();
+        VOID OnSelectPressed(CONST std::string& optionName);
+        VOID OnBackPressed(CONST std::string& optionName);
+        VOID Open();
+        VOID Close();
+        VOID GoToMenu(CONST std::string& menuName);
+        VOID GetAllPlayers();
         static DWORD StaticKnockbackThread(LPVOID lpThreadParameter);
         static DWORD StaticSpawnBotThread(LPVOID lpThreadParameter);
-        void _Knockback();
-        void MoveScroller(int position);
-        void ResetScroller();
+        VOID _Knockback();
+        VOID MoveScroller(INT position);
+        VOID ResetScroller();
     };
 }

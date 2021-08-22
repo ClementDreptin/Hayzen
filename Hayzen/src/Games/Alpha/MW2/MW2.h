@@ -8,24 +8,24 @@ namespace Alpha
 namespace MW2
 {
     // Variables
-    extern bool HasGameBegun;
-    extern std::unordered_map<int, Client> Clients;
+    extern BOOL HasGameBegun;
+    extern std::unordered_map<INT, Client> Clients;
 
     // Functions
-    void Init();
-    void SetupGame(int clientNum);
-    void ResetGame(int clientNum, bool resetBot = true);
-    bool Verify(int clientNum);
-    void SafeReset(); // Resets everything when the game was not reset properly
+    VOID Init();
+    VOID SetupGame(INT clientNum);
+    VOID ResetGame(INT clientNum, BOOL resetBot = TRUE);
+    BOOL Verify(INT clientNum);
+    VOID SafeReset(); // Resets everything when the game was not reset properly
 
     // Hooks and their stubs
-    void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI);
-    void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
+    VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI);
+    VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI);
 
-    void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
-    void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount);
+    VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount);
+    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount);
 
-    void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer);
-    void SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer);
+    VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 }
 }

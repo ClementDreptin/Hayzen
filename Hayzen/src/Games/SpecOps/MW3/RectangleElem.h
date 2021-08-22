@@ -10,18 +10,18 @@ namespace MW3
     {
     public:
         RectangleElem() {}
-        RectangleElem(float x, float y, float width, float height, const Color& color);
+        RectangleElem(FLOAT x, FLOAT y, FLOAT width, FLOAT height, CONST Color& color);
 
-        virtual void Draw() const;
+        virtual VOID Draw() CONST;
 
-        float GetWidth() const { return m_Width; }
-        float GetHeight() const { return m_Height; }
+        FLOAT GetWidth() CONST { return m_Width; }
+        FLOAT GetHeight() CONST { return m_Height; }
 
-        void SetWidth(float width) { m_Width = width; }
-        void SetHeight(float height) { m_Height = height; }
+        VOID SetWidth(FLOAT width) { m_Width = width; }
+        VOID SetHeight(FLOAT height) { m_Height = height; }
     private:
-        float m_Width, m_Height;
-        void* m_MaterialHandle;
+        FLOAT m_Width, m_Height;
+        LPVOID m_MaterialHandle;
     };
 }
 }

@@ -3,18 +3,18 @@
 
 #include "Games\Games.h"
 
-bool Plugin::Running = false;
+BOOL Plugin::Running = FALSE;
 DWORD Plugin::CurrentTitle = 0;
 
-void Plugin::Start()
+VOID Plugin::Start()
 {
-    Running = true;
+    Running = TRUE;
     Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
 }
 
-void Plugin::Stop()
+VOID Plugin::Stop()
 {
-    Running = false;
+    Running = FALSE;
 }
 
 DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
@@ -29,7 +29,7 @@ DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
     return 0;
 }
 
-void Plugin::InitNewGame(DWORD titleId)
+VOID Plugin::InitNewGame(DWORD titleId)
 {
     Cleanup();
 
@@ -41,24 +41,24 @@ void Plugin::InitNewGame(DWORD titleId)
             Dashboard::Init();
             break;
         case MW2:
-            if (!strcmp((char*)0x82001270, "multiplayer"))
+            if (!strcmp((LPSTR)0x82001270, "multiplayer"))
                 MW2::Init();
-            else if (!strcmp((char*)0x8200EFE4, "startMultiplayer"))
+            else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
                 SpecOps::MW2::Init();
-            else if (!strcmp((char*)0x82001D38, "multiplayer"))
+            else if (!strcmp((LPSTR)0x82001D38, "multiplayer"))
                 Alpha::MW2::Init();
             break;
         case MW3:
-            if (!strcmp((char*)0x82001458, "multiplayer"))
+            if (!strcmp((LPSTR)0x82001458, "multiplayer"))
                 MW3::Init();
-            else if (!strcmp((char*)0x8200BEA8, "startMultiplayer"))
+            else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
                 SpecOps::MW3::Init();
         default:
             return;
     }
 }
 
-void Plugin::Cleanup()
+VOID Plugin::Cleanup()
 {
     MW2::SafeReset();
     Alpha::MW2::SafeReset();

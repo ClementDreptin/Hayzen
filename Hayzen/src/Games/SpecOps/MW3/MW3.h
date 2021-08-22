@@ -7,23 +7,23 @@ namespace SpecOps
 namespace MW3
 {
     // Variables
-    extern bool HasGameBegun;
-    extern std::unordered_map<int, Client> Clients;
+    extern BOOL HasGameBegun;
+    extern std::unordered_map<INT, Client> Clients;
 
     // Functions
-    void Init();
-    void SetupGame(int clientNum);
-    bool Verify(int clientNum);
-    void SafeReset(); // Resets everything when the game was not reset properly
+    VOID Init();
+    VOID SetupGame(INT clientNum);
+    BOOL Verify(INT clientNum);
+    VOID SafeReset(); // Resets everything when the game was not reset properly
 
     // Hooks and their stubs
-    void DrawMenuDebugTextStub(int dc);
-    void DrawMenuDebugTextHook(int dc);
+    VOID DrawMenuDebugTextStub(INT dc);
+    VOID DrawMenuDebugTextHook(INT dc);
 
-    void ClientCommandStub(int clientNum, const char* s);
-    void ClientCommandHook(int clientNum, const char* s);
+    VOID ClientCommandStub(INT clientNum, LPCSTR s);
+    VOID ClientCommandHook(INT clientNum, LPCSTR s);
 
-    void PlayerCmd_AllowJumpStub();
-    void PlayerCmd_AllowJumpHook();
+    VOID PlayerCmd_AllowJumpStub();
+    VOID PlayerCmd_AllowJumpHook();
 }
 }

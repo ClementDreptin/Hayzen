@@ -7,31 +7,31 @@ namespace MW2
     class HudElem
     {
     public:
-        static const hudelem_color_t s_ColorWhite;
-        static const hudelem_color_t s_ColorWhiteNoAlpha;
-        static const hudelem_color_t s_ColorBlack;
-        static const hudelem_color_t s_ColorBlackNoAlpha;
-        static const float s_MenuX;
-        static const float s_MenuY;
-        static const int s_MenuWidth;
-        static const int s_MenuHeight;
-        static const float s_Padding;
-        static const float s_TitleHeight;
-        static const float s_LineHeight;
+        static CONST hudelem_color_t s_ColorWhite;
+        static CONST hudelem_color_t s_ColorWhiteNoAlpha;
+        static CONST hudelem_color_t s_ColorBlack;
+        static CONST hudelem_color_t s_ColorBlackNoAlpha;
+        static CONST FLOAT s_MenuX;
+        static CONST FLOAT s_MenuY;
+        static CONST INT s_MenuWidth;
+        static CONST INT s_MenuHeight;
+        static CONST FLOAT s_Padding;
+        static CONST FLOAT s_TitleHeight;
+        static CONST FLOAT s_LineHeight;
 
         HudElem() {}
-        HudElem(int clientNum, float x, float y, const hudelem_color_t& color);
+        HudElem(INT clientNum, FLOAT x, FLOAT y, CONST hudelem_color_t& color);
         virtual ~HudElem() {}
 
-        float GetX() const { return m_InternalHudElem->elem.x; }
-        float GetY() const { return m_InternalHudElem->elem.y; }
-        const hudelem_color_t& GetColor() const { return m_InternalHudElem->elem.color; }
+        FLOAT GetX() CONST { return m_InternalHudElem->elem.x; }
+        FLOAT GetY() CONST { return m_InternalHudElem->elem.y; }
+        CONST hudelem_color_t& GetColor() CONST { return m_InternalHudElem->elem.color; }
 
-        void SetX(float x) { m_InternalHudElem->elem.x = x; }
-        void SetY(float y) { m_InternalHudElem->elem.y = y; }
-        void SetColor(const hudelem_color_t& color) { m_InternalHudElem->elem.color = color; }
-        void SetColor(byte r, byte g, byte b, byte a);
-        void SetAlpha(byte alpha) { m_InternalHudElem->elem.color.a = alpha; }
+        VOID SetX(FLOAT x) { m_InternalHudElem->elem.x = x; }
+        VOID SetY(FLOAT y) { m_InternalHudElem->elem.y = y; }
+        VOID SetColor(CONST hudelem_color_t& color) { m_InternalHudElem->elem.color = color; }
+        VOID SetColor(BYTE r, BYTE g, BYTE b, BYTE a);
+        VOID SetAlpha(BYTE alpha) { m_InternalHudElem->elem.color.a = alpha; }
     protected:
         game_hudelem_s* m_InternalHudElem;
     };

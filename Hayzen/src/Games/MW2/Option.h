@@ -8,8 +8,8 @@ namespace MW2
     {
     public:
         Option() {};
-        Option(int clientNum, const std::string& name, int index);
+        Option(INT clientNum, CONST std::string& name, INT index);
     private:
-        int m_Index;
+        INT m_Index;
     };
 }

@@ -11,8 +11,8 @@ namespace MW2
 {
     gentity_s* Menu::s_Bot;
 
-    Menu::Menu(int clientNum)
-        : m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
+    Menu::Menu(INT clientNum)
+        : m_ClientNum(clientNum), m_Open(FALSE), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(FALSE)
     {
         m_Background = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
         m_Background.SetAlpha(0.7f);
@@ -28,25 +28,25 @@ namespace MW2
         CreateStructure();
     }
 
-    void Menu::ToggleDepatchBounces()
+    VOID Menu::ToggleDepatchBounces()
     {
         DWORD branchAddress = 0x8210CBDC;
-        unsigned int defaultValue = 0x409AFFB0;
-        unsigned int modifiedValue = 0x6060FFB0;
+        UINT defaultValue = 0x409AFFB0;
+        UINT modifiedValue = 0x6060FFB0;
 
-        if (Memory::Read<unsigned int>(branchAddress) == defaultValue)
+        if (Memory::Read<UINT>(branchAddress) == defaultValue)
         {
-            Memory::Write<unsigned int>(branchAddress, modifiedValue);
+            Memory::Write<UINT>(branchAddress, modifiedValue);
             iPrintLn(m_ClientNum, "Depatch Bounces ^2On");
         }
         else
         {
-            Memory::Write<unsigned int>(branchAddress, defaultValue);
+            Memory::Write<UINT>(branchAddress, defaultValue);
             iPrintLn(m_ClientNum, "Depatch Bounces ^1Off");
         }
     }
 
-    void Menu::ToggleFallDamage()
+    VOID Menu::ToggleFallDamage()
     {
         if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
         {
@@ -62,7 +62,7 @@ namespace MW2
         }
     }
 
-    void Menu::ToggleAmmo()
+    VOID Menu::ToggleAmmo()
     {
         if (!Dvar_GetBool("player_sustainAmmo"))
         {
@@ -76,12 +76,12 @@ namespace MW2
         }
     }
 
-    void Menu::ToggleUFO()
+    VOID Menu::ToggleUFO()
     {
         Cbuf_AddText(m_ClientNum, "ufo");
     }
 
-    void Menu::SavePosition()
+    VOID Menu::SavePosition()
     {
         m_SavedPos = GetPlayerState(m_ClientNum)->origin;
         m_SavedAngles = GetPlayerState(m_ClientNum)->viewAngles;
@@ -89,7 +89,7 @@ namespace MW2
         iPrintLn(m_ClientNum, "Position ^2Saved");
     }
 
-    void Menu::LoadPosition()
+    VOID Menu::LoadPosition()
     {
         if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f) || m_SavedAngles == vec3(0.0f, 0.0f, 0.0f))
         {
@@ -97,13 +97,13 @@ namespace MW2
             return;
         }
         
-        float origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
-        float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
+        FLOAT origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
+        FLOAT angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
 
         TeleportPlayer(GetEntity(m_ClientNum), origin, angles);
     }
 
-    void Menu::ToggleSaveLoadBinds()
+    VOID Menu::ToggleSaveLoadBinds()
     {
         if (!m_BindsEnabled)
             iPrintLn(m_ClientNum, "Press [{+frag}] to ^2Save^7 and [{+smoke}] to ^2Load");
@@ -113,10 +113,10 @@ namespace MW2
         m_BindsEnabled = !m_BindsEnabled;
     }
 
-    void Menu::ToggleGodMode()
+    VOID Menu::ToggleGodMode()
     {
-        int GOD_MODE_ON = 4097;
-        int GOD_MODE_OFF = 4096;
+        INT GOD_MODE_ON = 4097;
+        INT GOD_MODE_OFF = 4096;
 
         if (GetEntity(m_ClientNum)->flags == GOD_MODE_OFF)
         {
@@ -130,7 +130,7 @@ namespace MW2
         }
     }
 
-    void Menu::SpawnCP()
+    VOID Menu::SpawnCP()
     {
         gentity_s* currentMapBrushModel = GetCurrentMapBrushModel();
         if (!currentMapBrushModel)
@@ -139,9 +139,9 @@ namespace MW2
             return;
         }
 
-        float distance = 150.0f;
+        FLOAT distance = 150.0f;
         vec3 origin = GetPlayerState(m_ClientNum)->origin;
-        float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
+        FLOAT viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
         gentity_s* entity = G_Spawn();
         entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
@@ -153,7 +153,7 @@ namespace MW2
         entity->r.bmodel = 4;
         entity->state.index = currentMapBrushModel->state.index;
         
-        int contents = entity->r.contents;
+        INT contents = entity->r.contents;
         SV_SetBrushModel(entity);
         contents |= entity->r.contents;
         entity->r.contents = contents;
@@ -161,7 +161,7 @@ namespace MW2
         SV_LinkEntity(entity);
     }
 
-    void Menu::SpawnBot()
+    VOID Menu::SpawnBot()
     {
         if (s_Bot)
         {
@@ -170,10 +170,10 @@ namespace MW2
         }
 
         s_Bot = SV_AddTestClient();
-        Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (void*)this);
+        Memory::Thread((LPTHREAD_START_ROUTINE)StaticSpawnBotThread, (LPVOID)this);
     }
 
-    void Menu::TeleportBotToMe()
+    VOID Menu::TeleportBotToMe()
     {
         if (!s_Bot)
         {
@@ -181,14 +181,14 @@ namespace MW2
             return;
         }
 
-        float distance = 100.0f;
+        FLOAT distance = 100.0f;
         vec3 origin = GetPlayerState(m_ClientNum)->origin;
-        float viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
+        FLOAT viewY = GetPlayerState(m_ClientNum)->viewAngles.y;
 
         s_Bot->client->ps.origin = Math::ToFront(origin, viewY, distance);
     }
 
-    void Menu::ToggleBotMovement()
+    VOID Menu::ToggleBotMovement()
     {
         if (!s_Bot)
         {
@@ -208,7 +208,7 @@ namespace MW2
         }
     }
 
-    void Menu::CreateStructure()
+    VOID Menu::CreateStructure()
     {
         m_Structure["Cod Jumper"] = std::vector<Option>();
         m_Structure["Cod Jumper"].reserve(3);
@@ -238,7 +238,7 @@ namespace MW2
         m_Structure["Bot"].emplace_back(Option("Unfreeze Bot", 2));
     }
 
-    void Menu::OnSelectPressed(const std::string& optionName)
+    VOID Menu::OnSelectPressed(CONST std::string& optionName)
     {
         if (optionName == "Main" || optionName == "Teleport" || optionName == "Bot")
             GoToMenu(optionName);
@@ -268,7 +268,7 @@ namespace MW2
             ToggleBotMovement();
     }
 
-    void Menu::OnBackPressed(const std::string& optionName)
+    VOID Menu::OnBackPressed(CONST std::string& optionName)
     {
         if (optionName == "Main" || optionName == "Teleport" || optionName == "Bot")
             return;
@@ -276,7 +276,7 @@ namespace MW2
         GoToMenu("Cod Jumper");
     }
 
-    void Menu::GoToMenu(const std::string& menuName)
+    VOID Menu::GoToMenu(CONST std::string& menuName)
     {
         ResetScroller();
 
@@ -286,10 +286,10 @@ namespace MW2
     DWORD Menu::StaticSpawnBotThread(LPVOID lpThreadParameter)
     {
         Menu* This = (Menu*)lpThreadParameter;
-        int serverId = Memory::Read<int>(0x8355D5C4);
+        INT serverId = Memory::Read<INT>(0x8355D5C4);
         std::string chooseTeamCmd = Formatter::Format("mr %i 4 autoassign", serverId);
         std::string chooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
-        int botPtr = Memory::Read<int>(0x83577D98) + s_Bot->state.number * 0x97F80;
+        INT botPtr = Memory::Read<INT>(0x83577D98) + s_Bot->state.number * 0x97F80;
 
         Sleep(150);
         
@@ -308,12 +308,12 @@ namespace MW2
         return 0;
     }
 
-    void Menu::FreeBot()
+    VOID Menu::FreeBot()
     {
         s_Bot = nullptr;
     }
 
-    void Menu::Update()
+    VOID Menu::Update()
     {
         if (!m_Open)
             return;
@@ -328,7 +328,7 @@ namespace MW2
 
     }
 
-    void Menu::OnEvent(const std::string& eventString)
+    VOID Menu::OnEvent(CONST std::string& eventString)
     {
         if (eventString == DPAD_LEFT)
             m_Open = !m_Open;
@@ -347,7 +347,7 @@ namespace MW2
         {
             m_CurrentScrollerPos++;
 
-            if (m_CurrentScrollerPos >= (int)m_Structure[m_Title.GetText()].size())
+            if (m_CurrentScrollerPos >= (INT)m_Structure[m_Title.GetText()].size())
                 m_CurrentScrollerPos = 0;
 
             MoveScroller(m_CurrentScrollerPos);
@@ -366,12 +366,12 @@ namespace MW2
             SavePosition();
     }
 
-    void Menu::MoveScroller(int position)
+    VOID Menu::MoveScroller(INT position)
     {
         m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * position);
     }
 
-    void Menu::ResetScroller()
+    VOID Menu::ResetScroller()
     {
         m_CurrentScrollerPos = 0;
         MoveScroller(m_CurrentScrollerPos);

@@ -5,67 +5,67 @@
 
 namespace MW2
 {
-    const char* (*SL_ConvertToString)(unsigned int stringValue) = (const char*(*)(unsigned int))0x82241898;
+    LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x82241898;
 
-    void (*SV)(int clientNum, int type, const char* text) = (void(*)(int, int, const char*))0x822548D8;
+    VOID (*SV)(INT clientNum, INT type, LPCSTR text) = (VOID(*)(INT, INT, LPCSTR))0x822548D8;
 
-    game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum) = (game_hudelem_s*(*)(int, int))0x821DF928;
+    game_hudelem_s* (*HudElem_Alloc)(INT clientNum, INT teamNum) = (game_hudelem_s*(*)(INT, INT))0x821DF928;
 
-    void (*HudElem_Free)(game_hudelem_s* hud) = (void(*)(game_hudelem_s*))0x821DF9C0;
+    VOID (*HudElem_Free)(game_hudelem_s* hud) = (VOID(*)(game_hudelem_s*))0x821DF9C0;
 
-    int (*G_MaterialIndex)(const char* name) = (int(*)(const char*))0x8220C960;
+    INT (*G_MaterialIndex)(LPCSTR name) = (INT(*)(LPCSTR))0x8220C960;
 
-    int (*G_LocalizedStringIndex)(const char* string) = (int(*)(const char*))0x8220C7A0;
+    INT (*G_LocalizedStringIndex)(LPCSTR string) = (INT(*)(LPCSTR))0x8220C7A0;
 
-    bool (*Dvar_GetBool)(const char* dvarName) = (bool(*)(const char*))0x8229EEE8;
+    bool (*Dvar_GetBool)(LPCSTR dvarName) = (bool(*)(LPCSTR))0x8229EEE8;
 
-    const char* (*Dvar_GetString)(const char* dvarName) = (const char*(*)(const char*))0x8229F0A8;
+    LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = (LPCSTR(*)(LPCSTR))0x8229F0A8;
 
-    clientState_s* (*GetClientState)(int clientNum) = (clientState_s*(*)(int))0x821E6610;
+    clientState_s* (*GetClientState)(INT clientNum) = (clientState_s*(*)(INT))0x821E6610;
 
-    playerState_s* (*GetPlayerState)(int clientNum) = (playerState_s*(*)(int))0x821E6628;
+    playerState_s* (*GetPlayerState)(INT clientNum) = (playerState_s*(*)(INT))0x821E6628;
 
-    bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = (bool(*)(DWORD, int))0x82320138;
+    bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum) = (bool(*)(DWORD, INT))0x82320138;
 
-    void (*SP_script_model)(gentity_s* mSelf) = (void(*)(gentity_s*))0x82206D88;
+    VOID (*SP_script_model)(gentity_s* mSelf) = (VOID(*)(gentity_s*))0x82206D88;
 
     gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x8220DB50;
 
-    void (*G_SetModel)(gentity_s* ent, const char* modelName) = (void(*)(gentity_s*, const char*))0x8220D278;
+    VOID (*G_SetModel)(gentity_s* ent, LPCSTR modelName) = (VOID(*)(gentity_s*, LPCSTR))0x8220D278;
 
-    void (*SV_LinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F518;
+    VOID (*SV_LinkEntity)(gentity_s* gEnt) = (VOID(*)(gentity_s*))0x8225F518;
 
-    void (*SV_UnlinkEntity)(gentity_s* gEnt) = (void(*)(gentity_s*))0x8225F430;
+    VOID (*SV_UnlinkEntity)(gentity_s* gEnt) = (VOID(*)(gentity_s*))0x8225F430;
 
-    void (*SV_SetBrushModel)(gentity_s* ent) = (void(*)(gentity_s*))0x82254B50;
+    VOID (*SV_SetBrushModel)(gentity_s* ent) = (VOID(*)(gentity_s*))0x82254B50;
 
     gentity_s* (*SV_AddTestClient)() = (gentity_s*(*)())0x82254690;
 
-    void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer) = (void(*)(int, const char*, int, int))0x82253140;
+    VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer) = (VOID(*)(INT, LPCSTR, INT, INT))0x82253140;
 
-    void (*TeleportPlayer)(gentity_s* player, float* origin, float* angles) = (void(*)(gentity_s*, float*, float*))0x821E8198;
+    VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles) = (VOID(*)(gentity_s*, PFLOAT, PFLOAT))0x821E8198;
 
-    gclient_s* GetGClient(int clientNum)
+    gclient_s* GetGClient(INT clientNum)
     {
         return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
     }
 
-    gentity_s* GetEntity(int entNum)
+    gentity_s* GetEntity(INT entNum)
     {
         return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * entNum);
     }
 
-    void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value)
+    VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value)
     {
         SV(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
     }
 
-    void iPrintLn(int clientNum, const std::string& text)
+    VOID iPrintLn(INT clientNum, CONST std::string& text)
     {
         SV(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
     }
 
-    bool IsHost(int clientNum)
+    bool IsHost(INT clientNum)
     {
         return Session_IsHost(0x83AC3DB0, clientNum);
     }

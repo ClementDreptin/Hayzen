@@ -3,7 +3,7 @@
 
 namespace MW2
 {
-    Option::Option(int clientNum, const std::string& name, int index)
+    Option::Option(INT clientNum, CONST std::string& name, INT index)
         : m_Index(index),
           TextElem(clientNum,
                 name,

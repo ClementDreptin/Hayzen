@@ -8,10 +8,10 @@ namespace Alpha
 {
 namespace MW2
 {
-    bool HasGameBegun = false;
-    std::unordered_map<int, Client> Clients;
+    BOOL HasGameBegun = FALSE;
+    std::unordered_map<INT, Client> Clients;
 
-    __declspec(naked) void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
+    __declspec(naked) VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
     {
         __asm
         {
@@ -26,7 +26,7 @@ namespace MW2
         }
     }
 
-    __declspec(naked) void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
+    __declspec(naked) VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
     {
         __asm
         {
@@ -41,7 +41,7 @@ namespace MW2
         }
     }
 
-    __declspec(naked) void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer)
+    __declspec(naked) VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
     {
         __asm
         {
@@ -56,50 +56,50 @@ namespace MW2
         }
     }
 
-    void Init()
+    VOID Init()
     {
         Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
         Sleep(200);
 
-        Memory::HookFunctionStart((DWORD*)0x8218B5F0, (DWORD*)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-        Memory::HookFunctionStart((DWORD*)0x822539C0, (DWORD*)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-        Memory::HookFunctionStart((DWORD*)0x822B4700, (DWORD*)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+        Memory::HookFunctionStart((LPDWORD)0x8218B5F0, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
+        Memory::HookFunctionStart((LPDWORD)0x822539C0, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+        Memory::HookFunctionStart((LPDWORD)0x822B4700, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
     }
 
-    void SetupGame(int clientNum)
+    VOID SetupGame(INT clientNum)
     {
         Verify(clientNum);
-        HasGameBegun = true;
+        HasGameBegun = TRUE;
     }
 
-    void ResetGame(int clientNum, bool resetBot)
+    VOID ResetGame(INT clientNum, BOOL resetBot)
     {
         Clients.erase(clientNum);
 
         if (resetBot)
             Menu::FreeBot();
 
-        HasGameBegun = false;
+        HasGameBegun = FALSE;
     }
 
-    bool Verify(int clientNum)
+    BOOL Verify(INT clientNum)
     {
         if (clientNum < 0 || clientNum > 17)
-            return false;
+            return FALSE;
 
         if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return false;
+            return FALSE;
 
         SetClientDvar(clientNum, "loc_warnings", "0");
         SetClientDvar(clientNum, "loc_warningsAsErrors", "0");
 
         Clients[clientNum] = Client(clientNum);
 
-        return true;
+        return TRUE;
     }
 
-    void SafeReset()
+    VOID SafeReset()
     {
         if (Clients.size() != 0)
             Clients.clear();
@@ -107,11 +107,11 @@ namespace MW2
         if (HasGameBegun)
         {
             Menu::FreeBot();
-            HasGameBegun = false;
+            HasGameBegun = FALSE;
         }
     }
 
-    void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
+    VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
     {
         SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
 
@@ -119,30 +119,30 @@ namespace MW2
             Clients[i].GetMenu().Update();
     }
 
-    void Scr_NotifyHook(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
+    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
     {
         Scr_NotifyStub(entity, stringValue, paramCount);
 
-        int clientNum = entity->state.number;
+        INT clientNum = entity->state.number;
 
-        const char* notify = SL_ConvertToString(stringValue);
+        LPCSTR notify = SL_ConvertToString(stringValue);
 
         if (!strcmp(notify, GAME_START))
         {
             // "begin" can happen multiple times a game in round-based gamemodes so we need to reset the menu
             // and recreate it at the beggining of each round if we want the menu to work after the first round
             if (HasGameBegun)
-                ResetGame(clientNum, false);
+                ResetGame(clientNum, FALSE);
 
             SetupGame(clientNum);
         }
     }
 
-    void SV_ExecuteClientCommandHook(int client, const char* s, int clientOK, int fromOldServer)
+    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
     {
         SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
-        int clientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;
+        INT clientNum = (client - Memory::Read<INT>(0x83577D98)) / 0x97F80;
 
         if (HasGameBegun && Clients.find(clientNum) != Clients.end())
             Clients[clientNum].GetMenu().OnEvent(s);

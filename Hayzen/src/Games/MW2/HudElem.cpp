@@ -5,19 +5,19 @@
 
 namespace MW2
 {
-    const hudelem_color_t HudElem::s_ColorWhite = { 255, 255, 255, 255 };
-    const hudelem_color_t HudElem::s_ColorWhiteNoAlpha = { 255, 255, 255, 0 };
-    const hudelem_color_t HudElem::s_ColorBlack = { 0, 0, 0, 255 };
-    const hudelem_color_t HudElem::s_ColorBlackNoAlpha = { 0, 0, 0, 0 };
-    const float HudElem::s_MenuX = 441.0f;
-    const float HudElem::s_MenuY = 5.0f;
-    const int HudElem::s_MenuWidth = 300;
-    const int HudElem::s_MenuHeight = 470;
-    const float HudElem::s_Padding = 10.0f;
-    const float HudElem::s_TitleHeight = 30.0f;
-    const float HudElem::s_LineHeight = 23.0f;
+    CONST hudelem_color_t HudElem::s_ColorWhite = { 255, 255, 255, 255 };
+    CONST hudelem_color_t HudElem::s_ColorWhiteNoAlpha = { 255, 255, 255, 0 };
+    CONST hudelem_color_t HudElem::s_ColorBlack = { 0, 0, 0, 255 };
+    CONST hudelem_color_t HudElem::s_ColorBlackNoAlpha = { 0, 0, 0, 0 };
+    CONST FLOAT HudElem::s_MenuX = 441.0f;
+    CONST FLOAT HudElem::s_MenuY = 5.0f;
+    CONST INT HudElem::s_MenuWidth = 300;
+    CONST INT HudElem::s_MenuHeight = 470;
+    CONST FLOAT HudElem::s_Padding = 10.0f;
+    CONST FLOAT HudElem::s_TitleHeight = 30.0f;
+    CONST FLOAT HudElem::s_LineHeight = 23.0f;
 
-    HudElem::HudElem(int clientNum, float x, float y, const hudelem_color_t& color)
+    HudElem::HudElem(INT clientNum, FLOAT x, FLOAT y, CONST hudelem_color_t& color)
     {
         m_InternalHudElem = HudElem_Alloc(clientNum, 0);
         SetX(x);
@@ -25,7 +25,7 @@ namespace MW2
         SetColor(color);
     }
 
-    void HudElem::SetColor(byte r, byte g, byte b, byte a)
+    VOID HudElem::SetColor(BYTE r, BYTE g, BYTE b, BYTE a)
     {
         m_InternalHudElem->elem.color.r = r;
         m_InternalHudElem->elem.color.g = g;

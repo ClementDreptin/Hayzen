@@ -3,10 +3,10 @@
 
 namespace MW2
 {
-    Client::Client(int clientNum)
+    Client::Client(INT clientNum)
         : m_Num(clientNum)
     {
         m_Menu = Menu(clientNum);
-        m_Initialized = true;
+        m_Initialized = TRUE;
     }
 }

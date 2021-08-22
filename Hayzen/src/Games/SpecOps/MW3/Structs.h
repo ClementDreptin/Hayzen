@@ -9,66 +9,66 @@ namespace MW3
 
     struct Font_s
     {
-        int fontName;
-        int pixelHeight;
-        int glyphCount;
-        int material;
-        int glowMaterial;
-        int glyphs;
+        INT fontName;
+        INT pixelHeight;
+        INT glyphCount;
+        INT material;
+        INT glowMaterial;
+        INT glyphs;
     };
 
     struct playerState_s
     {
-        char padding1[0x10];
-        int otherFlags;
-        char padding2[0x8];
+        CHAR padding1[0x10];
+        INT otherFlags;
+        CHAR padding2[0x8];
         vec3 origin;
-        char padding3[0xE4];
+        CHAR padding3[0xE4];
         vec3 viewAngles;
-        char padding4[0xAC3C];
+        CHAR padding4[0xAC3C];
     };
 
     struct gclient_s
     {
         playerState_s ps;
-        char padding1[0xB0];
-        int mFlags;
-        char padding2[0x2C0];
+        CHAR padding1[0xB0];
+        INT mFlags;
+        CHAR padding2[0x2C0];
     };
 
     struct entityState_s
     {
-        char padding1[0x84];
-        short number;
-        short otherEntityNum;
-        short groundEntityNum;
-        short index;
-        char padding3[0x24];
+        CHAR padding1[0x84];
+        SHORT number;
+        SHORT otherEntityNum;
+        SHORT groundEntityNum;
+        SHORT index;
+        CHAR padding3[0x24];
     };
 
     struct entityShared_t
     {
         bool linked;
-        char bmodel;
-        int clientMask;
-        char svFlags;
+        CHAR bmodel;
+        INT clientMask;
+        CHAR svFlags;
         bool inuse;
         vec3 mins;
         vec3 maxs;
-        int contents;
+        INT contents;
         vec3 absmin;
         vec3 absmax;
         vec3 currentOrigin;
         vec3 currentAngles;
-        int ownerNum;
-        int eventTime;
+        INT ownerNum;
+        INT eventTime;
     };
 
     struct gentity_s
     {
         entityState_s state;
         entityShared_t r;
-        char padding1[0x160];
+        CHAR padding1[0x160];
     };
 }
 }

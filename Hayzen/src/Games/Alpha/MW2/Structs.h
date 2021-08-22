@@ -9,53 +9,53 @@ namespace MW2
 
     struct Font_s
     {
-        int fontName;
-        int pixelHeight;
-        int glyphCount;
-        int material;
-        int glowMaterial;
-        int glyphs;
+        INT fontName;
+        INT pixelHeight;
+        INT glyphCount;
+        INT material;
+        INT glowMaterial;
+        INT glyphs;
     };
 
     struct playerState_s
     {
-        char padding1[0x1C];
+        CHAR padding1[0x1C];
         vec3 origin;
-        char padding2[0xE4];
+        CHAR padding2[0xE4];
         vec3 viewAngles;
-        char padding3[0x3068];
+        CHAR padding3[0x3068];
     };
 
     struct gclient_s
     {
         playerState_s ps;
-        char padding1[0x580];
+        CHAR padding1[0x580];
     };
     
     struct entityState_s
     {
-        int number;
-        char padding1[0x8C];
-        int index;
-        char padding2[0x68];
+        INT number;
+        CHAR padding1[0x8C];
+        INT index;
+        CHAR padding2[0x68];
     };
     
     struct entityShared_t
     {
-        int clientMask;
+        INT clientMask;
         bool linked;
-        char bmodel;
-        char svFlags;
+        CHAR bmodel;
+        CHAR svFlags;
         bool inuse;
         vec3 mins;
         vec3 maxs;
-        int contents;
+        INT contents;
         vec3 absmin;
         vec3 absmax;
         vec3 currentOrigin;
         vec3 currentAngles;
-        int ownerNum;
-        int eventTime;
+        INT ownerNum;
+        INT eventTime;
     };
     
     struct gentity_s
@@ -63,9 +63,9 @@ namespace MW2
         entityState_s state;
         entityShared_t r;
         gclient_s* client;
-        char padding1[0x28];
-        int flags;
-        char padding2[0xF8];
+        CHAR padding1[0x28];
+        INT flags;
+        CHAR padding2[0xF8];
     };
 }
 }

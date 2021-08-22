@@ -5,7 +5,7 @@ namespace Alpha
 {
 namespace MW2
 {
-    Option::Option(const std::string& name, int index)
+    Option::Option(CONST std::string& name, INT index)
         : m_Index(index),
           TextElem(name,
                 HudElem::s_MenuX + HudElem::s_Padding,

@@ -10,9 +10,9 @@ namespace MW2
     {
     public:
         Option() {};
-        Option(const std::string& name, int index);
+        Option(CONST std::string& name, INT index);
     private:
-        int m_Index;
+        INT m_Index;
     };
 }
 }

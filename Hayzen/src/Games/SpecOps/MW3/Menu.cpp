@@ -8,8 +8,8 @@ namespace SpecOps
 {
 namespace MW3
 {
-    Menu::Menu(int clientNum)
-        : m_ClientNum(clientNum), m_Open(false), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(false)
+    Menu::Menu(INT clientNum)
+        : m_ClientNum(clientNum), m_Open(FALSE), m_CurrentScrollerPos(0), m_SavedPos(vec3(0.0f, 0.0f, 0.0f)), m_SavedAngles(vec3(0.0f, 0.0f, 0.0f)), m_BindsEnabled(FALSE)
     {
         m_Background = RectangleElem(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
         m_Background.SetAlpha(0.7f);
@@ -25,7 +25,7 @@ namespace MW3
         CreateStructure();
     }
 
-    void Menu::ToggleGodMode()
+    VOID Menu::ToggleGodMode()
     {
         playerState_s* playerState = SV_GetPlayerstateForClientNum(m_ClientNum);
 
@@ -41,25 +41,25 @@ namespace MW3
         }
     }
 
-    void Menu::ToggleAmmo()
+    VOID Menu::ToggleAmmo()
     {
         DWORD address = 0x8235BB54;
-        unsigned int defaultValue = 0x7D3D5050;
-        unsigned int modifiedValue = 0x7D495378;
+        UINT defaultValue = 0x7D3D5050;
+        UINT modifiedValue = 0x7D495378;
 
-        if (Memory::Read<unsigned int>(address) == defaultValue)
+        if (Memory::Read<UINT>(address) == defaultValue)
         {
-            Memory::Write<unsigned int>(address, modifiedValue);
+            Memory::Write<UINT>(address, modifiedValue);
             iPrintLn(m_ClientNum, "Unlimited Ammo ^2On");
         }
         else
         {
-            Memory::Write<unsigned int>(address, defaultValue);
+            Memory::Write<UINT>(address, defaultValue);
             iPrintLn(m_ClientNum, "Unlimited Ammo ^1Off");
         }
     }
 
-    void Menu::ToggleUFO()
+    VOID Menu::ToggleUFO()
     {
         if (GetGClient(m_ClientNum)->mFlags != 2)
         {
@@ -73,7 +73,7 @@ namespace MW3
         }
     }
 
-    void Menu::SavePosition()
+    VOID Menu::SavePosition()
     {
         m_SavedPos = SV_GetPlayerstateForClientNum(m_ClientNum)->origin;
         m_SavedAngles = SV_GetPlayerstateForClientNum(m_ClientNum)->viewAngles;
@@ -81,7 +81,7 @@ namespace MW3
         iPrintLn(m_ClientNum, "Position ^2Saved");
     }
 
-    void Menu::LoadPosition()
+    VOID Menu::LoadPosition()
     {
         if (m_SavedPos == vec3(0.0f, 0.0f, 0.0f) || m_SavedAngles == vec3(0.0f, 0.0f, 0.0f))
         {
@@ -89,13 +89,13 @@ namespace MW3
             return;
         }
 
-        float origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
-        float angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
+        FLOAT origin[] = { m_SavedPos.x, m_SavedPos.y, m_SavedPos.z };
+        FLOAT angles[] = { m_SavedAngles.x, m_SavedAngles.y, m_SavedAngles.z };
 
         TeleportPlayer(GetEntity(m_ClientNum), origin, angles);
     }
 
-    void Menu::ToggleSaveLoadBinds()
+    VOID Menu::ToggleSaveLoadBinds()
     {
         if (!m_BindsEnabled)
             iPrintLn(m_ClientNum, "Press RB to ^2Save^7 and LB to ^2Load");
@@ -105,7 +105,7 @@ namespace MW3
         m_BindsEnabled = !m_BindsEnabled;
     }
 
-    void Menu::CreateStructure()
+    VOID Menu::CreateStructure()
     {
         m_Structure["Cod Jumper"] = std::vector<Option>();
         m_Structure["Cod Jumper"].reserve(2);
@@ -125,7 +125,7 @@ namespace MW3
         m_Structure["Teleport"].emplace_back(Option("UFO", 3));
     }
 
-    void Menu::OnSelectPressed(const std::string& optionName)
+    VOID Menu::OnSelectPressed(CONST std::string& optionName)
     {
         if (optionName == "Main" || optionName == "Teleport")
             GoToMenu(optionName);
@@ -143,7 +143,7 @@ namespace MW3
             ToggleSaveLoadBinds();
     }
 
-    void Menu::OnBackPressed(const std::string& optionName)
+    VOID Menu::OnBackPressed(CONST std::string& optionName)
     {
         if (optionName == "Main" || optionName == "Teleport")
             return;
@@ -151,14 +151,14 @@ namespace MW3
         GoToMenu("Cod Jumper");
     }
 
-    void Menu::GoToMenu(const std::string& menuName)
+    VOID Menu::GoToMenu(CONST std::string& menuName)
     {
         ResetScroller();
 
         m_Title.SetText(menuName);
     }
 
-    void Menu::Update()
+    VOID Menu::Update()
     {
         if (!m_Open)
             return;
@@ -173,7 +173,7 @@ namespace MW3
 
     }
 
-    void Menu::OnEvent(const std::string& eventString)
+    VOID Menu::OnEvent(CONST std::string& eventString)
     {
         if (eventString == DPAD_LEFT)
             m_Open = !m_Open;
@@ -192,7 +192,7 @@ namespace MW3
         {
             m_CurrentScrollerPos++;
 
-            if (m_CurrentScrollerPos >= (int)m_Structure[m_Title.GetText()].size())
+            if (m_CurrentScrollerPos >= (INT)m_Structure[m_Title.GetText()].size())
                 m_CurrentScrollerPos = 0;
 
             MoveScroller(m_CurrentScrollerPos);
@@ -211,12 +211,12 @@ namespace MW3
             SavePosition();
     }
 
-    void Menu::MoveScroller(int position)
+    VOID Menu::MoveScroller(INT position)
     {
         m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * position);
     }
 
-    void Menu::ResetScroller()
+    VOID Menu::ResetScroller()
     {
         m_CurrentScrollerPos = 0;
         MoveScroller(m_CurrentScrollerPos);

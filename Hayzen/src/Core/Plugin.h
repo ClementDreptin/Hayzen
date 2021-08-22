@@ -2,7 +2,7 @@
 
 namespace Plugin
 {
-    extern bool Running;
+    extern BOOL Running;
     extern DWORD CurrentTitle;
 
     enum Games : DWORD
@@ -12,12 +12,12 @@ namespace Plugin
         MW3 = 0x415608CB
     };
 
-    void Start();
-    void Stop();
+    VOID Start();
+    VOID Stop();
 
     DWORD MonitorTitleId(LPVOID lpThreadParameter);
-    void InitNewGame(DWORD titleId);
+    VOID InitNewGame(DWORD titleId);
 
     // Makes sure games get reset properly
-    void Cleanup();
+    VOID Cleanup();
 }

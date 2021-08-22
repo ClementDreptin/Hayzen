@@ -2,41 +2,41 @@
 
 struct Color
 {
-    float r;
-    float g;
-    float b;
-    float a;
+    FLOAT r;
+    FLOAT g;
+    FLOAT b;
+    FLOAT a;
 };
 
 class HudElem
 {
 public:
-    static const Color s_ColorWhite;
-    static const Color s_ColorBlack;
-    static const float s_MenuX;
-    static const float s_MenuY;
-    static const float s_MenuWidth;
-    static const float s_MenuHeight;
-    static const float s_Padding;
-    static const float s_TitleHeight;
-    static const float s_LineHeight;
+    static CONST Color s_ColorWhite;
+    static CONST Color s_ColorBlack;
+    static CONST FLOAT s_MenuX;
+    static CONST FLOAT s_MenuY;
+    static CONST FLOAT s_MenuWidth;
+    static CONST FLOAT s_MenuHeight;
+    static CONST FLOAT s_Padding;
+    static CONST FLOAT s_TitleHeight;
+    static CONST FLOAT s_LineHeight;
 
     HudElem() {}
-    HudElem(float x, float y, const Color& color);
+    HudElem(FLOAT x, FLOAT y, CONST Color& color);
     virtual ~HudElem() {}
 
-    virtual void Draw() const = 0;
+    virtual VOID Draw() CONST = 0;
 
-    float GetX() const { return m_X; }
-    float GetY() const { return m_Y; }
-    const Color& GetColor() const { return m_Color; }
+    FLOAT GetX() CONST { return m_X; }
+    FLOAT GetY() CONST { return m_Y; }
+    CONST Color& GetColor() CONST { return m_Color; }
 
-    void SetX(float x) { m_X = x; }
-    void SetY(float y) { m_Y = y; }
-    void SetColor(const Color& color) { m_Color = color; }
-    void SetColor(float r, float g, float b, float a);
-    void SetAlpha(float alpha) { m_Color.a = alpha; }
+    VOID SetX(FLOAT x) { m_X = x; }
+    VOID SetY(FLOAT y) { m_Y = y; }
+    VOID SetColor(CONST Color& color) { m_Color = color; }
+    VOID SetColor(FLOAT r, FLOAT g, FLOAT b, FLOAT a);
+    VOID SetAlpha(FLOAT alpha) { m_Color.a = alpha; }
 protected:
-    float m_X, m_Y;
+    FLOAT m_X, m_Y;
     Color m_Color;
 };

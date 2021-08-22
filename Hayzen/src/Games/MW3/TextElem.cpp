@@ -5,7 +5,7 @@
 
 namespace MW3
 {
-    TextElem::TextElem(int clientNum, const std::string& text, float x, float y, const hudelem_color_t& color, float fontScale)
+    TextElem::TextElem(INT clientNum, CONST std::string& text, FLOAT x, FLOAT y, CONST hudelem_color_t& color, FLOAT fontScale)
         : HudElem(clientNum, x, y, color), m_Text(text)
     {
         SetText(text);

@@ -7,20 +7,20 @@ namespace SpecOps
 namespace MW2
 {
     // Variables
-    extern bool HasGameBegun;
-    extern std::unordered_map<int, Client> Clients;
+    extern BOOL HasGameBegun;
+    extern std::unordered_map<INT, Client> Clients;
 
     // Functions
-    void Init();
-    void SetupGame(int clientNum);
-    bool Verify(int clientNum);
-    void SafeReset(); // Resets everything when the game was not reset properly
+    VOID Init();
+    VOID SetupGame(INT clientNum);
+    BOOL Verify(INT clientNum);
+    VOID SafeReset(); // Resets everything when the game was not reset properly
 
     // Hooks and their stubs
-    void SCR_DrawScreenFieldStub(int refreshedUI);
-    void SCR_DrawScreenFieldHook(int refreshedUI);
+    VOID SCR_DrawScreenFieldStub(INT refreshedUI);
+    VOID SCR_DrawScreenFieldHook(INT refreshedUI);
 
-    void ClientCommandStub(int clientNum, const char* s);
-    void ClientCommandHook(int clientNum, const char* s);
+    VOID ClientCommandStub(INT clientNum, LPCSTR s);
+    VOID ClientCommandHook(INT clientNum, LPCSTR s);
 }
 }

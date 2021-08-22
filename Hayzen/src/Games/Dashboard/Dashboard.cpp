@@ -3,7 +3,7 @@
 
 namespace Dashboard
 {
-    void Init()
+    VOID Init()
     {
         Xam::XNotify("Hayzen - Dashboard Detected");
     }

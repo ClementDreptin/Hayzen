@@ -5,7 +5,7 @@
 
 namespace MW2
 {
-    RectangleElem::RectangleElem(int clientNum, float x, float y, int width, int height, const hudelem_color_t& color)
+    RectangleElem::RectangleElem(INT clientNum, FLOAT x, FLOAT y, INT width, INT height, CONST hudelem_color_t& color)
         : HudElem(clientNum, x, y, color)
     {
         SetWidth(width);

@@ -9,13 +9,13 @@ namespace MW2
     {
     public:
         TextElem() {}
-        TextElem(int clientNum, const std::string& text, float x, float y, const hudelem_color_t& color, float fontScale = 1.0f);
+        TextElem(INT clientNum, CONST std::string& text, FLOAT x, FLOAT y, CONST hudelem_color_t& color, FLOAT fontScale = 1.0f);
 
-        float GetFontScale() const { return m_InternalHudElem->elem.fontScale; }
-        const std::string& GetText() const { return m_Text; }
+        FLOAT GetFontScale() CONST { return m_InternalHudElem->elem.fontScale; }
+        CONST std::string& GetText() CONST { return m_Text; }
 
-        void SetFontScale(float fontScale) { m_InternalHudElem->elem.fontScale = fontScale; }
-        void SetText(const std::string& text) { m_Text = text; m_InternalHudElem->elem.text = G_LocalizedStringIndex(text.c_str()); }
+        VOID SetFontScale(FLOAT fontScale) { m_InternalHudElem->elem.fontScale = fontScale; }
+        VOID SetText(CONST std::string& text) { m_Text = text; m_InternalHudElem->elem.text = G_LocalizedStringIndex(text.c_str()); }
     private:
         std::string m_Text;
     };

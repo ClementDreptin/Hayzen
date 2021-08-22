@@ -7,10 +7,10 @@ namespace SpecOps
 {
 namespace MW3
 {
-    bool HasGameBegun = false;
-    std::unordered_map<int, Client> Clients;
+    BOOL HasGameBegun = FALSE;
+    std::unordered_map<INT, Client> Clients;
 
-    __declspec(naked) void DrawMenuDebugTextStub(int dc)
+    __declspec(naked) VOID DrawMenuDebugTextStub(INT dc)
     {
         __asm
         {
@@ -25,7 +25,7 @@ namespace MW3
         }
     }
 
-    __declspec(naked) void ClientCommandStub(int clientNum, const char* s)
+    __declspec(naked) VOID ClientCommandStub(INT clientNum, LPCSTR s)
     {
         __asm
         {
@@ -40,7 +40,7 @@ namespace MW3
         }
     }
 
-    __declspec(naked) void PlayerCmd_AllowJumpStub()
+    __declspec(naked) VOID PlayerCmd_AllowJumpStub()
     {
         __asm
         {
@@ -55,46 +55,46 @@ namespace MW3
         }
     }
 
-    void Init()
+    VOID Init()
     {
         Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
 
         Sleep(200);
 
-        Memory::HookFunctionStart((DWORD*)0x822E0488, (DWORD*)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
-        Memory::HookFunctionStart((DWORD*)0x821FEFB0, (DWORD*)ClientCommandStub, (DWORD)ClientCommandHook);
-        Memory::HookFunctionStart((DWORD*)0x821FA680, (DWORD*)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
+        Memory::HookFunctionStart((DWORD*)0x822E0488, (LPDWORD)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
+        Memory::HookFunctionStart((DWORD*)0x821FEFB0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
+        Memory::HookFunctionStart((DWORD*)0x821FA680, (LPDWORD)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
     }
 
-    void SetupGame(int clientNum)
+    VOID SetupGame(INT clientNum)
     {
         Verify(clientNum);
-        HasGameBegun = true;
+        HasGameBegun = TRUE;
     }
 
-    bool Verify(int clientNum)
+    BOOL Verify(INT clientNum)
     {
         if (clientNum < 0 || clientNum > 17)
-            return false;
+            return FALSE;
 
         if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return false;
+            return FALSE;
 
         Clients[clientNum] = Client(clientNum);
 
-        return true;
+        return TRUE;
     }
 
-    void SafeReset()
+    VOID SafeReset()
     {
         if (Clients.size() != 0)
             Clients.clear();
 
         if (HasGameBegun)
-            HasGameBegun = false;
+            HasGameBegun = FALSE;
     }
 
-    void DrawMenuDebugTextHook(int dc)
+    VOID DrawMenuDebugTextHook(INT dc)
     {
         DrawMenuDebugTextStub(dc);
 
@@ -102,7 +102,7 @@ namespace MW3
             Clients[i].GetMenu().Update();
     }
 
-    void ClientCommandHook(int clientNum, const char* s)
+    VOID ClientCommandHook(INT clientNum, LPCSTR s)
     {
         ClientCommandStub(clientNum, s);
 
@@ -113,7 +113,7 @@ namespace MW3
             Clients[clientNum].GetMenu().OnEvent(s);
     }
 
-    void PlayerCmd_AllowJumpHook()
+    VOID PlayerCmd_AllowJumpHook()
     {
         /**
          * Making the PlayerCmd_AllowJump function not do anything so that you can jump in

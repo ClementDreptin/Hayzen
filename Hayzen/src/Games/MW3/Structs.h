@@ -5,7 +5,7 @@ namespace MW3
     using XexUtils::Math::vec2;
     using XexUtils::Math::vec3;
     
-    enum he_type_t : int
+    enum he_type_t : INT
     {
         HE_TYPE_FREE,
         HE_TYPE_TEXT,
@@ -25,7 +25,7 @@ namespace MW3
         HE_TYPE_COUNT,
     };
 
-    typedef enum align_t : int
+    typedef enum align_t : INT
     {
         ALIGN_TOP_LEFT = 0,
         ALIGN_MIDDLE_LEFT = 1,
@@ -40,114 +40,114 @@ namespace MW3
     
     struct hudelem_color_t
     {
-        byte r;
-        byte g;
-        byte b;
-        byte a;
+        BYTE r;
+        BYTE g;
+        BYTE b;
+        BYTE a;
     };
 
     struct hudelem_s
     {
         he_type_t type;
-        float x;
-        float y;
-        float z;
-        int targetEntNum;
-        float fontScale;
-        float fromFontScale;
-        int fontScaleStartTime;
-        int fontScaleTime;
-        int font;
+        FLOAT x;
+        FLOAT y;
+        FLOAT z;
+        INT targetEntNum;
+        FLOAT fontScale;
+        FLOAT fromFontScale;
+        INT fontScaleStartTime;
+        INT fontScaleTime;
+        INT font;
         align_t alignOrg;
         align_t alignScreen;
         hudelem_color_t color;
         hudelem_color_t fromColor;
-        int fadeStartTime;
-        int fadeTime;
-        int label;
-        int width;
-        int height;
-        int materialIndex;
-        int fromWidth;
-        int fromHeight;
-        int scaleStartTime;
-        int scaleTime;
-        float fromX;
-        float fromY;
-        int fromAlignOrg;
-        int fromAlignScreen;
-        int moveStartTime;
-        int moveTime;
-        int time;
-        int duration;
-        float value;
-        int text;
-        float sort;
+        INT fadeStartTime;
+        INT fadeTime;
+        INT label;
+        INT width;
+        INT height;
+        INT materialIndex;
+        INT fromWidth;
+        INT fromHeight;
+        INT scaleStartTime;
+        INT scaleTime;
+        FLOAT fromX;
+        FLOAT fromY;
+        INT fromAlignOrg;
+        INT fromAlignScreen;
+        INT moveStartTime;
+        INT moveTime;
+        INT time;
+        INT duration;
+        FLOAT value;
+        INT text;
+        FLOAT sort;
         hudelem_color_t glowColor;
-        int fxBirthTime;
-        int fxLetterTime;
-        int fxDecayStartTime;
-        int fxDecayDuration;
-        int soundID;
-        int flags;
+        INT fxBirthTime;
+        INT fxLetterTime;
+        INT fxDecayStartTime;
+        INT fxDecayDuration;
+        INT soundID;
+        INT flags;
     };
  
     struct game_hudelem_s
     {
         hudelem_s elem;
-        int clientNum;
-        int teamNum;
-        int archived;
+        INT clientNum;
+        INT teamNum;
+        INT archived;
     };
 
     struct playerState_s
     {
-        char padding1[0x1C];
+        CHAR padding1[0x1C];
         vec3 origin;
-        char padding2[0x130];
+        CHAR padding2[0x130];
         vec3 viewAngles;
-        char padding3[0x319C];
+        CHAR padding3[0x319C];
     };
     
     struct gclient_s
     {
         playerState_s ps;
-        char padding1[0x2FF];
-        byte mFlags;
-        char padding2[0x380];
+        CHAR padding1[0x2FF];
+        BYTE mFlags;
+        CHAR padding2[0x380];
     };
 
     struct clientState_s
     {
-        char padding1[0x44];
-        char name[32];
-        char padding2[0x7C];
+        CHAR padding1[0x44];
+        CHAR name[32];
+        CHAR padding2[0x7C];
     };
 
     struct entityState_s
     {
-        int number;
-        char padding1[0x88];
-        int index;
-        char padding2[0x6C];
+        INT number;
+        CHAR padding1[0x88];
+        INT index;
+        CHAR padding2[0x6C];
     };
     
     struct entityShared_t
     {
-        int clientMask;
+        INT clientMask;
         bool linked;
-        char bmodel;
-        char svFlags;
+        CHAR bmodel;
+        CHAR svFlags;
         bool inuse;
         vec3 mins;
         vec3 maxs;
-        int contents;
+        INT contents;
         vec3 absmin;
         vec3 absmax;
         vec3 currentOrigin;
         vec3 currentAngles;
-        int ownerNum;
-        int eventTime;
+        INT ownerNum;
+        INT eventTime;
     };
     
     struct gentity_s
@@ -155,8 +155,8 @@ namespace MW3
         entityState_s state;
         entityShared_t r;
         gclient_s* client;
-        char padding1[0x28];
-        int flags;
-        char padding2[0xF8];
+        CHAR padding1[0x28];
+        INT flags;
+        CHAR padding2[0xF8];
     };
 }

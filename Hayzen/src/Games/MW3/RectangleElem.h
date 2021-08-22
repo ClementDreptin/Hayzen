@@ -8,12 +8,12 @@ namespace MW3
     {
     public:
         RectangleElem() {}
-        RectangleElem(int clientNum, float x, float y, int width, int height, const hudelem_color_t& color);
+        RectangleElem(INT clientNum, FLOAT x, FLOAT y, INT width, INT height, CONST hudelem_color_t& color);
 
-        int GetWidth() const { return m_InternalHudElem->elem.width; }
-        int GetHeight() const { return m_InternalHudElem->elem.height; }
+        INT GetWidth() CONST { return m_InternalHudElem->elem.width; }
+        INT GetHeight() CONST { return m_InternalHudElem->elem.height; }
 
-        void SetWidth(int width) { m_InternalHudElem->elem.width = width; }
-        void SetHeight(int height) { m_InternalHudElem->elem.height = height; }
+        VOID SetWidth(INT width) { m_InternalHudElem->elem.width = width; }
+        VOID SetHeight(INT height) { m_InternalHudElem->elem.height = height; }
     };
 }

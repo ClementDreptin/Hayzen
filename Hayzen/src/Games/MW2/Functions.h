@@ -4,55 +4,55 @@
 
 namespace MW2
 {
-    extern const char* (*SL_ConvertToString)(unsigned int stringValue);
+    extern LPCSTR (*SL_ConvertToString)(UINT stringValue);
 
-    extern void (*SV)(int clientNum, int type, const char* text);
+    extern VOID (*SV)(INT clientNum, INT type, LPCSTR text);
 
-    extern game_hudelem_s* (*HudElem_Alloc)(int clientNum, int teamNum);
+    extern game_hudelem_s* (*HudElem_Alloc)(INT clientNum, INT teamNum);
 
-    extern void (*HudElem_Free)(game_hudelem_s* hud);
+    extern VOID (*HudElem_Free)(game_hudelem_s* hud);
 
-    extern int (*G_MaterialIndex)(const char* name);
+    extern INT (*G_MaterialIndex)(LPCSTR name);
 
-    extern int (*G_LocalizedStringIndex)(const char* string);
+    extern INT (*G_LocalizedStringIndex)(LPCSTR string);
 
-    extern bool (*Dvar_GetBool)(const char* dvarName);
+    extern bool (*Dvar_GetBool)(LPCSTR dvarName);
 
-    extern const char* (*Dvar_GetString)(const char* dvarName);
+    extern LPCSTR (*Dvar_GetString)(LPCSTR dvarName);
 
-    extern clientState_s* (*GetClientState)(int clientNum);
+    extern clientState_s* (*GetClientState)(INT clientNum);
 
-    extern playerState_s* (*GetPlayerState)(int clientNum);
+    extern playerState_s* (*GetPlayerState)(INT clientNum);
 
-    extern bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum);
+    extern bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum);
 
-    extern void (*SP_script_model)(gentity_s* mSelf);
+    extern VOID (*SP_script_model)(gentity_s* mSelf);
 
     extern gentity_s* (*G_Spawn)();
 
-    extern void (*G_SetModel)(gentity_s* ent, const char* modelName);
+    extern VOID (*G_SetModel)(gentity_s* ent, LPCSTR modelName);
 
-    extern void (*SV_LinkEntity)(gentity_s* gEnt);
+    extern VOID (*SV_LinkEntity)(gentity_s* gEnt);
 
-    extern void (*SV_UnlinkEntity)(gentity_s* gEnt);
+    extern VOID (*SV_UnlinkEntity)(gentity_s* gEnt);
 
-    extern void (*SV_SetBrushModel)(gentity_s* ent);
+    extern VOID (*SV_SetBrushModel)(gentity_s* ent);
 
     extern gentity_s* (*SV_AddTestClient)();
 
-    extern void (*SV_ExecuteClientCommand)(int client, const char* s, int clientOK, int fromOldServer);
+    extern VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 
-    extern void (*TeleportPlayer)(gentity_s* player, float* origin, float* angles);
+    extern VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles);
 
-    extern gclient_s* GetGClient(int clientNum);
+    extern gclient_s* GetGClient(INT clientNum);
 
-    extern gentity_s* GetEntity(int entNum);
+    extern gentity_s* GetEntity(INT entNum);
 
-    extern void SetClientDvar(int clientNum, const std::string& dvar, const std::string& value);
+    extern VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value);
 
-    extern void iPrintLn(int clientNum, const std::string& text);
+    extern VOID iPrintLn(INT clientNum, CONST std::string& text);
 
-    extern bool IsHost(int clientNum);
+    extern bool IsHost(INT clientNum);
 
     extern gentity_s* GetCurrentMapBrushModel();
 }

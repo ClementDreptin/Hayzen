@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Games\MW2\MW2.h"
 
+#include "Games\MW2\Client.h"
 #include "Games\MW2\Events.h"
 #include "Games\MW2\Functions.h"
 
@@ -8,6 +9,76 @@ namespace MW2
 {
     BOOL HasGameBegun = FALSE;
     std::unordered_map<INT, Client> Clients;
+
+    VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount);
+    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount);
+
+    VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+
+    VOID Init()
+    {
+        Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
+
+        Sleep(200);
+
+        // NOP cheat protection
+        Memory::Write<INT>(0x8216906C, 0x60000000);
+        Memory::Write<INT>(0x821690E4, 0x60000000);
+
+        Memory::HookFunctionStart((LPDWORD)0x82209710, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+        Memory::HookFunctionStart((LPDWORD)0x82253140, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+    }
+
+    BOOL Verify(INT clientNum)
+    {
+        if (clientNum < 0 || clientNum > 17)
+            return FALSE;
+
+        if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
+            return FALSE;
+
+        SetClientDvar(clientNum, "loc_warnings", "0");
+        SetClientDvar(clientNum, "loc_warningsUI", "0");
+
+        Clients[clientNum] = Client(clientNum);
+
+        return TRUE;
+    }
+
+    VOID SafeReset()
+    {
+        if (Clients.size() != 0)
+            Clients.clear();
+
+        if (HasGameBegun)
+        {
+            Menu::FreeBot();
+            HasGameBegun = FALSE;
+        }
+    }
+
+    VOID SetupGame(INT clientNum)
+    {
+        if (IsHost(clientNum))
+        {
+            Verify(clientNum);
+            HasGameBegun = TRUE;
+        }
+    }
+
+    VOID ResetGame(INT clientNum, BOOL resetBot = TRUE)
+    {
+        Clients.erase(clientNum);
+
+        if (IsHost(clientNum))
+        {
+            if (resetBot)
+                Menu::FreeBot();
+
+            HasGameBegun = FALSE;
+        }
+    }
 
     __declspec(naked) VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
     {
@@ -36,70 +107,6 @@ namespace MW2
             nop
             nop
             li r3, 2
-        }
-    }
-
-    VOID Init()
-    {
-        Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
-
-        Sleep(200);
-
-        // NOP cheat protection
-        Memory::Write<INT>(0x8216906C, 0x60000000);
-        Memory::Write<INT>(0x821690E4, 0x60000000);
-
-        Memory::HookFunctionStart((LPDWORD)0x82209710, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-        Memory::HookFunctionStart((LPDWORD)0x82253140, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
-    }
-
-    VOID SetupGame(INT clientNum)
-    {
-        if (IsHost(clientNum))
-        {
-            Verify(clientNum);
-            HasGameBegun = TRUE;
-        }
-    }
-
-    VOID ResetGame(INT clientNum, BOOL resetBot)
-    {
-        Clients.erase(clientNum);
-
-        if (IsHost(clientNum))
-        {
-            if (resetBot)
-                Menu::FreeBot();
-
-            HasGameBegun = FALSE;
-        }
-    }
-
-    BOOL Verify(INT clientNum)
-    {
-        if (clientNum < 0 || clientNum > 17)
-            return FALSE;
-
-        if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return FALSE;
-
-        SetClientDvar(clientNum, "loc_warnings", "0");
-        SetClientDvar(clientNum, "loc_warningsUI", "0");
-
-        Clients[clientNum] = Client(clientNum);
-
-        return TRUE;
-    }
-
-    VOID SafeReset()
-    {
-        if (Clients.size() != 0)
-            Clients.clear();
-
-        if (HasGameBegun)
-        {
-            Menu::FreeBot();
-            HasGameBegun = FALSE;
         }
     }
 

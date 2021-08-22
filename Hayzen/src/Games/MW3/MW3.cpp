@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Games\MW3\MW3.h"
 
+#include "Games\MW3\Client.h"
 #include "Games\MW3\Events.h"
 #include "Games\MW3\Functions.h"
 
@@ -9,35 +10,11 @@ namespace MW3
     BOOL HasGameBegun = FALSE;
     std::unordered_map<INT, Client> Clients;
 
-    __declspec(naked) VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
-    {
-        __asm
-        {
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            li r3, 1
-        }
-    }
+    VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount);
+    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount);
 
-    __declspec(naked) VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
-    {
-        __asm
-        {
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            li r3, 2
-        }
-    }
+    VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 
     VOID Init()
     {
@@ -51,23 +28,6 @@ namespace MW3
 
         Memory::HookFunctionStart((LPDWORD)0x8226AF98, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
         Memory::HookFunctionStart((LPDWORD)0x822C78A0, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
-    }
-
-    VOID SetupGame(INT clientNum)
-    {
-        if (IsHost(clientNum))
-        {
-            Verify(clientNum);
-            HasGameBegun = TRUE;
-        }
-    }
-
-    VOID ResetGame(INT clientNum)
-    {
-        Clients.erase(clientNum);
-
-        if (IsHost(clientNum))
-            HasGameBegun = FALSE;
     }
 
     BOOL Verify(INT clientNum)
@@ -93,6 +53,53 @@ namespace MW3
 
         if (HasGameBegun)
             HasGameBegun = FALSE;
+    }
+
+    VOID SetupGame(INT clientNum)
+    {
+        if (IsHost(clientNum))
+        {
+            Verify(clientNum);
+            HasGameBegun = TRUE;
+        }
+    }
+
+    VOID ResetGame(INT clientNum)
+    {
+        Clients.erase(clientNum);
+
+        if (IsHost(clientNum))
+            HasGameBegun = FALSE;
+    }
+
+    __declspec(naked) void Scr_NotifyStub(gentity_s* entity, unsigned short stringValue, unsigned int paramCount)
+    {
+        __asm
+        {
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            li r3, 1
+        }
+    }
+
+    __declspec(naked) void SV_ExecuteClientCommandStub(int client, const char* s, int clientOK, int fromOldServer)
+    {
+        __asm
+        {
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            nop
+            li r3, 2
+        }
     }
 
     VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)

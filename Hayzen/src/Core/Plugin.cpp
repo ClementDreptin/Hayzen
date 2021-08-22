@@ -3,66 +3,78 @@
 
 #include "Games\Games.h"
 
-BOOL Plugin::Running = FALSE;
-DWORD Plugin::CurrentTitle = 0;
-
-VOID Plugin::Start()
+namespace Plugin
 {
-    Running = TRUE;
-    Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
-}
+    BOOL Running = FALSE;
+    DWORD CurrentTitle = 0;
 
-VOID Plugin::Stop()
-{
-    Running = FALSE;
-}
-
-DWORD Plugin::MonitorTitleId(LPVOID lpThreadParameter)
-{
-    while (Running)
+    enum Games : DWORD
     {
-        DWORD newTitle = Kernel::XamGetCurrentTitleId();
-        if (newTitle != CurrentTitle)
-            InitNewGame(newTitle);
+        DASHBOARD = 0xFFFE07D1,
+        MW2 = 0x41560817,
+        MW3 = 0x415608CB
+    };
+
+    DWORD MonitorTitleId(LPVOID lpThreadParameter);
+
+    VOID Start()
+    {
+        Running = TRUE;
+        Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
     }
 
-    return 0;
-}
-
-VOID Plugin::InitNewGame(DWORD titleId)
-{
-    Cleanup();
-
-    CurrentTitle = titleId;
-
-    switch (titleId)
+    VOID Stop()
     {
-        case DASHBOARD:
-            Dashboard::Init();
-            break;
-        case MW2:
-            if (!strcmp((LPSTR)0x82001270, "multiplayer"))
-                MW2::Init();
-            else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
-                SpecOps::MW2::Init();
-            else if (!strcmp((LPSTR)0x82001D38, "multiplayer"))
-                Alpha::MW2::Init();
-            break;
-        case MW3:
-            if (!strcmp((LPSTR)0x82001458, "multiplayer"))
-                MW3::Init();
-            else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
-                SpecOps::MW3::Init();
-        default:
-            return;
+        Running = FALSE;
     }
-}
 
-VOID Plugin::Cleanup()
-{
-    MW2::SafeReset();
-    Alpha::MW2::SafeReset();
-    MW3::SafeReset();
-    SpecOps::MW3::SafeReset();
-    SpecOps::MW2::SafeReset();
+    VOID Cleanup()
+    {
+        MW2::SafeReset();
+        Alpha::MW2::SafeReset();
+        MW3::SafeReset();
+        SpecOps::MW3::SafeReset();
+        SpecOps::MW2::SafeReset();
+    }
+
+    VOID InitNewGame(DWORD titleId)
+    {
+        Cleanup();
+
+        CurrentTitle = titleId;
+
+        switch (titleId)
+        {
+            case DASHBOARD:
+                Dashboard::Init();
+                break;
+            case MW2:
+                if (!strcmp((LPSTR)0x82001270, "multiplayer"))
+                    MW2::Init();
+                else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
+                    SpecOps::MW2::Init();
+                else if (!strcmp((LPSTR)0x82001D38, "multiplayer"))
+                    Alpha::MW2::Init();
+                break;
+            case MW3:
+                if (!strcmp((LPSTR)0x82001458, "multiplayer"))
+                    MW3::Init();
+                else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
+                    SpecOps::MW3::Init();
+            default:
+                return;
+        }
+    }
+
+    DWORD MonitorTitleId(LPVOID lpThreadParameter)
+    {
+        while (Running)
+        {
+            DWORD newTitle = Kernel::XamGetCurrentTitleId();
+            if (newTitle != CurrentTitle)
+                InitNewGame(newTitle);
+        }
+
+        return 0;
+    }
 }

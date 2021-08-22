@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Games\SpecOps\MW3\MW3.h"
 
+#include "Games\SpecOps\MW3\Client.h"
 #include "Games\SpecOps\MW3\Events.h"
 
 namespace SpecOps
@@ -9,6 +10,54 @@ namespace MW3
 {
     BOOL HasGameBegun = FALSE;
     std::unordered_map<INT, Client> Clients;
+
+    VOID DrawMenuDebugTextStub(INT dc);
+    VOID DrawMenuDebugTextHook(INT dc);
+
+    VOID ClientCommandStub(INT clientNum, LPCSTR s);
+    VOID ClientCommandHook(INT clientNum, LPCSTR s);
+
+    VOID PlayerCmd_AllowJumpStub();
+    VOID PlayerCmd_AllowJumpHook();
+
+    VOID Init()
+    {
+        Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
+
+        Sleep(200);
+
+        Memory::HookFunctionStart((LPDWORD)0x822E0488, (LPDWORD)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
+        Memory::HookFunctionStart((LPDWORD)0x821FEFB0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
+        Memory::HookFunctionStart((LPDWORD)0x821FA680, (LPDWORD)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
+    }
+
+    BOOL Verify(INT clientNum)
+    {
+        if (clientNum < 0 || clientNum > 17)
+            return FALSE;
+
+        if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
+            return FALSE;
+
+        Clients[clientNum] = Client(clientNum);
+
+        return TRUE;
+    }
+
+    VOID SafeReset()
+    {
+        if (Clients.size() != 0)
+            Clients.clear();
+
+        if (HasGameBegun)
+            HasGameBegun = FALSE;
+    }
+
+    VOID SetupGame(INT clientNum)
+    {
+        Verify(clientNum);
+        HasGameBegun = TRUE;
+    }
 
     __declspec(naked) VOID DrawMenuDebugTextStub(INT dc)
     {
@@ -53,45 +102,6 @@ namespace MW3
             nop
             li r3, 3
         }
-    }
-
-    VOID Init()
-    {
-        Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
-
-        Sleep(200);
-
-        Memory::HookFunctionStart((DWORD*)0x822E0488, (LPDWORD)DrawMenuDebugTextStub, (DWORD)DrawMenuDebugTextHook);
-        Memory::HookFunctionStart((DWORD*)0x821FEFB0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
-        Memory::HookFunctionStart((DWORD*)0x821FA680, (LPDWORD)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
-    }
-
-    VOID SetupGame(INT clientNum)
-    {
-        Verify(clientNum);
-        HasGameBegun = TRUE;
-    }
-
-    BOOL Verify(INT clientNum)
-    {
-        if (clientNum < 0 || clientNum > 17)
-            return FALSE;
-
-        if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return FALSE;
-
-        Clients[clientNum] = Client(clientNum);
-
-        return TRUE;
-    }
-
-    VOID SafeReset()
-    {
-        if (Clients.size() != 0)
-            Clients.clear();
-
-        if (HasGameBegun)
-            HasGameBegun = FALSE;
     }
 
     VOID DrawMenuDebugTextHook(INT dc)

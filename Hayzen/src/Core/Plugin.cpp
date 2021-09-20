@@ -26,6 +26,7 @@ namespace Plugin
     VOID Stop()
     {
         Running = FALSE;
+        Sleep(250);
     }
 
     VOID Cleanup()

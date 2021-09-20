@@ -8,7 +8,7 @@ namespace Plugin
     BOOL Running = FALSE;
     DWORD CurrentTitle = 0;
 
-    enum Games : DWORD
+    enum Games
     {
         DASHBOARD = 0xFFFE07D1,
         MW2 = 0x41560817,

@@ -5,7 +5,7 @@ namespace MW3
     using XexUtils::Math::vec2;
     using XexUtils::Math::vec3;
     
-    enum he_type_t : INT
+    enum he_type_t
     {
         HE_TYPE_FREE,
         HE_TYPE_TEXT,
@@ -25,7 +25,7 @@ namespace MW3
         HE_TYPE_COUNT,
     };
 
-    typedef enum align_t : INT
+    typedef enum align_t
     {
         ALIGN_TOP_LEFT = 0,
         ALIGN_MIDDLE_LEFT = 1,

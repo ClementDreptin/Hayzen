@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Core\Game.h"
+
 
 //--------------------------------------------------------------------------------------
 // Name: class Plugin
@@ -13,8 +15,8 @@ public:
 private:
     static BOOL s_bRunning;
     static DWORD s_dwCurrentTitle;
+    static Game* s_CurrentGame;
 
-    static DWORD MonitorTitleId(LPVOID);
+    static DWORD Update(LPVOID);
     static VOID InitNewGame(DWORD dwNewTitle);
-    static VOID Cleanup();
 };

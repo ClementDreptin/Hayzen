@@ -1,7 +1,30 @@
 #include "pch.h"
 #include "Games\MW2\MW2.h"
 
-#include "Games\MW2\Client.h"
+
+//--------------------------------------------------------------------------------------
+// Name: Init()
+// Desc: Set the draw function pointers and the function hooks.
+//--------------------------------------------------------------------------------------
+VOID MW2::Init()
+{
+    Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
+
+    // Give the system some time to fully load the game in memory
+    Sleep(200);
+
+    // Set the draw function addresses
+    m_dwDrawTextFnAddr = 0x82350278;
+    m_dwDrawRectangleFnAddr = 0x821384D8;
+    m_dwRegisterFontFnAddr = 0x8234DCB0;
+    m_dwRegisterMaterialFnAddr = 0x8234E510;
+
+    // Set the draw function pointers with the addresses above
+    Game::Init();
+}
+
+
+/* #include "Games\MW2\Client.h"
 #include "Games\MW2\Events.h"
 #include "Games\MW2\Functions.h"
 
@@ -141,4 +164,4 @@ namespace MW2
         if (!strcmp(s, "disconnect") && Clients.find(clientNum) != Clients.end())
             ResetGame(clientNum);
     }
-}
+} */

@@ -9,6 +9,7 @@
 //--------------------------------------------------------------------------------------
 BOOL Plugin::s_bRunning = FALSE;
 DWORD Plugin::s_dwCurrentTitle = 0;
+Game* Plugin::s_CurrentGame = nullptr;
 
 
 // Enum from game IDs
@@ -29,7 +30,7 @@ VOID Plugin::Start()
     s_bRunning = TRUE;
 
     // Start the main loop in a separate thread
-    Memory::Thread((LPTHREAD_START_ROUTINE)MonitorTitleId);
+    Memory::Thread((LPTHREAD_START_ROUTINE)Update);
 }
 
 
@@ -47,10 +48,10 @@ VOID Plugin::Stop()
 
 
 //--------------------------------------------------------------------------------------
-// Name: MonitorTitleId()
-// Desc: Loop as long as the plugin is running the monitor the current running game.
+// Name: Update()
+// Desc: Loop as long as the plugin is running and monitor the current running game.
 //--------------------------------------------------------------------------------------
-DWORD Plugin::MonitorTitleId(LPVOID)
+DWORD Plugin::Update(LPVOID)
 {
     while (s_bRunning)
     {
@@ -60,6 +61,9 @@ DWORD Plugin::MonitorTitleId(LPVOID)
         // Initialize a new game if the user launches a new game
         if (dwNewTitle != s_dwCurrentTitle)
             InitNewGame(dwNewTitle);
+
+        // Update the current game
+        s_CurrentGame->Update();
     }
 
     return 0;
@@ -72,8 +76,8 @@ DWORD Plugin::MonitorTitleId(LPVOID)
 //--------------------------------------------------------------------------------------
 VOID Plugin::InitNewGame(DWORD dwNewTitle)
 {
-    // Cleanup what previous games may have left out
-    Cleanup();
+    // Cleanup what previous game may have left out
+    delete s_CurrentGame;
 
     // Update the current title
     s_dwCurrentTitle = dwNewTitle;
@@ -82,13 +86,13 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (dwNewTitle)
     {
-    case GAME_DASHBOARD:
-        Dashboard::Init();
-        break;
+    /* case GAME_DASHBOARD:
+        s_CurrentGame = new Dashboard();
+        break; */
     case GAME_MW2:
         if (!strcmp((LPSTR)0x82001270, "multiplayer"))
-            MW2::Init();
-        else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
+            s_CurrentGame = new MW2();
+        /* else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
             SpecOps::MW2::Init();
         else if (!strcmp((LPSTR)0x82001D38, "multiplayer"))
             Alpha::MW2::Init();
@@ -97,23 +101,11 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
         if (!strcmp((LPSTR)0x82001458, "multiplayer"))
             MW3::Init();
         else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
-            SpecOps::MW3::Init();
+            SpecOps::MW3::Init(); */
     default:
-        return;
+        break;
     }
+
+    s_CurrentGame->Init();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Cleanup()
-// Desc: Initialize a new game if it's supported.
-//--------------------------------------------------------------------------------------
-VOID Plugin::Cleanup()
-{
-    // Cleanup what games may have left out
-    MW2::SafeReset();
-    Alpha::MW2::SafeReset();
-    MW3::SafeReset();
-    SpecOps::MW3::SafeReset();
-    SpecOps::MW2::SafeReset();
-}

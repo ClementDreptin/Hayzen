@@ -91,14 +91,14 @@ VOID Menu::Render()
         return;
 
     // Draw the constant HUD elements
-    //m_Background.Draw();
-    //m_Title.Draw();
-    //m_Scroller.Draw();
-    //m_Instructions.Draw();
+    m_Background.Draw();
+    m_Title.Draw();
+    m_Scroller.Draw();
+    m_Instructions.Draw();
 
     // Draw every option in the current menu section
-    //for (size_t i = 0; i < m_pStructure->at(m_Title.GetText()).size(); i++)
-    //    m_pStructure->at(m_Title.GetText())[i].Draw();
+    for (size_t i = 0; i < m_pStructure->at(m_Title.GetText()).size(); i++)
+        m_pStructure->at(m_Title.GetText())[i].Draw();
 }
 
 

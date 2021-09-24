@@ -36,8 +36,6 @@ VOID Game::Update()
         return;
 
     s_Menu.Update();
-
-    s_Menu.Render();
 }
 
 

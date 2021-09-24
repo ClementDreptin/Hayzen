@@ -42,6 +42,7 @@ VOID MW2::Init()
     CreateStructure();
 
     // Set up the function hooks
+    Memory::HookFunctionStart((LPDWORD)0x8214BEB8, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
     Memory::HookFunctionStart((LPDWORD)0x82209710, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
     Memory::HookFunctionStart((LPDWORD)0x82253140, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 }
@@ -56,6 +57,20 @@ VOID MW2::CreateStructure()
     s_Structure["Cod Jumper"] = std::vector<Option>();
     s_Structure["Cod Jumper"].emplace_back(Option("Option 1", 0, MW2MenuFunctions::Option1Callback));
     s_Structure["Cod Jumper"].emplace_back(Option("Option 2", 1, MW2MenuFunctions::Option2Callback));
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: SCR_DrawScreenFieldHook()
+// Desc: Render the menu.
+//--------------------------------------------------------------------------------------
+VOID MW2::SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
+{
+    // Call the original SCR_DrawScreenField function
+    SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
+
+    // Render the menu
+    s_Menu.Render();
 }
 
 
@@ -102,6 +117,25 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
+
+//--------------------------------------------------------------------------------------
+// Name: SCR_DrawScreenFieldStub()
+// Desc: Stub to hold the original code of SCR_DrawScreenField.
+//--------------------------------------------------------------------------------------
+VOID __declspec(naked) MW2::SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
+{
+    __asm
+    {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        li r3, 0
+    }
+}
 
 //--------------------------------------------------------------------------------------
 // Name: Scr_NotifyStub()

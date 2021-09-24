@@ -1,7 +1,7 @@
 #pragma once
 
-namespace MW2
-{
+//namespace MW2
+//{
     using Math::vec2;
     using Math::vec3;
 
@@ -159,4 +159,4 @@ namespace MW2
         INT flags;
         CHAR padding2[0xF8];
     };
-}
+//}

@@ -18,7 +18,7 @@ class Menu
 public:
     Menu() {}
 
-    VOID Init(INT iClientNum, CONST Structure& structure);
+    VOID Init(INT iClientNum, Structure* pStructure);
     VOID Update();
     VOID Render();
     VOID Stop();
@@ -30,7 +30,7 @@ private:
     BOOL m_bRunning;
 
     INT m_iClientNum;
-    Structure m_Structure;
+    Structure* m_pStructure;
 
     Rectangle m_Background;
     Text m_Title;
@@ -41,4 +41,6 @@ private:
     vec3 m_SavedPos;
     vec3 m_SavedAngles;
     BOOL m_bBindsEnabled;
+
+    VOID MoveScroller();
 };

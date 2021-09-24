@@ -1,18 +1,20 @@
 #include "pch.h"
 #include "Core\Menu.h"
 
+#include "Core\AtgInput.h"
+
 
 //--------------------------------------------------------------------------------------
 // Name: Init()
 // Desc: Create the constant HUD elements.
 //--------------------------------------------------------------------------------------
-VOID Menu::Init(INT iClientNum, CONST Structure& structure)
+VOID Menu::Init(INT iClientNum, Structure* pStructure)
 {
     // Save the arguments to class members
     m_iClientNum = iClientNum;
-    m_Structure = structure;
+    m_pStructure = pStructure;
 
-    // Create the constant HUD elemùents
+    // Create the constant HUD elements
     m_Background = Rectangle(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
     m_Background.SetAlpha(0.7f);
 
@@ -23,6 +25,9 @@ VOID Menu::Init(INT iClientNum, CONST Structure& structure)
 
     m_Instructions = Text("Navigate: UP - DOWN | Select: X | Back: RS",
         HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
+
+    // Initialize the scroller position
+    m_iCurrentScrollerPos = 0;
 
     // Remember that initialization has been done
     m_bInitialized = TRUE;
@@ -39,9 +44,39 @@ VOID Menu::Update()
     if (!m_bInitialized)
         return;
 
-    // Call XInputGetState
-    // Update the cursor position
-    // Call OnClick on the selected option
+    // Get the current gamepad state
+    ATG::GAMEPAD* pGamepad = ATG::Input::GetMergedInput();
+
+    // Open/Close the menu
+    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+        m_bOpen = !m_bOpen;
+
+    // Allow the user to select options with the DPAD only when the menu is open
+    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_UP && m_bOpen)
+    {
+        m_iCurrentScrollerPos--;
+
+        // If the scroller is already at the top, send it to the bottom
+        if (m_iCurrentScrollerPos < 0)
+            m_iCurrentScrollerPos = m_pStructure->at(m_Title.GetText()).size() - 1;
+
+        MoveScroller();
+    }
+
+    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN && m_bOpen)
+    {
+        m_iCurrentScrollerPos++;
+
+        // If the scroller is already at the bottom, send it to the top
+        if (m_iCurrentScrollerPos >= (INT)m_pStructure->at(m_Title.GetText()).size())
+            m_iCurrentScrollerPos = 0;
+
+        MoveScroller();
+    }
+
+    // Allow the user to click on an option
+    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_A && m_bOpen)
+        m_pStructure->at(m_Title.GetText())[m_iCurrentScrollerPos].OnClick(this);
 }
 
 
@@ -51,19 +86,19 @@ VOID Menu::Update()
 //--------------------------------------------------------------------------------------
 VOID Menu::Render()
 {
-    // If the menu is not initialized, don't go further
-    if (!m_bInitialized)
+    // If the menu is not initialized or not open, don't go further
+    if (!m_bInitialized || !m_bOpen)
         return;
 
     // Draw the constant HUD elements
-    m_Background.Draw();
-    m_Title.Draw();
-    m_Scroller.Draw();
-    m_Instructions.Draw();
+    //m_Background.Draw();
+    //m_Title.Draw();
+    //m_Scroller.Draw();
+    //m_Instructions.Draw();
 
     // Draw every option in the current menu section
-    for (size_t i = 0; i < m_Structure[m_Title.GetText()].size(); i++)
-        m_Structure[m_Title.GetText()][i].Draw();
+    //for (size_t i = 0; i < m_pStructure->at(m_Title.GetText()).size(); i++)
+    //    m_pStructure->at(m_Title.GetText())[i].Draw();
 }
 
 
@@ -74,4 +109,15 @@ VOID Menu::Render()
 VOID Menu::Stop()
 {
     m_bInitialized = FALSE;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: MoveScroller()
+// Desc: Update the poition of the scroller according to the m_iCurrentScrollerPos
+//       index.
+//--------------------------------------------------------------------------------------
+VOID Menu::MoveScroller()
+{
+    m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * m_iCurrentScrollerPos);
 }

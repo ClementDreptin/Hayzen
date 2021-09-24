@@ -33,7 +33,7 @@ struct Font_s
 // Render and register function type definitions
 //--------------------------------------------------------------------------------------
 typedef VOID (*R_ADDCMDDRAWTEXT)(LPCSTR text, INT maxChars, Font_s* font, FLOAT x, FLOAT y, FLOAT xScale, FLOAT yScale, FLOAT rotation, CONST PFLOAT color, INT style);
-typedef VOID (*R_ADDCMDDRAWSTRETCHPIC)(FLOAT x, FLOAT y, FLOAT w, FLOAT h, FLOAT s0, FLOAT t0, FLOAT s1, FLOAT t1, CONST PFLOAT color, LPVOID material);
+typedef VOID (*R_ADDCMDDRAWSTRETCHPIC)(FLOAT x, FLOAT y, FLOAT w, FLOAT h, FLOAT s0, FLOAT t0, FLOAT s1, FLOAT t1, CONST PFLOAT color, HANDLE material);
 typedef Font_s* (*R_REGISTERFONT)(LPCSTR font, INT imageTrack);
 typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
 

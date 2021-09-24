@@ -5,6 +5,13 @@
 
 
 //--------------------------------------------------------------------------------------
+// Static members definitions
+//--------------------------------------------------------------------------------------
+Menu Game::s_Menu;
+Structure Game::s_Structure;
+
+
+//--------------------------------------------------------------------------------------
 // Name: Init()
 // Desc: Common initialization behavior to all games.
 //--------------------------------------------------------------------------------------
@@ -25,12 +32,12 @@ VOID Game::Init()
 VOID Game::Update()
 {
     // If the menu is not initialized, no need to go further
-    if (!m_Menu.IsInitialized())
+    if (!s_Menu.IsInitialized())
         return;
 
-    m_Menu.Update();
+    s_Menu.Update();
 
-    m_Menu.Render();
+    s_Menu.Render();
 }
 
 

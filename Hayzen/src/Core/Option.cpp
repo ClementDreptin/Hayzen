@@ -6,8 +6,9 @@
 // Name: Option()
 // Desc: Constructor.
 //--------------------------------------------------------------------------------------
-Option::Option(CONST std::string& strName, UINT uiIndex)
+Option::Option(CONST std::string& strName, UINT uiIndex, Callback fnCallback)
     : m_uiIndex(uiIndex),
+    m_fnCallback(fnCallback),
     Text(strName,
         HudElem::s_MenuX + HudElem::s_Padding,
         HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * (uiIndex + 1),

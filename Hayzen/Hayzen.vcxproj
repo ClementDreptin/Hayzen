@@ -83,6 +83,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\AtgInput.h" />
     <ClInclude Include="src\Elements\Rectangle.h" />
     <ClInclude Include="src\Core\Game.h" />
     <ClInclude Include="src\Core\Menu.h" />
@@ -91,10 +92,12 @@
     <ClInclude Include="src\Elements\HudElem.h" />
     <ClInclude Include="src\Elements\Text.h" />
     <ClInclude Include="src\Games\Games.h" />
+    <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\AtgInput.cpp" />
     <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Elements\Rectangle.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
@@ -102,6 +105,7 @@
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Elements\HudElem.cpp" />
     <ClCompile Include="src\Elements\Text.cpp" />
+    <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">

@@ -12,17 +12,20 @@ class Game
 public:
     virtual ~Game() {}
 
-    virtual VOID Init();
+    virtual VOID Init() = 0;
 
     VOID Update();
 protected:
+    static Menu s_Menu;
+    static Structure s_Structure;
+
     DWORD m_dwDrawTextFnAddr;
     DWORD m_dwDrawRectangleFnAddr;
     DWORD m_dwRegisterFontFnAddr;
     DWORD m_dwRegisterMaterialFnAddr;
 
-    Menu m_Menu;
-
+    virtual VOID CreateStructure() = 0;
+private:
     VOID SetDrawFunctionsPointers();
     VOID RegisterFontAndMaterial();
 };

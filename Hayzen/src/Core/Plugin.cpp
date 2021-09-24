@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core\Plugin.h"
 
-#include "Games\Games.h"
+#include "Games\MW2\MW2.h"
 
 
 //--------------------------------------------------------------------------------------
@@ -62,8 +62,9 @@ DWORD Plugin::Update(LPVOID)
         if (dwNewTitle != s_dwCurrentTitle)
             InitNewGame(dwNewTitle);
 
-        // Update the current game
-        s_CurrentGame->Update();
+        // Only update the current game if it's supported
+        if (s_CurrentGame)
+            s_CurrentGame->Update();
     }
 
     return 0;
@@ -76,8 +77,9 @@ DWORD Plugin::Update(LPVOID)
 //--------------------------------------------------------------------------------------
 VOID Plugin::InitNewGame(DWORD dwNewTitle)
 {
-    // Cleanup what previous game may have left out
+    // Clean up what previous game may have left out and reset the pointer
     delete s_CurrentGame;
+    s_CurrentGame = nullptr;
 
     // Update the current title
     s_dwCurrentTitle = dwNewTitle;
@@ -86,9 +88,9 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (dwNewTitle)
     {
-    /* case GAME_DASHBOARD:
-        s_CurrentGame = new Dashboard();
-        break; */
+    case GAME_DASHBOARD:
+        Xam::XNotify("Hayzen - Dashboard Detected");
+        break;
     case GAME_MW2:
         if (!strcmp((LPSTR)0x82001270, "multiplayer"))
             s_CurrentGame = new MW2();
@@ -106,6 +108,8 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
         break;
     }
 
-    s_CurrentGame->Init();
+    // Only init the new game if it's supported
+    if (s_CurrentGame)
+        s_CurrentGame->Init();
 }
 

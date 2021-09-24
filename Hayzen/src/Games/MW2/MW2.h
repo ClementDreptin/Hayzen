@@ -22,9 +22,6 @@ private:
 
     static VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
     static VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
-
-    static VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI);
-    static VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI);
 };
 
 

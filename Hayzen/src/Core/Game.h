@@ -25,6 +25,9 @@ protected:
     DWORD m_dwRegisterMaterialFnAddr;
 
     virtual VOID CreateStructure() = 0;
+
+    static VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI);
+    static VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI);
 private:
     VOID SetDrawFunctionsPointers();
     VOID RegisterFontAndMaterial();

@@ -61,20 +61,6 @@ VOID MW2::CreateStructure()
 
 
 //--------------------------------------------------------------------------------------
-// Name: SCR_DrawScreenFieldHook()
-// Desc: Render the menu.
-//--------------------------------------------------------------------------------------
-VOID MW2::SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
-{
-    // Call the original SCR_DrawScreenField function
-    SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
-
-    // Render the menu
-    s_Menu.Render();
-}
-
-
-//--------------------------------------------------------------------------------------
 // Name: Scr_NotifyHook()
 // Desc: Initialize the menu when the game starts.
 //--------------------------------------------------------------------------------------
@@ -115,26 +101,6 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
     // Stop the menu when the game ends
     if (!strcmp(s, "disconnect"))
         s_Menu.Stop();
-}
-
-
-//--------------------------------------------------------------------------------------
-// Name: SCR_DrawScreenFieldStub()
-// Desc: Stub to hold the original code of SCR_DrawScreenField.
-//--------------------------------------------------------------------------------------
-VOID __declspec(naked) MW2::SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 0
-    }
 }
 
 //--------------------------------------------------------------------------------------

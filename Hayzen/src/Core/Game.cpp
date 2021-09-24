@@ -40,6 +40,40 @@ VOID Game::Update()
 
 
 //--------------------------------------------------------------------------------------
+// Name: SCR_DrawScreenFieldHook()
+// Desc: Render the menu.
+//--------------------------------------------------------------------------------------
+VOID Game::SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
+{
+    // Call the original SCR_DrawScreenField function
+    SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
+
+    // Render the menu
+    s_Menu.Render();
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: SCR_DrawScreenFieldStub()
+// Desc: Stub to hold the original code of SCR_DrawScreenField.
+//--------------------------------------------------------------------------------------
+VOID __declspec(naked) Game::SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
+{
+    __asm
+    {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        li r3, 0
+    }
+}
+
+
+//--------------------------------------------------------------------------------------
 // Name: SetDrawFunctionsPointers()
 // Desc: Make the global drawing function pointers point to the current game's drawing
 //       functions.

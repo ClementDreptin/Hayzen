@@ -1,11 +1,16 @@
 #pragma once
 
+#include "Core\Menu.h"
+#include "Core\Option.h"
+
 
 namespace MW2MenuFunctions
 {
 
-    VOID Option1Callback(LPVOID);
+    VOID GoToSection(Menu* pMenu, Option* pContext);
 
-    VOID Option2Callback(LPVOID);
+    VOID Option1Callback(Menu*, Option*);
+
+    VOID Option2Callback(Menu*, Option*);
 
 }

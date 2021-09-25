@@ -24,6 +24,8 @@ public:
     VOID Stop();
 
     BOOL IsInitialized() CONST { return m_bInitialized; }
+
+    VOID GoToSection(CONST std::string& strSectionName);
 private:
     BOOL m_bInitialized;
     BOOL m_bOpen;

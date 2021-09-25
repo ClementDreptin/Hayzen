@@ -81,7 +81,7 @@ VOID Menu::Update()
     }
 
     // Allow the user to click on an option
-    if (wPressedButtons & XINPUT_GAMEPAD_A && m_bOpen)
+    if (wPressedButtons & XINPUT_GAMEPAD_X && m_bOpen)
         m_pStructure->at(m_Title.GetText())[m_iCurrentScrollerPos].OnClick(this);
 }
 
@@ -115,6 +115,21 @@ VOID Menu::Render()
 VOID Menu::Stop()
 {
     m_bInitialized = FALSE;
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: GoToSection()
+// Desc: Change the current menu section.
+//--------------------------------------------------------------------------------------
+VOID Menu::GoToSection(CONST std::string& strSectionName)
+{
+    // Reset the scroller position
+    m_iCurrentScrollerPos = 0;
+    MoveScroller();
+
+    // Set the current menu section by changing the title
+    m_Title.SetText(strSectionName);
 }
 
 

@@ -3,11 +3,12 @@
 #include "Elements\Text.h"
 
 
-// Create the option callback type
-typedef VOID (*Callback)(LPVOID pData);
-
-// Forward declaration for the menu
+// Forward declarations
 class Menu;
+class Option;
+
+// Create the option callback type
+typedef VOID (*Callback)(Menu* pMenu, Option* pContext);
 
 
 //--------------------------------------------------------------------------------------
@@ -20,7 +21,7 @@ public:
     Option() {};
     Option(CONST std::string& strName, UINT uiIndex, Callback fnCallback);
 
-    VOID OnClick(Menu* pMenu) { m_fnCallback(pMenu); }
+    VOID OnClick(Menu* pMenu) { m_fnCallback(pMenu, this); }
 private:
     UINT m_uiIndex;
     Callback m_fnCallback;

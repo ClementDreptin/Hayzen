@@ -55,8 +55,14 @@ VOID MW2::Init()
 VOID MW2::CreateStructure()
 {
     s_Structure["Cod Jumper"] = std::vector<Option>();
-    s_Structure["Cod Jumper"].emplace_back(Option("Option 1", 0, MW2MenuFunctions::Option1Callback));
-    s_Structure["Cod Jumper"].emplace_back(Option("Option 2", 1, MW2MenuFunctions::Option2Callback));
+    s_Structure["Cod Jumper"].emplace_back(Option("Section 1", 0, MW2MenuFunctions::GoToSection));
+    s_Structure["Cod Jumper"].emplace_back(Option("Section 2", 1, MW2MenuFunctions::GoToSection));
+
+    s_Structure["Section 1"] = std::vector<Option>();
+    s_Structure["Section 1"].emplace_back(Option("Option 1", 0, MW2MenuFunctions::Option1Callback));
+
+    s_Structure["Section 2"] = std::vector<Option>();
+    s_Structure["Section 2"].emplace_back(Option("Option 2", 0, MW2MenuFunctions::Option2Callback));
 }
 
 

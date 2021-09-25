@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Core\Menu.h"
 
-#include "Core\AtgInput.h"
-
 
 //--------------------------------------------------------------------------------------
 // Name: Init()
@@ -45,14 +43,22 @@ VOID Menu::Update()
         return;
 
     // Get the current gamepad state
-    ATG::GAMEPAD* pGamepad = ATG::Input::GetMergedInput();
+    XINPUT_STATE InputState;
+    XInputGetState(0, &InputState);
+
+    // Save the buttons pressed at the previous frame to set the currently pressed buttons only if
+    // they were not already pressed at the previous frame, we need to do this because pressing
+    // then releasing a button (even done really fast) takes multiple frames.
+    static WORD wLastButtons = 0;
+    WORD wPressedButtons = (wLastButtons ^ InputState.Gamepad.wButtons) & InputState.Gamepad.wButtons;
+    wLastButtons = InputState.Gamepad.wButtons;
 
     // Open/Close the menu
-    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
         m_bOpen = !m_bOpen;
 
     // Allow the user to select options with the DPAD only when the menu is open
-    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_UP && m_bOpen)
+    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_UP && m_bOpen)
     {
         m_iCurrentScrollerPos--;
 
@@ -63,7 +69,7 @@ VOID Menu::Update()
         MoveScroller();
     }
 
-    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN && m_bOpen)
+    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN && m_bOpen)
     {
         m_iCurrentScrollerPos++;
 
@@ -75,7 +81,7 @@ VOID Menu::Update()
     }
 
     // Allow the user to click on an option
-    if (pGamepad->wPressedButtons & XINPUT_GAMEPAD_A && m_bOpen)
+    if (wPressedButtons & XINPUT_GAMEPAD_A && m_bOpen)
         m_pStructure->at(m_Title.GetText())[m_iCurrentScrollerPos].OnClick(this);
 }
 

@@ -83,7 +83,6 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\AtgInput.h" />
     <ClInclude Include="src\Elements\Rectangle.h" />
     <ClInclude Include="src\Core\Game.h" />
     <ClInclude Include="src\Core\Menu.h" />
@@ -97,7 +96,6 @@
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\AtgInput.cpp" />
     <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Elements\Rectangle.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />

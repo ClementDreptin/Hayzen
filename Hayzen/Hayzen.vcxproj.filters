@@ -12,7 +12,6 @@
     <ClCompile Include="src\Core\Game.cpp" />
     <ClCompile Include="src\Games\MW2\MW2.cpp" />
     <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
-    <ClCompile Include="src\Core\AtgInput.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Games\Games.h" />
@@ -26,6 +25,5 @@
     <ClInclude Include="src\Elements\Rectangle.h" />
     <ClInclude Include="src\Games\MW2\MW2.h" />
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
-    <ClInclude Include="src\Core\AtgInput.h" />
   </ItemGroup>
 </Project>

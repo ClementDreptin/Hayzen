@@ -54,15 +54,17 @@ VOID MW2::Init()
 //--------------------------------------------------------------------------------------
 VOID MW2::CreateStructure()
 {
-    s_Structure["Cod Jumper"] = std::vector<Option>();
-    s_Structure["Cod Jumper"].emplace_back(Option("Section 1", 0, MW2MenuFunctions::GoToSection));
-    s_Structure["Cod Jumper"].emplace_back(Option("Section 2", 1, MW2MenuFunctions::GoToSection));
+    s_RootOption.SetText("Cod Jumper");
 
-    s_Structure["Section 1"] = std::vector<Option>();
-    s_Structure["Section 1"].emplace_back(Option("Option 1", 0, MW2MenuFunctions::Option1Callback));
+    auto pSection1 = std::make_shared<Option>("Section 1", 0);
+    auto pOption1 = std::make_shared<Option>("Option 1", 0, MW2MenuFunctions::Option1Callback);
+    pSection1->AddChild(pOption1);
+    s_RootOption.AddChild(pSection1);
 
-    s_Structure["Section 2"] = std::vector<Option>();
-    s_Structure["Section 2"].emplace_back(Option("Option 2", 0, MW2MenuFunctions::Option2Callback));
+    auto pSection2 = std::make_shared<Option>("Section 2", 1);
+    auto pOption2 = std::make_shared<Option>("Option 2", 0, MW2MenuFunctions::Option2Callback);
+    pSection2->AddChild(pOption2);
+    s_RootOption.AddChild(pSection2);
 }
 
 
@@ -86,7 +88,7 @@ VOID MW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
-        s_Menu.Init(iClientNum, &s_Structure);
+        s_Menu.Init(iClientNum, &s_RootOption);
 }
 
 

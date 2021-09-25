@@ -6,23 +6,23 @@
 // Name: Init()
 // Desc: Create the constant HUD elements.
 //--------------------------------------------------------------------------------------
-VOID Menu::Init(INT iClientNum, Structure* pStructure)
+VOID Menu::Init(INT iClientNum, Option* pOption)
 {
     // Save the arguments to class members
     m_iClientNum = iClientNum;
-    m_pStructure = pStructure;
+    m_pCurrentOption = pOption;
 
     // Create the constant HUD elements
     m_Background = Rectangle(HudElem::s_MenuX, HudElem::s_MenuY, HudElem::s_MenuWidth, HudElem::s_MenuHeight, HudElem::s_ColorBlack);
     m_Background.SetAlpha(0.7f);
 
-    m_Title = Text("Cod Jumper", HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_Padding + HudElem::s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
+    m_Title = Text(m_pCurrentOption->GetText(), HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_Padding + HudElem::s_TitleHeight, HudElem::s_ColorWhite, 1.7f);
 
     m_Scroller = Rectangle(HudElem::s_MenuX, HudElem::s_MenuY + (HudElem::s_Padding * 2) + HudElem::s_TitleHeight, HudElem::s_MenuWidth, HudElem::s_LineHeight, HudElem::s_ColorWhite);
     m_Scroller.SetAlpha(0.7f);
 
-    m_Instructions = Text("Navigate: UP - DOWN | Select: X | Back: RS",
-        HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80, HudElem::s_ColorWhite, 0.7f);
+    m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS,
+        HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
 
     // Initialize the scroller position
     m_iCurrentScrollerPos = 0;
@@ -64,7 +64,7 @@ VOID Menu::Update()
 
         // If the scroller is already at the top, send it to the bottom
         if (m_iCurrentScrollerPos < 0)
-            m_iCurrentScrollerPos = m_pStructure->at(m_Title.GetText()).size() - 1;
+            m_iCurrentScrollerPos = m_pCurrentOption->GetChildren().size() - 1;
 
         MoveScroller();
     }
@@ -74,7 +74,7 @@ VOID Menu::Update()
         m_iCurrentScrollerPos++;
 
         // If the scroller is already at the bottom, send it to the top
-        if (m_iCurrentScrollerPos >= (INT)m_pStructure->at(m_Title.GetText()).size())
+        if (m_iCurrentScrollerPos >= (INT)m_pCurrentOption->GetChildren().size())
             m_iCurrentScrollerPos = 0;
 
         MoveScroller();
@@ -82,7 +82,17 @@ VOID Menu::Update()
 
     // Allow the user to click on an option
     if (wPressedButtons & XINPUT_GAMEPAD_X && m_bOpen)
-        m_pStructure->at(m_Title.GetText())[m_iCurrentScrollerPos].OnClick(this);
+        m_pCurrentOption->GetChildren()[m_iCurrentScrollerPos]->OnClick(this);
+
+    // Allow the user to go back to the previous menu section
+    if (wPressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB && m_bOpen)
+    {
+        // We can't just update the current option right away because its children
+        // might still be rendering. That's why we push the new option to a queue
+        // to update it later once it's safe.
+        if (m_pCurrentOption->HasParent())
+            m_ChangeSectionQueue.push(m_pCurrentOption->GetParent());
+    }
 }
 
 
@@ -102,9 +112,16 @@ VOID Menu::Render()
     m_Scroller.Draw();
     m_Instructions.Draw();
 
+    // Update the current option if one has been pushed to the queue
+    if (!m_ChangeSectionQueue.empty())
+    {
+        SetCurrentOption(m_ChangeSectionQueue.front());
+        m_ChangeSectionQueue.pop();
+    }
+
     // Draw every option in the current menu section
-    for (size_t i = 0; i < m_pStructure->at(m_Title.GetText()).size(); i++)
-        m_pStructure->at(m_Title.GetText())[i].Draw();
+    for (size_t i = 0; i < m_pCurrentOption->GetChildren().size(); i++)
+        m_pCurrentOption->GetChildren()[i]->Draw();
 }
 
 
@@ -119,17 +136,20 @@ VOID Menu::Stop()
 
 
 //--------------------------------------------------------------------------------------
-// Name: GoToSection()
+// Name: SetCurrentOption()
 // Desc: Change the current menu section.
 //--------------------------------------------------------------------------------------
-VOID Menu::GoToSection(CONST std::string& strSectionName)
+VOID Menu::SetCurrentOption(Option* pOption)
 {
     // Reset the scroller position
     m_iCurrentScrollerPos = 0;
     MoveScroller();
 
-    // Set the current menu section by changing the title
-    m_Title.SetText(strSectionName);
+    // Set the current option
+    m_pCurrentOption = pOption;
+
+    // Update the title accordingly
+    m_Title.SetText(m_pCurrentOption->GetText());
 }
 
 

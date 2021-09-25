@@ -7,10 +7,8 @@
 namespace MW2MenuFunctions
 {
 
-    VOID GoToSection(Menu* pMenu, Option* pContext);
+    VOID Option1Callback(Menu*);
 
-    VOID Option1Callback(Menu*, Option*);
-
-    VOID Option2Callback(Menu*, Option*);
+    VOID Option2Callback(Menu*);
 
 }

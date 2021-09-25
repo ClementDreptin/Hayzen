@@ -39,6 +39,15 @@ typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
 
 
 //--------------------------------------------------------------------------------------
+// Character for gamepad buttons
+//--------------------------------------------------------------------------------------
+#define CHAR_UP "\x14"
+#define CHAR_DOWN "\x15"
+#define CHAR_X "\x3"
+#define CHAR_RS "\x11"
+
+
+//--------------------------------------------------------------------------------------
 // Name: class HudElem
 // Desc: Interface that the other elements inherit from.
 //--------------------------------------------------------------------------------------

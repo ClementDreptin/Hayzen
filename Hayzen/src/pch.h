@@ -3,7 +3,8 @@
 #include <xtl.h>
 #include <string>
 #include <vector>
-#include <unordered_map>
+#include <memory>
+#include <queue>
 
 #include "XexUtils.h"
 

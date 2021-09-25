@@ -5,10 +5,6 @@
 #include "Elements\Text.h"
 
 
-// Create a short alias for the menu structure
-typedef std::unordered_map<std::string, std::vector<Option>> Structure;
-
-
 //--------------------------------------------------------------------------------------
 // Name: class Menu
 // Desc: Class to describe the general behavior of the menu.
@@ -18,21 +14,23 @@ class Menu
 public:
     Menu() {}
 
-    VOID Init(INT iClientNum, Structure* pStructure);
+    VOID Init(INT iClientNum, Option* pOption);
     VOID Update();
     VOID Render();
     VOID Stop();
 
     BOOL IsInitialized() CONST { return m_bInitialized; }
 
-    VOID GoToSection(CONST std::string& strSectionName);
+    VOID SetCurrentOption(Option* pOption);
 private:
     BOOL m_bInitialized;
     BOOL m_bOpen;
     BOOL m_bRunning;
 
     INT m_iClientNum;
-    Structure* m_pStructure;
+
+    Option* m_pCurrentOption;
+    std::queue<Option*> m_ChangeSectionQueue;
 
     Rectangle m_Background;
     Text m_Title;

@@ -17,7 +17,7 @@ public:
     VOID Update();
 protected:
     static Menu s_Menu;
-    static Structure s_Structure;
+    static Option s_RootOption;
 
     DWORD m_dwDrawTextFnAddr;
     DWORD m_dwDrawRectangleFnAddr;

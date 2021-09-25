@@ -17,4 +17,12 @@ namespace MW2MenuFunctions
 
     VOID SpawnCP(Menu* pMenu);
 
+    VOID ToggleSaveLoadBinds(Menu* pMenu);
+
+    VOID SavePosition(Menu* pMenu);
+
+    VOID LoadPosition(Menu* pMenu);
+
+    VOID ToggleUFO(Menu* pMenu);
+
 }

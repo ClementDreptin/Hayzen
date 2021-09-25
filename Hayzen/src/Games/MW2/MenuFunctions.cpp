@@ -140,3 +140,77 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
     // Register the entity for the scene 
     SV_LinkEntity(entity);
 }
+
+
+//--------------------------------------------------------------------------------------
+// Name: ToggleSaveLoadBinds()
+// Desc: Toggle save and load binds.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+
+    if (!pMenu->BindsEnabled())
+        iPrintLn(iClientNum, "Press [{+frag}] to ^2Save^7 and [{+smoke}] to ^2Load");
+    else
+        iPrintLn(iClientNum, "Save and Load binds ^1Off");
+
+    pMenu->ToggleBinds();
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: SavePosition()
+// Desc: Save the current player's position.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::SavePosition(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+
+    pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
+    pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
+
+    iPrintLn(iClientNum, "Position ^2Saved");
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: LoadPosition()
+// Desc: Load the previously saved player's position.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::LoadPosition(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+    CONST vec3& SavedPos = pMenu->GetSavedPos();
+    CONST vec3& SavedAngles = pMenu->GetSavedAngles();
+
+    // Make sure the player previously saved their position
+    if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
+    {
+        iPrintLn(iClientNum, "^1Save a position first!");
+        return;
+    }
+
+    TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: ToggleUFO()
+// Desc: Toggle UFO.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+
+    if (GetGClient(iClientNum)->mFlags != 2)
+    {
+        GetGClient(iClientNum)->mFlags = 2;
+        iPrintLn(iClientNum, "Ufo ^2On");
+    }
+    else
+    {
+        GetGClient(iClientNum)->mFlags = 0;
+        iPrintLn(iClientNum, "Ufo ^1Off");
+    }
+}

@@ -25,6 +25,10 @@ VOID MW2::Init()
     m_dwRegisterFontFnAddr = 0x8234DCB0;
     m_dwRegisterMaterialFnAddr = 0x8234E510;
 
+    // Set the save and load functions to use fr the current game
+    s_Menu.SetSavePositionFn(MW2MenuFunctions::SavePosition);
+    s_Menu.SetLoadPositionFn(MW2MenuFunctions::LoadPosition);
+
     // Set the draw function pointers with the addresses above
     Game::Init();
 
@@ -48,13 +52,21 @@ VOID MW2::CreateStructure()
     s_RootOption.SetText("Cod Jumper");
 
     // Main section
-    auto pMain = std::make_shared<Option>("Main", 0);
-    pMain->AddChild(std::make_shared<Option>("God Mode", 0, MW2MenuFunctions::ToggleGodMode));
-    pMain->AddChild(std::make_shared<Option>("Fall Damage", 1, MW2MenuFunctions::ToggleFallDamage));
-    pMain->AddChild(std::make_shared<Option>("Ammo", 2, MW2MenuFunctions::ToggleAmmo));
-    pMain->AddChild(std::make_shared<Option>("Elevators", 3, MW2MenuFunctions::ToggleElevators));
-    pMain->AddChild(std::make_shared<Option>("Spawn Care Package", 4, MW2MenuFunctions::SpawnCP));
+    auto pMain = MakeOption("Main", 0);
+    pMain->AddChild(MakeOption("God Mode", 0, MW2MenuFunctions::ToggleGodMode));
+    pMain->AddChild(MakeOption("Fall Damage", 1, MW2MenuFunctions::ToggleFallDamage));
+    pMain->AddChild(MakeOption("Ammo", 2, MW2MenuFunctions::ToggleAmmo));
+    pMain->AddChild(MakeOption("Elevators", 3, MW2MenuFunctions::ToggleElevators));
+    pMain->AddChild(MakeOption("Spawn Care Package", 4, MW2MenuFunctions::SpawnCP));
     s_RootOption.AddChild(pMain);
+
+    // Teleport section
+    auto pTeleport = MakeOption("Teleport", 1);
+    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, MW2MenuFunctions::ToggleSaveLoadBinds));
+    pTeleport->AddChild(MakeOption("Save Position", 1, MW2MenuFunctions::SavePosition));
+    pTeleport->AddChild(MakeOption("Load Position", 2, MW2MenuFunctions::LoadPosition));
+    pTeleport->AddChild(MakeOption("UFO", 3, MW2MenuFunctions::ToggleUFO));
+    s_RootOption.AddChild(pTeleport);
 }
 
 

@@ -93,6 +93,14 @@ VOID Menu::Update()
         if (m_pCurrentOption->HasParent())
             m_ChangeSectionQueue.push(m_pCurrentOption->GetParent());
     }
+
+    // Call the current load position function if the save and load binds are enabled
+    if (wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && m_bBindsEnabled)
+        m_fnLoadPosition(this);
+
+    // Call the current save position function if the save and load binds are enabled
+    if (wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && m_bBindsEnabled)
+        m_fnSavePosition(this);
 }
 
 

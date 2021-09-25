@@ -35,3 +35,7 @@ private:
     Option* m_pParent;
     std::vector<std::shared_ptr<Option>> m_Children;
 };
+
+
+// Macro to create a shared pointer of an option
+#define MakeOption(...) std::make_shared<Option>(__VA_ARGS__)

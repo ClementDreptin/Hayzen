@@ -58,6 +58,7 @@ VOID MW2::CreateStructure()
     pMain->AddChild(MakeOption("Ammo", 2, MW2MenuFunctions::ToggleAmmo));
     pMain->AddChild(MakeOption("Elevators", 3, MW2MenuFunctions::ToggleElevators));
     pMain->AddChild(MakeOption("Spawn Care Package", 4, MW2MenuFunctions::SpawnCP));
+    pMain->AddChild(MakeOption("Knockback", 5, MW2MenuFunctions::Knockback));
     s_RootOption.AddChild(pMain);
 
     // Teleport section

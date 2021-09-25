@@ -143,6 +143,26 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
 
 
 //--------------------------------------------------------------------------------------
+// Name: Knockback()
+// Desc: Open a keyboard to allow the user to change the knockback value.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::Knockback(Menu*)
+{
+    // Get the value from the user via the virtual keyboard
+    std::string strValue = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
+
+    // If the user did not enter anything, set the value to its default value
+    if (strValue == "")
+        strValue = "1000";
+
+    // Set the g_knockback value to what the user entered
+    SetClientDvar(-1, "g_knockback", strValue);
+
+    iPrintLn(-1, "Knockback set to ^2" + strValue);
+}
+
+
+//--------------------------------------------------------------------------------------
 // Name: ToggleSaveLoadBinds()
 // Desc: Toggle save and load binds.
 //--------------------------------------------------------------------------------------

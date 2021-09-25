@@ -20,6 +20,7 @@ public:
     VOID Stop();
 
     BOOL IsInitialized() CONST { return m_bInitialized; }
+    INT GetClientNum() CONST { return m_iClientNum; }
 
     VOID SetCurrentOption(Option* pOption);
 private:

@@ -1,14 +1,20 @@
 #pragma once
 
 #include "Core\Menu.h"
-#include "Core\Option.h"
+#include "Games\MW2\GameFunctions.h"
 
 
 namespace MW2MenuFunctions
 {
 
-    VOID Option1Callback(Menu*);
+    VOID ToggleGodMode(Menu* pMenu);
 
-    VOID Option2Callback(Menu*);
+    VOID ToggleFallDamage(Menu* pMenu);
+
+    VOID ToggleAmmo(Menu* pMenu);
+
+    VOID ToggleElevators(Menu* pMenu);
+
+    VOID SpawnCP(Menu* pMenu);
 
 }

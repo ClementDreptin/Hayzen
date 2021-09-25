@@ -4,16 +4,6 @@
 #include "Games\MW2\MenuFunctions.h"
 
 
-LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x82241898;
-UINT (*FindEntityId)(INT entnum, UINT classnum) = (UINT(*)(INT, UINT))0x82244438;
-bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum) = (bool(*)(DWORD, INT))0x82320138;
-
-BOOL IsHost(INT iClientNum)
-{
-    return Session_IsHost(0x83AC3DB0, iClientNum);
-}
-
-
 //--------------------------------------------------------------------------------------
 // Name: Init()
 // Desc: Set the draw function pointers and the function hooks.
@@ -54,17 +44,17 @@ VOID MW2::Init()
 //--------------------------------------------------------------------------------------
 VOID MW2::CreateStructure()
 {
+    // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
 
-    auto pSection1 = std::make_shared<Option>("Section 1", 0);
-    auto pOption1 = std::make_shared<Option>("Option 1", 0, MW2MenuFunctions::Option1Callback);
-    pSection1->AddChild(pOption1);
-    s_RootOption.AddChild(pSection1);
-
-    auto pSection2 = std::make_shared<Option>("Section 2", 1);
-    auto pOption2 = std::make_shared<Option>("Option 2", 0, MW2MenuFunctions::Option2Callback);
-    pSection2->AddChild(pOption2);
-    s_RootOption.AddChild(pSection2);
+    // Main section
+    auto pMain = std::make_shared<Option>("Main", 0);
+    pMain->AddChild(std::make_shared<Option>("God Mode", 0, MW2MenuFunctions::ToggleGodMode));
+    pMain->AddChild(std::make_shared<Option>("Fall Damage", 1, MW2MenuFunctions::ToggleFallDamage));
+    pMain->AddChild(std::make_shared<Option>("Ammo", 2, MW2MenuFunctions::ToggleAmmo));
+    pMain->AddChild(std::make_shared<Option>("Elevators", 3, MW2MenuFunctions::ToggleElevators));
+    pMain->AddChild(std::make_shared<Option>("Spawn Care Package", 4, MW2MenuFunctions::SpawnCP));
+    s_RootOption.AddChild(pMain);
 }
 
 
@@ -79,16 +69,26 @@ VOID MW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
 
     // If the client is not host, no need to go further
     INT iClientNum = entity->state.number;
-    if (!IsHost(iClientNum))
+    if (!MW2GameFunctions::IsHost(iClientNum))
         return;
 
     // Get the string representing the event
-    LPCSTR szNotify = SL_ConvertToString(stringValue);
+    LPCSTR szNotify = MW2GameFunctions::SL_ConvertToString(stringValue);
    
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
+    {
+        // Give the game some time to start the game trying to change dvars
+        Sleep(5);
+
+        // Prevent text in the killfeed from showing as UNLOCALIZED(<text>)
+        MW2GameFunctions::SetClientDvar(iClientNum, "loc_warnings", "0");
+        MW2GameFunctions::SetClientDvar(iClientNum, "loc_warningsUI", "0");
+
+        // Initialize the menu
         s_Menu.Init(iClientNum, &s_RootOption);
+    }
 }
 
 
@@ -103,7 +103,7 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
 
     // If the client is not host, no need to go further
     INT iClientNum = (client - Memory::Read<INT>(0x83623B98)) / 0x97F80;
-    if (!IsHost(iClientNum))
+    if (!MW2GameFunctions::IsHost(iClientNum))
         return;
 
     // Stop the menu when the game ends

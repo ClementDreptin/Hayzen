@@ -23,11 +23,3 @@ private:
     static VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
     static VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 };
-
-
-/* namespace MW2
-{
-    VOID Init();
-    BOOL Verify(INT clientNum);
-    VOID SafeReset(); // Resets everything when the game was not reset properly
-} */

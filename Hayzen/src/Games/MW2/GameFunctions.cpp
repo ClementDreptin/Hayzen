@@ -64,39 +64,39 @@ bool IsHost(INT clientNum)
 
 gentity_s* GetCurrentMapBrushModel()
 {
-    std::string mapName = Dvar_GetString("ui_mapname");
+    std::string strMapName = Dvar_GetString("ui_mapname");
 
-    if (mapName == "mp_afghan")
+    if (strMapName == "mp_afghan")
         return (gentity_s*)0x82F7E800;
-    if (mapName == "mp_derail")
+    if (strMapName == "mp_derail")
         return (gentity_s*)0x82F5F680;
-    if (mapName == "mp_estate")
+    if (strMapName == "mp_estate")
         return (gentity_s*)0x82F4AF00;
-    if (mapName == "mp_favela")
+    if (strMapName == "mp_favela")
         return (gentity_s*)0x82F70C00;
-    if (mapName == "mp_highrise")
+    if (strMapName == "mp_highrise")
         return (gentity_s*)0x82F76380;
-    if (mapName == "mp_invasion")
+    if (strMapName == "mp_invasion")
         return (gentity_s*)0x82F73180;
-    if (mapName == "mp_checkpoint")
+    if (strMapName == "mp_checkpoint")
         return (gentity_s*)0x82F6D280;
-    if (mapName == "mp_quarry")
+    if (strMapName == "mp_quarry")
         return (gentity_s*)0x82F99600;
-    if (mapName == "mp_rundown")
+    if (strMapName == "mp_rundown")
         return (gentity_s*)0x82F65800;
-    if (mapName == "mp_rust")
+    if (strMapName == "mp_rust")
         return (gentity_s*)0x82F3C900;
-    if (mapName == "mp_boneyard")
+    if (strMapName == "mp_boneyard")
         return (gentity_s*)0x82F0B300;
-    if (mapName == "mp_nightshift")
+    if (strMapName == "mp_nightshift")
         return (gentity_s*)0x82F3A880;
-    if (mapName == "mp_subbase")
+    if (strMapName == "mp_subbase")
         return (gentity_s*)0x82F59780;
-    if (mapName == "mp_terminal")
+    if (strMapName == "mp_terminal")
         return (gentity_s*)0x82F0DD80;
-    if (mapName == "mp_underpass")
+    if (strMapName == "mp_underpass")
         return (gentity_s*)0x82F66C00;
-    if (mapName == "mp_brecourt")
+    if (strMapName == "mp_brecourt")
         return (gentity_s*)0x82F15580;
     else
         return nullptr;

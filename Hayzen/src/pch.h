@@ -1,13 +1,19 @@
 #pragma once
 
+
+// Xbox headers
 #include <xtl.h>
+
+// C++ standard library
 #include <string>
 #include <vector>
 #include <memory>
 #include <queue>
 
+// XexUtils
 #include "XexUtils.h"
 
+// using statements
 using namespace XexUtils;
 using Math::vec2;
 using Math::vec3;

@@ -23,6 +23,4 @@ gclient_s* GetGClient(INT clientNum);
 
 gentity_s* GetEntity(INT entNum);
 
-VOID iPrintLn(INT clientNum, CONST std::string& text);
-
 }

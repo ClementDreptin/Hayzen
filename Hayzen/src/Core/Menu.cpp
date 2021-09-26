@@ -24,6 +24,8 @@ VOID Menu::Init(INT iClientNum, Option* pOption)
     m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS,
         HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
 
+    m_Feedback = Text("", 50.0f, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 100.0f, HudElem::s_ColorWhite, 0.7f);
+
     // Initialize the scroller position
     m_iCurrentScrollerPos = 0;
 
@@ -113,8 +115,49 @@ VOID Menu::Update()
 //--------------------------------------------------------------------------------------
 VOID Menu::Render()
 {
-    // If the menu is not initialized or not open, don't go further
-    if (!m_bInitialized || !m_bOpen)
+    // If the menu is not initialized, don't go further
+    if (!m_bInitialized)
+        return;
+
+    // This is a terrible way of getting the feedback text to disappear after
+    // three seconds but I didn't find anything else that worked
+
+    // Initialize the timer
+    static DWORD dwMilliseconds = 0;
+
+    // Update the feedback text if one has been pushed to the queue
+    if (!m_ChangeFeedbackTextQueue.empty())
+    {
+        m_Feedback.SetText(m_ChangeFeedbackTextQueue.front());
+        m_ChangeFeedbackTextQueue.pop();
+
+        // Reset the timer when the feedback text gets set
+        dwMilliseconds = 0;
+    }
+
+    // Only render the feedback text if it's set
+    if (m_Feedback.GetText() != "")
+    {
+        // We incremement the timer by 16 because the game runs at 60fps with means
+        // a frame is rendered every 16 milliseconds (1000 / 60 = 16)
+        dwMilliseconds += 16;
+
+        // If more than three seconds have elapsed, reset the timer and the feedback
+        // text
+        if (dwMilliseconds > 3000)
+        {
+            m_Feedback.SetText("");
+            dwMilliseconds = 0;
+        }
+
+        // Only render the feedback text if it's still set (three seconds have not
+        // elapsed yet)
+        if (m_Feedback.GetText() != "")
+            m_Feedback.Draw();
+    }
+
+    // If the menu is not open, don't go further
+    if (!m_bOpen)
         return;
 
     // Draw the constant HUD elements
@@ -148,6 +191,16 @@ VOID Menu::Stop()
     m_pBotEntity = nullptr;
 }
 
+
+//--------------------------------------------------------------------------------------
+// Name: SetFeedbackText()
+// Desc: Push a new feedback text to the queue.
+//--------------------------------------------------------------------------------------
+VOID Menu::SetFeedbackText(CONST std::string& strText)
+{
+    // Set the feedback text
+    m_ChangeFeedbackTextQueue.push(strText);
+}
 
 //--------------------------------------------------------------------------------------
 // Name: SetCurrentOption()

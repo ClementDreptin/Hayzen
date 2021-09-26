@@ -16,12 +16,12 @@ VOID SpecOpsMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
     if (playerState->otherFlags == 0)
     {
         playerState->otherFlags = 1;
-        iPrintLn(iClientNum, "God Mode ^2On");
+        pMenu->SetFeedbackText("God Mode ^2On");
     }
     else
     {
         playerState->otherFlags = 0;
-        iPrintLn(iClientNum, "God Mode ^1Off");
+        pMenu->SetFeedbackText("God Mode ^1Off");
     }
 }
 
@@ -32,7 +32,6 @@ VOID SpecOpsMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
 //--------------------------------------------------------------------------------------
 VOID SpecOpsMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
     DWORD dwAddress = 0x82331F48;
     DWORD dwDefaultValue = 0x7D1D4850;
     DWORD dwModifiedValue = 0x7D284B78;
@@ -40,12 +39,12 @@ VOID SpecOpsMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
     if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
     {
         Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
+        pMenu->SetFeedbackText("Unlimited Ammo ^2On");
     }
     else
     {
         Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
+        pMenu->SetFeedbackText("Unlimited Ammo ^1Off");
     }
 }
 
@@ -56,12 +55,10 @@ VOID SpecOpsMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
 //--------------------------------------------------------------------------------------
 VOID SpecOpsMW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
-
     if (!pMenu->BindsEnabled())
-        iPrintLn(iClientNum, "Press RB to ^2Save^7 and LB to ^2Load");
+        pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     else
-        iPrintLn(iClientNum, "Save and Load binds ^1Off");
+        pMenu->SetFeedbackText("Save and Load binds ^1Off");
 
     pMenu->ToggleBinds();
 }
@@ -78,7 +75,7 @@ VOID SpecOpsMW2MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetSavedPos(SV_GetPlayerstateForClientNum(iClientNum)->origin);
     pMenu->SetSavedAngles(SV_GetPlayerstateForClientNum(iClientNum)->viewAngles);
 
-    iPrintLn(iClientNum, "Position ^2Saved");
+    pMenu->SetFeedbackText("Position ^2Saved");
 }
 
 
@@ -95,7 +92,7 @@ VOID SpecOpsMW2MenuFunctions::LoadPosition(Menu* pMenu)
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
     {
-        iPrintLn(iClientNum, "^1Save a position first!");
+        pMenu->SetFeedbackText("^1Save a position first!");
         return;
     }
 
@@ -114,11 +111,11 @@ VOID SpecOpsMW2MenuFunctions::ToggleUFO(Menu* pMenu)
     if (GetGClient(iClientNum)->mFlags != 2)
     {
         GetGClient(iClientNum)->mFlags = 2;
-        iPrintLn(iClientNum, "Ufo ^2On");
+        pMenu->SetFeedbackText("Ufo ^2On");
     }
     else
     {
         GetGClient(iClientNum)->mFlags = 0;
-        iPrintLn(iClientNum, "Ufo ^1Off");
+        pMenu->SetFeedbackText("Ufo ^1Off");
     }
 }

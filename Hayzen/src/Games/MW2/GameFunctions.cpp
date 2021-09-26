@@ -52,11 +52,6 @@ VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& va
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
-VOID iPrintLn(INT clientNum, CONST std::string& text)
-{
-    SV_GameSendServerCommand(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
-}
-
 bool IsHost(INT clientNum)
 {
     return Session_IsHost(0x83AC3DB0, clientNum);

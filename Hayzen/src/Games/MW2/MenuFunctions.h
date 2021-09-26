@@ -17,7 +17,7 @@ VOID ToggleElevators(Menu* pMenu);
 
 VOID SpawnCP(Menu* pMenu);
 
-VOID Knockback(Menu*);
+VOID Knockback(Menu* pMenu);
 
 VOID ToggleSaveLoadBinds(Menu* pMenu);
 

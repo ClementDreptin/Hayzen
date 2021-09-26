@@ -49,8 +49,6 @@ gentity_s* GetEntity(INT entNum);
 
 VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value);
 
-VOID iPrintLn(INT clientNum, CONST std::string& text);
-
 bool IsHost(INT clientNum);
 
 gentity_s* GetCurrentMapBrushModel();

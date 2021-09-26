@@ -23,9 +23,4 @@ gentity_s* GetEntity(INT entNum)
     return (gentity_s*)(0x82CC67B8 + sizeof(gentity_s) * entNum);
 }
 
-VOID iPrintLn(INT clientNum, CONST std::string& text)
-{
-    SV(clientNum, Formatter::Format("gm \"%s\"", text.c_str()).c_str());
-}
-
 }

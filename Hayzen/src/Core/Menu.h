@@ -37,6 +37,8 @@ public:
     LPVOID GetBot() CONST { return m_pBotEntity; }
     VOID SetBot(LPVOID pBotEntity) { m_pBotEntity = pBotEntity; }
 
+    VOID SetFeedbackText(CONST std::string& strText);
+
     VOID SetCurrentOption(Option* pOption);
 private:
     BOOL m_bInitialized;
@@ -47,11 +49,13 @@ private:
 
     Option* m_pCurrentOption;
     std::queue<Option*> m_ChangeSectionQueue;
+    std::queue<std::string> m_ChangeFeedbackTextQueue;
 
     Rectangle m_Background;
     Text m_Title;
     Rectangle m_Scroller;
     Text m_Instructions;
+    Text m_Feedback;
     INT m_iCurrentScrollerPos;
 
     vec3 m_SavedPos;

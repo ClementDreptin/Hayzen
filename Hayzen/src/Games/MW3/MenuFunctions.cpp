@@ -17,12 +17,12 @@ VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
     if (GetEntity(iClientNum)->flags == GOD_MODE_OFF)
     {
         GetEntity(iClientNum)->flags = GOD_MODE_ON;
-        iPrintLn(iClientNum, "God Mode ^2On");
+        pMenu->SetFeedbackText("God Mode ^2On");
     }
     else
     {
         GetEntity(iClientNum)->flags = GOD_MODE_OFF;
-        iPrintLn(iClientNum, "God Mode ^1Off");
+        pMenu->SetFeedbackText("God Mode ^1Off");
     }
 }
 
@@ -33,18 +33,17 @@ VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
 //--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
     DWORD dwAddress = 0x82000C04;
 
     if (Memory::Read<FLOAT>(dwAddress) == 128.0f)
     {
         Memory::Write<FLOAT>(dwAddress, 9999.0f);
-        iPrintLn(iClientNum, "Fall Damage ^2Off");
+        pMenu->SetFeedbackText("Fall Damage ^2Off");
     }
     else
     {
         Memory::Write<FLOAT>(dwAddress, 128.0f);
-        iPrintLn(iClientNum, "Fall Damage ^1On");
+        pMenu->SetFeedbackText("Fall Damage ^1On");
     }
 }
 
@@ -55,7 +54,6 @@ VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
 //--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
     DWORD dwAddress = 0x820F63E4;
     DWORD dwDefaultValue = 0x7D3D5050;
     DWORD dwModifiedValue = 0x7D495378;
@@ -63,12 +61,12 @@ VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
     if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
     {
         Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
+        pMenu->SetFeedbackText("Unlimited Ammo ^2On");
     }
     else
     {
         Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
+        pMenu->SetFeedbackText("Unlimited Ammo ^1Off");
     }
 }
 
@@ -85,7 +83,7 @@ VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
     // Return early if the map is not supported
     if (!currentMapBrushModel)
     {
-        iPrintLn(iClientNum, "^1You cannot spawn a Care Package on this map!");
+        pMenu->SetFeedbackText("^1You cannot spawn a Care Package on this map!");
         return;
     }
 
@@ -123,13 +121,11 @@ VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
 // Desc: Toggle save and load binds.
 //--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
-{
-    INT iClientNum = pMenu->GetClientNum();
-    
+{    
     if (!pMenu->BindsEnabled())
-        iPrintLn(iClientNum, "Press [{+frag}] to ^2Save^7 and [{+smoke}] to ^2Load");
+        pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     else
-        iPrintLn(iClientNum, "Save and Load binds ^1Off");
+        pMenu->SetFeedbackText("Save and Load binds ^1Off");
 
     pMenu->ToggleBinds();
 }
@@ -146,7 +142,7 @@ VOID MW3MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
     pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
 
-    iPrintLn(iClientNum, "Position ^2Saved");
+    pMenu->SetFeedbackText("Position ^2Saved");
 }
 
 
@@ -163,7 +159,7 @@ VOID MW3MenuFunctions::LoadPosition(Menu* pMenu)
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
     {
-        iPrintLn(iClientNum, "^1Save a position first!");
+        pMenu->SetFeedbackText("^1Save a position first!");
         return;
     }
 
@@ -182,11 +178,11 @@ VOID MW3MenuFunctions::ToggleUFO(Menu* pMenu)
     if (GetGClient(iClientNum)->mFlags != 2)
     {
         GetGClient(iClientNum)->mFlags = 2;
-        iPrintLn(iClientNum, "Ufo ^2On");
+        pMenu->SetFeedbackText("Ufo ^2On");
     }
     else
     {
         GetGClient(iClientNum)->mFlags = 0;
-        iPrintLn(iClientNum, "Ufo ^1Off");
+        pMenu->SetFeedbackText("Ufo ^1Off");
     }
 }

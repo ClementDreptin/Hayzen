@@ -44,6 +44,8 @@ typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
 #define CHAR_UP "\x14"
 #define CHAR_DOWN "\x15"
 #define CHAR_X "\x3"
+#define CHAR_LB "\x5"
+#define CHAR_RB "\x6"
 #define CHAR_RS "\x11"
 
 

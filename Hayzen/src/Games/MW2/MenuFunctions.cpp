@@ -113,7 +113,7 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
         return;
     }
 
-    // Get the current player's position
+    // Get the player's current position
     FLOAT distance = 150.0f;
     vec3 origin = GetPlayerState(iClientNum)->origin;
     FLOAT viewY = GetPlayerState(iClientNum)->viewAngles.y;
@@ -232,5 +232,107 @@ VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
     {
         GetGClient(iClientNum)->mFlags = 0;
         iPrintLn(iClientNum, "Ufo ^1Off");
+    }
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: SpawnBot()
+// Desc: Spawn a bot.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::SpawnBot(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+
+    // Prevent the user from spawning multiple bots
+    if (pBot)
+    {
+        iPrintLn(iClientNum, "^1There is already a bot in the game!");
+        return;
+    }
+
+    // Create the bot and wait until it joins the game
+    pBot = SV_AddTestClient();
+    pMenu->SetBot(pBot);
+    Sleep(150);
+
+    // Prepare the commands to send to SV_ExecuteClientCommand
+    INT serverId = Memory::Read<INT>(0x8360922C);
+    std::string strChooseTeamCmd = Formatter::Format("mr %i 3 autoassign", serverId);
+    std::string strChooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
+
+    // Get the address of the bot to pass to SV_ExecuteClientCommand
+    DWORD dwBotAddr = Memory::Read<DWORD>(0x83623B98) + pBot->state.number * 0x97F80;
+
+    // Make the bot choose the opposite team and wait until it's done
+    SV_ExecuteClientCommand(dwBotAddr, strChooseTeamCmd.c_str(), 1, 0);
+    Sleep(150);
+
+    // Make the bot pick the first custom class and wait until it's done
+    SV_ExecuteClientCommand(dwBotAddr, strChooseClassCmd.c_str(), 1, 0);
+    Sleep(150);
+
+    // Set bot-related dvars to make it completely stand still
+    SetClientDvar(-1, "testClients_doMove", "0");
+    SetClientDvar(-1, "testClients_doAttack", "0");
+    SetClientDvar(-1, "testClients_watchKillcam", "0");
+
+    // Teleport the bot in front of the player
+    TeleportBotToMe(pMenu);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: TeleportBotToMe()
+// Desc: Teleport the bot in front of the player.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+
+    // Make sure there is a bot in the game
+    if (!pBot)
+    {
+        iPrintLn(iClientNum, "^1There is no bot in the game!");
+        return;
+    }
+
+    // Get the player's current position
+    FLOAT fDistance = 100.0f;
+    vec3 Origin = GetPlayerState(iClientNum)->origin;
+    FLOAT fViewY = GetPlayerState(iClientNum)->viewAngles.y;
+
+    // Teleport the bot in front of the player
+    pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: ToggleBotMovement()
+// Desc: Toggle the bot's movement.
+//--------------------------------------------------------------------------------------
+VOID MW2MenuFunctions::ToggleBotMovement(Menu* pMenu)
+{
+    INT iClientNum = pMenu->GetClientNum();
+    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+
+    // Make sure there is a bot in the game
+    if (!pBot)
+    {
+        iPrintLn(iClientNum, "^1There is no bot in the game!");
+        return;
+    }
+
+    if (Dvar_GetBool("testClients_doMove"))
+    {
+        SetClientDvar(-1, "testClients_doMove", "0");
+        iPrintLn(iClientNum, "Bot ^2Frozen");
+    }
+    else
+    {
+        SetClientDvar(-1, "testClients_doMove", "1");
+        iPrintLn(iClientNum, "Bot ^1Unfrozen");
     }
 }

@@ -27,6 +27,9 @@ VOID Menu::Init(INT iClientNum, Option* pOption)
     // Initialize the scroller position
     m_iCurrentScrollerPos = 0;
 
+    // Reset the pointer to the bot
+    m_pBotEntity = nullptr;
+
     // Remember that initialization has been done
     m_bInitialized = TRUE;
 }
@@ -140,6 +143,9 @@ VOID Menu::Render()
 VOID Menu::Stop()
 {
     m_bInitialized = FALSE;
+
+    // Reset the pointer to the bot
+    m_pBotEntity = nullptr;
 }
 
 

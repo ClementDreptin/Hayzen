@@ -34,6 +34,9 @@ public:
     VOID SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
     VOID SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
 
+    LPVOID GetBot() CONST { return m_pBotEntity; }
+    VOID SetBot(LPVOID pBotEntity) { m_pBotEntity = pBotEntity; }
+
     VOID SetCurrentOption(Option* pOption);
 private:
     BOOL m_bInitialized;
@@ -57,6 +60,8 @@ private:
 
     Callback m_fnSavePosition;
     Callback m_fnLoadPosition;
+
+    LPVOID m_pBotEntity;
 
     VOID MoveScroller();
 };

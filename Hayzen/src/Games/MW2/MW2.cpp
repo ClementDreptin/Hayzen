@@ -68,6 +68,13 @@ VOID MW2::CreateStructure()
     pTeleport->AddChild(MakeOption("Load Position", 2, MW2MenuFunctions::LoadPosition));
     pTeleport->AddChild(MakeOption("UFO", 3, MW2MenuFunctions::ToggleUFO));
     s_RootOption.AddChild(pTeleport);
+
+    // Bot section
+    auto pBot = MakeOption("Bot", 2);
+    pBot->AddChild(MakeOption("Spawn Bot", 0, MW2MenuFunctions::SpawnBot));
+    pBot->AddChild(MakeOption("Teleport Bot to Me", 1, MW2MenuFunctions::TeleportBotToMe));
+    pBot->AddChild(MakeOption("Toggle Bot Movement", 2, MW2MenuFunctions::ToggleBotMovement));
+    s_RootOption.AddChild(pBot);
 }
 
 

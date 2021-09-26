@@ -90,7 +90,7 @@ VOID MW3::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
     {
-        // Give the game some time to start the game trying to change dvars
+        // Give the game some time to start the game before trying to change dvars
         Sleep(5);
 
         // Prevent text in the killfeed from showing as UNLOCALIZED(<text>)

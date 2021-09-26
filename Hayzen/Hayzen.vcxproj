@@ -98,6 +98,10 @@
     <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\MW3.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
+    <ClInclude Include="src\Games\SpecOps\MW2\GameFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\MW2\MenuFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\MW2\MW2.h" />
+    <ClInclude Include="src\Games\SpecOps\MW2\Structs.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -114,6 +118,9 @@
     <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MW3.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW2\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW2\MW2.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseG|Xbox 360'">Create</PrecompiledHeader>

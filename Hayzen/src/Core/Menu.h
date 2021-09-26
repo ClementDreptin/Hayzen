@@ -43,7 +43,6 @@ public:
 private:
     BOOL m_bInitialized;
     BOOL m_bOpen;
-    BOOL m_bRunning;
 
     INT m_iClientNum;
 

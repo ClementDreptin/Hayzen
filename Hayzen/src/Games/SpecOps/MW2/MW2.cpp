@@ -81,6 +81,11 @@ VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
         SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warnings 0");
         SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warningsUI 0");
 
+        // We have no way of knowing the game ends so, if the menu was already
+        // initialized, reset it first
+        if (s_Menu.IsInitialized())
+            s_Menu.Stop();
+
         // Initialize the menu
         s_Menu.Init(0, &s_RootOption);
     }

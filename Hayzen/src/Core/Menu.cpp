@@ -185,9 +185,14 @@ VOID Menu::Render()
 //--------------------------------------------------------------------------------------
 VOID Menu::Stop()
 {
+    // Reset the members
     m_bInitialized = FALSE;
+    m_bOpen = FALSE;
 
-    // Reset the pointer to the bot
+    m_SavedPos = vec3(0.0f, 0.0f, 0.0f);
+    m_SavedAngles = vec3(0.0f, 0.0f, 0.0f);
+    m_bBindsEnabled = FALSE;
+
     m_pBotEntity = nullptr;
 }
 

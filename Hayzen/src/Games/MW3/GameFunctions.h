@@ -1,21 +1,19 @@
 #pragma once
 
-#include "Games\MW2\Structs.h"
+#include "Games\MW3\Structs.h"
 
-using namespace MW2Structs;
+using namespace MW3Structs;
 
 
 //--------------------------------------------------------------------------------------
-// MW2 TU9 function pointers to functions from the game
+// MW3 TU24 function pointers to functions from the game
 //--------------------------------------------------------------------------------------
-namespace MW2GameFunctions
+namespace MW3GameFunctions
 {
 
 extern LPCSTR (*SL_ConvertToString)(UINT stringValue);
 
 extern VOID (*SV_GameSendServerCommand)(INT clientNum, INT type, LPCSTR text);
-
-extern bool (*Dvar_GetBool)(LPCSTR dvarName);
 
 extern LPCSTR (*Dvar_GetString)(LPCSTR dvarName);
 
@@ -36,10 +34,6 @@ extern VOID (*SV_LinkEntity)(gentity_s* gEnt);
 extern VOID (*SV_UnlinkEntity)(gentity_s* gEnt);
 
 extern VOID (*SV_SetBrushModel)(gentity_s* ent);
-
-extern gentity_s* (*SV_AddTestClient)();
-
-extern VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 
 extern VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles);
 

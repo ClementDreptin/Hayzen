@@ -131,6 +131,7 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
+
 //--------------------------------------------------------------------------------------
 // Name: Scr_NotifyStub()
 // Desc: Stub to hold the original code of Scr_Notify.

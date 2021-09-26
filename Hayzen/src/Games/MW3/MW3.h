@@ -1,8 +1,25 @@
 #pragma once
 
-namespace MW3
+#include "Core\Game.h"
+#include "Elements\HudElem.h"
+
+#include "Games\MW3\Structs.h"
+
+
+//--------------------------------------------------------------------------------------
+// Name: class MW3
+// Desc: Class to run MW3 TU24, inherits from Game.
+//--------------------------------------------------------------------------------------
+class MW3 : public Game
 {
-    VOID Init();
-    BOOL Verify(INT clientNum);
-    VOID SafeReset(); // Resets everything when the game was not reset properly
-}
+public:
+    virtual VOID Init();
+private:
+    virtual VOID CreateStructure();
+
+    static VOID Scr_NotifyStub(MW3Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
+    static VOID Scr_NotifyHook(MW3Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
+
+    static VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    static VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+};

@@ -17,9 +17,6 @@ public:
 private:
     virtual VOID CreateStructure();
 
-    static VOID Scr_NotifyStub(SpecOpsMW2Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
-    static VOID Scr_NotifyHook(SpecOpsMW2Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
-
     static VOID ClientCommandStub(INT clientNum, LPCSTR s);
     static VOID ClientCommandHook(INT clientNum, LPCSTR s);
 };

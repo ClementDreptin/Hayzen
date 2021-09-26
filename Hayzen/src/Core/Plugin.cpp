@@ -4,6 +4,7 @@
 #include "Games\MW2\MW2.h"
 #include "Games\MW3\MW3.h"
 #include "Games\SpecOps\MW2\MW2.h"
+#include "Games\SpecOps\MW3\MW3.h"
 
 
 //--------------------------------------------------------------------------------------
@@ -104,8 +105,8 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
     case GAME_MW3:
         if (!strcmp((LPSTR)0x82001458, "multiplayer"))
             s_CurrentGame = new MW3();
-        /*else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
-            SpecOps::MW3::Init(); */
+        else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
+            s_CurrentGame = new SpecOpsMW3();
     default:
         break;
     }

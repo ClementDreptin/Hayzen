@@ -89,17 +89,7 @@ VOID MW3::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
-    {
-        // Give the game some time to start the game before trying to change dvars
-        Sleep(5);
-
-        // Prevent text in the killfeed from showing as UNLOCALIZED(<text>)
-        MW3GameFunctions::SetClientDvar(iClientNum, "loc_warnings", "0");
-        MW3GameFunctions::SetClientDvar(iClientNum, "loc_warningsUI", "0");
-
-        // Initialize the menu
         s_Menu.Init(iClientNum, &s_RootOption);
-    }
 }
 
 

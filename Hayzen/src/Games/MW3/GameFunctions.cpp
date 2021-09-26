@@ -7,8 +7,6 @@ namespace MW3GameFunctions
 
 LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x822B5120;
 
-VOID (*SV_GameSendServerCommand)(INT clientNum, INT type, LPCSTR text) = (VOID(*)(INT, INT, LPCSTR))0x822C9340;
-
 LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = (LPCSTR(*)(LPCSTR))0x8232E488;
 
 clientState_s* (*GetClientState)(INT clientNum) = (clientState_s*(*)(INT))0x82244130;
@@ -39,11 +37,6 @@ gclient_s* GetGClient(INT clientNum)
 gentity_s* GetEntity(INT entNum)
 {
     return (gentity_s*)(0x82DCCC80 + sizeof(gentity_s) * entNum);
-}
-
-VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value)
-{
-    SV_GameSendServerCommand(clientNum, 0, Formatter::Format("q %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
 bool IsHost(INT clientNum)

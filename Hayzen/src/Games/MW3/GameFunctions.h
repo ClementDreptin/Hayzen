@@ -13,8 +13,6 @@ namespace MW3GameFunctions
 
 extern LPCSTR (*SL_ConvertToString)(UINT stringValue);
 
-extern VOID (*SV_GameSendServerCommand)(INT clientNum, INT type, LPCSTR text);
-
 extern LPCSTR (*Dvar_GetString)(LPCSTR dvarName);
 
 extern clientState_s* (*GetClientState)(INT clientNum);
@@ -40,8 +38,6 @@ extern VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles);
 gclient_s* GetGClient(INT clientNum);
 
 gentity_s* GetEntity(INT entNum);
-
-VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value);
 
 bool IsHost(INT clientNum);
 

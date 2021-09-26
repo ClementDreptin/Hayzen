@@ -74,13 +74,6 @@ VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
     // The 'n 42' event means the game started
     if (!strcmp(s, "n 42"))
     {
-        // Give the game some time to start the game before trying to change dvars
-        Sleep(5);
-
-        // Prevent text in the killfeed from showing as UNLOCALIZED(<text>)
-        SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warnings 0");
-        SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warningsUI 0");
-
         // We have no way of knowing the game ends so, if the menu was already
         // initialized, reset it first
         if (s_Menu.IsInitialized())

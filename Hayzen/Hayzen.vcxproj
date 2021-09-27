@@ -60,10 +60,6 @@
       <OptimizeReferences>true</OptimizeReferences>
       <ProgramDatabaseFile>$(IntDir)$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
-      <AdditionalDependencies>
-      </AdditionalDependencies>
-      <AdditionalLibraryDirectories>
-      </AdditionalLibraryDirectories>
       <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
     </Link>
     <ImageXex>
@@ -73,14 +69,6 @@
       <DeploymentType>CopyToHardDrive</DeploymentType>
       <ExcludedFromBuild>false</ExcludedFromBuild>
     </Deploy>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
-    <PostBuildEvent>
-      <Message>
-      </Message>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Elements\Rectangle.h" />

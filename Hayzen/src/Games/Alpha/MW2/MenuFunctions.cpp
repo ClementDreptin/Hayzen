@@ -175,6 +175,10 @@ VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
 }
 
 
+//--------------------------------------------------------------------------------------
+// Name: SpawnBotThread()
+// Desc: Threaded function that makes the bot spawn, pick a team, then pick a class.
+//--------------------------------------------------------------------------------------
 static DWORD SpawnBotThread(Menu* pMenu)
 {
     // Create the bot and wait until it joins the game
@@ -231,9 +235,9 @@ VOID AlphaMW2MenuFunctions::SpawnBot(Menu* pMenu)
 
     // Creating the main plugin thread with 2 for the creation flags seems to prevent
     // certain game functions from being called and SV_AddTestClient is one of them.
-    // So we create another thread with the regular CreateThread function to be able
+    // So we create another thread with the regular Thread function to be able
     // to call SV_AddTestClient safely.
-    CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)SpawnBotThread, pMenu, NULL, NULL);
+    Memory::Thread((LPTHREAD_START_ROUTINE)SpawnBotThread, pMenu);
 }
 
 

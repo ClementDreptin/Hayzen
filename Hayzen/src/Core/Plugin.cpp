@@ -33,8 +33,10 @@ VOID Plugin::Start()
 {
     s_bRunning = TRUE;
 
-    // Start the main loop in a separate thread
-    Memory::Thread((LPTHREAD_START_ROUTINE)Update);
+    // Start the main loop in a separate thread.
+    // We use the extended version of Thread to create a thread that won't get stopped
+    // when another game is launched.
+    Memory::ThreadEx((LPTHREAD_START_ROUTINE)Update, nullptr, 2);
 }
 
 

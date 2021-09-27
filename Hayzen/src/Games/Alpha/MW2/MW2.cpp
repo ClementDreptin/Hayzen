@@ -1,164 +1,156 @@
 #include "pch.h"
 #include "Games\Alpha\MW2\MW2.h"
 
-#include "Games\Alpha\MW2\Client.h"
-#include "Games\Alpha\MW2\Events.h"
-#include "Games\Alpha\MW2\Functions.h"
+#include "Games\Alpha\MW2\MenuFunctions.h"
 
-namespace Alpha
+
+//--------------------------------------------------------------------------------------
+// Name: Init()
+// Desc: Set the draw function pointers and the function hooks.
+//--------------------------------------------------------------------------------------
+VOID AlphaMW2::Init()
 {
-namespace MW2
+    Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
+
+    // Give the system some time to fully load the game in memory
+    Sleep(200);
+
+    // Set the draw function addresses
+    m_dwDrawTextFnAddr = 0x823BB4D8;
+    m_dwDrawRectangleFnAddr = 0x823BAC18;
+    m_dwRegisterFontFnAddr = 0x823B6D58;
+    m_dwRegisterMaterialFnAddr = 0x823B6928;
+
+    // Set the save and load functions to use fr the current game
+    s_Menu.SetSavePositionFn(AlphaMW2MenuFunctions::SavePosition);
+    s_Menu.SetLoadPositionFn(AlphaMW2MenuFunctions::LoadPosition);
+
+    // Set the draw function pointers with the addresses above
+    Game::Init();
+
+    // Create the structure of the menu
+    CreateStructure();
+
+    // Set up the function hooks
+    Memory::HookFunctionStart((LPDWORD)0x8218B5F0, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
+    Memory::HookFunctionStart((LPDWORD)0x822539C0, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
+    Memory::HookFunctionStart((LPDWORD)0x822B4700, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: CreateStructure()
+// Desc: Create the structure of the menu and save it a static member.
+//--------------------------------------------------------------------------------------
+VOID AlphaMW2::CreateStructure()
 {
-    BOOL HasGameBegun = FALSE;
-    std::unordered_map<INT, Client> Clients;
+    // Set the global title of the menu
+    s_RootOption.SetText("Cod Jumper");
 
-    VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI);
-    VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI);
+    // Main section
+    auto pMain = MakeOption("Main", 0);
+    pMain->AddChild(MakeOption("God Mode", 0, AlphaMW2MenuFunctions::ToggleGodMode));
+    pMain->AddChild(MakeOption("Fall Damage", 1, AlphaMW2MenuFunctions::ToggleFallDamage));
+    pMain->AddChild(MakeOption("Ammo", 2, AlphaMW2MenuFunctions::ToggleAmmo));
+    pMain->AddChild(MakeOption("Spawn Care Package", 3, AlphaMW2MenuFunctions::SpawnCP));
+    s_RootOption.AddChild(pMain);
 
-    VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount);
-    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount);
+    // Teleport section
+    auto pTeleport = MakeOption("Teleport", 1);
+    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, AlphaMW2MenuFunctions::ToggleSaveLoadBinds));
+    pTeleport->AddChild(MakeOption("Save Position", 1, AlphaMW2MenuFunctions::SavePosition));
+    pTeleport->AddChild(MakeOption("Load Position", 2, AlphaMW2MenuFunctions::LoadPosition));
+    pTeleport->AddChild(MakeOption("UFO", 3, AlphaMW2MenuFunctions::ToggleUFO));
+    s_RootOption.AddChild(pTeleport);
 
-    VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
-    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    // Bot section
+    auto pBot = MakeOption("Bot", 2);
+    pBot->AddChild(MakeOption("Spawn Bot", 0, AlphaMW2MenuFunctions::SpawnBot));
+    pBot->AddChild(MakeOption("Teleport Bot to Me", 1, AlphaMW2MenuFunctions::TeleportBotToMe));
+    pBot->AddChild(MakeOption("Toggle Bot Movement", 2, AlphaMW2MenuFunctions::ToggleBotMovement));
+    s_RootOption.AddChild(pBot);
+}
 
-    VOID Init()
+
+//--------------------------------------------------------------------------------------
+// Name: Scr_NotifyHook()
+// Desc: Initialize the menu when the game starts.
+//--------------------------------------------------------------------------------------
+VOID AlphaMW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
+{
+    // Call the original Scr_Notify function
+    Scr_NotifyStub(entity, stringValue, paramCount);
+
+    // If the client is not host, no need to go further
+    INT iClientNum = entity->state.number;
+    if (!AlphaMW2GameFunctions::IsHost(iClientNum))
+        return;
+
+    // Get the string representing the event
+    LPCSTR szNotify = AlphaMW2GameFunctions::SL_ConvertToString(stringValue);
+
+    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
+    // to recreate the menu every round so we make sure it's not already initialized
+    if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
+        s_Menu.Init(iClientNum, &s_RootOption);
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: SV_ExecuteClientCommandHook()
+// Desc: Stop the menu when the game ends.
+//--------------------------------------------------------------------------------------
+VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+{
+    // Call the original Scr_Notify SV_ExecuteClientCommand
+    SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
+
+    // If the client is not host, no need to go further
+    INT iClientNum = (client - Memory::Read<INT>(0x83577D98)) / 0x97F80;
+    if (!AlphaMW2GameFunctions::IsHost(iClientNum))
+        return;
+
+    // Stop the menu when the game ends
+    if (!strcmp(s, "matchdatadone"))
+        s_Menu.Stop();
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: Scr_NotifyStub()
+// Desc: Stub to hold the original code of Scr_Notify.
+//--------------------------------------------------------------------------------------
+VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
+{
+    __asm
     {
-        Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
-
-        Sleep(200);
-
-        Memory::HookFunctionStart((LPDWORD)0x8218B5F0, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-        Memory::HookFunctionStart((LPDWORD)0x822539C0, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-        Memory::HookFunctionStart((LPDWORD)0x822B4700, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
-    }
-
-    BOOL Verify(INT clientNum)
-    {
-        if (clientNum < 0 || clientNum > 17)
-            return FALSE;
-
-        if (Clients.find(clientNum) != Clients.end() && Clients[clientNum].IsInitialized())
-            return FALSE;
-
-        SetClientDvar(clientNum, "loc_warnings", "0");
-        SetClientDvar(clientNum, "loc_warningsAsErrors", "0");
-
-        Clients[clientNum] = Client(clientNum);
-
-        return TRUE;
-    }
-
-    VOID SafeReset()
-    {
-        if (Clients.size() != 0)
-            Clients.clear();
-
-        if (HasGameBegun)
-        {
-            Menu::FreeBot();
-            HasGameBegun = FALSE;
-        }
-    }
-
-    VOID SetupGame(INT clientNum)
-    {
-        Verify(clientNum);
-        HasGameBegun = TRUE;
-    }
-
-    VOID ResetGame(INT clientNum, BOOL resetBot = TRUE)
-    {
-        Clients.erase(clientNum);
-
-        if (resetBot)
-            Menu::FreeBot();
-
-        HasGameBegun = FALSE;
-    }
-
-    __declspec(naked) VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
-    {
-        __asm
-        {
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            li r3, 1
-        }
-    }
-
-    __declspec(naked) VOID Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
-    {
-        __asm
-        {
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            li r3, 2
-        }
-    }
-
-    __declspec(naked) VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
-    {
-        __asm
-        {
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            nop
-            li r3, 3
-        }
-    }
-
-    VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
-    {
-        SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
-
-        for (size_t i = 0; i < Clients.size(); i++)
-            Clients[i].GetMenu().Update();
-    }
-
-    VOID Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
-    {
-        Scr_NotifyStub(entity, stringValue, paramCount);
-
-        INT clientNum = entity->state.number;
-
-        LPCSTR notify = SL_ConvertToString(stringValue);
-
-        if (!strcmp(notify, GAME_START))
-        {
-            // "begin" can happen multiple times a game in round-based gamemodes so we need to reset the menu
-            // and recreate it at the beggining of each round if we want the menu to work after the first round
-            if (HasGameBegun)
-                ResetGame(clientNum, FALSE);
-
-            SetupGame(clientNum);
-        }
-    }
-
-    VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
-    {
-        SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
-
-        INT clientNum = (client - Memory::Read<INT>(0x83577D98)) / 0x97F80;
-
-        if (HasGameBegun && Clients.find(clientNum) != Clients.end())
-            Clients[clientNum].GetMenu().OnEvent(s);
-
-        if (!strcmp(s, "matchdatadone") && Clients.find(clientNum) != Clients.end())
-            ResetGame(clientNum);
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        li r3, 1
     }
 }
+
+
+//--------------------------------------------------------------------------------------
+// Name: SV_ExecuteClientCommandStub()
+// Desc: Stub to hold the original code of SV_ExecuteClientCommand.
+//--------------------------------------------------------------------------------------
+VOID __declspec(naked) AlphaMW2::SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+{
+    __asm
+    {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        li r3, 2
+    }
 }

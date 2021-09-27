@@ -24,7 +24,7 @@ VOID Menu::Init(INT iClientNum, Option* pOption)
     m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS,
         HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
 
-    m_Feedback = Text("", 50.0f, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 100.0f, HudElem::s_ColorWhite, 0.7f);
+    m_Feedback = Text("", 50.0f, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 120.0f, HudElem::s_ColorWhite, 0.7f);
 
     // Initialize the scroller position
     m_iCurrentScrollerPos = 0;

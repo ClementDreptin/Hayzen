@@ -6,7 +6,7 @@
 // Forward declarationfor the Menu class
 class Menu;
 
-// Create the option callback type
+// Create the callback type
 typedef VOID (*Callback)(Menu* pMenu);
 
 

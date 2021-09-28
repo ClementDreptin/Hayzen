@@ -1,11 +1,25 @@
 #pragma once
 
-namespace SpecOps
+#include "Core\Game.h"
+#include "Elements\HudElem.h"
+
+#include "Games\SpecOps\MW3\Structs.h"
+
+
+//--------------------------------------------------------------------------------------
+// Name: class SpecOpsMW3
+// Desc: Class to run Spec Ops MW3, inherits from Game.
+//--------------------------------------------------------------------------------------
+class SpecOpsMW3 : public Game
 {
-namespace MW3
-{
-    VOID Init();
-    BOOL Verify(INT clientNum);
-    VOID SafeReset(); // Resets everything when the game was not reset properly
-}
-}
+public:
+    virtual VOID Init();
+private:
+    virtual VOID CreateStructure();
+
+    static VOID ClientCommandStub(INT clientNum, LPCSTR s);
+    static VOID ClientCommandHook(INT clientNum, LPCSTR s);
+
+    static VOID PlayerCmd_AllowJumpStub();
+    static VOID PlayerCmd_AllowJumpHook();
+};

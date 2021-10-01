@@ -11,8 +11,6 @@ using namespace SpecOpsMW3Structs;
 namespace SpecOpsMW3GameFunctions
 {
 
-extern VOID (*SV)(INT clientNum, LPCSTR text);
-
 extern playerState_s* (*SV_GetPlayerstateForClientNum)(INT num);
 
 extern VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles);

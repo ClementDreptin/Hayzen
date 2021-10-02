@@ -93,6 +93,26 @@ gentity_s* GetCurrentMapBrushModel()
         return (gentity_s*)0x82F66C00;
     if (strMapName == "mp_brecourt")
         return (gentity_s*)0x82F15580;
+    if (strMapName == "mp_complex")
+        return (gentity_s*)0x82F09F00;
+    if (strMapName == "mp_crash")
+        return (gentity_s*)0x82F18280;
+    if (strMapName == "mp_overgrown")
+        return (gentity_s*)0x82F34980;
+    if (strMapName == "mp_compact")
+        return (gentity_s*)0x82F14180;
+    if (strMapName == "mp_storm")
+        return (gentity_s*)0x82F5DB00;
+    if (strMapName == "mp_abandon")
+        return (gentity_s*)0x82F48980;
+    if (strMapName == "mp_fuel2")
+        return (gentity_s*)0x82F65300;
+    if (strMapName == "mp_strike")
+        return (gentity_s*)0x82F4D980;
+    if (strMapName == "mp_trailerpark")
+        return (gentity_s*)0x82F17380;
+    if (strMapName == "mp_vacant")
+        return (gentity_s*)0x82F55900;
     else
         return nullptr;
 }

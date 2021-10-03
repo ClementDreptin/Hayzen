@@ -15,6 +15,8 @@ class SpecOpsMW2 : public Game
 public:
     virtual VOID Init();
 private:
+    static BOOL s_bJumped;
+
     virtual VOID CreateStructure();
 
     static VOID ClientCommandStub(INT clientNum, LPCSTR s);

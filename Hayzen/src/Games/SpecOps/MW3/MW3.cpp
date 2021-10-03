@@ -5,6 +5,12 @@
 
 
 //--------------------------------------------------------------------------------------
+// Static members definitions
+//--------------------------------------------------------------------------------------
+BOOL SpecOpsMW3::s_bJumped = FALSE;
+
+
+//--------------------------------------------------------------------------------------
 // Name: Init()
 // Desc: Set the draw function pointers and the function hooks.
 //--------------------------------------------------------------------------------------
@@ -72,16 +78,29 @@ VOID SpecOpsMW3::ClientCommandHook(INT clientNum, LPCSTR s)
     // Call the original ClientCommand function
     ClientCommandStub(clientNum, s);
 
+    // Register when the user pressed the A button
+    if (!strcmp(s, "n 25"))
+        s_bJumped = TRUE;
+
     // The 'n 26' event means the game started
     if (!strcmp(s, "n 26"))
     {
-        // We have no way of knowing the game ends so, if the menu was already
-        // initialized, reset it first
-        if (s_Menu.IsInitialized())
-            s_Menu.Stop();
+        // The 'n 26' event also occurs when the A button is released so, to avoid
+        // resetting the menu every time the player jumps, we need to make sure the
+        // 'n 25' event didn't occur just before.
+        if (!s_bJumped)
+        {
+            // We have no way of knowing when the game ends so, if the menu was already
+            // initialized, reset it first
+            if (s_Menu.IsInitialized())
+                s_Menu.Stop();
 
-        // Initialize the menu
-        s_Menu.Init(0, &s_RootOption);
+            // Initialize the menu
+            s_Menu.Init(0, &s_RootOption);
+        }
+
+        // Register that the user released the A button
+        s_bJumped = FALSE;
     }
 }
 

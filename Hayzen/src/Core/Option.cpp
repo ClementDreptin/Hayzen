@@ -38,3 +38,16 @@ VOID Option::OnClick(Menu* pMenu)
     if (!m_Children.empty())
         pMenu->SetCurrentOption(this);
 }
+
+
+//--------------------------------------------------------------------------------------
+// Name: Cleanup()
+// Desc: Reset the members.
+//--------------------------------------------------------------------------------------
+VOID Option::Cleanup()
+{
+    m_uiIndex = 0;
+    m_fnCallback = nullptr;
+    m_pParent = nullptr;
+    m_Children.clear();
+}

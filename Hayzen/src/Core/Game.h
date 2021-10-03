@@ -10,7 +10,7 @@
 class Game
 {
 public:
-    virtual ~Game() {}
+    virtual ~Game();
 
     virtual VOID Init() = 0;
 

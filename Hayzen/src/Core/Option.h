@@ -28,6 +28,8 @@ public:
     Option* GetParent() CONST { return m_pParent; }
 
     CONST std::vector<std::shared_ptr<Option>>& GetChildren() CONST { return m_Children; }
+
+    VOID Cleanup();
 private:
     UINT m_uiIndex;
     Callback m_fnCallback;

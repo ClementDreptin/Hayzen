@@ -18,17 +18,10 @@ struct playerState_s
     CHAR padding4[0xAC3C];
 };
 
-typedef enum clientConnected_t
-{
-    CON_DISCONNECTED,
-    CON_CONNECTING,
-    CON_CONNECTED
-};
-
 struct gclient_s
 {
     playerState_s ps;
-    clientConnected_t connected;
+    INT connected;
     CHAR padding1[0xAC];
     INT mFlags;
     CHAR padding2[0x2C0];

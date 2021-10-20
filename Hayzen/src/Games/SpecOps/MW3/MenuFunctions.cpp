@@ -121,6 +121,10 @@ VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu* pMenu)
 }
 
 
+//--------------------------------------------------------------------------------------
+// Name: ToggleSecondPlayerGodMode()
+// Desc: Toggle God Mode for the second player.
+//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
 {
     // The second client num is always 1
@@ -149,6 +153,10 @@ VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
 }
 
 
+//--------------------------------------------------------------------------------------
+// Name: TeleportSecondPlayerToMe()
+// Desc: Teleport the second player in front of the first player.
+//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu* pMenu)
 {
     // The second client num is always 1

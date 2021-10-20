@@ -19,4 +19,8 @@ VOID LoadPosition(Menu* pMenu);
 
 VOID ToggleUFO(Menu* pMenu);
 
+VOID ToggleSecondPlayerGodMode(Menu* pMenu);
+
+VOID TeleportSecondPlayerToMe(Menu* pMenu);
+
 }

@@ -65,6 +65,11 @@ VOID SpecOpsMW2::CreateStructure()
     pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW2MenuFunctions::LoadPosition));
     pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2MenuFunctions::ToggleUFO));
     s_RootOption.AddChild(pTeleport);
+
+    auto pSecondPlayer = MakeOption("Second Player", 2);
+    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode));
+    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe));
+    s_RootOption.AddChild(pSecondPlayer);
 }
 
 

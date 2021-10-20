@@ -21,9 +21,10 @@ struct playerState_s
 struct gclient_s
 {
     playerState_s ps;
-    CHAR padding1[0xB0];
+    INT connected;
+    CHAR padding1[0xAC];
     INT mFlags;
-    CHAR padding2[0x27C];
+    CHAR padding2[0x280];
 };
 
 struct entityState_s

@@ -119,3 +119,62 @@ VOID SpecOpsMW2MenuFunctions::ToggleUFO(Menu* pMenu)
         pMenu->SetFeedbackText("Ufo ^1Off");
     }
 }
+
+
+//--------------------------------------------------------------------------------------
+// Name: ToggleSecondPlayerGodMode()
+// Desc: Toggle God Mode for the second player.
+//--------------------------------------------------------------------------------------
+VOID SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
+{
+    // The second client num is always 1
+    INT iSecondClientNum = 1;
+
+    // If the player name of the second client is empty, it means there is no second client
+    gclient_s* pSecondClient = GetGClient(iSecondClientNum);
+    if (!pSecondClient->connected)
+    {
+        pMenu->SetFeedbackText("^1No other player in the game!");
+        return;
+    }
+
+    playerState_s* playerState = SV_GetPlayerstateForClientNum(iSecondClientNum);
+
+    if (playerState->otherFlags == 0)
+    {
+        playerState->otherFlags = 1;
+        pMenu->SetFeedbackText("Second Player God Mode ^2On");
+    }
+    else
+    {
+        playerState->otherFlags = 0;
+        pMenu->SetFeedbackText("Second Player God Mode ^1Off");
+    }
+}
+
+
+//--------------------------------------------------------------------------------------
+// Name: TeleportSecondPlayerToMe()
+// Desc: Teleport the second player in front of the first player.
+//--------------------------------------------------------------------------------------
+VOID SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe(Menu* pMenu)
+{
+    // The second client num is always 1
+    INT iSecondClientNum = 1;
+    INT iFirstClientNum = pMenu->GetClientNum();
+
+    gclient_s* pSecondClient = GetGClient(iSecondClientNum);
+    if (!pSecondClient->connected)
+    {
+        pMenu->SetFeedbackText("^1No other player in the game!");
+        return;
+    }
+
+    // Get the first player's current position
+    FLOAT fDistance = 100.0f;
+    vec3 Origin = SV_GetPlayerstateForClientNum(iFirstClientNum)->origin;
+    FLOAT fViewY = SV_GetPlayerstateForClientNum(iFirstClientNum)->viewAngles.y;
+
+    // Teleport the second player in front of the first player
+    pSecondClient->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
+}

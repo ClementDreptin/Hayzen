@@ -41,6 +41,8 @@ extern VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT f
 
 extern VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles);
 
+gclient_s* GetGClient(INT clientNum);
+
 gentity_s* GetEntity(INT entNum);
 
 bool IsHost(INT clientNum);

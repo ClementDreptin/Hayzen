@@ -132,7 +132,16 @@ VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
-    Cbuf_AddText(iClientNum, "ufo");
+    if (GetGClient(iClientNum)->mFlags != 2)
+    {
+        GetGClient(iClientNum)->mFlags = 2;
+        pMenu->SetFeedbackText("Ufo ^2On");
+    }
+    else
+    {
+        GetGClient(iClientNum)->mFlags = 0;
+        pMenu->SetFeedbackText("Ufo ^1Off");
+    }
 }
 
 // Threaded function that makes the bot spawn, pick a team, then pick a class.

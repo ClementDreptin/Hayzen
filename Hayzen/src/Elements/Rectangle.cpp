@@ -2,7 +2,7 @@
 #include "Elements\Rectangle.h"
 
 
-Rectangle::Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color& color)
+Rectangle::Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color &color)
     : HudElem(fX, fY, color), m_fWidth(fWidth), m_fHeight(fHeight) {}
 
 VOID Rectangle::Draw()

@@ -11,7 +11,7 @@ public:
     Rectangle() {}
 
     // Constructor.
-    Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color& color);
+    Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color &color);
 
     // Call R_AddCmdDrawStretchPic() of the current game.
     virtual VOID Draw();

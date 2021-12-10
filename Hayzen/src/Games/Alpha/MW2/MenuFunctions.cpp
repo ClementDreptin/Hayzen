@@ -4,7 +4,7 @@
 using namespace AlphaMW2GameFunctions;
 
 
-VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
     CONST INT GOD_MODE_ON = 4097;
@@ -22,7 +22,7 @@ VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
 {
     if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
     {
@@ -38,7 +38,7 @@ VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     if (!Dvar_GetBool("player_sustainAmmo"))
     {
@@ -52,10 +52,10 @@ VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::SpawnCP(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s* currentMapBrushModel = GetCurrentMapBrushModel();
+    gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
 
     // Return early if the map is not supported
     if (!currentMapBrushModel)
@@ -71,7 +71,7 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu* pMenu)
 
     // Spawn an entity 150 units in front of the player and oriented towards
     // where they are looking at
-    gentity_s* entity = G_Spawn();
+    gentity_s *entity = G_Spawn();
     entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
     entity->r.currentAngles.y = viewY;
 
@@ -92,7 +92,7 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -102,7 +102,7 @@ VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID AlphaMW2MenuFunctions::SavePosition(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -112,11 +112,11 @@ VOID AlphaMW2MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID AlphaMW2MenuFunctions::LoadPosition(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    CONST vec3& SavedPos = pMenu->GetSavedPos();
-    CONST vec3& SavedAngles = pMenu->GetSavedAngles();
+    CONST vec3 &SavedPos = pMenu->GetSavedPos();
+    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -128,7 +128,7 @@ VOID AlphaMW2MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -145,10 +145,10 @@ VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
 }
 
 // Threaded function that makes the bot spawn, pick a team, then pick a class.
-static DWORD SpawnBotThread(Menu* pMenu)
+static DWORD SpawnBotThread(Menu *pMenu)
 {
     // Create the bot and wait until it joins the game
-    gentity_s* pBot = SV_AddTestClient();
+    gentity_s *pBot = SV_AddTestClient();
     pMenu->SetBot(pBot);
     Sleep(150);
 
@@ -183,9 +183,9 @@ static DWORD SpawnBotThread(Menu* pMenu)
     return 0;
 }
 
-VOID AlphaMW2MenuFunctions::SpawnBot(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
 {
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Prevent the user from spawning multiple bots
     if (pBot)
@@ -201,10 +201,10 @@ VOID AlphaMW2MenuFunctions::SpawnBot(Menu* pMenu)
     Memory::Thread((LPTHREAD_START_ROUTINE)SpawnBotThread, pMenu);
 }
 
-VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Make sure there is a bot in the game
     if (!pBot)
@@ -222,9 +222,9 @@ VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-VOID AlphaMW2MenuFunctions::ToggleBotMovement(Menu* pMenu)
+VOID AlphaMW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Make sure there is a bot in the game
     if (!pBot)

@@ -13,41 +13,41 @@ bool (*Dvar_GetBool)(LPCSTR dvarName) = (bool(*)(LPCSTR))0x8229EEE8;
 
 LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = (LPCSTR(*)(LPCSTR))0x8229F0A8;
 
-clientState_s* (*GetClientState)(INT clientNum) = (clientState_s*(*)(INT))0x821E6610;
+clientState_s *(*GetClientState)(INT clientNum) = (clientState_s*(*)(INT))0x821E6610;
 
-playerState_s* (*GetPlayerState)(INT clientNum) = (playerState_s*(*)(INT))0x821E6628;
+playerState_s *(*GetPlayerState)(INT clientNum) = (playerState_s*(*)(INT))0x821E6628;
 
 bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum) = (bool(*)(DWORD, INT))0x82320138;
 
-VOID (*SP_script_model)(gentity_s* mSelf) = (VOID(*)(gentity_s*))0x82206D88;
+VOID (*SP_script_model)(gentity_s *mSelf) = (VOID(*)(gentity_s*))0x82206D88;
 
 gentity_s*(*G_Spawn)() = (gentity_s*(*)())0x8220DB50;
 
-VOID (*G_SetModel)(gentity_s* ent, LPCSTR modelName) = (VOID(*)(gentity_s*, LPCSTR))0x8220D278;
+VOID (*G_SetModel)(gentity_s *ent, LPCSTR modelName) = (VOID(*)(gentity_s*, LPCSTR))0x8220D278;
 
-VOID (*SV_LinkEntity)(gentity_s* gEnt) = (VOID(*)(gentity_s*))0x8225F518;
+VOID (*SV_LinkEntity)(gentity_s *gEnt) = (VOID(*)(gentity_s*))0x8225F518;
 
-VOID (*SV_UnlinkEntity)(gentity_s* gEnt) = (VOID(*)(gentity_s*))0x8225F430;
+VOID (*SV_UnlinkEntity)(gentity_s *gEnt) = (VOID(*)(gentity_s*))0x8225F430;
 
-VOID (*SV_SetBrushModel)(gentity_s* ent) = (VOID(*)(gentity_s*))0x82254B50;
+VOID (*SV_SetBrushModel)(gentity_s *ent) = (VOID(*)(gentity_s*))0x82254B50;
 
-gentity_s* (*SV_AddTestClient)() = (gentity_s*(*)())0x82254690;
+gentity_s *(*SV_AddTestClient)() = (gentity_s*(*)())0x82254690;
 
 VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer) = (VOID(*)(INT, LPCSTR, INT, INT))0x82253140;
 
-VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles) = (VOID(*)(gentity_s*, PFLOAT, PFLOAT))0x821E8198;
+VOID (*TeleportPlayer)(gentity_s *player, PFLOAT origin, PFLOAT angles) = (VOID(*)(gentity_s*, PFLOAT, PFLOAT))0x821E8198;
 
-gclient_s* GetGClient(INT clientNum)
+gclient_s *GetGClient(INT clientNum)
 {
     return (gclient_s*)(0x830CBF80 + sizeof(gclient_s) * clientNum);
 }
 
-gentity_s* GetEntity(INT entNum)
+gentity_s *GetEntity(INT entNum)
 {
     return (gentity_s*)(0x82F03600 + sizeof(gentity_s) * entNum);
 }
 
-VOID SetClientDvar(INT clientNum, CONST std::string& dvar, CONST std::string& value)
+VOID SetClientDvar(INT clientNum, CONST std::string &dvar, CONST std::string &value)
 {
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
@@ -57,7 +57,7 @@ bool IsHost(INT clientNum)
     return Session_IsHost(0x83AC3DB0, clientNum);
 }
 
-gentity_s* GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapBrushModel()
 {
     std::string strMapName = Dvar_GetString("ui_mapname");
 

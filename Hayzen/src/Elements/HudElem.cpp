@@ -11,7 +11,7 @@ CONST FLOAT HudElem::s_MenuHeight = 710.0f;
 CONST FLOAT HudElem::s_Padding = 20.0f;
 CONST FLOAT HudElem::s_TitleHeight = 60.0f;
 CONST FLOAT HudElem::s_LineHeight = 40.0f;
-Font_s* HudElem::s_pFont = nullptr;
+Font_s *HudElem::s_pFont = nullptr;
 HANDLE HudElem::s_hMaterial = nullptr;
 R_REGISTERFONT HudElem::R_RegisterFont = nullptr;
 MATERIAL_REGISTERHANDLE HudElem::Material_RegisterHandle = nullptr;
@@ -19,7 +19,7 @@ R_ADDCMDDRAWTEXT HudElem::R_AddCmdDrawText = nullptr;
 R_ADDCMDDRAWSTRETCHPIC HudElem::R_AddCmdDrawStretchPic = nullptr;
 
 
-HudElem::HudElem(FLOAT fX, FLOAT fY, CONST Color& color)
+HudElem::HudElem(FLOAT fX, FLOAT fY, CONST Color &color)
     : m_fX(fX), m_fY(fY), m_Color(color) {}
 
 VOID HudElem::SetColor(FLOAT fR, FLOAT fG, FLOAT fB, FLOAT fA)

@@ -52,7 +52,7 @@ struct gentity_s
 {
     entityState_s state;
     entityShared_t r;
-    gclient_s* client;
+    gclient_s *client;
     CHAR padding1[0x28];
     INT flags;
     CHAR padding2[0xF8];

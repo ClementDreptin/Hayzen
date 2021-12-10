@@ -10,7 +10,7 @@
 
 BOOL Plugin::s_bRunning = FALSE;
 DWORD Plugin::s_dwCurrentTitle = 0;
-Game* Plugin::s_CurrentGame = nullptr;
+Game *Plugin::s_CurrentGame = nullptr;
 
 
 // Enum from game IDs.

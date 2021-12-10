@@ -2,7 +2,7 @@
 #include "Core\Menu.h"
 
 
-VOID Menu::Init(INT iClientNum, Option* pOption)
+VOID Menu::Init(INT iClientNum, Option *pOption)
 {
     // Save the arguments to class members
     m_iClientNum = iClientNum;
@@ -177,13 +177,13 @@ VOID Menu::Stop()
     m_pBotEntity = nullptr;
 }
 
-VOID Menu::SetFeedbackText(CONST std::string& strText)
+VOID Menu::SetFeedbackText(CONST std::string &strText)
 {
     // Set the feedback text
     m_ChangeFeedbackTextQueue.push(strText);
 }
 
-VOID Menu::SetCurrentOption(Option* pOption)
+VOID Menu::SetCurrentOption(Option *pOption)
 {
     // Reset the scroller position
     m_iCurrentScrollerPos = 0;

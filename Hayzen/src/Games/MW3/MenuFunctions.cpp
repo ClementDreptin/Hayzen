@@ -4,7 +4,7 @@
 using namespace MW3GameFunctions;
 
 
-VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
+VOID MW3MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
     CONST INT GOD_MODE_ON = 4097;
@@ -22,7 +22,7 @@ VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
+VOID MW3MenuFunctions::ToggleFallDamage(Menu *pMenu)
 {
     DWORD dwAddress = 0x82000C04;
 
@@ -38,7 +38,7 @@ VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
+VOID MW3MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     DWORD dwAddress = 0x820F63E4;
     DWORD dwDefaultValue = 0x7D3D5050;
@@ -56,10 +56,10 @@ VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
+VOID MW3MenuFunctions::SpawnCP(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s* currentMapBrushModel = GetCurrentMapBrushModel();
+    gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
 
     // Return early if the map is not supported
     if (!currentMapBrushModel)
@@ -75,7 +75,7 @@ VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
 
     // Spawn an entity 150 units in front of the player and oriented towards
     // where they are looking at
-    gentity_s* entity = G_Spawn();
+    gentity_s *entity = G_Spawn();
     entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
     entity->r.currentAngles.y = viewY;
 
@@ -96,7 +96,7 @@ VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
+VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {    
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -106,7 +106,7 @@ VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID MW3MenuFunctions::SavePosition(Menu* pMenu)
+VOID MW3MenuFunctions::SavePosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -116,11 +116,11 @@ VOID MW3MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID MW3MenuFunctions::LoadPosition(Menu* pMenu)
+VOID MW3MenuFunctions::LoadPosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    CONST vec3& SavedPos = pMenu->GetSavedPos();
-    CONST vec3& SavedAngles = pMenu->GetSavedAngles();
+    CONST vec3 &SavedPos = pMenu->GetSavedPos();
+    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -132,7 +132,7 @@ VOID MW3MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-VOID MW3MenuFunctions::ToggleUFO(Menu* pMenu)
+VOID MW3MenuFunctions::ToggleUFO(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 

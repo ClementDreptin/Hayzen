@@ -4,10 +4,10 @@
 using namespace SpecOpsMW3GameFunctions;
 
 
-VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    playerState_s* playerState = SV_GetPlayerstateForClientNum(iClientNum);
+    playerState_s *playerState = SV_GetPlayerstateForClientNum(iClientNum);
 
     if (playerState->otherFlags == 0)
     {
@@ -21,7 +21,7 @@ VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     DWORD dwAddress = 0x8235BB54;
     DWORD dwDefaultValue = 0x7D3D5050;
@@ -39,7 +39,7 @@ VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -49,7 +49,7 @@ VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID SpecOpsMW3MenuFunctions::SavePosition(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::SavePosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -59,11 +59,11 @@ VOID SpecOpsMW3MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    CONST vec3& SavedPos = pMenu->GetSavedPos();
-    CONST vec3& SavedAngles = pMenu->GetSavedAngles();
+    CONST vec3 &SavedPos = pMenu->GetSavedPos();
+    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -75,7 +75,7 @@ VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -91,20 +91,20 @@ VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu* pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1
     INT iSecondClientNum = 1;
 
     // If the player name of the second client is empty, it means there is no second client
-    gclient_s* pSecondClient = GetGClient(iSecondClientNum);
+    gclient_s *pSecondClient = GetGClient(iSecondClientNum);
     if (!pSecondClient->connected)
     {
         pMenu->SetFeedbackText("^1No other player in the game!");
         return;
     }
 
-    playerState_s* playerState = SV_GetPlayerstateForClientNum(iSecondClientNum);
+    playerState_s *playerState = SV_GetPlayerstateForClientNum(iSecondClientNum);
 
     if (playerState->otherFlags == 0)
     {
@@ -118,13 +118,13 @@ VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu* pMenu)
+VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
 {
     // The second client num is always 1
     INT iSecondClientNum = 1;
     INT iFirstClientNum = pMenu->GetClientNum();
 
-    gclient_s* pSecondClient = GetGClient(iSecondClientNum);
+    gclient_s *pSecondClient = GetGClient(iSecondClientNum);
     if (!pSecondClient->connected)
     {
         pMenu->SetFeedbackText("^1No other player in the game!");

@@ -2,7 +2,7 @@
 #include "Elements\Text.h"
 
 
-Text::Text(CONST std::string& strText, FLOAT fX, FLOAT fY, CONST Color& color, FLOAT fFontScale)
+Text::Text(CONST std::string &strText, FLOAT fX, FLOAT fY, CONST Color &color, FLOAT fFontScale)
     : HudElem(fX, fY, color), m_fFontScale(fFontScale), m_strText(strText) {}
 
 VOID Text::Draw()

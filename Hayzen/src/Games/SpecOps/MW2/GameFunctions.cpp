@@ -5,16 +5,16 @@
 namespace SpecOpsMW2GameFunctions
 {
 
-playerState_s* (*SV_GetPlayerstateForClientNum)(INT num) = (playerState_s*(*)(INT))0x8233CB30;
+playerState_s *(*SV_GetPlayerstateForClientNum)(INT num) = (playerState_s*(*)(INT))0x8233CB30;
 
-VOID (*TeleportPlayer)(gentity_s* player, PFLOAT origin, PFLOAT angles) = (VOID(*)(gentity_s*, PFLOAT, PFLOAT))0x821FF588;
+VOID (*TeleportPlayer)(gentity_s *player, PFLOAT origin, PFLOAT angles) = (VOID(*)(gentity_s*, PFLOAT, PFLOAT))0x821FF588;
 
-gclient_s* GetGClient(INT clientNum)
+gclient_s *GetGClient(INT clientNum)
 {
     return (gclient_s*)(0x82EAC5E8 + sizeof(gclient_s) * clientNum);
 }
 
-gentity_s* GetEntity(INT entNum)
+gentity_s *GetEntity(INT entNum)
 {
     return (gentity_s*)(0x82CC67B8 + sizeof(gentity_s) * entNum);
 }

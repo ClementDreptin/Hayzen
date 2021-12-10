@@ -4,7 +4,7 @@
 using namespace MW2GameFunctions;
 
 
-VOID MW2MenuFunctions::ToggleGodMode(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
     CONST INT GOD_MODE_ON = 4097;
@@ -23,7 +23,7 @@ VOID MW2MenuFunctions::ToggleGodMode(Menu* pMenu)
 }
 
 
-VOID MW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
 {
     DWORD dwAddress = 0x82019C48;
 
@@ -39,7 +39,7 @@ VOID MW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-VOID MW2MenuFunctions::ToggleAmmo(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     DWORD dwAddress = 0x820E1724;
     DWORD dwDefaultValue = 0x7D1D4850;
@@ -57,7 +57,7 @@ VOID MW2MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-VOID MW2MenuFunctions::ToggleElevators(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleElevators(Menu *pMenu)
 {
     DWORD dwBranchAddress = 0x820D8360;
     WORD wDefaultValue = 0x419A;
@@ -75,10 +75,10 @@ VOID MW2MenuFunctions::ToggleElevators(Menu* pMenu)
     }
 }
 
-VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
+VOID MW2MenuFunctions::SpawnCP(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s* currentMapBrushModel = GetCurrentMapBrushModel();
+    gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
 
     // Return early if the map is not supported
     if (!currentMapBrushModel)
@@ -94,7 +94,7 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
 
     // Spawn an entity 150 units in front of the player and oriented towards
     // where they are looking at
-    gentity_s* entity = G_Spawn();
+    gentity_s *entity = G_Spawn();
     entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
     entity->r.currentAngles.y = viewY;
 
@@ -115,7 +115,7 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-VOID MW2MenuFunctions::Knockback(Menu* pMenu)
+VOID MW2MenuFunctions::Knockback(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
@@ -130,7 +130,7 @@ VOID MW2MenuFunctions::Knockback(Menu* pMenu)
     pMenu->SetFeedbackText("Knockback set to ^2" + strValue);
 }
 
-VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -140,7 +140,7 @@ VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID MW2MenuFunctions::SavePosition(Menu* pMenu)
+VOID MW2MenuFunctions::SavePosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -150,11 +150,11 @@ VOID MW2MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID MW2MenuFunctions::LoadPosition(Menu* pMenu)
+VOID MW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    CONST vec3& SavedPos = pMenu->GetSavedPos();
-    CONST vec3& SavedAngles = pMenu->GetSavedAngles();
+    CONST vec3 &SavedPos = pMenu->GetSavedPos();
+    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -166,7 +166,7 @@ VOID MW2MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleUFO(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
 
@@ -182,9 +182,9 @@ VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
     }
 }
 
-VOID MW2MenuFunctions::SpawnBot(Menu* pMenu)
+VOID MW2MenuFunctions::SpawnBot(Menu *pMenu)
 {
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Prevent the user from spawning multiple bots
     if (pBot)
@@ -223,10 +223,10 @@ VOID MW2MenuFunctions::SpawnBot(Menu* pMenu)
     TeleportBotToMe(pMenu);
 }
 
-VOID MW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
+VOID MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Make sure there is a bot in the game
     if (!pBot)
@@ -244,9 +244,9 @@ VOID MW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-VOID MW2MenuFunctions::ToggleBotMovement(Menu* pMenu)
+VOID MW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
-    gentity_s* pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
 
     // Make sure there is a bot in the game
     if (!pBot)

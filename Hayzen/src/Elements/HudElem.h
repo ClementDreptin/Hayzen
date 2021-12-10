@@ -23,9 +23,9 @@ struct Font_s
 };
 
 
-typedef VOID (*R_ADDCMDDRAWTEXT)(LPCSTR text, INT maxChars, Font_s* font, FLOAT x, FLOAT y, FLOAT xScale, FLOAT yScale, FLOAT rotation, CONST PFLOAT color, INT style);
+typedef VOID (*R_ADDCMDDRAWTEXT)(LPCSTR text, INT maxChars, Font_s *font, FLOAT x, FLOAT y, FLOAT xScale, FLOAT yScale, FLOAT rotation, CONST PFLOAT color, INT style);
 typedef VOID (*R_ADDCMDDRAWSTRETCHPIC)(FLOAT x, FLOAT y, FLOAT w, FLOAT h, FLOAT s0, FLOAT t0, FLOAT s1, FLOAT t1, CONST PFLOAT color, HANDLE material);
-typedef Font_s* (*R_REGISTERFONT)(LPCSTR font, INT imageTrack);
+typedef Font_s *(*R_REGISTERFONT)(LPCSTR font, INT imageTrack);
 typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
 
 
@@ -58,7 +58,7 @@ public:
     HudElem() {}
 
     // Constructor.
-    HudElem(FLOAT fX, FLOAT fY, CONST Color& color);
+    HudElem(FLOAT fX, FLOAT fY, CONST Color &color);
 
     // Virtual destructor.
     virtual ~HudElem() {}
@@ -68,15 +68,15 @@ public:
 
     FLOAT GetX() CONST { return m_fX; }
     FLOAT GetY() CONST { return m_fY; }
-    CONST Color& GetColor() CONST { return m_Color; }
+    CONST Color &GetColor() CONST { return m_Color; }
 
     VOID SetX(FLOAT fX) { m_fX = fX; }
     VOID SetY(FLOAT fY) { m_fY = fY; }
-    VOID SetColor(CONST Color& color) { m_Color = color; }
+    VOID SetColor(CONST Color &color) { m_Color = color; }
     VOID SetColor(FLOAT fR, FLOAT fG, FLOAT fB, FLOAT fA);
     VOID SetAlpha(FLOAT fAlpha) { m_Color.a = fAlpha; }
 
-    static VOID SetFont(Font_s* pFont) { s_pFont = pFont; }
+    static VOID SetFont(Font_s *pFont) { s_pFont = pFont; }
     static VOID SetMaterialHandle(HANDLE hMaterial) { s_hMaterial = hMaterial; }
 
     static VOID SetDrawTextFnPtr(R_ADDCMDDRAWTEXT pFn) { R_AddCmdDrawText = pFn; }
@@ -86,7 +86,7 @@ protected:
     FLOAT m_fY;
     Color m_Color;
 
-    static Font_s* s_pFont;
+    static Font_s *s_pFont;
     static HANDLE s_hMaterial;
 
     static R_ADDCMDDRAWTEXT R_AddCmdDrawText;

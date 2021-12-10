@@ -68,7 +68,7 @@ VOID MW2::CreateStructure()
     s_RootOption.AddChild(pBot);
 }
 
-VOID MW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID MW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     // Call the original Scr_Notify function
     Scr_NotifyStub(entity, stringValue, paramCount);
@@ -102,7 +102,7 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
-VOID __declspec(naked) MW2::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID __declspec(naked) MW2::Scr_NotifyStub(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     __asm
     {

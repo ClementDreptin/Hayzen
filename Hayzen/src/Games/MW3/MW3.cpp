@@ -59,7 +59,7 @@ VOID MW3::CreateStructure()
     s_RootOption.AddChild(pTeleport);
 }
 
-VOID MW3::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID MW3::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     // Call the original Scr_Notify function
     Scr_NotifyStub(entity, stringValue, paramCount);
@@ -93,7 +93,7 @@ VOID MW3::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
-VOID __declspec(naked) MW3::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID __declspec(naked) MW3::Scr_NotifyStub(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     __asm
     {

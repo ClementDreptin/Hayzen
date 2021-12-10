@@ -62,7 +62,7 @@ VOID AlphaMW2::CreateStructure()
     s_RootOption.AddChild(pBot);
 }
 
-VOID AlphaMW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID AlphaMW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     // Call the original Scr_Notify function
     Scr_NotifyStub(entity, stringValue, paramCount);
@@ -96,7 +96,7 @@ VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, I
         s_Menu.Stop();
 }
 
-VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
+VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s *entity, USHORT stringValue, UINT paramCount)
 {
     __asm
     {

@@ -4,16 +4,9 @@
 #include "Games\SpecOps\MW3\MenuFunctions.h"
 
 
-//--------------------------------------------------------------------------------------
-// Static members definitions
-//--------------------------------------------------------------------------------------
 BOOL SpecOpsMW3::s_bJumped = FALSE;
 
 
-//--------------------------------------------------------------------------------------
-// Name: Init()
-// Desc: Set the draw function pointers and the function hooks.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3::Init()
 {
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
@@ -43,11 +36,6 @@ VOID SpecOpsMW3::Init()
     Memory::HookFunctionStart((LPDWORD)0x821FA680, (LPDWORD)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: CreateStructure()
-// Desc: Create the structure of the menu and save it a static member.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3::CreateStructure()
 {
     // Set the global title of the menu
@@ -73,11 +61,6 @@ VOID SpecOpsMW3::CreateStructure()
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ClientCommandHook()
-// Desc: Initialize the menu when the game starts.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3::ClientCommandHook(INT clientNum, LPCSTR s)
 {
     // Call the original ClientCommand function
@@ -109,12 +92,6 @@ VOID SpecOpsMW3::ClientCommandHook(INT clientNum, LPCSTR s)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: PlayerCmd_AllowJumpHook()
-// Desc: Make the PlayerCmd_AllowJump function not do anything to be able to jump in
-//       missions where you normally can't.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3::PlayerCmd_AllowJumpHook()
 {
     // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
@@ -122,11 +99,6 @@ VOID SpecOpsMW3::PlayerCmd_AllowJumpHook()
     return;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ClientCommandStub()
-// Desc: Stub to hold the original code of ClientCommand.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) SpecOpsMW3::ClientCommandStub(INT clientNum, LPCSTR s)
 {
     __asm
@@ -142,11 +114,6 @@ VOID __declspec(naked) SpecOpsMW3::ClientCommandStub(INT clientNum, LPCSTR s)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: PlayerCmd_AllowJumpStub()
-// Desc: Stub to hold the original code of PlayerCmd_AllowJump.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) SpecOpsMW3::PlayerCmd_AllowJumpStub()
 {
     __asm

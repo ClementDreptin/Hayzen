@@ -5,9 +5,7 @@
 using namespace MW2Structs;
 
 
-//--------------------------------------------------------------------------------------
-// MW2 TU9 function pointers to functions from the game
-//--------------------------------------------------------------------------------------
+// MW2 TU9 function pointers to functions from the game.
 namespace MW2GameFunctions
 {
 

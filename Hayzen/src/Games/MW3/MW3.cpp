@@ -4,10 +4,6 @@
 #include "Games\MW3\MenuFunctions.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Init()
-// Desc: Set the draw function pointers and the function hooks.
-//--------------------------------------------------------------------------------------
 VOID MW3::Init()
 {
     Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
@@ -41,11 +37,6 @@ VOID MW3::Init()
     Memory::HookFunctionStart((LPDWORD)0x822C78A0, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: CreateStructure()
-// Desc: Create the structure of the menu and save it a static member.
-//--------------------------------------------------------------------------------------
 VOID MW3::CreateStructure()
 {
     // Set the global title of the menu
@@ -68,11 +59,6 @@ VOID MW3::CreateStructure()
     s_RootOption.AddChild(pTeleport);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Scr_NotifyHook()
-// Desc: Initialize the menu when the game starts.
-//--------------------------------------------------------------------------------------
 VOID MW3::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
 {
     // Call the original Scr_Notify function
@@ -92,11 +78,6 @@ VOID MW3::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
         s_Menu.Init(iClientNum, &s_RootOption);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SV_ExecuteClientCommandHook()
-// Desc: Stop the menu when the game ends.
-//--------------------------------------------------------------------------------------
 VOID MW3::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
@@ -112,11 +93,6 @@ VOID MW3::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Scr_NotifyStub()
-// Desc: Stub to hold the original code of Scr_Notify.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) MW3::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
 {
     __asm
@@ -132,11 +108,6 @@ VOID __declspec(naked) MW3::Scr_NotifyStub(gentity_s* entity, USHORT stringValue
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SV_ExecuteClientCommandStub()
-// Desc: Stub to hold the original code of SV_ExecuteClientCommand.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) MW3::SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
 {
     __asm

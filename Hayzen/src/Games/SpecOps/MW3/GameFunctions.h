@@ -5,9 +5,7 @@
 using namespace SpecOpsMW3Structs;
 
 
-//--------------------------------------------------------------------------------------
-// Spec Ops MW3 function pointers to functions from the game
-//--------------------------------------------------------------------------------------
+// Spec Ops MW3 function pointers to functions from the game.
 namespace SpecOpsMW3GameFunctions
 {
 

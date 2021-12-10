@@ -7,26 +7,37 @@
 namespace AlphaMW2MenuFunctions
 {
 
+// Toggle God Mode.
 VOID ToggleGodMode(Menu* pMenu);
 
+// Toggle fall damage.
 VOID ToggleFallDamage(Menu* pMenu);
 
+// Toggle unlimited ammo.
 VOID ToggleAmmo(Menu* pMenu);
 
+// Spawn a care package.
 VOID SpawnCP(Menu* pMenu);
 
+// Toggle save and load binds.
 VOID ToggleSaveLoadBinds(Menu* pMenu);
 
+// Save the current player's position.
 VOID SavePosition(Menu* pMenu);
 
+// Load the previously saved player's position.
 VOID LoadPosition(Menu* pMenu);
 
+// Toggle UFO.
 VOID ToggleUFO(Menu* pMenu);
 
+// Spawn a bot.
 VOID SpawnBot(Menu* pMenu);
 
+// Teleport the bot in front of the player.
 VOID TeleportBotToMe(Menu* pMenu);
 
+// Toggle the bot's movement.
 VOID ToggleBotMovement(Menu* pMenu);
 
 }

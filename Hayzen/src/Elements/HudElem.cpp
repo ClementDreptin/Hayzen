@@ -2,9 +2,6 @@
 #include "Elements\HudElem.h"
 
 
-//--------------------------------------------------------------------------------------
-// Static members definitions
-//--------------------------------------------------------------------------------------
 CONST Color HudElem::s_ColorWhite = { 1.0f, 1.0f, 1.0f, 1.0f };
 CONST Color HudElem::s_ColorBlack = { 0.0f, 0.0f, 0.0f, 1.0f };
 CONST FLOAT HudElem::s_MenuX = 875.0f;
@@ -22,18 +19,9 @@ R_ADDCMDDRAWTEXT HudElem::R_AddCmdDrawText = nullptr;
 R_ADDCMDDRAWSTRETCHPIC HudElem::R_AddCmdDrawStretchPic = nullptr;
 
 
-//--------------------------------------------------------------------------------------
-// Name: HudElem()
-// Desc: Constructor.
-//--------------------------------------------------------------------------------------
 HudElem::HudElem(FLOAT fX, FLOAT fY, CONST Color& color)
     : m_fX(fX), m_fY(fY), m_Color(color) {}
 
-
-//--------------------------------------------------------------------------------------
-// Name: SetColor
-// Desc: Set the current color with the RGBA values provided.
-//--------------------------------------------------------------------------------------
 VOID HudElem::SetColor(FLOAT fR, FLOAT fG, FLOAT fB, FLOAT fA)
 {
     m_Color.r = fR;

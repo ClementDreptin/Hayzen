@@ -8,15 +8,12 @@
 #include "Games\Alpha\MW2\MW2.h"
 
 
-//--------------------------------------------------------------------------------------
-// Static members definitions
-//--------------------------------------------------------------------------------------
 BOOL Plugin::s_bRunning = FALSE;
 DWORD Plugin::s_dwCurrentTitle = 0;
 Game* Plugin::s_CurrentGame = nullptr;
 
 
-// Enum from game IDs
+// Enum from game IDs.
 enum Games
 {
     GAME_DASHBOARD = 0xFFFE07D1,
@@ -24,11 +21,6 @@ enum Games
     GAME_MW3 = 0x415608CB
 };
 
-
-//--------------------------------------------------------------------------------------
-// Name: Start()
-// Desc: Entry point that starts the main loop in a separate thread.
-//--------------------------------------------------------------------------------------
 VOID Plugin::Start()
 {
     s_bRunning = TRUE;
@@ -39,11 +31,6 @@ VOID Plugin::Start()
     Memory::ThreadEx((LPTHREAD_START_ROUTINE)Update, nullptr, 2);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Stop()
-// Desc: Therminates the main loop.
-//--------------------------------------------------------------------------------------
 VOID Plugin::Stop()
 {
     s_bRunning = FALSE;
@@ -52,11 +39,6 @@ VOID Plugin::Stop()
     Sleep(250);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Update()
-// Desc: Loop as long as the plugin is running and monitor the current running game.
-//--------------------------------------------------------------------------------------
 DWORD Plugin::Update(LPVOID)
 {
     while (s_bRunning)
@@ -76,11 +58,6 @@ DWORD Plugin::Update(LPVOID)
     return 0;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: InitNewGame()
-// Desc: Initialize a new game if it's supported.
-//--------------------------------------------------------------------------------------
 VOID Plugin::InitNewGame(DWORD dwNewTitle)
 {
     // Clean up what previous game may have left out and reset the pointer

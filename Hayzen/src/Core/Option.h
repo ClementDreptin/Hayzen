@@ -3,25 +3,26 @@
 #include "Elements\Text.h"
 
 
-// Forward declarationfor the Menu class
 class Menu;
 
-// Create the callback type
+// Function called when an option is clicked.
 typedef VOID (*Callback)(Menu* pMenu);
 
 
-//--------------------------------------------------------------------------------------
-// Name: class Option
-// Desc: Class describing a clickage option, inherits from Text.
-//--------------------------------------------------------------------------------------
+// Class describing a clickage option, inherits from Text.
 class Option : public Text
 {
 public:
+    // Default constructor.
     Option() {};
+
+    // Constructor.
     Option(CONST std::string& strName, UINT uiIndex, Callback fnCallback = nullptr);
 
+    // Call the callback function if it's defined, otherwise set the option as the current option in the menu.
     VOID OnClick(Menu* pMenu);
 
+    // Push a child to the list of children.
     VOID AddChild(CONST std::shared_ptr<Option>& pChild) { pChild->m_pParent = this; m_Children.emplace_back(pChild); }
 
     BOOL HasParent() CONST { return m_pParent != nullptr; }
@@ -29,6 +30,7 @@ public:
 
     CONST std::vector<std::shared_ptr<Option>>& GetChildren() CONST { return m_Children; }
 
+    // Reset the members.
     VOID Cleanup();
 private:
     UINT m_uiIndex;
@@ -39,5 +41,5 @@ private:
 };
 
 
-// Macro to create a shared pointer of an option
+// Macro to create a shared pointer of an option.
 #define MakeOption(...) std::make_shared<Option>(__VA_ARGS__)

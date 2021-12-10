@@ -2,18 +2,9 @@
 #include "Elements\Rectangle.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Rectangle()
-// Desc: Constructor.
-//--------------------------------------------------------------------------------------
 Rectangle::Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color& color)
     : HudElem(fX, fY, color), m_fWidth(fWidth), m_fHeight(fHeight) {}
 
-
-//--------------------------------------------------------------------------------------
-// Name: Draw()
-// Desc: Call R_AddCmdDrawStretchPic() of the current game.
-//--------------------------------------------------------------------------------------
 VOID Rectangle::Draw()
 {
     if (m_Color.a > 0.0f)

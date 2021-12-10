@@ -4,10 +4,6 @@
 #include "Games\Alpha\MW2\MenuFunctions.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Init()
-// Desc: Set the draw function pointers and the function hooks.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2::Init()
 {
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
@@ -37,11 +33,6 @@ VOID AlphaMW2::Init()
     Memory::HookFunctionStart((LPDWORD)0x822B4700, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: CreateStructure()
-// Desc: Create the structure of the menu and save it a static member.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2::CreateStructure()
 {
     // Set the global title of the menu
@@ -71,11 +62,6 @@ VOID AlphaMW2::CreateStructure()
     s_RootOption.AddChild(pBot);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Scr_NotifyHook()
-// Desc: Initialize the menu when the game starts.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramCount)
 {
     // Call the original Scr_Notify function
@@ -95,11 +81,6 @@ VOID AlphaMW2::Scr_NotifyHook(gentity_s* entity, USHORT stringValue, UINT paramC
         s_Menu.Init(iClientNum, &s_RootOption);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SV_ExecuteClientCommandHook()
-// Desc: Stop the menu when the game ends.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
@@ -115,11 +96,6 @@ VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, I
         s_Menu.Stop();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Scr_NotifyStub()
-// Desc: Stub to hold the original code of Scr_Notify.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s* entity, USHORT stringValue, UINT paramCount)
 {
     __asm
@@ -135,11 +111,6 @@ VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s* entity, USHORT string
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SV_ExecuteClientCommandStub()
-// Desc: Stub to hold the original code of SV_ExecuteClientCommand.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) AlphaMW2::SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
 {
     __asm

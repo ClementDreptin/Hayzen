@@ -5,9 +5,7 @@
 using namespace MW3Structs;
 
 
-//--------------------------------------------------------------------------------------
-// MW3 TU24 function pointers to functions from the game
-//--------------------------------------------------------------------------------------
+// MW3 TU24 function pointers to functions from the game.
 namespace MW3GameFunctions
 {
 

@@ -5,18 +5,23 @@
 #include "Elements\Text.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: class Menu
-// Desc: Class to describe the general behavior of the menu.
-//--------------------------------------------------------------------------------------
+// Class to describe the general behavior of the menu.
 class Menu
 {
 public:
+    // Default constructor.
     Menu() {}
 
+    // Create the constant HUD elements.
     VOID Init(INT iClientNum, Option* pOption);
+
+    // Listen for controller inputs and update the menu accordingly.
     VOID Update();
+
+    // Render every HUD element.
     VOID Render();
+
+    // Stop the menu.
     VOID Stop();
 
     BOOL IsInitialized() CONST { return m_bInitialized; }
@@ -37,8 +42,10 @@ public:
     LPVOID GetBot() CONST { return m_pBotEntity; }
     VOID SetBot(LPVOID pBotEntity) { m_pBotEntity = pBotEntity; }
 
+    // Push a new feedback text to the queue.
     VOID SetFeedbackText(CONST std::string& strText);
 
+    // Change the current menu section.
     VOID SetCurrentOption(Option* pOption);
 private:
     BOOL m_bInitialized;
@@ -66,5 +73,6 @@ private:
 
     LPVOID m_pBotEntity;
 
+    // Update the poition of the scroller according to the m_iCurrentScrollerPos index.
     VOID MoveScroller();
 };

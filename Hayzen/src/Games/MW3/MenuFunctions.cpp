@@ -4,10 +4,6 @@
 using namespace MW3GameFunctions;
 
 
-//--------------------------------------------------------------------------------------
-// Name: ToggleGodMode()
-// Desc: Toggle God Mode.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -26,11 +22,6 @@ VOID MW3MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleFallDamage()
-// Desc: Toggle fall damage.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
 {
     DWORD dwAddress = 0x82000C04;
@@ -47,11 +38,6 @@ VOID MW3MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleAmmo()
-// Desc: Toggle unlimited ammo.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
     DWORD dwAddress = 0x820F63E4;
@@ -70,11 +56,6 @@ VOID MW3MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnCP()
-// Desc: Spawn a care package.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -115,11 +96,6 @@ VOID MW3MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleSaveLoadBinds()
-// Desc: Toggle save and load binds.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
 {    
     if (!pMenu->BindsEnabled())
@@ -130,11 +106,6 @@ VOID MW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SavePosition()
-// Desc: Save the current player's position.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::SavePosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -145,11 +116,6 @@ VOID MW3MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: LoadPosition()
-// Desc: Load the previously saved player's position.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::LoadPosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -166,11 +132,6 @@ VOID MW3MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleUFO()
-// Desc: Toggle UFO.
-//--------------------------------------------------------------------------------------
 VOID MW3MenuFunctions::ToggleUFO(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();

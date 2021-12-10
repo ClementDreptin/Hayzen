@@ -5,9 +5,7 @@
 using namespace AlphaMW2Structs;
 
 
-//--------------------------------------------------------------------------------------
-// MW2 Alpha function pointers to functions from the game
-//--------------------------------------------------------------------------------------
+// MW2 Alpha function pointers to functions from the game.
 namespace AlphaMW2GameFunctions
 {
 

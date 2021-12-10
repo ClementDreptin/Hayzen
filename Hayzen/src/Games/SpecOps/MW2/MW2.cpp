@@ -4,16 +4,9 @@
 #include "Games\SpecOps\MW2\MenuFunctions.h"
 
 
-//--------------------------------------------------------------------------------------
-// Static members definitions
-//--------------------------------------------------------------------------------------
 BOOL SpecOpsMW2::s_bJumped = FALSE;
 
 
-//--------------------------------------------------------------------------------------
-// Name: Init()
-// Desc: Set the draw function pointers and the function hooks.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW2::Init()
 {
     Xam::XNotify("Hayzen - MW2 Spec Ops Detected");
@@ -42,11 +35,6 @@ VOID SpecOpsMW2::Init()
     Memory::HookFunctionStart((LPDWORD)0x821EFFD0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: CreateStructure()
-// Desc: Create the structure of the menu and save it a static member.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW2::CreateStructure()
 {
     // Set the global title of the menu
@@ -72,11 +60,6 @@ VOID SpecOpsMW2::CreateStructure()
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ClientCommandHook()
-// Desc: Initialize the menu when the game starts.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
 {
     // Call the original ClientCommand function
@@ -108,11 +91,6 @@ VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ClientCommandStub()
-// Desc: Stub to hold the original code of ClientCommand.
-//--------------------------------------------------------------------------------------
 VOID __declspec(naked) SpecOpsMW2::ClientCommandStub(INT clientNum, LPCSTR s)
 {
     __asm

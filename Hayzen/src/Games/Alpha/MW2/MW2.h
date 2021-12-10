@@ -6,20 +6,25 @@
 #include "Games\Alpha\MW2\Structs.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: class AlphaMW2
-// Desc: Class to run MW2 Alpha, inherits from Game.
-//--------------------------------------------------------------------------------------
+// Class to run MW2 Alpha, inherits from Game.
 class AlphaMW2 : public Game
 {
 public:
+    // Set the draw function pointers and the function hooks.
     virtual VOID Init();
 private:
+    // Create the structure of the menu and save it a static member.
     virtual VOID CreateStructure();
 
+    // Stub to hold the original code of Scr_Notify.
     static VOID Scr_NotifyStub(AlphaMW2Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
+
+    // Initialize the menu when the game starts.
     static VOID Scr_NotifyHook(AlphaMW2Structs::gentity_s* entity, USHORT stringValue, UINT paramCount);
 
+    // Stub to hold the original code of SV_ExecuteClientCommand.
     static VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+
+    // Stop the menu when the game ends.
     static VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
 };

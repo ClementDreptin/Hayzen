@@ -4,10 +4,6 @@
 using namespace SpecOpsMW3GameFunctions;
 
 
-//--------------------------------------------------------------------------------------
-// Name: ToggleGodMode()
-// Desc: Toggle God Mode.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -25,11 +21,6 @@ VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleAmmo()
-// Desc: Toggle unlimited ammo.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
     DWORD dwAddress = 0x8235BB54;
@@ -48,11 +39,6 @@ VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleSaveLoadBinds()
-// Desc: Toggle save and load binds.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
 {
     if (!pMenu->BindsEnabled())
@@ -63,11 +49,6 @@ VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SavePosition()
-// Desc: Save the current player's position.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::SavePosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -78,11 +59,6 @@ VOID SpecOpsMW3MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: LoadPosition()
-// Desc: Load the previously saved player's position.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -99,11 +75,6 @@ VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleUFO()
-// Desc: Toggle UFO.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -120,11 +91,6 @@ VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleSecondPlayerGodMode()
-// Desc: Toggle God Mode for the second player.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
 {
     // The second client num is always 1
@@ -152,11 +118,6 @@ VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: TeleportSecondPlayerToMe()
-// Desc: Teleport the second player in front of the first player.
-//--------------------------------------------------------------------------------------
 VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu* pMenu)
 {
     // The second client num is always 1

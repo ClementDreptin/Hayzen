@@ -5,9 +5,7 @@
 using namespace SpecOpsMW2Structs;
 
 
-//--------------------------------------------------------------------------------------
-// Spec Ops MW2 function pointers to functions from the game
-//--------------------------------------------------------------------------------------
+// Spec Ops MW2 function pointers to functions from the game.
 namespace SpecOpsMW2GameFunctions
 {
 

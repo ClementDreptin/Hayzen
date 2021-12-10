@@ -2,10 +2,6 @@
 #include "Core\Menu.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Init()
-// Desc: Create the constant HUD elements.
-//--------------------------------------------------------------------------------------
 VOID Menu::Init(INT iClientNum, Option* pOption)
 {
     // Save the arguments to class members
@@ -36,11 +32,6 @@ VOID Menu::Init(INT iClientNum, Option* pOption)
     m_bInitialized = TRUE;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Update()
-// Desc: Listen for controller inputs and update the menu accordingly.
-//--------------------------------------------------------------------------------------
 VOID Menu::Update()
 {
     // If the menu is not initialized, don't go further
@@ -108,11 +99,6 @@ VOID Menu::Update()
         m_fnSavePosition(this);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Render()
-// Desc: Render every HUD element.
-//--------------------------------------------------------------------------------------
 VOID Menu::Render()
 {
     // If the menu is not initialized, don't go further
@@ -178,11 +164,6 @@ VOID Menu::Render()
         m_pCurrentOption->GetChildren()[i]->Draw();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Stop()
-// Desc: Stop the menu.
-//--------------------------------------------------------------------------------------
 VOID Menu::Stop()
 {
     // Reset the members
@@ -196,21 +177,12 @@ VOID Menu::Stop()
     m_pBotEntity = nullptr;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SetFeedbackText()
-// Desc: Push a new feedback text to the queue.
-//--------------------------------------------------------------------------------------
 VOID Menu::SetFeedbackText(CONST std::string& strText)
 {
     // Set the feedback text
     m_ChangeFeedbackTextQueue.push(strText);
 }
 
-//--------------------------------------------------------------------------------------
-// Name: SetCurrentOption()
-// Desc: Change the current menu section.
-//--------------------------------------------------------------------------------------
 VOID Menu::SetCurrentOption(Option* pOption)
 {
     // Reset the scroller position
@@ -224,12 +196,6 @@ VOID Menu::SetCurrentOption(Option* pOption)
     m_Title.SetText(m_pCurrentOption->GetText());
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: MoveScroller()
-// Desc: Update the poition of the scroller according to the m_iCurrentScrollerPos
-//       index.
-//--------------------------------------------------------------------------------------
 VOID Menu::MoveScroller()
 {
     m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * m_iCurrentScrollerPos);

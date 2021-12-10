@@ -3,16 +3,17 @@
 #include "Elements\HudElem.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: class Text
-// Desc: Class to draw a text element, inherits from HudElem.
-//--------------------------------------------------------------------------------------
+// Class to draw a text element, inherits from HudElem.
 class Text : public HudElem
 {
 public:
+    // Default constructor.
     Text() {}
+
+    // Constructor.
     Text(CONST std::string& strText, FLOAT fX, FLOAT fY, CONST Color& color, FLOAT fFontScale = 1.0f);
 
+    // Call R_AddCmdDrawText() of the current game.
     virtual VOID Draw();
 
     FLOAT GetFontScale() CONST { return m_fFontScale; }

@@ -4,10 +4,6 @@
 using namespace AlphaMW2GameFunctions;
 
 
-//--------------------------------------------------------------------------------------
-// Name: ToggleGodMode()
-// Desc: Toggle God Mode.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -26,11 +22,6 @@ VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleFallDamage()
-// Desc: Toggle fall damage.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
 {
     if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
@@ -47,11 +38,6 @@ VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleAmmo()
-// Desc: Toggle unlimited ammo.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
     if (!Dvar_GetBool("player_sustainAmmo"))
@@ -66,11 +52,6 @@ VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnCP()
-// Desc: Spawn a care package.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::SpawnCP(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -111,11 +92,6 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleSaveLoadBinds()
-// Desc: Toggle save and load binds.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
 {
     if (!pMenu->BindsEnabled())
@@ -126,11 +102,6 @@ VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SavePosition()
-// Desc: Save the current player's position.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::SavePosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -141,11 +112,6 @@ VOID AlphaMW2MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: LoadPosition()
-// Desc: Load the previously saved player's position.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::LoadPosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -162,11 +128,6 @@ VOID AlphaMW2MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleUFO()
-// Desc: Toggle UFO.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -174,11 +135,7 @@ VOID AlphaMW2MenuFunctions::ToggleUFO(Menu* pMenu)
     Cbuf_AddText(iClientNum, "ufo");
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnBotThread()
-// Desc: Threaded function that makes the bot spawn, pick a team, then pick a class.
-//--------------------------------------------------------------------------------------
+// Threaded function that makes the bot spawn, pick a team, then pick a class.
 static DWORD SpawnBotThread(Menu* pMenu)
 {
     // Create the bot and wait until it joins the game
@@ -217,11 +174,6 @@ static DWORD SpawnBotThread(Menu* pMenu)
     return 0;
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnBot()
-// Desc: Spawn a bot.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::SpawnBot(Menu* pMenu)
 {
     gentity_s* pBot = (gentity_s*)pMenu->GetBot();
@@ -240,11 +192,6 @@ VOID AlphaMW2MenuFunctions::SpawnBot(Menu* pMenu)
     Memory::Thread((LPTHREAD_START_ROUTINE)SpawnBotThread, pMenu);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: TeleportBotToMe()
-// Desc: Teleport the bot in front of the player.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -266,11 +213,6 @@ VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleBotMovement()
-// Desc: Toggle the bot's movement.
-//--------------------------------------------------------------------------------------
 VOID AlphaMW2MenuFunctions::ToggleBotMovement(Menu* pMenu)
 {
     gentity_s* pBot = (gentity_s*)pMenu->GetBot();

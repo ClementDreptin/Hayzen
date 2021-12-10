@@ -1,9 +1,7 @@
 #pragma once
 
 
-//--------------------------------------------------------------------------------------
-// MW2 Alpha structs used by the game functions
-//--------------------------------------------------------------------------------------
+// MW2 Alpha structs used by the game functions.
 namespace AlphaMW2Structs
 {
 

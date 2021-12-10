@@ -2,18 +2,9 @@
 #include "Elements\Text.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Text()
-// Desc: Constructor.
-//--------------------------------------------------------------------------------------
 Text::Text(CONST std::string& strText, FLOAT fX, FLOAT fY, CONST Color& color, FLOAT fFontScale)
     : HudElem(fX, fY, color), m_fFontScale(fFontScale), m_strText(strText) {}
 
-
-//--------------------------------------------------------------------------------------
-// Name: Draw()
-// Desc: Call R_AddCmdDrawText() of the current game.
-//--------------------------------------------------------------------------------------
 VOID Text::Draw()
 {
     if (m_Color.a > 0.0f)

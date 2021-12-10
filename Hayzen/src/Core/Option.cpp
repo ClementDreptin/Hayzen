@@ -4,10 +4,6 @@
 #include "Core\Menu.h"
 
 
-//--------------------------------------------------------------------------------------
-// Name: Option()
-// Desc: Constructor.
-//--------------------------------------------------------------------------------------
 Option::Option(CONST std::string& strName, UINT uiIndex, Callback fnCallback)
     : m_uiIndex(uiIndex),
     m_fnCallback(fnCallback),
@@ -17,12 +13,6 @@ Option::Option(CONST std::string& strName, UINT uiIndex, Callback fnCallback)
         HudElem::s_ColorWhite, 1.2f
     ) {}
 
-
-//--------------------------------------------------------------------------------------
-// Name: OnClick()
-// Desc: Call the callback function if it's defined, otherwise set the option as the
-//       current option in the menu.
-//--------------------------------------------------------------------------------------
 VOID Option::OnClick(Menu* pMenu)
 {
     // If the callback is defined, it means the current option activates a feature
@@ -39,11 +29,6 @@ VOID Option::OnClick(Menu* pMenu)
         pMenu->SetCurrentOption(this);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Cleanup()
-// Desc: Reset the members.
-//--------------------------------------------------------------------------------------
 VOID Option::Cleanup()
 {
     m_uiIndex = 0;

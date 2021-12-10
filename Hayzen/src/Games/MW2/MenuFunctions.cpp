@@ -4,10 +4,6 @@
 using namespace MW2GameFunctions;
 
 
-//--------------------------------------------------------------------------------------
-// Name: ToggleGodMode()
-// Desc: Toggle God Mode.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleGodMode(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -27,10 +23,6 @@ VOID MW2MenuFunctions::ToggleGodMode(Menu* pMenu)
 }
 
 
-//--------------------------------------------------------------------------------------
-// Name: ToggleFallDamage()
-// Desc: Toggle fall damage.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
 {
     DWORD dwAddress = 0x82019C48;
@@ -47,11 +39,6 @@ VOID MW2MenuFunctions::ToggleFallDamage(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleAmmo()
-// Desc: Toggle unlimited ammo.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleAmmo(Menu* pMenu)
 {
     DWORD dwAddress = 0x820E1724;
@@ -70,11 +57,6 @@ VOID MW2MenuFunctions::ToggleAmmo(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleElevators()
-// Desc: Toggle elvators.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleElevators(Menu* pMenu)
 {
     DWORD dwBranchAddress = 0x820D8360;
@@ -93,11 +75,6 @@ VOID MW2MenuFunctions::ToggleElevators(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnCP()
-// Desc: Spawn a care package.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -138,11 +115,6 @@ VOID MW2MenuFunctions::SpawnCP(Menu* pMenu)
     SV_LinkEntity(entity);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: Knockback()
-// Desc: Open a keyboard to allow the user to change the knockback value.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::Knockback(Menu* pMenu)
 {
     // Get the value from the user via the virtual keyboard
@@ -158,11 +130,6 @@ VOID MW2MenuFunctions::Knockback(Menu* pMenu)
     pMenu->SetFeedbackText("Knockback set to ^2" + strValue);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleSaveLoadBinds()
-// Desc: Toggle save and load binds.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
 {
     if (!pMenu->BindsEnabled())
@@ -173,11 +140,6 @@ VOID MW2MenuFunctions::ToggleSaveLoadBinds(Menu* pMenu)
     pMenu->ToggleBinds();
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SavePosition()
-// Desc: Save the current player's position.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::SavePosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -188,11 +150,6 @@ VOID MW2MenuFunctions::SavePosition(Menu* pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: LoadPosition()
-// Desc: Load the previously saved player's position.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::LoadPosition(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -209,11 +166,6 @@ VOID MW2MenuFunctions::LoadPosition(Menu* pMenu)
     TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleUFO()
-// Desc: Toggle UFO.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -230,11 +182,6 @@ VOID MW2MenuFunctions::ToggleUFO(Menu* pMenu)
     }
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: SpawnBot()
-// Desc: Spawn a bot.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::SpawnBot(Menu* pMenu)
 {
     gentity_s* pBot = (gentity_s*)pMenu->GetBot();
@@ -276,11 +223,6 @@ VOID MW2MenuFunctions::SpawnBot(Menu* pMenu)
     TeleportBotToMe(pMenu);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: TeleportBotToMe()
-// Desc: Teleport the bot in front of the player.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
@@ -302,11 +244,6 @@ VOID MW2MenuFunctions::TeleportBotToMe(Menu* pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-
-//--------------------------------------------------------------------------------------
-// Name: ToggleBotMovement()
-// Desc: Toggle the bot's movement.
-//--------------------------------------------------------------------------------------
 VOID MW2MenuFunctions::ToggleBotMovement(Menu* pMenu)
 {
     gentity_s* pBot = (gentity_s*)pMenu->GetBot();

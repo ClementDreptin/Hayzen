@@ -5,6 +5,9 @@
 namespace AlphaMW2GameFunctions
 {
 
+static std::unordered_map<std::string, DWORD> BrushModelMap;
+
+
 LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x8229A730;
 
 VOID (*Cbuf_AddText)(INT localClientNum, LPCSTR text) = (VOID(*)(INT, LPCSTR))0x8226F590;
@@ -52,42 +55,38 @@ bool IsHost(INT clientNum)
     return Session_IsHost(0x83A06F28, clientNum);
 }
 
+static VOID InitBrushModelMap()
+{
+    BrushModelMap["mp_afghan"] = 0x82D60880;
+    BrushModelMap["mp_checkpoint"] = 0x82D76B80;
+    BrushModelMap["mp_derail"] = 0x82D95800;
+    BrushModelMap["mp_estate"] = 0x82D5B600;
+    BrushModelMap["mp_favela"] = 0x82D9A300;
+    BrushModelMap["mp_highrise"] = 0x82DC4380;
+    BrushModelMap["mp_invasion"] = 0x82D7E100;
+    BrushModelMap["mp_quarry"] = 0x82D70F00;
+    BrushModelMap["mp_rundown"] = 0x82D93780;
+    BrushModelMap["mp_rust"] = 0x82D5A980;
+    BrushModelMap["mp_boneyard"] = 0x82D64E80;
+    BrushModelMap["mp_nightshift"] = 0x82D58180;
+    BrushModelMap["mp_subbase"] = 0x82D7CF80;
+    BrushModelMap["mp_terminal"] = 0x82D61A00;
+    BrushModelMap["mp_underpass"] = 0x82D52000;
+}
+
 gentity_s *GetCurrentMapBrushModel()
 {
+    static BOOL bBrushModelMapInitialized = FALSE;
+
+    if (!bBrushModelMapInitialized)
+    {
+        InitBrushModelMap();
+        bBrushModelMapInitialized = TRUE;
+    }
+
     std::string strMapName = Dvar_GetString("ui_mapname");
 
-    if (strMapName == "mp_afghan")
-        return (gentity_s*)0x82D60880;
-    if (strMapName == "mp_checkpoint")
-        return (gentity_s*)0x82D76B80;
-    if (strMapName == "mp_derail")
-        return (gentity_s*)0x82D95800;
-    if (strMapName == "mp_estate")
-        return (gentity_s*)0x82D5B600;
-    if (strMapName == "mp_favela")
-        return (gentity_s*)0x82D9A300;
-    if (strMapName == "mp_highrise")
-        return (gentity_s*)0x82DC4380;
-    if (strMapName == "mp_invasion")
-        return (gentity_s*)0x82D7E100;
-    if (strMapName == "mp_quarry")
-        return (gentity_s*)0x82D70F00;
-    if (strMapName == "mp_rundown")
-        return (gentity_s*)0x82D93780;
-    if (strMapName == "mp_rust")
-        return (gentity_s*)0x82D5A980;
-    if (strMapName == "mp_boneyard")
-        return (gentity_s*)0x82D64E80;
-    if (strMapName == "mp_nightshift")
-        return (gentity_s*)0x82D58180;
-    if (strMapName == "mp_subbase")
-        return (gentity_s*)0x82D7CF80;
-    if (strMapName == "mp_terminal")
-        return (gentity_s*)0x82D61A00;
-    if (strMapName == "mp_underpass")
-        return (gentity_s*)0x82D52000;
-    else
-        return nullptr;
+    return (gentity_s*)BrushModelMap[strMapName];
 }
 
 }

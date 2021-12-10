@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <queue>
+#include <unordered_map>
 
 // XexUtils
 #include "XexUtils.h"

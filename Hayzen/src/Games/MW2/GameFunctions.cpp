@@ -5,6 +5,9 @@
 namespace MW2GameFunctions
 {
 
+static std::unordered_map<std::string, DWORD> BrushModelMap;
+
+
 LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x82241898;
 
 VOID (*SV_GameSendServerCommand)(INT clientNum, INT type, LPCSTR text) = (VOID(*)(INT, INT, LPCSTR))0x822548D8;
@@ -57,64 +60,49 @@ bool IsHost(INT clientNum)
     return Session_IsHost(0x83AC3DB0, clientNum);
 }
 
+static VOID InitBrushModelMap()
+{
+    BrushModelMap["mp_afghan"] = 0x82F7E800;
+    BrushModelMap["mp_derail"] = 0x82F5F680;
+    BrushModelMap["mp_estate"] = 0x82F4AF00;
+    BrushModelMap["mp_favela"] = 0x82F70C00;
+    BrushModelMap["mp_highrise"] = 0x82F76380;
+    BrushModelMap["mp_invasion"] = 0x82F73180;
+    BrushModelMap["mp_checkpoint"] = 0x82F6D280;
+    BrushModelMap["mp_quarry"] = 0x82F99600;
+    BrushModelMap["mp_rundown"] = 0x82F65800;
+    BrushModelMap["mp_rust"] = 0x82F3C900;
+    BrushModelMap["mp_boneyard"] = 0x82F0B300;
+    BrushModelMap["mp_nightshift"] = 0x82F3A880;
+    BrushModelMap["mp_subbase"] = 0x82F59780;
+    BrushModelMap["mp_terminal"] = 0x82F0DD80;
+    BrushModelMap["mp_underpass"] = 0x82F66C00;
+    BrushModelMap["mp_brecourt"] = 0x82F15580;
+    BrushModelMap["mp_complex"] = 0x82F09F00;
+    BrushModelMap["mp_crash"] = 0x82F18280;
+    BrushModelMap["mp_overgrown"] = 0x82F34980;
+    BrushModelMap["mp_compact"] = 0x82F14180;
+    BrushModelMap["mp_storm"] = 0x82F5DB00;
+    BrushModelMap["mp_abandon"] = 0x82F48980;
+    BrushModelMap["mp_fuel2"] = 0x82F65300;
+    BrushModelMap["mp_strike"] = 0x82F4D980;
+    BrushModelMap["mp_trailerpark"] = 0x82F17380;
+    BrushModelMap["mp_vacant"] = 0x82F55900;
+}
+
 gentity_s *GetCurrentMapBrushModel()
 {
+    static BOOL bBrushModelMapInitialized = FALSE;
+
+    if (!bBrushModelMapInitialized)
+    {
+        InitBrushModelMap();
+        bBrushModelMapInitialized = TRUE;
+    }
+
     std::string strMapName = Dvar_GetString("ui_mapname");
 
-    if (strMapName == "mp_afghan")
-        return (gentity_s*)0x82F7E800;
-    if (strMapName == "mp_derail")
-        return (gentity_s*)0x82F5F680;
-    if (strMapName == "mp_estate")
-        return (gentity_s*)0x82F4AF00;
-    if (strMapName == "mp_favela")
-        return (gentity_s*)0x82F70C00;
-    if (strMapName == "mp_highrise")
-        return (gentity_s*)0x82F76380;
-    if (strMapName == "mp_invasion")
-        return (gentity_s*)0x82F73180;
-    if (strMapName == "mp_checkpoint")
-        return (gentity_s*)0x82F6D280;
-    if (strMapName == "mp_quarry")
-        return (gentity_s*)0x82F99600;
-    if (strMapName == "mp_rundown")
-        return (gentity_s*)0x82F65800;
-    if (strMapName == "mp_rust")
-        return (gentity_s*)0x82F3C900;
-    if (strMapName == "mp_boneyard")
-        return (gentity_s*)0x82F0B300;
-    if (strMapName == "mp_nightshift")
-        return (gentity_s*)0x82F3A880;
-    if (strMapName == "mp_subbase")
-        return (gentity_s*)0x82F59780;
-    if (strMapName == "mp_terminal")
-        return (gentity_s*)0x82F0DD80;
-    if (strMapName == "mp_underpass")
-        return (gentity_s*)0x82F66C00;
-    if (strMapName == "mp_brecourt")
-        return (gentity_s*)0x82F15580;
-    if (strMapName == "mp_complex")
-        return (gentity_s*)0x82F09F00;
-    if (strMapName == "mp_crash")
-        return (gentity_s*)0x82F18280;
-    if (strMapName == "mp_overgrown")
-        return (gentity_s*)0x82F34980;
-    if (strMapName == "mp_compact")
-        return (gentity_s*)0x82F14180;
-    if (strMapName == "mp_storm")
-        return (gentity_s*)0x82F5DB00;
-    if (strMapName == "mp_abandon")
-        return (gentity_s*)0x82F48980;
-    if (strMapName == "mp_fuel2")
-        return (gentity_s*)0x82F65300;
-    if (strMapName == "mp_strike")
-        return (gentity_s*)0x82F4D980;
-    if (strMapName == "mp_trailerpark")
-        return (gentity_s*)0x82F17380;
-    if (strMapName == "mp_vacant")
-        return (gentity_s*)0x82F55900;
-    else
-        return nullptr;
+    return (gentity_s*)BrushModelMap[strMapName];
 }
 
 }

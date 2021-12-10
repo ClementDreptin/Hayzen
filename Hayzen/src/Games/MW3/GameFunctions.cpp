@@ -5,6 +5,9 @@
 namespace MW3GameFunctions
 {
 
+static std::unordered_map<std::string, DWORD> BrushModelMap;
+
+
 LPCSTR (*SL_ConvertToString)(UINT stringValue) = (LPCSTR(*)(UINT))0x822B5120;
 
 LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = (LPCSTR(*)(LPCSTR))0x8232E488;
@@ -44,22 +47,32 @@ bool IsHost(INT clientNum)
     return Session_IsHost(0x83BC0148, clientNum);
 }
 
+static VOID InitBrushModelMap()
+{
+    BrushModelMap["mp_seatown"] = 0x82DD1280;
+    BrushModelMap["mp_mogadishu"] = 0x82E08A00;
+    BrushModelMap["mp_exchange"] = 0x82E14580;
+    BrushModelMap["mp_radar"] = 0x82DD3A80;
+    BrushModelMap["mp_terminal_cls"] = 0x82DF9C80;
+}
+
 gentity_s *GetCurrentMapBrushModel()
 {
+    static BOOL bBrushModelMapInitialized = FALSE;
+
+    if (!bBrushModelMapInitialized)
+    {
+        InitBrushModelMap();
+        bBrushModelMapInitialized = TRUE;
+    }
+
     std::string strMapName = Dvar_GetString("ui_mapname");
 
-    if (strMapName == "mp_seatown")
-        return (gentity_s*)0x82DD1280;
-    if (strMapName == "mp_mogadishu")
-        return (gentity_s*)0x82E08A00;
-    if (strMapName == "mp_exchange")
-        return (gentity_s*)0x82E14580;
-    if (strMapName == "mp_radar")
-        return (gentity_s*)0x82DD3A80;
-    if (strMapName == "mp_terminal_cls")
-        return (gentity_s*)0x82DF9C80;
-    else
-        return (gentity_s*)0x82DD1500;
+    gentity_s *pBrushModel = (gentity_s*)BrushModelMap[strMapName];
+    if (!pBrushModel)
+        pBrushModel = (gentity_s*)0x82DD1500;
+
+    return pBrushModel;
 }
 
 }

@@ -31,7 +31,7 @@ extern void (*SV_UnlinkEntity)(gentity_s *gEnt);
 
 extern void (*SV_SetBrushModel)(gentity_s *ent);
 
-extern void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles);
+extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
 
 gclient_s *GetGClient(int clientNum);
 

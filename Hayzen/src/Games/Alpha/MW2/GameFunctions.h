@@ -39,7 +39,7 @@ extern gentity_s *(*SV_AddTestClient)();
 
 extern void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer);
 
-extern void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles);
+extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
 
 gclient_s *GetGClient(int clientNum);
 

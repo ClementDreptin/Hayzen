@@ -11,7 +11,7 @@ namespace SpecOpsMW3GameFunctions
 
 extern playerState_s *(*SV_GetPlayerstateForClientNum)(int num);
 
-extern void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles);
+extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
 
 gclient_s *GetGClient(int clientNum);
 

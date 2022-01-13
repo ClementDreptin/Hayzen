@@ -7,7 +7,7 @@ namespace SpecOpsMW2GameFunctions
 
 playerState_s *(*SV_GetPlayerstateForClientNum)(int num) = reinterpret_cast<playerState_s *(*)(int)>(0x8233CB30);
 
-void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles) = reinterpret_cast<void(*)(gentity_s *, float *, float *)>(0x821FF588);
+void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles) = reinterpret_cast<void(*)(gentity_s *, const float *, const float *)>(0x821FF588);
 
 gclient_s *GetGClient(int clientNum)
 {

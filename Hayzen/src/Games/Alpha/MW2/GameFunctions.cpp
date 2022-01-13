@@ -8,54 +8,54 @@ namespace AlphaMW2GameFunctions
 static std::unordered_map<std::string, DWORD> BrushModelMap;
 
 
-LPCSTR (*SL_ConvertToString)(UINT stringValue) = reinterpret_cast<LPCSTR(*)(UINT)>(0x8229A730);
+const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x8229A730);
 
-VOID (*Cbuf_AddText)(INT localClientNum, LPCSTR text) = reinterpret_cast<VOID(*)(INT, LPCSTR)>(0x8226F590);
+void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x8226F590);
 
-bool (*Dvar_GetBool)(LPCSTR dvarName) = reinterpret_cast<bool(*)(LPCSTR)>(0x82303B00);
+bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool(*)(const char *)>(0x82303B00);
 
-FLOAT (*Dvar_GetFloat)(LPCSTR dvarName) = reinterpret_cast<FLOAT(*)(LPCSTR)>(0x82303BD0);
+float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float(*)(const char *)>(0x82303BD0);
 
-LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = reinterpret_cast<LPCSTR(*)(LPCSTR)>(0x82303CC0);
+const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x82303CC0);
 
-playerState_s *(*GetPlayerState)(INT clientNum) = reinterpret_cast<playerState_s *(*)(INT)>(0x8222C108);
+playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x8222C108);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum) = reinterpret_cast<bool(*)(DWORD, INT)>(0x82388338);
+bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool(*)(DWORD, int)>(0x82388338);
 
-VOID (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<VOID(*)(gentity_s *)>(0x82250A20);
+void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void(*)(gentity_s *)>(0x82250A20);
 
 gentity_s *(*G_Spawn)() = reinterpret_cast<gentity_s *(*)()>(0x82258508);
 
-VOID (*G_SetModel)(gentity_s *ent, LPCSTR modelName) = reinterpret_cast<VOID(*)(gentity_s *, LPCSTR)>(0x82257B90);
+void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<void(*)(gentity_s *, const char *)>(0x82257B90);
 
-VOID (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<VOID(*)(gentity_s *)>(0x822C1598);
+void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x822C1598);
 
-VOID (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<VOID(*)(gentity_s *)>(0x822C14B0);
+void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x822C14B0);
 
-VOID (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<VOID(*)(gentity_s *)>(0x822B63B8);
+void (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<void(*)(gentity_s *)>(0x822B63B8);
 
 gentity_s *(*SV_AddTestClient)() = reinterpret_cast<gentity_s *(*)()>(0x822B5F00);
 
-VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer) = reinterpret_cast<VOID(*)(INT, LPCSTR, INT, INT)>(0x822B4700);
+void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<void(*)(int, const char *, int, int)>(0x822B4700);
 
-VOID (*TeleportPlayer)(gentity_s *player, PFLOAT origin, PFLOAT angles) = reinterpret_cast<VOID(*)(gentity_s *, PFLOAT, PFLOAT)>(0x8222E5A0);
+void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles) = reinterpret_cast<void(*)(gentity_s *, float *, float *)>(0x8222E5A0);
 
-gclient_s *GetGClient(INT clientNum)
+gclient_s *GetGClient(int clientNum)
 {
     return reinterpret_cast<gclient_s *>(0x82F01480 + sizeof(gclient_s) * clientNum);
 }
 
-gentity_s *GetEntity(INT entNum)
+gentity_s *GetEntity(int entNum)
 {
     return reinterpret_cast<gentity_s *>(0x82D47D80 + sizeof(gentity_s) * entNum);
 }
 
-bool IsHost(INT clientNum)
+bool IsHost(int clientNum)
 {
     return Session_IsHost(0x83A06F28, clientNum);
 }
 
-static VOID InitBrushModelMap()
+static void InitBrushModelMap()
 {
     BrushModelMap["mp_afghan"] = 0x82D60880;
     BrushModelMap["mp_checkpoint"] = 0x82D76B80;
@@ -76,12 +76,12 @@ static VOID InitBrushModelMap()
 
 gentity_s *GetCurrentMapBrushModel()
 {
-    static BOOL bBrushModelMapInitialized = FALSE;
+    static bool bBrushModelMapInitialized = false;
 
     if (!bBrushModelMapInitialized)
     {
         InitBrushModelMap();
-        bBrushModelMapInitialized = TRUE;
+        bBrushModelMapInitialized = true;
     }
 
     std::string strMapName = Dvar_GetString("ui_mapname");

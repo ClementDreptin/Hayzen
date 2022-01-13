@@ -4,7 +4,7 @@
 #include "Games\Alpha\MW2\MenuFunctions.h"
 
 
-VOID AlphaMW2::Init()
+void AlphaMW2::Init()
 {
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
@@ -28,12 +28,12 @@ VOID AlphaMW2::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x8218B5F0), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x822539C0), reinterpret_cast<LPDWORD>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x822B4700), reinterpret_cast<LPDWORD>(SV_ExecuteClientCommandStub), reinterpret_cast<DWORD>(SV_ExecuteClientCommandHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x8218B5F0), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x822539C0), reinterpret_cast<DWORD *>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x822B4700), reinterpret_cast<DWORD *>(SV_ExecuteClientCommandStub), reinterpret_cast<DWORD>(SV_ExecuteClientCommandHook));
 }
 
-VOID AlphaMW2::CreateStructure()
+void AlphaMW2::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
@@ -62,18 +62,18 @@ VOID AlphaMW2::CreateStructure()
     s_RootOption.AddChild(pBot);
 }
 
-VOID AlphaMW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
+void AlphaMW2::Scr_NotifyHook(gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     // Call the original Scr_Notify function
     Scr_NotifyStub(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
-    INT iClientNum = entity->state.number;
+    int iClientNum = entity->state.number;
     if (!AlphaMW2GameFunctions::IsHost(iClientNum))
         return;
 
     // Get the string representing the event
-    LPCSTR szNotify = AlphaMW2GameFunctions::SL_ConvertToString(stringValue);
+    const char *szNotify = AlphaMW2GameFunctions::SL_ConvertToString(stringValue);
 
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
@@ -81,13 +81,13 @@ VOID AlphaMW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramC
         s_Menu.Init(iClientNum, &s_RootOption);
 }
 
-VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+void AlphaMW2::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
     SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    INT iClientNum = (client - Memory::Read<INT>(0x83577D98)) / 0x97F80;
+    int iClientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;
     if (!AlphaMW2GameFunctions::IsHost(iClientNum))
         return;
 
@@ -96,7 +96,7 @@ VOID AlphaMW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, I
         s_Menu.Stop();
 }
 
-VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s *entity, USHORT stringValue, UINT paramCount)
+void __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     __asm
     {
@@ -111,7 +111,7 @@ VOID __declspec(naked) AlphaMW2::Scr_NotifyStub(gentity_s *entity, USHORT string
     }
 }
 
-VOID __declspec(naked) AlphaMW2::SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+void __declspec(naked) AlphaMW2::SV_ExecuteClientCommandStub(int client, const char *s, int clientOK, int fromOldServer)
 {
     __asm
     {

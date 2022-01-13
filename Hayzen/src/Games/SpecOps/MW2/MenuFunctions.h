@@ -8,27 +8,27 @@ namespace SpecOpsMW2MenuFunctions
 {
 
 // Toggle God Mode.
-VOID ToggleGodMode(Menu *pMenu);
+void ToggleGodMode(Menu *pMenu);
 
 // Toggle unlimited ammo.
-VOID ToggleAmmo(Menu *pMenu);
+void ToggleAmmo(Menu *pMenu);
 
 // Toggle save and load binds.
-VOID ToggleSaveLoadBinds(Menu *pMenu);
+void ToggleSaveLoadBinds(Menu *pMenu);
 
 // Save the current player's position.
-VOID SavePosition(Menu *pMenu);
+void SavePosition(Menu *pMenu);
 
 // Load the previously saved player's position.
-VOID LoadPosition(Menu *pMenu);
+void LoadPosition(Menu *pMenu);
 
 // Toggle UFO.
-VOID ToggleUFO(Menu *pMenu);
+void ToggleUFO(Menu *pMenu);
 
 // Toggle God Mode for the second player.
-VOID ToggleSecondPlayerGodMode(Menu *pMenu);
+void ToggleSecondPlayerGodMode(Menu *pMenu);
 
 // Teleport the second player in front of the first player.
-VOID TeleportSecondPlayerToMe(Menu *pMenu);
+void TeleportSecondPlayerToMe(Menu *pMenu);
 
 }

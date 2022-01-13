@@ -10,6 +10,7 @@
 #include <memory>
 #include <queue>
 #include <unordered_map>
+#include <cstdint>
 
 // XexUtils
 #include "XexUtils.h"

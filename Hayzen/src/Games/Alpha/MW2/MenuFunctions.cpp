@@ -4,11 +4,11 @@
 using namespace AlphaMW2GameFunctions;
 
 
-VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
-    CONST INT GOD_MODE_ON = 4097;
-    CONST INT GOD_MODE_OFF = 4096;
+    int iClientNum = pMenu->GetClientNum();
+    const int GOD_MODE_ON = 4097;
+    const int GOD_MODE_OFF = 4096;
 
     if (GetEntity(iClientNum)->flags == GOD_MODE_OFF)
     {
@@ -22,7 +22,7 @@ VOID AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
 {
     if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
     {
@@ -38,7 +38,7 @@ VOID AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     if (!Dvar_GetBool("player_sustainAmmo"))
     {
@@ -52,9 +52,9 @@ VOID AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
-VOID AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
+void AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
     gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
 
     // Return early if the map is not supported
@@ -65,9 +65,9 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
     }
 
     // Get the player's current position
-    FLOAT distance = 150.0f;
+    float distance = 150.0f;
     vec3 origin = GetPlayerState(iClientNum)->origin;
-    FLOAT viewY = GetPlayerState(iClientNum)->viewAngles.y;
+    float viewY = GetPlayerState(iClientNum)->viewAngles.y;
 
     // Spawn an entity 150 units in front of the player and oriented towards
     // where they are looking at
@@ -83,7 +83,7 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
     entity->state.index = currentMapBrushModel->state.index;
 
     // Make the care package solid
-    INT contents = entity->r.contents;
+    int contents = entity->r.contents;
     SV_SetBrushModel(entity);
     contents |= entity->r.contents;
     entity->r.contents = contents;
@@ -92,7 +92,7 @@ VOID AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
     SV_LinkEntity(entity);
 }
 
-VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -102,9 +102,9 @@ VOID AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
+void AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
 
     pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
     pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
@@ -112,11 +112,11 @@ VOID AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
+void AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
-    CONST vec3 &SavedPos = pMenu->GetSavedPos();
-    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
+    int iClientNum = pMenu->GetClientNum();
+    const vec3 &SavedPos = pMenu->GetSavedPos();
+    const vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -125,12 +125,12 @@ VOID AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedAngles))));
+    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<float *>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<float *>(&(const_cast<vec3 &>(SavedAngles))));
 }
 
-VOID AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
 
     if (GetGClient(iClientNum)->mFlags != 2)
     {
@@ -153,7 +153,7 @@ static DWORD SpawnBotThread(Menu *pMenu)
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
-    INT serverId = Memory::Read<INT>(0x8355D5C4);
+    int serverId = Memory::Read<int>(0x8355D5C4);
     std::string strChooseTeamCmd = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string strChooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
 
@@ -183,7 +183,7 @@ static DWORD SpawnBotThread(Menu *pMenu)
     return 0;
 }
 
-VOID AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
+void AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
 {
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
@@ -198,12 +198,12 @@ VOID AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
     // certain game functions from being called and SV_AddTestClient is one of them.
     // So we create another thread with the regular Thread function to be able
     // to call SV_AddTestClient safely.
-    Memory::Thread(reinterpret_cast<LPTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
-VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
+void AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
@@ -214,15 +214,15 @@ VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
     }
 
     // Get the player's current position
-    FLOAT fDistance = 100.0f;
+    float fDistance = 100.0f;
     vec3 Origin = GetPlayerState(iClientNum)->origin;
-    FLOAT fViewY = GetPlayerState(iClientNum)->viewAngles.y;
+    float fViewY = GetPlayerState(iClientNum)->viewAngles.y;
 
     // Teleport the bot in front of the player
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-VOID AlphaMW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
+void AlphaMW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 

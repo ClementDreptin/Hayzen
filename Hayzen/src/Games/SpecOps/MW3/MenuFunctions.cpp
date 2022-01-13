@@ -4,9 +4,9 @@
 using namespace SpecOpsMW3GameFunctions;
 
 
-VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
     playerState_s *playerState = SV_GetPlayerstateForClientNum(iClientNum);
 
     if (playerState->otherFlags == 0)
@@ -21,7 +21,7 @@ VOID SpecOpsMW3MenuFunctions::ToggleGodMode(Menu *pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
     DWORD dwAddress = 0x8235BB54;
     DWORD dwDefaultValue = 0x7D3D5050;
@@ -39,7 +39,7 @@ VOID SpecOpsMW3MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     if (!pMenu->BindsEnabled())
         pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
@@ -49,9 +49,9 @@ VOID SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-VOID SpecOpsMW3MenuFunctions::SavePosition(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::SavePosition(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
 
     pMenu->SetSavedPos(SV_GetPlayerstateForClientNum(iClientNum)->origin);
     pMenu->SetSavedAngles(SV_GetPlayerstateForClientNum(iClientNum)->viewAngles);
@@ -59,11 +59,11 @@ VOID SpecOpsMW3MenuFunctions::SavePosition(Menu *pMenu)
     pMenu->SetFeedbackText("Position ^2Saved");
 }
 
-VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::LoadPosition(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
-    CONST vec3 &SavedPos = pMenu->GetSavedPos();
-    CONST vec3 &SavedAngles = pMenu->GetSavedAngles();
+    int iClientNum = pMenu->GetClientNum();
+    const vec3 &SavedPos = pMenu->GetSavedPos();
+    const vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
@@ -72,12 +72,12 @@ VOID SpecOpsMW3MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedAngles))));
+    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<float *>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<float *>(&(const_cast<vec3 &>(SavedAngles))));
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::ToggleUFO(Menu *pMenu)
 {
-    INT iClientNum = pMenu->GetClientNum();
+    int iClientNum = pMenu->GetClientNum();
 
     if (GetGClient(iClientNum)->mFlags != 2)
     {
@@ -91,10 +91,10 @@ VOID SpecOpsMW3MenuFunctions::ToggleUFO(Menu *pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1
-    INT iSecondClientNum = 1;
+    int iSecondClientNum = 1;
 
     // If the player name of the second client is empty, it means there is no second client
     gclient_s *pSecondClient = GetGClient(iSecondClientNum);
@@ -118,11 +118,11 @@ VOID SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
     }
 }
 
-VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
+void SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
 {
     // The second client num is always 1
-    INT iSecondClientNum = 1;
-    INT iFirstClientNum = pMenu->GetClientNum();
+    int iSecondClientNum = 1;
+    int iFirstClientNum = pMenu->GetClientNum();
 
     gclient_s *pSecondClient = GetGClient(iSecondClientNum);
     if (!pSecondClient->connected)
@@ -132,9 +132,9 @@ VOID SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
     }
 
     // Get the first player's current position
-    FLOAT fDistance = 100.0f;
+    float fDistance = 100.0f;
     vec3 Origin = SV_GetPlayerstateForClientNum(iFirstClientNum)->origin;
-    FLOAT fViewY = SV_GetPlayerstateForClientNum(iFirstClientNum)->viewAngles.y;
+    float fViewY = SV_GetPlayerstateForClientNum(iFirstClientNum)->viewAngles.y;
 
     // Teleport the second player in front of the first player
     pSecondClient->ps.origin = Math::ToFront(Origin, fViewY, fDistance);

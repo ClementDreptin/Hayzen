@@ -14,7 +14,7 @@ Game::~Game()
     s_RootOption.Cleanup();
 }
 
-VOID Game::Init()
+void Game::Init()
 {
     // Make the HudElem draw function pointers point to the drawing functions of the current game
     SetDrawFunctionsPointers();
@@ -23,7 +23,7 @@ VOID Game::Init()
     RegisterFontAndMaterial();
 }
 
-VOID Game::Update()
+void Game::Update()
 {
     // If the menu is not initialized, no need to go further
     if (!s_Menu.IsInitialized())
@@ -32,7 +32,7 @@ VOID Game::Update()
     s_Menu.Update();
 }
 
-VOID Game::SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
+void Game::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
     // Call the original SCR_DrawScreenField function
     SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
@@ -41,7 +41,7 @@ VOID Game::SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI)
     s_Menu.Render();
 }
 
-VOID __declspec(naked) Game::SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI)
+void __declspec(naked) Game::SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
 {
     __asm
     {
@@ -56,7 +56,7 @@ VOID __declspec(naked) Game::SCR_DrawScreenFieldStub(CONST INT localClientNum, I
     }
 }
 
-VOID Game::SetDrawFunctionsPointers()
+void Game::SetDrawFunctionsPointers()
 {
     HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_dwRegisterFontFnAddr);
     HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_dwRegisterMaterialFnAddr);
@@ -65,7 +65,7 @@ VOID Game::SetDrawFunctionsPointers()
     HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_dwDrawRectangleFnAddr));
 }
 
-VOID Game::RegisterFontAndMaterial()
+void Game::RegisterFontAndMaterial()
 {
     HudElem::SetFont(HudElem::R_RegisterFont("fonts/normalFont", 0));
     HudElem::SetMaterialHandle(HudElem::Material_RegisterHandle("white", 0));

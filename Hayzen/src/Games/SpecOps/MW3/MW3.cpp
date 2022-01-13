@@ -4,10 +4,10 @@
 #include "Games\SpecOps\MW3\MenuFunctions.h"
 
 
-BOOL SpecOpsMW3::s_bJumped = FALSE;
+bool SpecOpsMW3::s_bJumped = false;
 
 
-VOID SpecOpsMW3::Init()
+void SpecOpsMW3::Init()
 {
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
 
@@ -31,12 +31,12 @@ VOID SpecOpsMW3::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82127090), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821FEFB0), reinterpret_cast<LPDWORD>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821FA680), reinterpret_cast<LPDWORD>(PlayerCmd_AllowJumpStub), reinterpret_cast<DWORD>(PlayerCmd_AllowJumpHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82127090), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821FEFB0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821FA680), reinterpret_cast<DWORD *>(PlayerCmd_AllowJumpStub), reinterpret_cast<DWORD>(PlayerCmd_AllowJumpHook));
 }
 
-VOID SpecOpsMW3::CreateStructure()
+void SpecOpsMW3::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
@@ -61,14 +61,14 @@ VOID SpecOpsMW3::CreateStructure()
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-VOID SpecOpsMW3::ClientCommandHook(INT clientNum, LPCSTR s)
+void SpecOpsMW3::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
     ClientCommandStub(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 25"))
-        s_bJumped = TRUE;
+        s_bJumped = true;
 
     // The 'n 26' event means the game started
     if (!strcmp(s, "n 26"))
@@ -88,18 +88,18 @@ VOID SpecOpsMW3::ClientCommandHook(INT clientNum, LPCSTR s)
         }
 
         // Register that the user released the A button
-        s_bJumped = FALSE;
+        s_bJumped = false;
     }
 }
 
-VOID SpecOpsMW3::PlayerCmd_AllowJumpHook()
+void SpecOpsMW3::PlayerCmd_AllowJumpHook()
 {
     // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
     // missions where you normally can't. This is a bad practice and may have side effects.
     return;
 }
 
-VOID __declspec(naked) SpecOpsMW3::ClientCommandStub(INT clientNum, LPCSTR s)
+void __declspec(naked) SpecOpsMW3::ClientCommandStub(int clientNum, const char *s)
 {
     __asm
     {
@@ -114,7 +114,7 @@ VOID __declspec(naked) SpecOpsMW3::ClientCommandStub(INT clientNum, LPCSTR s)
     }
 }
 
-VOID __declspec(naked) SpecOpsMW3::PlayerCmd_AllowJumpStub()
+void __declspec(naked) SpecOpsMW3::PlayerCmd_AllowJumpStub()
 {
     __asm
     {

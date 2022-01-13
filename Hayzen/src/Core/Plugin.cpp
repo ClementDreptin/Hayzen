@@ -8,7 +8,7 @@
 #include "Games\Alpha\MW2\MW2.h"
 
 
-BOOL Plugin::s_bRunning = FALSE;
+bool Plugin::s_bRunning = false;
 DWORD Plugin::s_dwCurrentTitle = 0;
 Game *Plugin::s_CurrentGame = nullptr;
 
@@ -21,25 +21,25 @@ enum Games
     GAME_MW3 = 0x415608CB
 };
 
-VOID Plugin::Start()
+void Plugin::Start()
 {
-    s_bRunning = TRUE;
+    s_bRunning = true;
 
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx(reinterpret_cast<LPTHREAD_START_ROUTINE>(Update), nullptr, 2);
+    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Update), nullptr, 2);
 }
 
-VOID Plugin::Stop()
+void Plugin::Stop()
 {
-    s_bRunning = FALSE;
+    s_bRunning = false;
 
     // Wait a little bit for the system to clean things up before exiting the function
     Sleep(250);
 }
 
-DWORD Plugin::Update(LPVOID)
+DWORD Plugin::Update(void *)
 {
     while (s_bRunning)
     {
@@ -58,7 +58,7 @@ DWORD Plugin::Update(LPVOID)
     return 0;
 }
 
-VOID Plugin::InitNewGame(DWORD dwNewTitle)
+void Plugin::InitNewGame(DWORD dwNewTitle)
 {
     // Clean up what previous game may have left out and reset the pointer
     delete s_CurrentGame;
@@ -75,17 +75,17 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
         Xam::XNotify("Hayzen - Dashboard Detected");
         break;
     case GAME_MW2:
-        if (!strcmp(reinterpret_cast<LPSTR>(0x82001270), "multiplayer"))
+        if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
             s_CurrentGame = new MW2();
-        else if (!strcmp(reinterpret_cast<LPSTR>(0x8200EFE4), "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
             s_CurrentGame = new SpecOpsMW2();
-        else if (!strcmp(reinterpret_cast<LPSTR>(0x82001D38), "multiplayer"))
+        else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
             s_CurrentGame = new AlphaMW2();
         break;
     case GAME_MW3:
-        if (!strcmp(reinterpret_cast<LPSTR>(0x82001458), "multiplayer"))
+        if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
             s_CurrentGame = new MW3();
-        else if (!strcmp(reinterpret_cast<LPSTR>(0x8200BEA8), "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
             s_CurrentGame = new SpecOpsMW3();
     default:
         break;

@@ -11,18 +11,18 @@ public:
     Rectangle() {}
 
     // Constructor.
-    Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Color &color);
+    Rectangle(float fX, float fY, float fWidth, float fHeight, const Color &color);
 
     // Call R_AddCmdDrawStretchPic() of the current game.
-    virtual VOID Draw();
+    virtual void Draw();
 
-    FLOAT GetWidth() CONST { return m_fWidth; }
-    FLOAT GetHeight() CONST { return m_fHeight; }
+    float GetWidth() const { return m_fWidth; }
+    float GetHeight() const { return m_fHeight; }
 
-    VOID SetWidth(FLOAT width) { m_fWidth = width; }
-    VOID SetHeight(FLOAT height) { m_fHeight = height; }
+    void SetWidth(float width) { m_fWidth = width; }
+    void SetHeight(float height) { m_fHeight = height; }
 private:
-    FLOAT m_fWidth;
-    FLOAT m_fHeight;
+    float m_fWidth;
+    float m_fHeight;
 };
 

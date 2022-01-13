@@ -4,7 +4,7 @@
 #include "Core\Menu.h"
 
 
-Option::Option(CONST std::string &strName, UINT uiIndex, Callback fnCallback)
+Option::Option(const std::string &strName, uint32_t uiIndex, Callback fnCallback)
     : m_uiIndex(uiIndex),
     m_fnCallback(fnCallback),
     Text(strName,
@@ -13,7 +13,7 @@ Option::Option(CONST std::string &strName, UINT uiIndex, Callback fnCallback)
         HudElem::s_ColorWhite, 1.2f
     ) {}
 
-VOID Option::OnClick(Menu *pMenu)
+void Option::OnClick(Menu *pMenu)
 {
     // If the callback is defined, it means the current option activates a feature
     // so we call the callback and return early
@@ -29,7 +29,7 @@ VOID Option::OnClick(Menu *pMenu)
         pMenu->SetCurrentOption(this);
 }
 
-VOID Option::Cleanup()
+void Option::Cleanup()
 {
     m_uiIndex = 0;
     m_fnCallback = nullptr;

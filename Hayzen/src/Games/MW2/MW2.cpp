@@ -4,7 +4,7 @@
 #include "Games\MW2\MenuFunctions.h"
 
 
-VOID MW2::Init()
+void MW2::Init()
 {
     Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
 
@@ -12,8 +12,8 @@ VOID MW2::Init()
     Sleep(200);
 
     // NOP cheat protection
-    Memory::Write<INT>(0x8216906C, 0x60000000);
-    Memory::Write<INT>(0x821690E4, 0x60000000);
+    Memory::Write<int>(0x8216906C, 0x60000000);
+    Memory::Write<int>(0x821690E4, 0x60000000);
 
     // Set the draw function addresses
     m_dwDrawTextFnAddr = 0x82350278;
@@ -32,12 +32,12 @@ VOID MW2::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x8214BEB8), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82209710), reinterpret_cast<LPDWORD>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82253140), reinterpret_cast<LPDWORD>(SV_ExecuteClientCommandStub), reinterpret_cast<DWORD>(SV_ExecuteClientCommandHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x8214BEB8), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82209710), reinterpret_cast<DWORD *>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82253140), reinterpret_cast<DWORD *>(SV_ExecuteClientCommandStub), reinterpret_cast<DWORD>(SV_ExecuteClientCommandHook));
 }
 
-VOID MW2::CreateStructure()
+void MW2::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
@@ -68,18 +68,18 @@ VOID MW2::CreateStructure()
     s_RootOption.AddChild(pBot);
 }
 
-VOID MW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
+void MW2::Scr_NotifyHook(gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     // Call the original Scr_Notify function
     Scr_NotifyStub(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
-    INT iClientNum = entity->state.number;
+    int iClientNum = entity->state.number;
     if (!MW2GameFunctions::IsHost(iClientNum))
         return;
 
     // Get the string representing the event
-    LPCSTR szNotify = MW2GameFunctions::SL_ConvertToString(stringValue);
+    const char *szNotify = MW2GameFunctions::SL_ConvertToString(stringValue);
    
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
@@ -87,13 +87,13 @@ VOID MW2::Scr_NotifyHook(gentity_s *entity, USHORT stringValue, UINT paramCount)
         s_Menu.Init(iClientNum, &s_RootOption);
 }
 
-VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+void MW2::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
     SV_ExecuteClientCommandStub(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    INT iClientNum = (client - Memory::Read<INT>(0x83623B98)) / 0x97F80;
+    int iClientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
     if (!MW2GameFunctions::IsHost(iClientNum))
         return;
 
@@ -102,7 +102,7 @@ VOID MW2::SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fr
         s_Menu.Stop();
 }
 
-VOID __declspec(naked) MW2::Scr_NotifyStub(gentity_s *entity, USHORT stringValue, UINT paramCount)
+void __declspec(naked) MW2::Scr_NotifyStub(gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     __asm
     {
@@ -117,7 +117,7 @@ VOID __declspec(naked) MW2::Scr_NotifyStub(gentity_s *entity, USHORT stringValue
     }
 }
 
-VOID __declspec(naked) MW2::SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer)
+void __declspec(naked) MW2::SV_ExecuteClientCommandStub(int client, const char *s, int clientOK, int fromOldServer)
 {
     __asm
     {

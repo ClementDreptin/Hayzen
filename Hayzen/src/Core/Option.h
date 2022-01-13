@@ -6,7 +6,7 @@
 class Menu;
 
 // Function called when an option is clicked.
-typedef VOID (*Callback)(Menu *pMenu);
+typedef void (*Callback)(Menu *pMenu);
 
 
 // Class describing a clickage option, inherits from Text.
@@ -17,23 +17,23 @@ public:
     Option() {};
 
     // Constructor.
-    Option(CONST std::string &strName, UINT uiIndex, Callback fnCallback = nullptr);
+    Option(const std::string &strName, uint32_t uiIndex, Callback fnCallback = nullptr);
 
     // Call the callback function if it's defined, otherwise set the option as the current option in the menu.
-    VOID OnClick(Menu *pMenu);
+    void OnClick(Menu *pMenu);
 
     // Push a child to the list of children.
-    VOID AddChild(CONST std::shared_ptr<Option> &pChild) { pChild->m_pParent = this; m_Children.emplace_back(pChild); }
+    void AddChild(const std::shared_ptr<Option> &pChild) { pChild->m_pParent = this; m_Children.emplace_back(pChild); }
 
-    BOOL HasParent() CONST { return m_pParent != nullptr; }
-    Option *GetParent() CONST { return m_pParent; }
+    bool HasParent() const { return m_pParent != nullptr; }
+    Option *GetParent() const { return m_pParent; }
 
-    CONST std::vector<std::shared_ptr<Option>> &GetChildren() CONST { return m_Children; }
+    const std::vector<std::shared_ptr<Option>> &GetChildren() const { return m_Children; }
 
     // Reset the members.
-    VOID Cleanup();
+    void Cleanup();
 private:
-    UINT m_uiIndex;
+    uint32_t m_uiIndex;
     Callback m_fnCallback;
 
     Option *m_pParent;

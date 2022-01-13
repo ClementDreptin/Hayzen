@@ -11,20 +11,20 @@ class MW2 : public Game
 {
 public:
     // Set the draw function pointers and the function hooks.
-    virtual VOID Init();
+    virtual void Init();
 private:
     // Create the structure of the menu and save it a static member.
-    virtual VOID CreateStructure();
+    virtual void CreateStructure();
 
     // Stub to hold the original code of Scr_Notify.
-    static VOID Scr_NotifyStub(MW2Structs::gentity_s *entity, USHORT stringValue, UINT paramCount);
+    static void Scr_NotifyStub(MW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     // Initialize the menu when the game starts.
-    static VOID Scr_NotifyHook(MW2Structs::gentity_s *entity, USHORT stringValue, UINT paramCount);
+    static void Scr_NotifyHook(MW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     // Stub to hold the original code of SV_ExecuteClientCommand.
-    static VOID SV_ExecuteClientCommandStub(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    static void SV_ExecuteClientCommandStub(int client, const char *s, int clientOK, int fromOldServer);
 
     // Stop the menu when the game ends.
-    static VOID SV_ExecuteClientCommandHook(INT client, LPCSTR s, INT clientOK, INT fromOldServer);
+    static void SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer);
 };

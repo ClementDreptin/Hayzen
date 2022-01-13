@@ -7,52 +7,52 @@ namespace MW3Structs
 
 struct playerState_s
 {
-    CHAR padding1[0x1C];
+    char padding1[0x1C];
     vec3 origin;
-    CHAR padding2[0x130];
+    char padding2[0x130];
     vec3 viewAngles;
-    CHAR padding3[0x319C];
+    char padding3[0x319C];
 };
 
 struct gclient_s
 {
     playerState_s ps;
-    CHAR padding1[0x2FF];
-    BYTE mFlags;
-    CHAR padding2[0x380];
+    char padding1[0x2FF];
+    uint8_t mFlags;
+    char padding2[0x380];
 };
 
 struct clientState_s
 {
-    CHAR padding1[0x44];
-    CHAR name[32];
-    CHAR padding2[0x7C];
+    char padding1[0x44];
+    char name[32];
+    char padding2[0x7C];
 };
 
 struct entityState_s
 {
-    INT number;
-    CHAR padding1[0x88];
-    INT index;
-    CHAR padding2[0x6C];
+    int number;
+    char padding1[0x88];
+    int index;
+    char padding2[0x6C];
 };
 
 struct entityShared_t
 {
-    INT clientMask;
+    int clientMask;
     bool linked;
-    CHAR bmodel;
-    CHAR svFlags;
+    char bmodel;
+    char svFlags;
     bool inuse;
     vec3 mins;
     vec3 maxs;
-    INT contents;
+    int contents;
     vec3 absmin;
     vec3 absmax;
     vec3 currentOrigin;
     vec3 currentAngles;
-    INT ownerNum;
-    INT eventTime;
+    int ownerNum;
+    int eventTime;
 };
 
 struct gentity_s
@@ -60,9 +60,9 @@ struct gentity_s
     entityState_s state;
     entityShared_t r;
     gclient_s *client;
-    CHAR padding1[0x28];
-    INT flags;
-    CHAR padding2[0xF8];
+    char padding1[0x28];
+    int flags;
+    char padding2[0xF8];
 };
 
 }

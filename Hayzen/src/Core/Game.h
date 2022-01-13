@@ -11,10 +11,10 @@ public:
     virtual ~Game();
 
     // Common initialization behavior to all games.
-    virtual VOID Init() = 0;
+    virtual void Init() = 0;
 
     // Update and render the menu.
-    VOID Update();
+    void Update();
 protected:
     static Menu s_Menu;
     static Option s_RootOption;
@@ -25,17 +25,17 @@ protected:
     DWORD m_dwRegisterMaterialFnAddr;
 
     // Create the menu structure (one implementation per game).
-    virtual VOID CreateStructure() = 0;
+    virtual void CreateStructure() = 0;
 
     // Stub to hold the original code of SCR_DrawScreenField.
-    static VOID SCR_DrawScreenFieldStub(CONST INT localClientNum, INT refreshedUI);
+    static void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI);
 
     // Render the menu.
-    static VOID SCR_DrawScreenFieldHook(CONST INT localClientNum, INT refreshedUI);
+    static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 private:
     // Make the global drawing function pointers point to the current game's drawing functions.
-    VOID SetDrawFunctionsPointers();
+    void SetDrawFunctionsPointers();
 
     // Register a font and a material globally.
-    VOID RegisterFontAndMaterial();
+    void RegisterFontAndMaterial();
 };

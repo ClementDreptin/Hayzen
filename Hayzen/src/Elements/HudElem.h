@@ -4,29 +4,29 @@
 // Struct to describe a four-component color in the RGBA format.
 struct Color
 {
-    FLOAT r;
-    FLOAT g;
-    FLOAT b;
-    FLOAT a;
+    float r;
+    float g;
+    float b;
+    float a;
 };
 
 
 // Struct to describe a font (struct defined in the games).
 struct Font_s
 {
-    INT fontName;
-    INT pixelHeight;
-    INT glyphCount;
-    INT material;
-    INT glowMaterial;
-    INT glyphs;
+    int fontName;
+    int pixelHeight;
+    int glyphCount;
+    int material;
+    int glowMaterial;
+    int glyphs;
 };
 
 
-typedef VOID (*R_ADDCMDDRAWTEXT)(LPCSTR text, INT maxChars, Font_s *font, FLOAT x, FLOAT y, FLOAT xScale, FLOAT yScale, FLOAT rotation, CONST PFLOAT color, INT style);
-typedef VOID (*R_ADDCMDDRAWSTRETCHPIC)(FLOAT x, FLOAT y, FLOAT w, FLOAT h, FLOAT s0, FLOAT t0, FLOAT s1, FLOAT t1, CONST PFLOAT color, HANDLE material);
-typedef Font_s *(*R_REGISTERFONT)(LPCSTR font, INT imageTrack);
-typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
+typedef void (*R_ADDCMDDRAWTEXT)(const char *text, int maxChars, Font_s *font, float x, float y, float xScale, float yScale, float rotation, const float *color, int style);
+typedef void (*R_ADDCMDDRAWSTRETCHPIC)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float *color, HANDLE material);
+typedef Font_s *(*R_REGISTERFONT)(const char *font, int imageTrack);
+typedef HANDLE (*MATERIAL_REGISTERHANDLE)(const char *name, int imageTrack);
 
 
 #define CHAR_UP "\x14"
@@ -41,15 +41,15 @@ typedef HANDLE (*MATERIAL_REGISTERHANDLE)(LPCSTR name, INT imageTrack);
 class HudElem
 {
 public:
-    static CONST Color s_ColorWhite;
-    static CONST Color s_ColorBlack;
-    static CONST FLOAT s_MenuX;
-    static CONST FLOAT s_MenuY;
-    static CONST FLOAT s_MenuWidth;
-    static CONST FLOAT s_MenuHeight;
-    static CONST FLOAT s_Padding;
-    static CONST FLOAT s_TitleHeight;
-    static CONST FLOAT s_LineHeight;
+    static const Color s_ColorWhite;
+    static const Color s_ColorBlack;
+    static const float s_MenuX;
+    static const float s_MenuY;
+    static const float s_MenuWidth;
+    static const float s_MenuHeight;
+    static const float s_Padding;
+    static const float s_TitleHeight;
+    static const float s_LineHeight;
 
     static R_REGISTERFONT R_RegisterFont;
     static MATERIAL_REGISTERHANDLE Material_RegisterHandle;
@@ -58,32 +58,32 @@ public:
     HudElem() {}
 
     // Constructor.
-    HudElem(FLOAT fX, FLOAT fY, CONST Color &color);
+    HudElem(float fX, float fY, const Color &color);
 
     // Virtual destructor.
     virtual ~HudElem() {}
 
     // Draw the element (one implementation per element).
-    virtual VOID Draw() = 0;
+    virtual void Draw() = 0;
 
-    FLOAT GetX() CONST { return m_fX; }
-    FLOAT GetY() CONST { return m_fY; }
-    CONST Color &GetColor() CONST { return m_Color; }
+    float GetX() const { return m_fX; }
+    float GetY() const { return m_fY; }
+    const Color &GetColor() const { return m_Color; }
 
-    VOID SetX(FLOAT fX) { m_fX = fX; }
-    VOID SetY(FLOAT fY) { m_fY = fY; }
-    VOID SetColor(CONST Color &color) { m_Color = color; }
-    VOID SetColor(FLOAT fR, FLOAT fG, FLOAT fB, FLOAT fA);
-    VOID SetAlpha(FLOAT fAlpha) { m_Color.a = fAlpha; }
+    void SetX(float fX) { m_fX = fX; }
+    void SetY(float fY) { m_fY = fY; }
+    void SetColor(const Color &color) { m_Color = color; }
+    void SetColor(float fR, float fG, float fB, float fA);
+    void SetAlpha(float fAlpha) { m_Color.a = fAlpha; }
 
-    static VOID SetFont(Font_s *pFont) { s_pFont = pFont; }
-    static VOID SetMaterialHandle(HANDLE hMaterial) { s_hMaterial = hMaterial; }
+    static void SetFont(Font_s *pFont) { s_pFont = pFont; }
+    static void SetMaterialHandle(HANDLE hMaterial) { s_hMaterial = hMaterial; }
 
-    static VOID SetDrawTextFnPtr(R_ADDCMDDRAWTEXT pFn) { R_AddCmdDrawText = pFn; }
-    static VOID SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC pFn) { R_AddCmdDrawStretchPic = pFn; }
+    static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT pFn) { R_AddCmdDrawText = pFn; }
+    static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC pFn) { R_AddCmdDrawStretchPic = pFn; }
 protected:
-    FLOAT m_fX;
-    FLOAT m_fY;
+    float m_fX;
+    float m_fY;
     Color m_Color;
 
     static Font_s *s_pFont;

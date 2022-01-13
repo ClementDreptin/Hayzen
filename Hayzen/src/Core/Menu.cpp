@@ -2,7 +2,7 @@
 #include "Core\Menu.h"
 
 
-VOID Menu::Init(INT iClientNum, Option *pOption)
+void Menu::Init(int iClientNum, Option *pOption)
 {
     // Save the arguments to class members
     m_iClientNum = iClientNum;
@@ -29,10 +29,10 @@ VOID Menu::Init(INT iClientNum, Option *pOption)
     m_pBotEntity = nullptr;
 
     // Remember that initialization has been done
-    m_bInitialized = TRUE;
+    m_bInitialized = true;
 }
 
-VOID Menu::Update()
+void Menu::Update()
 {
     // If the menu is not initialized, don't go further
     if (!m_bInitialized)
@@ -60,7 +60,7 @@ VOID Menu::Update()
 
         // If the scroller is already at the top, send it to the bottom
         if (m_iCurrentScrollerPos < 0)
-            m_iCurrentScrollerPos = static_cast<INT>(m_pCurrentOption->GetChildren().size()) - 1;
+            m_iCurrentScrollerPos = static_cast<int>(m_pCurrentOption->GetChildren().size()) - 1;
 
         MoveScroller();
     }
@@ -70,7 +70,7 @@ VOID Menu::Update()
         m_iCurrentScrollerPos++;
 
         // If the scroller is already at the bottom, send it to the top
-        if (m_iCurrentScrollerPos >= static_cast<INT>(m_pCurrentOption->GetChildren().size()))
+        if (m_iCurrentScrollerPos >= static_cast<int>(m_pCurrentOption->GetChildren().size()))
             m_iCurrentScrollerPos = 0;
 
         MoveScroller();
@@ -99,7 +99,7 @@ VOID Menu::Update()
         m_fnSavePosition(this);
 }
 
-VOID Menu::Render()
+void Menu::Render()
 {
     // If the menu is not initialized, don't go further
     if (!m_bInitialized)
@@ -164,26 +164,26 @@ VOID Menu::Render()
         m_pCurrentOption->GetChildren()[i]->Draw();
 }
 
-VOID Menu::Stop()
+void Menu::Stop()
 {
     // Reset the members
-    m_bInitialized = FALSE;
-    m_bOpen = FALSE;
+    m_bInitialized = false;
+    m_bOpen = false;
 
     m_SavedPos = vec3(0.0f, 0.0f, 0.0f);
     m_SavedAngles = vec3(0.0f, 0.0f, 0.0f);
-    m_bBindsEnabled = FALSE;
+    m_bBindsEnabled = false;
 
     m_pBotEntity = nullptr;
 }
 
-VOID Menu::SetFeedbackText(CONST std::string &strText)
+void Menu::SetFeedbackText(const std::string &strText)
 {
     // Set the feedback text
     m_ChangeFeedbackTextQueue.push(strText);
 }
 
-VOID Menu::SetCurrentOption(Option *pOption)
+void Menu::SetCurrentOption(Option *pOption)
 {
     // Reset the scroller position
     m_iCurrentScrollerPos = 0;
@@ -196,7 +196,7 @@ VOID Menu::SetCurrentOption(Option *pOption)
     m_Title.SetText(m_pCurrentOption->GetText());
 }
 
-VOID Menu::MoveScroller()
+void Menu::MoveScroller()
 {
     m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * m_iCurrentScrollerPos);
 }

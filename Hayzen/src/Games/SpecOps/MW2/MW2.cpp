@@ -4,10 +4,10 @@
 #include "Games\SpecOps\MW2\MenuFunctions.h"
 
 
-BOOL SpecOpsMW2::s_bJumped = FALSE;
+bool SpecOpsMW2::s_bJumped = false;
 
 
-VOID SpecOpsMW2::Init()
+void SpecOpsMW2::Init()
 {
     Xam::XNotify("Hayzen - MW2 Spec Ops Detected");
 
@@ -31,11 +31,11 @@ VOID SpecOpsMW2::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821354B0), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821EFFD0), reinterpret_cast<LPDWORD>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821354B0), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821EFFD0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
 }
 
-VOID SpecOpsMW2::CreateStructure()
+void SpecOpsMW2::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
@@ -60,14 +60,14 @@ VOID SpecOpsMW2::CreateStructure()
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
+void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
     ClientCommandStub(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 7"))
-        s_bJumped = TRUE;
+        s_bJumped = true;
 
     // The 'n 42' event means the game started
     if (!strcmp(s, "n 42"))
@@ -87,11 +87,11 @@ VOID SpecOpsMW2::ClientCommandHook(INT clientNum, LPCSTR s)
         }
 
         // Register that the user released the A button
-        s_bJumped = FALSE;
+        s_bJumped = false;
     }
 }
 
-VOID __declspec(naked) SpecOpsMW2::ClientCommandStub(INT clientNum, LPCSTR s)
+void __declspec(naked) SpecOpsMW2::ClientCommandStub(int clientNum, const char *s)
 {
     __asm
     {

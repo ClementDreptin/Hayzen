@@ -8,59 +8,59 @@ namespace MW2GameFunctions
 static std::unordered_map<std::string, DWORD> BrushModelMap;
 
 
-LPCSTR (*SL_ConvertToString)(UINT stringValue) = reinterpret_cast<LPCSTR(*)(UINT)>(0x82241898);
+const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x82241898);
 
-VOID (*SV_GameSendServerCommand)(INT clientNum, INT type, LPCSTR text) = reinterpret_cast<VOID(*)(INT, INT, LPCSTR)>(0x822548D8);
+void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void(*)(int, int, const char *)>(0x822548D8);
 
-bool (*Dvar_GetBool)(LPCSTR dvarName) = reinterpret_cast<bool(*)(LPCSTR)>(0x8229EEE8);
+bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool(*)(const char *)>(0x8229EEE8);
 
-LPCSTR (*Dvar_GetString)(LPCSTR dvarName) = reinterpret_cast<LPCSTR(*)(LPCSTR)>(0x8229F0A8);
+const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x8229F0A8);
 
-clientState_s *(*GetClientState)(INT clientNum) = reinterpret_cast<clientState_s *(*)(INT)>(0x821E6610);
+clientState_s *(*GetClientState)(int clientNum) = reinterpret_cast<clientState_s *(*)(int)>(0x821E6610);
 
-playerState_s *(*GetPlayerState)(INT clientNum) = reinterpret_cast<playerState_s *(*)(INT)>(0x821E6628);
+playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x821E6628);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, INT clientNum) = reinterpret_cast<bool(*)(DWORD, INT)>(0x82320138);
+bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool(*)(DWORD, int)>(0x82320138);
 
-VOID (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<VOID(*)(gentity_s *)>(0x82206D88);
+void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void(*)(gentity_s *)>(0x82206D88);
 
 gentity_s*(*G_Spawn)() = reinterpret_cast<gentity_s *(*)()>(0x8220DB50);
 
-VOID (*G_SetModel)(gentity_s *ent, LPCSTR modelName) = reinterpret_cast<VOID(*)(gentity_s *, LPCSTR)>(0x8220D278);
+void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<void(*)(gentity_s *, const char *)>(0x8220D278);
 
-VOID (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<VOID(*)(gentity_s *)>(0x8225F518);
+void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x8225F518);
 
-VOID (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<VOID(*)(gentity_s *)>(0x8225F430);
+void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x8225F430);
 
-VOID (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<VOID(*)(gentity_s *)>(0x82254B50);
+void (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<void(*)(gentity_s *)>(0x82254B50);
 
 gentity_s *(*SV_AddTestClient)() = reinterpret_cast<gentity_s *(*)()>(0x82254690);
 
-VOID (*SV_ExecuteClientCommand)(INT client, LPCSTR s, INT clientOK, INT fromOldServer) = reinterpret_cast<VOID(*)(INT, LPCSTR, INT, INT)>(0x82253140);
+void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<void(*)(int, const char *, int, int)>(0x82253140);
 
-VOID (*TeleportPlayer)(gentity_s *player, PFLOAT origin, PFLOAT angles) = reinterpret_cast<VOID(*)(gentity_s *, PFLOAT, PFLOAT)>(0x821E8198);
+void (*TeleportPlayer)(gentity_s *player, float *origin, float *angles) = reinterpret_cast<void(*)(gentity_s *, float *, float *)>(0x821E8198);
 
-gclient_s *GetGClient(INT clientNum)
+gclient_s *GetGClient(int clientNum)
 {
     return reinterpret_cast<gclient_s *>(0x830CBF80 + sizeof(gclient_s) * clientNum);
 }
 
-gentity_s *GetEntity(INT entNum)
+gentity_s *GetEntity(int entNum)
 {
     return reinterpret_cast<gentity_s *>(0x82F03600 + sizeof(gentity_s) * entNum);
 }
 
-VOID SetClientDvar(INT clientNum, CONST std::string &dvar, CONST std::string &value)
+void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value)
 {
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
-bool IsHost(INT clientNum)
+bool IsHost(int clientNum)
 {
     return Session_IsHost(0x83AC3DB0, clientNum);
 }
 
-static VOID InitBrushModelMap()
+static void InitBrushModelMap()
 {
     BrushModelMap["mp_afghan"] = 0x82F7E800;
     BrushModelMap["mp_derail"] = 0x82F5F680;
@@ -92,12 +92,12 @@ static VOID InitBrushModelMap()
 
 gentity_s *GetCurrentMapBrushModel()
 {
-    static BOOL bBrushModelMapInitialized = FALSE;
+    static bool bBrushModelMapInitialized = false;
 
     if (!bBrushModelMapInitialized)
     {
         InitBrushModelMap();
-        bBrushModelMapInitialized = TRUE;
+        bBrushModelMapInitialized = true;
     }
 
     std::string strMapName = Dvar_GetString("ui_mapname");

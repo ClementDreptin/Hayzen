@@ -8,42 +8,42 @@ namespace MW2MenuFunctions
 {
 
 // Toggle God Mode.
-VOID ToggleGodMode(Menu *pMenu);
+void ToggleGodMode(Menu *pMenu);
 
 // Toggle fall damage.
-VOID ToggleFallDamage(Menu *pMenu);
+void ToggleFallDamage(Menu *pMenu);
 
 // Toggle unlimited ammo.
-VOID ToggleAmmo(Menu *pMenu);
+void ToggleAmmo(Menu *pMenu);
 
 // Toggle elvators.
-VOID ToggleElevators(Menu *pMenu);
+void ToggleElevators(Menu *pMenu);
 
 // Spawn a care package.
-VOID SpawnCP(Menu *pMenu);
+void SpawnCP(Menu *pMenu);
 
 // Open a keyboard to allow the user to change the knockback value.
-VOID Knockback(Menu *pMenu);
+void Knockback(Menu *pMenu);
 
 // Toggle save and load binds.
-VOID ToggleSaveLoadBinds(Menu *pMenu);
+void ToggleSaveLoadBinds(Menu *pMenu);
 
 // Save the current player's position.
-VOID SavePosition(Menu *pMenu);
+void SavePosition(Menu *pMenu);
 
 // Load the previously saved player's position.
-VOID LoadPosition(Menu *pMenu);
+void LoadPosition(Menu *pMenu);
 
 // Toggle UFO.
-VOID ToggleUFO(Menu *pMenu);
+void ToggleUFO(Menu *pMenu);
 
 // Spawn a bot.
-VOID SpawnBot(Menu *pMenu);
+void SpawnBot(Menu *pMenu);
 
 // Teleport the bot in front of the player.
-VOID TeleportBotToMe(Menu *pMenu);
+void TeleportBotToMe(Menu *pMenu);
 
 // Toggle the bot's movement.
-VOID ToggleBotMovement(Menu *pMenu);
+void ToggleBotMovement(Menu *pMenu);
 
 }

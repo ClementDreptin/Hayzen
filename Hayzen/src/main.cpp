@@ -3,7 +3,7 @@
 
 
 // The application's entry point.
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, LPVOID lpReserved)
+BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, void *pReserved)
 {
     if (dwReason == DLL_PROCESS_ATTACH)
         Plugin::Start();

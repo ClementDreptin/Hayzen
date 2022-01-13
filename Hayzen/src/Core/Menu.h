@@ -13,45 +13,45 @@ public:
     Menu() {}
 
     // Create the constant HUD elements.
-    VOID Init(INT iClientNum, Option *pOption);
+    void Init(int iClientNum, Option *pOption);
 
     // Listen for controller inputs and update the menu accordingly.
-    VOID Update();
+    void Update();
 
     // Render every HUD element.
-    VOID Render();
+    void Render();
 
     // Stop the menu.
-    VOID Stop();
+    void Stop();
 
-    BOOL IsInitialized() CONST { return m_bInitialized; }
-    INT GetClientNum() CONST { return m_iClientNum; }
+    bool IsInitialized() const { return m_bInitialized; }
+    int GetClientNum() const { return m_iClientNum; }
 
-    BOOL BindsEnabled() CONST { return m_bBindsEnabled; }
-    VOID ToggleBinds() { m_bBindsEnabled = !m_bBindsEnabled; }
+    bool BindsEnabled() const { return m_bBindsEnabled; }
+    void ToggleBinds() { m_bBindsEnabled = !m_bBindsEnabled; }
 
-    CONST vec3 &GetSavedPos() CONST { return m_SavedPos; }
-    VOID SetSavedPos(CONST vec3 &pos) { m_SavedPos = pos; }
+    const vec3 &GetSavedPos() const { return m_SavedPos; }
+    void SetSavedPos(const vec3 &pos) { m_SavedPos = pos; }
 
-    CONST vec3 &GetSavedAngles() CONST { return m_SavedAngles; }
-    VOID SetSavedAngles(CONST vec3 &angles) { m_SavedAngles = angles; }
+    const vec3 &GetSavedAngles() const { return m_SavedAngles; }
+    void SetSavedAngles(const vec3 &angles) { m_SavedAngles = angles; }
 
-    VOID SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
-    VOID SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
+    void SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
+    void SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
 
-    LPVOID GetBot() CONST { return m_pBotEntity; }
-    VOID SetBot(LPVOID pBotEntity) { m_pBotEntity = pBotEntity; }
+    void *GetBot() const { return m_pBotEntity; }
+    void SetBot(void *pBotEntity) { m_pBotEntity = pBotEntity; }
 
     // Push a new feedback text to the queue.
-    VOID SetFeedbackText(CONST std::string &strText);
+    void SetFeedbackText(const std::string &strText);
 
     // Change the current menu section.
-    VOID SetCurrentOption(Option *pOption);
+    void SetCurrentOption(Option *pOption);
 private:
-    BOOL m_bInitialized;
-    BOOL m_bOpen;
+    bool m_bInitialized;
+    bool m_bOpen;
 
-    INT m_iClientNum;
+    int m_iClientNum;
 
     Option *m_pCurrentOption;
     std::queue<Option *> m_ChangeSectionQueue;
@@ -62,17 +62,17 @@ private:
     Rectangle m_Scroller;
     Text m_Instructions;
     Text m_Feedback;
-    INT m_iCurrentScrollerPos;
+    int m_iCurrentScrollerPos;
 
     vec3 m_SavedPos;
     vec3 m_SavedAngles;
-    BOOL m_bBindsEnabled;
+    bool m_bBindsEnabled;
 
     Callback m_fnSavePosition;
     Callback m_fnLoadPosition;
 
-    LPVOID m_pBotEntity;
+    void *m_pBotEntity;
 
     // Update the poition of the scroller according to the m_iCurrentScrollerPos index.
-    VOID MoveScroller();
+    void MoveScroller();
 };

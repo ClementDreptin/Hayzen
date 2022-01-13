@@ -1,9 +1,7 @@
 #pragma once
 
 
-//--------------------------------------------------------------------------------------
-// Spec Ops MW2 structs used by the game functions
-//--------------------------------------------------------------------------------------
+// Spec Ops MW2 structs used by the game functions.
 namespace SpecOpsMW2Structs
 {
 
@@ -18,6 +16,8 @@ struct playerState_s
     char padding4[0xAB90];
 };
 
+static_assert(sizeof(playerState_s) == 0xACA4, "size of playerState_s different than 0xACA4");
+
 struct gclient_s
 {
     playerState_s ps;
@@ -26,6 +26,8 @@ struct gclient_s
     int mFlags;
     char padding2[0x280];
 };
+
+static_assert(sizeof(gclient_s) == 0xAFD8, "size of gclient_s different than 0xAFD8");
 
 struct entityState_s
 {
@@ -36,6 +38,8 @@ struct entityState_s
     int16_t index;
     char padding3[0x26];
 };
+
+static_assert(sizeof(entityState_s) == 0xAC, "size of entityState_s different than 0xAC");
 
 struct entityShared_t
 {
@@ -55,11 +59,15 @@ struct entityShared_t
     int eventTime;
 };
 
+static_assert(sizeof(entityShared_t) == 0x60, "size of entityShared_t different than 0x60");
+
 struct gentity_s
 {
     entityState_s state;
     entityShared_t r;
     char padding1[0x168];
 };
+
+static_assert(sizeof(gentity_s) == 0x274, "size of gentity_s different than 0x274");
 
 }

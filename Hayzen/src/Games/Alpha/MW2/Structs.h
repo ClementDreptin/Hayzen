@@ -14,6 +14,8 @@ struct playerState_s
     char padding3[0x3068];
 };
 
+static_assert(sizeof(playerState_s) == 0x3180, "size of playerState_s different than 0x3180");
+
 struct gclient_s
 {
     playerState_s ps;
@@ -22,6 +24,8 @@ struct gclient_s
     char padding2[0x2DC];
 };
 
+static_assert(sizeof(gclient_s) == 0x3700, "size of gclient_s different than 0x3700");
+
 struct entityState_s
 {
     int number;
@@ -29,6 +33,8 @@ struct entityState_s
     int index;
     char padding2[0x68];
 };
+
+static_assert(sizeof(entityState_s) == 0xFC, "size of entityState_s different than 0xFC");
 
 struct entityShared_t
 {
@@ -48,6 +54,8 @@ struct entityShared_t
     int eventTime;
 };
 
+static_assert(sizeof(entityShared_t) == 0x5C, "size of entityShared_t different than 0x5C");
+
 struct gentity_s
 {
     entityState_s state;
@@ -57,5 +65,7 @@ struct gentity_s
     int flags;
     char padding2[0xF8];
 };
+
+static_assert(sizeof(gentity_s) == 0x280, "size of gentity_s different than 0x280");
 
 }

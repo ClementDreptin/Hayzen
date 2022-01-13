@@ -72,7 +72,7 @@ VOID SpecOpsMW2MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
+    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedAngles))));
 }
 
 VOID SpecOpsMW2MenuFunctions::ToggleUFO(Menu *pMenu)

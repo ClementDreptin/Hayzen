@@ -163,7 +163,7 @@ VOID MW2MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
+    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedAngles))));
 }
 
 VOID MW2MenuFunctions::ToggleUFO(Menu *pMenu)
@@ -184,7 +184,7 @@ VOID MW2MenuFunctions::ToggleUFO(Menu *pMenu)
 
 VOID MW2MenuFunctions::SpawnBot(Menu *pMenu)
 {
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Prevent the user from spawning multiple bots
     if (pBot)
@@ -226,7 +226,7 @@ VOID MW2MenuFunctions::SpawnBot(Menu *pMenu)
 VOID MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
     if (!pBot)
@@ -246,7 +246,7 @@ VOID MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 
 VOID MW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
     if (!pBot)

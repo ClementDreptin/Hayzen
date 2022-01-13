@@ -60,7 +60,7 @@ VOID Menu::Update()
 
         // If the scroller is already at the top, send it to the bottom
         if (m_iCurrentScrollerPos < 0)
-            m_iCurrentScrollerPos = m_pCurrentOption->GetChildren().size() - 1;
+            m_iCurrentScrollerPos = static_cast<INT>(m_pCurrentOption->GetChildren().size()) - 1;
 
         MoveScroller();
     }
@@ -70,7 +70,7 @@ VOID Menu::Update()
         m_iCurrentScrollerPos++;
 
         // If the scroller is already at the bottom, send it to the top
-        if (m_iCurrentScrollerPos >= (INT)m_pCurrentOption->GetChildren().size())
+        if (m_iCurrentScrollerPos >= static_cast<INT>(m_pCurrentOption->GetChildren().size()))
             m_iCurrentScrollerPos = 0;
 
         MoveScroller();

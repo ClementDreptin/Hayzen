@@ -28,7 +28,7 @@ VOID Plugin::Start()
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx((LPTHREAD_START_ROUTINE)Update, nullptr, 2);
+    Memory::ThreadEx(reinterpret_cast<LPTHREAD_START_ROUTINE>(Update), nullptr, 2);
 }
 
 VOID Plugin::Stop()
@@ -75,17 +75,17 @@ VOID Plugin::InitNewGame(DWORD dwNewTitle)
         Xam::XNotify("Hayzen - Dashboard Detected");
         break;
     case GAME_MW2:
-        if (!strcmp((LPSTR)0x82001270, "multiplayer"))
+        if (!strcmp(reinterpret_cast<LPSTR>(0x82001270), "multiplayer"))
             s_CurrentGame = new MW2();
-        else if (!strcmp((LPSTR)0x8200EFE4, "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<LPSTR>(0x8200EFE4), "startMultiplayer"))
             s_CurrentGame = new SpecOpsMW2();
-        else if (!strcmp((LPSTR)0x82001D38, "multiplayer"))
+        else if (!strcmp(reinterpret_cast<LPSTR>(0x82001D38), "multiplayer"))
             s_CurrentGame = new AlphaMW2();
         break;
     case GAME_MW3:
-        if (!strcmp((LPSTR)0x82001458, "multiplayer"))
+        if (!strcmp(reinterpret_cast<LPSTR>(0x82001458), "multiplayer"))
             s_CurrentGame = new MW3();
-        else if (!strcmp((LPSTR)0x8200BEA8, "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<LPSTR>(0x8200BEA8), "startMultiplayer"))
             s_CurrentGame = new SpecOpsMW3();
     default:
         break;

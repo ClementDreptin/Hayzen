@@ -58,11 +58,11 @@ VOID __declspec(naked) Game::SCR_DrawScreenFieldStub(CONST INT localClientNum, I
 
 VOID Game::SetDrawFunctionsPointers()
 {
-    HudElem::R_RegisterFont = (R_REGISTERFONT)m_dwRegisterFontFnAddr;
-    HudElem::Material_RegisterHandle = (MATERIAL_REGISTERHANDLE)m_dwRegisterMaterialFnAddr;
+    HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_dwRegisterFontFnAddr);
+    HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_dwRegisterMaterialFnAddr);
 
-    HudElem::SetDrawTextFnPtr((R_ADDCMDDRAWTEXT)m_dwDrawTextFnAddr);
-    HudElem::SetDrawRectangleFnPtr((R_ADDCMDDRAWSTRETCHPIC)m_dwDrawRectangleFnAddr);
+    HudElem::SetDrawTextFnPtr(reinterpret_cast<R_ADDCMDDRAWTEXT>(m_dwDrawTextFnAddr));
+    HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_dwDrawRectangleFnAddr));
 }
 
 VOID Game::RegisterFontAndMaterial()

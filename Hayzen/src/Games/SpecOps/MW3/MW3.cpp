@@ -31,9 +31,9 @@ VOID SpecOpsMW3::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart((LPDWORD)0x82127090, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-    Memory::HookFunctionStart((LPDWORD)0x821FEFB0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
-    Memory::HookFunctionStart((LPDWORD)0x821FA680, (LPDWORD)PlayerCmd_AllowJumpStub, (DWORD)PlayerCmd_AllowJumpHook);
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82127090), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821FEFB0), reinterpret_cast<LPDWORD>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821FA680), reinterpret_cast<LPDWORD>(PlayerCmd_AllowJumpStub), reinterpret_cast<DWORD>(PlayerCmd_AllowJumpHook));
 }
 
 VOID SpecOpsMW3::CreateStructure()

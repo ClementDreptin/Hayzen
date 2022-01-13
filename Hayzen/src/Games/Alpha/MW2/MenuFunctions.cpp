@@ -125,7 +125,7 @@ VOID AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), (PFLOAT)&SavedPos, (PFLOAT)&SavedAngles);
+    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedPos))), reinterpret_cast<PFLOAT>(&(const_cast<vec3 &>(SavedAngles))));
 }
 
 VOID AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
@@ -185,7 +185,7 @@ static DWORD SpawnBotThread(Menu *pMenu)
 
 VOID AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
 {
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Prevent the user from spawning multiple bots
     if (pBot)
@@ -198,13 +198,13 @@ VOID AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
     // certain game functions from being called and SV_AddTestClient is one of them.
     // So we create another thread with the regular Thread function to be able
     // to call SV_AddTestClient safely.
-    Memory::Thread((LPTHREAD_START_ROUTINE)SpawnBotThread, pMenu);
+    Memory::Thread(reinterpret_cast<LPTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
 VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
     INT iClientNum = pMenu->GetClientNum();
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
     if (!pBot)
@@ -224,7 +224,7 @@ VOID AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 
 VOID AlphaMW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
-    gentity_s *pBot = (gentity_s*)pMenu->GetBot();
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
     if (!pBot)

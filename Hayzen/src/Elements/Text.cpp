@@ -8,5 +8,5 @@ Text::Text(CONST std::string &strText, FLOAT fX, FLOAT fY, CONST Color &color, F
 VOID Text::Draw()
 {
     if (m_Color.a > 0.0f)
-        R_AddCmdDrawText(m_strText.c_str(), strlen(m_strText.c_str()), s_pFont, m_fX, m_fY, m_fFontScale, m_fFontScale, 0.0f, (PFLOAT)&m_Color, 0);
+        R_AddCmdDrawText(m_strText.c_str(), strlen(m_strText.c_str()), s_pFont, m_fX, m_fY, m_fFontScale, m_fFontScale, 0.0f, reinterpret_cast<PFLOAT>(&m_Color), 0);
 }

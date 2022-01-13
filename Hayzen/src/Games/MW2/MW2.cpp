@@ -32,9 +32,9 @@ VOID MW2::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart((LPDWORD)0x8214BEB8, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-    Memory::HookFunctionStart((LPDWORD)0x82209710, (LPDWORD)Scr_NotifyStub, (DWORD)Scr_NotifyHook);
-    Memory::HookFunctionStart((LPDWORD)0x82253140, (LPDWORD)SV_ExecuteClientCommandStub, (DWORD)SV_ExecuteClientCommandHook);
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x8214BEB8), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82209710), reinterpret_cast<LPDWORD>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x82253140), reinterpret_cast<LPDWORD>(SV_ExecuteClientCommandStub), reinterpret_cast<DWORD>(SV_ExecuteClientCommandHook));
 }
 
 VOID MW2::CreateStructure()

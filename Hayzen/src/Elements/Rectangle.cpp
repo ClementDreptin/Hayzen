@@ -8,5 +8,5 @@ Rectangle::Rectangle(FLOAT fX, FLOAT fY, FLOAT fWidth, FLOAT fHeight, CONST Colo
 VOID Rectangle::Draw()
 {
     if (m_Color.a > 0.0f)
-        R_AddCmdDrawStretchPic(m_fX, m_fY, m_fWidth, m_fHeight, 0.0f, 0.0f, 1.0f, 1.0f, (PFLOAT)&m_Color, s_hMaterial);
+        R_AddCmdDrawStretchPic(m_fX, m_fY, m_fWidth, m_fHeight, 0.0f, 0.0f, 1.0f, 1.0f, reinterpret_cast<PFLOAT>(&m_Color), s_hMaterial);
 }

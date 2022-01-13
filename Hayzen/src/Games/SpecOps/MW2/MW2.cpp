@@ -31,8 +31,8 @@ VOID SpecOpsMW2::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart((LPDWORD)0x821354B0, (LPDWORD)SCR_DrawScreenFieldStub, (DWORD)SCR_DrawScreenFieldHook);
-    Memory::HookFunctionStart((LPDWORD)0x821EFFD0, (LPDWORD)ClientCommandStub, (DWORD)ClientCommandHook);
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821354B0), reinterpret_cast<LPDWORD>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<LPDWORD>(0x821EFFD0), reinterpret_cast<LPDWORD>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
 }
 
 VOID SpecOpsMW2::CreateStructure()

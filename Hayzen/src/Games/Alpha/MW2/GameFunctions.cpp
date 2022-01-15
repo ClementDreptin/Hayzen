@@ -10,7 +10,7 @@ static std::unordered_map<std::string, DWORD> BrushModelMap;
 
 const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x8229A730);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x8226F590);
+void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void(*)(int, int, const char *)>(0x822B6140);
 
 bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool(*)(const char *)>(0x82303B00);
 
@@ -40,6 +40,11 @@ void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fro
 
 void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles) = reinterpret_cast<void(*)(gentity_s *, const float *, const float *)>(0x8222E5A0);
 
+void iPrintLn(int clientNum, const std::string &text)
+{
+    SV_GameSendServerCommand(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
+}
+
 gclient_s *GetGClient(int clientNum)
 {
     return reinterpret_cast<gclient_s *>(0x82F01480 + sizeof(gclient_s) * clientNum);
@@ -48,6 +53,11 @@ gclient_s *GetGClient(int clientNum)
 gentity_s *GetEntity(int entNum)
 {
     return reinterpret_cast<gentity_s *>(0x82D47D80 + sizeof(gentity_s) * entNum);
+}
+
+void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value)
+{
+    SV_GameSendServerCommand(clientNum, 0, Formatter::Format("v %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
 bool IsHost(int clientNum)

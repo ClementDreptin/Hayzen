@@ -84,6 +84,10 @@ void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
 
             // Initialize the menu
             s_Menu.Init(0, &s_RootOption);
+
+            // Disable the unlocalized error messages when printing something in the killfeed
+            SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warnings 0");
+            SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warningsUI 0");
         }
 
         // Register that the user released the A button

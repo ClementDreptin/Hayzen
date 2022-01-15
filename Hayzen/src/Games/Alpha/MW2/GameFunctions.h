@@ -11,7 +11,7 @@ namespace AlphaMW2GameFunctions
 
 extern const char *(*SL_ConvertToString)(uint32_t stringValue);
 
-extern void (*Cbuf_AddText)(int localClientNum, const char *text);
+extern void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text);
 
 extern bool (*Dvar_GetBool)(const char *dvarName);
 
@@ -41,9 +41,13 @@ extern void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, 
 
 extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
 
+void iPrintLn(int clientNum, const std::string &text);
+
 gclient_s *GetGClient(int clientNum);
 
 gentity_s *GetEntity(int entNum);
+
+void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value);
 
 bool IsHost(int clientNum);
 

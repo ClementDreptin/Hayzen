@@ -49,10 +49,6 @@ DWORD Plugin::Update(void *)
         // Initialize a new game if the user launches a new game
         if (dwNewTitle != s_dwCurrentTitle)
             InitNewGame(dwNewTitle);
-
-        // Only update the current game if it's supported
-        if (s_CurrentGame)
-            s_CurrentGame->Update();
     }
 
     return 0;

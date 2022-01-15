@@ -123,7 +123,8 @@ void MW2MenuFunctions::SpawnCP(Menu *pMenu)
     SV_LinkEntity(entity);
 }
 
-void MW2MenuFunctions::Knockback(Menu *pMenu)
+// Threaded function that prompts a keyboard and sets the knockback strength to what was entered.
+static DWORD KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
@@ -136,6 +137,16 @@ void MW2MenuFunctions::Knockback(Menu *pMenu)
     SetClientDvar(-1, "g_knockback", strValue);
 
     iPrintLn(pMenu->GetClientNum(), "Knockback set to ^2" + strValue);
+
+    return 0;
+}
+
+void MW2MenuFunctions::Knockback(Menu *pMenu)
+{
+    // This needs to execute on a separate thread because we need to wait for the user
+    // to finish typing. If this wasn't done on a separate thread, it would block the
+    // game's thread and make it crash.
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(KnockbackThread), pMenu);
 }
 
 void MW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)

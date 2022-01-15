@@ -153,12 +153,9 @@ void AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
     }
 }
 
-// Threaded function that makes the bot spawn, pick a team, then pick a class.
+// Threaded function that makes the bot pick a team, then pick a class.
 static DWORD SpawnBotThread(Menu *pMenu)
 {
-    // Create the bot and wait until it joins the game
-    gentity_s *pBot = SV_AddTestClient();
-    pMenu->SetBot(pBot);
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
@@ -167,7 +164,7 @@ static DWORD SpawnBotThread(Menu *pMenu)
     std::string strChooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    DWORD dwBotAddr = Memory::Read<DWORD>(0x83577D98) + pBot->state.number * 0x97F80;
+    DWORD dwBotAddr = Memory::Read<DWORD>(0x83577D98) + reinterpret_cast<gentity_s *>(pMenu->GetBot())->state.number * 0x97F80;
 
     // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(dwBotAddr, strChooseTeamCmd.c_str(), 1, 0);
@@ -199,10 +196,13 @@ void AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
         return;
     }
 
-    // Creating the main plugin thread with 2 for the creation flags seems to prevent
-    // certain game functions from being called and SV_AddTestClient is one of them.
-    // So we create another thread with the regular Thread function to be able
-    // to call SV_AddTestClient safely.
+    // Create the bot
+    pBot = SV_AddTestClient();
+    pMenu->SetBot(pBot);
+
+    // The rest of the code needs to execute on a separate thread because we need to
+    // wait between certain operations. If this wasn't done on a separate thread, it
+    // would block the game's thread and make it crash.
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 

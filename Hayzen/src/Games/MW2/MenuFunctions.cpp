@@ -193,20 +193,9 @@ void MW2MenuFunctions::ToggleUFO(Menu *pMenu)
     }
 }
 
-void MW2MenuFunctions::SpawnBot(Menu *pMenu)
+// Threaded function that makes the bot pick a team, then pick a class.
+static DWORD SpawnBotThread(Menu *pMenu)
 {
-    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
-
-    // Prevent the user from spawning multiple bots
-    if (pBot)
-    {
-        iPrintLn(pMenu->GetClientNum(), "^1There is already a bot in the game!");
-        return;
-    }
-
-    // Create the bot and wait until it joins the game
-    pBot = SV_AddTestClient();
-    pMenu->SetBot(pBot);
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
@@ -215,7 +204,7 @@ void MW2MenuFunctions::SpawnBot(Menu *pMenu)
     std::string strChooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    DWORD dwBotAddr = Memory::Read<DWORD>(0x83623B98) + pBot->state.number * 0x97F80;
+    DWORD dwBotAddr = Memory::Read<DWORD>(0x83623B98) + reinterpret_cast<gentity_s *>(pMenu->GetBot())->state.number * 0x97F80;
 
     // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(dwBotAddr, strChooseTeamCmd.c_str(), 1, 0);
@@ -231,7 +220,30 @@ void MW2MenuFunctions::SpawnBot(Menu *pMenu)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    TeleportBotToMe(pMenu);
+    MW2MenuFunctions::TeleportBotToMe(pMenu);
+
+    return 0;
+}
+
+void MW2MenuFunctions::SpawnBot(Menu *pMenu)
+{
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
+
+    // Prevent the user from spawning multiple bots
+    if (pBot)
+    {
+        iPrintLn(pMenu->GetClientNum(), "^1There is already a bot in the game!");
+        return;
+    }
+
+    // Create the bot
+    pBot = SV_AddTestClient();
+    pMenu->SetBot(pBot);
+    
+    // The rest of the code needs to execute on a separate thread because we need to
+    // wait between certain operations. If this wasn't done on a separate thread, it
+    // would block the game's thread and make it crash.
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
 void MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
@@ -260,10 +272,8 @@ void MW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
-    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
-
     // Make sure there is a bot in the game
-    if (!pBot)
+    if (!pMenu->GetBot())
     {
         iPrintLn(iClientNum, "^1There is no bot in the game!");
         return;

@@ -42,9 +42,6 @@ public:
     void *GetBot() const { return m_pBotEntity; }
     void SetBot(void *pBotEntity) { m_pBotEntity = pBotEntity; }
 
-    // Push a new feedback text to the queue.
-    void SetFeedbackText(const std::string &strText);
-
     // Change the current menu section.
     void SetCurrentOption(Option *pOption);
 private:
@@ -55,13 +52,11 @@ private:
 
     Option *m_pCurrentOption;
     std::queue<Option *> m_ChangeSectionQueue;
-    std::queue<std::string> m_ChangeFeedbackTextQueue;
 
     Rectangle m_Background;
     Text m_Title;
     Rectangle m_Scroller;
     Text m_Instructions;
-    Text m_Feedback;
     int m_iCurrentScrollerPos;
 
     vec3 m_SavedPos;

@@ -84,7 +84,14 @@ void MW2::Scr_NotifyHook(gentity_s *entity, uint16_t stringValue, uint32_t param
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
+    {
         s_Menu.Init(iClientNum, &s_RootOption);
+
+        // Disable the unlocalized error messages when printing something in the killfeed
+        int iClientNum = s_Menu.GetClientNum();
+        MW2GameFunctions::SetClientDvar(iClientNum, "loc_warnings", "0");
+        MW2GameFunctions::SetClientDvar(iClientNum, "loc_warningsUI", "0");
+    }
 }
 
 void MW2::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)

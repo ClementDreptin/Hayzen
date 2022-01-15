@@ -7,40 +7,45 @@ using namespace MW2GameFunctions;
 void MW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     const int GOD_MODE_ON = 4097;
     const int GOD_MODE_OFF = 4096;
 
     if (GetEntity(iClientNum)->flags == GOD_MODE_OFF)
     {
         GetEntity(iClientNum)->flags = GOD_MODE_ON;
-        pMenu->SetFeedbackText("God Mode ^2On");
+        iPrintLn(iClientNum, "God Mode ^2On");
     }
     else
     {
         GetEntity(iClientNum)->flags = GOD_MODE_OFF;
-        pMenu->SetFeedbackText("God Mode ^1Off");
+        iPrintLn(iClientNum, "God Mode ^1Off");
     }
 }
 
 
 void MW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     DWORD dwAddress = 0x82019C48;
 
     if (Memory::Read<float>(dwAddress) == 128.0f)
     {
         Memory::Write<float>(dwAddress, 9999.0f);
-        pMenu->SetFeedbackText("Fall Damage ^2Off");
+        iPrintLn(iClientNum, "Fall Damage ^2Off");
     }
     else
     {
         Memory::Write<float>(dwAddress, 128.0f);
-        pMenu->SetFeedbackText("Fall Damage ^1On");
+        iPrintLn(iClientNum, "Fall Damage ^1On");
     }
 }
 
 void MW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     DWORD dwAddress = 0x820E1724;
     DWORD dwDefaultValue = 0x7D1D4850;
     DWORD dwModifiedValue = 0x7D284B78;
@@ -48,17 +53,19 @@ void MW2MenuFunctions::ToggleAmmo(Menu *pMenu)
     if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
     {
         Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        pMenu->SetFeedbackText("Unlimited Ammo ^2On");
+        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
     }
     else
     {
         Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        pMenu->SetFeedbackText("Unlimited Ammo ^1Off");
+        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
     }
 }
 
 void MW2MenuFunctions::ToggleElevators(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     DWORD dwBranchAddress = 0x820D8360;
     WORD wDefaultValue = 0x419A;
     WORD wModifiedValue = 0x4800;
@@ -66,24 +73,25 @@ void MW2MenuFunctions::ToggleElevators(Menu *pMenu)
     if (Memory::Read<WORD>(dwBranchAddress) == wDefaultValue)
     {
         Memory::Write<WORD>(dwBranchAddress, wModifiedValue);
-        pMenu->SetFeedbackText("Elevators ^2On");
+        iPrintLn(iClientNum, "Elevators ^2On");
     }
     else
     {
         Memory::Write<WORD>(dwBranchAddress, wDefaultValue);
-        pMenu->SetFeedbackText("Elevators ^1Off");
+        iPrintLn(iClientNum, "Elevators ^1Off");
     }
 }
 
 void MW2MenuFunctions::SpawnCP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
 
     // Return early if the map is not supported
     if (!currentMapBrushModel)
     {
-        pMenu->SetFeedbackText("^1You cannot spawn a Care Package on this map!");
+        iPrintLn(iClientNum, "^1You cannot spawn a Care Package on this map!");
         return;
     }
 
@@ -115,7 +123,8 @@ void MW2MenuFunctions::SpawnCP(Menu *pMenu)
     SV_LinkEntity(entity);
 }
 
-void MW2MenuFunctions::Knockback(Menu *pMenu)
+// Threaded function that prompts a keyboard and sets the knockback strength to what was entered.
+static DWORD KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
@@ -127,15 +136,27 @@ void MW2MenuFunctions::Knockback(Menu *pMenu)
     // Set the g_knockback value to what the user entered
     SetClientDvar(-1, "g_knockback", strValue);
 
-    pMenu->SetFeedbackText("Knockback set to ^2" + strValue);
+    iPrintLn(pMenu->GetClientNum(), "Knockback set to ^2" + strValue);
+
+    return 0;
+}
+
+void MW2MenuFunctions::Knockback(Menu *pMenu)
+{
+    // This needs to execute on a separate thread because we need to wait for the user
+    // to finish typing. If this wasn't done on a separate thread, it would block the
+    // game's thread and make it crash.
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(KnockbackThread), pMenu);
 }
 
 void MW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     if (!pMenu->BindsEnabled())
-        pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
+        iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     else
-        pMenu->SetFeedbackText("Save and Load binds ^1Off");
+        iPrintLn(iClientNum, "Save and Load binds ^1Off");
 
     pMenu->ToggleBinds();
 }
@@ -147,19 +168,20 @@ void MW2MenuFunctions::SavePosition(Menu *pMenu)
     pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
     pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
 
-    pMenu->SetFeedbackText("Position ^2Saved");
+    iPrintLn(iClientNum, "Position ^2Saved");
 }
 
 void MW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     const vec3 &SavedPos = pMenu->GetSavedPos();
     const vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
     {
-        pMenu->SetFeedbackText("^1Save a position first!");
+        iPrintLn(iClientNum, "^1Save a position first!");
         return;
     }
 
@@ -173,29 +195,18 @@ void MW2MenuFunctions::ToggleUFO(Menu *pMenu)
     if (GetGClient(iClientNum)->mFlags != 2)
     {
         GetGClient(iClientNum)->mFlags = 2;
-        pMenu->SetFeedbackText("Ufo ^2On");
+        iPrintLn(iClientNum, "Ufo ^2On");
     }
     else
     {
         GetGClient(iClientNum)->mFlags = 0;
-        pMenu->SetFeedbackText("Ufo ^1Off");
+        iPrintLn(iClientNum, "Ufo ^1Off");
     }
 }
 
-void MW2MenuFunctions::SpawnBot(Menu *pMenu)
+// Threaded function that makes the bot pick a team, then pick a class.
+static DWORD SpawnBotThread(Menu *pMenu)
 {
-    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
-
-    // Prevent the user from spawning multiple bots
-    if (pBot)
-    {
-        pMenu->SetFeedbackText("^1There is already a bot in the game!");
-        return;
-    }
-
-    // Create the bot and wait until it joins the game
-    pBot = SV_AddTestClient();
-    pMenu->SetBot(pBot);
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
@@ -204,7 +215,7 @@ void MW2MenuFunctions::SpawnBot(Menu *pMenu)
     std::string strChooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    DWORD dwBotAddr = Memory::Read<DWORD>(0x83623B98) + pBot->state.number * 0x97F80;
+    DWORD dwBotAddr = Memory::Read<DWORD>(0x83623B98) + reinterpret_cast<gentity_s *>(pMenu->GetBot())->state.number * 0x97F80;
 
     // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(dwBotAddr, strChooseTeamCmd.c_str(), 1, 0);
@@ -220,18 +231,42 @@ void MW2MenuFunctions::SpawnBot(Menu *pMenu)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    TeleportBotToMe(pMenu);
+    MW2MenuFunctions::TeleportBotToMe(pMenu);
+
+    return 0;
+}
+
+void MW2MenuFunctions::SpawnBot(Menu *pMenu)
+{
+    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
+
+    // Prevent the user from spawning multiple bots
+    if (pBot)
+    {
+        iPrintLn(pMenu->GetClientNum(), "^1There is already a bot in the game!");
+        return;
+    }
+
+    // Create the bot
+    pBot = SV_AddTestClient();
+    pMenu->SetBot(pBot);
+    
+    // The rest of the code needs to execute on a separate thread because we need to
+    // wait between certain operations. If this wasn't done on a separate thread, it
+    // would block the game's thread and make it crash.
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
 void MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
     // Make sure there is a bot in the game
     if (!pBot)
     {
-        pMenu->SetFeedbackText("^1There is no bot in the game!");
+        iPrintLn(iClientNum, "^1There is no bot in the game!");
         return;
     }
 
@@ -246,23 +281,23 @@ void MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
 
 void MW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
 {
-    gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
+    int iClientNum = pMenu->GetClientNum();
 
     // Make sure there is a bot in the game
-    if (!pBot)
+    if (!pMenu->GetBot())
     {
-        pMenu->SetFeedbackText("^1There is no bot in the game!");
+        iPrintLn(iClientNum, "^1There is no bot in the game!");
         return;
     }
 
     if (Dvar_GetBool("testClients_doMove"))
     {
         SetClientDvar(-1, "testClients_doMove", "0");
-        pMenu->SetFeedbackText("Bot ^2Frozen");
+        iPrintLn(iClientNum, "Bot ^2Frozen");
     }
     else
     {
         SetClientDvar(-1, "testClients_doMove", "1");
-        pMenu->SetFeedbackText("Bot ^1Unfrozen");
+        iPrintLn(iClientNum, "Bot ^1Unfrozen");
     }
 }

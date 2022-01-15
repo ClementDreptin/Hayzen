@@ -11,6 +11,8 @@ namespace MW3GameFunctions
 
 extern const char *(*SL_ConvertToString)(uint32_t stringValue);
 
+extern void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text);
+
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
 extern clientState_s *(*GetClientState)(int clientNum);
@@ -33,9 +35,13 @@ extern void (*SV_SetBrushModel)(gentity_s *ent);
 
 extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
 
+void iPrintLn(int clientNum, const std::string &text);
+
 gclient_s *GetGClient(int clientNum);
 
 gentity_s *GetEntity(int entNum);
+
+void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value);
 
 bool IsHost(int clientNum);
 

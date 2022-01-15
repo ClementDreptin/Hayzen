@@ -12,9 +12,6 @@ public:
 
     // Common initialization behavior to all games.
     virtual void Init() = 0;
-
-    // Update and render the menu.
-    void Update();
 protected:
     static Menu s_Menu;
     static Option s_RootOption;
@@ -27,11 +24,11 @@ protected:
     // Create the menu structure (one implementation per game).
     virtual void CreateStructure() = 0;
 
+    // Hook of a function that gets called every frame to execute the main loop on the game's thread.
+    static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
+
     // Stub to hold the original code of SCR_DrawScreenField.
     static void SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI);
-
-    // Render the menu.
-    static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 private:
     // Make the global drawing function pointers point to the current game's drawing functions.
     void SetDrawFunctionsPointers();

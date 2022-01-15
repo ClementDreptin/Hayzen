@@ -23,19 +23,17 @@ void Game::Init()
     RegisterFontAndMaterial();
 }
 
-void Game::Update()
-{
-    // If the menu is not initialized, no need to go further
-    if (!s_Menu.IsInitialized())
-        return;
-
-    s_Menu.Update();
-}
-
 void Game::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
     // Call the original SCR_DrawScreenField function
     SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
+
+    // If the menu is not initialized, no need to go further
+    if (!s_Menu.IsInitialized())
+        return;
+
+    // Update the menu
+    s_Menu.Update();
 
     // Render the menu
     s_Menu.Render();

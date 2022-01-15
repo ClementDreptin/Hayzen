@@ -40,6 +40,11 @@ void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fro
 
 void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles) = reinterpret_cast<void(*)(gentity_s *, const float *, const float *)>(0x821E8198);
 
+void iPrintLn(int clientNum, const std::string &text)
+{
+    SV_GameSendServerCommand(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
+}
+
 gclient_s *GetGClient(int clientNum)
 {
     return reinterpret_cast<gclient_s *>(0x830CBF80 + sizeof(gclient_s) * clientNum);

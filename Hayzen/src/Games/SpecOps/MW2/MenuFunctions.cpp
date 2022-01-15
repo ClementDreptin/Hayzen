@@ -7,22 +7,25 @@ using namespace SpecOpsMW2GameFunctions;
 void SpecOpsMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     playerState_s *playerState = SV_GetPlayerstateForClientNum(iClientNum);
 
     if (playerState->otherFlags == 0)
     {
         playerState->otherFlags = 1;
-        pMenu->SetFeedbackText("God Mode ^2On");
+        iPrintLn(iClientNum, "God Mode ^2On");
     }
     else
     {
         playerState->otherFlags = 0;
-        pMenu->SetFeedbackText("God Mode ^1Off");
+        iPrintLn(iClientNum, "God Mode ^1Off");
     }
 }
 
 void SpecOpsMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     DWORD dwAddress = 0x82331F48;
     DWORD dwDefaultValue = 0x7D1D4850;
     DWORD dwModifiedValue = 0x7D284B78;
@@ -30,21 +33,23 @@ void SpecOpsMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
     if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
     {
         Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        pMenu->SetFeedbackText("Unlimited Ammo ^2On");
+        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
     }
     else
     {
         Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        pMenu->SetFeedbackText("Unlimited Ammo ^1Off");
+        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
     }
 }
 
 void SpecOpsMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
+    int iClientNum = pMenu->GetClientNum();
+
     if (!pMenu->BindsEnabled())
-        pMenu->SetFeedbackText("Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
+        iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     else
-        pMenu->SetFeedbackText("Save and Load binds ^1Off");
+        iPrintLn(iClientNum, "Save and Load binds ^1Off");
 
     pMenu->ToggleBinds();
 }
@@ -56,19 +61,20 @@ void SpecOpsMW2MenuFunctions::SavePosition(Menu *pMenu)
     pMenu->SetSavedPos(SV_GetPlayerstateForClientNum(iClientNum)->origin);
     pMenu->SetSavedAngles(SV_GetPlayerstateForClientNum(iClientNum)->viewAngles);
 
-    pMenu->SetFeedbackText("Position ^2Saved");
+    iPrintLn(iClientNum, "Position ^2Saved");
 }
 
 void SpecOpsMW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
+
     const vec3 &SavedPos = pMenu->GetSavedPos();
     const vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
     if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
     {
-        pMenu->SetFeedbackText("^1Save a position first!");
+        iPrintLn(iClientNum, "^1Save a position first!");
         return;
     }
 
@@ -82,12 +88,12 @@ void SpecOpsMW2MenuFunctions::ToggleUFO(Menu *pMenu)
     if (GetGClient(iClientNum)->mFlags != 2)
     {
         GetGClient(iClientNum)->mFlags = 2;
-        pMenu->SetFeedbackText("Ufo ^2On");
+        iPrintLn(iClientNum, "Ufo ^2On");
     }
     else
     {
         GetGClient(iClientNum)->mFlags = 0;
-        pMenu->SetFeedbackText("Ufo ^1Off");
+        iPrintLn(iClientNum, "Ufo ^1Off");
     }
 }
 
@@ -95,12 +101,13 @@ void SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1
     int iSecondClientNum = 1;
+    int iFirstClientNum = pMenu->GetClientNum();
 
     // If the player name of the second client is empty, it means there is no second client
     gclient_s *pSecondClient = GetGClient(iSecondClientNum);
     if (!pSecondClient->connected)
     {
-        pMenu->SetFeedbackText("^1No other player in the game!");
+        iPrintLn(iFirstClientNum, "^1No other player in the game!");
         return;
     }
 
@@ -109,12 +116,12 @@ void SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
     if (playerState->otherFlags == 0)
     {
         playerState->otherFlags = 1;
-        pMenu->SetFeedbackText("Second Player God Mode ^2On");
+        iPrintLn(iFirstClientNum, "Second Player God Mode ^2On");
     }
     else
     {
         playerState->otherFlags = 0;
-        pMenu->SetFeedbackText("Second Player God Mode ^1Off");
+        iPrintLn(iFirstClientNum, "Second Player God Mode ^1Off");
     }
 }
 
@@ -127,7 +134,7 @@ void SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
     gclient_s *pSecondClient = GetGClient(iSecondClientNum);
     if (!pSecondClient->connected)
     {
-        pMenu->SetFeedbackText("^1No other player in the game!");
+        iPrintLn(iFirstClientNum, "^1No other player in the game!");
         return;
     }
 

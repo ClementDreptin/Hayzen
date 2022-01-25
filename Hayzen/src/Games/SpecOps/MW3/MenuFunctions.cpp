@@ -47,9 +47,15 @@ void SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     int iClientNum = pMenu->GetClientNum();
 
     if (!pMenu->BindsEnabled())
+    {
+        Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
         iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
+    }
     else
+    {
+        Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
         iPrintLn(iClientNum, "Save and Load binds ^1Off");
+    }
 
     pMenu->ToggleBinds();
 }

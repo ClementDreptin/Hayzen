@@ -54,6 +54,7 @@ void SpecOpsMW2::CreateStructure()
     pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2MenuFunctions::ToggleUFO));
     s_RootOption.AddChild(pTeleport);
 
+    // Second player section
     auto pSecondPlayer = MakeOption("Second Player", 2);
     pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode));
     pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe));

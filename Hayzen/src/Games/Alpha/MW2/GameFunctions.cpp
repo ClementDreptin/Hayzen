@@ -12,6 +12,8 @@ const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const
 
 void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void(*)(int, int, const char *)>(0x822B6140);
 
+void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x8226F590);
+
 bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool(*)(const char *)>(0x82303B00);
 
 float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float(*)(const char *)>(0x82303BD0);

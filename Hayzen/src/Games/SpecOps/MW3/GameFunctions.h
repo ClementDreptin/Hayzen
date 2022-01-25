@@ -11,6 +11,8 @@ namespace SpecOpsMW3GameFunctions
 
 extern void (*SV_GameSendServerCommand)(int clientNum, const char *text);
 
+extern void (*Cbuf_AddText)(int localClientNum, const char *text);
+
 extern playerState_s *(*SV_GetPlayerstateForClientNum)(int num);
 
 extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);

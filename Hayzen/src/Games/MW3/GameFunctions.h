@@ -13,6 +13,8 @@ extern const char *(*SL_ConvertToString)(uint32_t stringValue);
 
 extern void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text);
 
+extern void (*Cbuf_AddText)(int localClientNum, const char *text);
+
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
 extern clientState_s *(*GetClientState)(int clientNum);

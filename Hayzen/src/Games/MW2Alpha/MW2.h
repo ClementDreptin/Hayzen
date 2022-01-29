@@ -3,7 +3,7 @@
 #include "Core\Game.h"
 #include "Elements\HudElem.h"
 
-#include "Games\Alpha\MW2\Structs.h"
+#include "Games\MW2Alpha\Structs.h"
 
 
 // Class to run MW2 Alpha, inherits from Game.

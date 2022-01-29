@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Games\Alpha\MW2\Structs.h"
+#include "Games\MW2Alpha\Structs.h"
 
 using namespace AlphaMW2Structs;
 

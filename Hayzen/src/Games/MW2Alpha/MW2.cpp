@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Games\Alpha\MW2\MW2.h"
+#include "Games\MW2Alpha\MW2.h"
 
-#include "Games\Alpha\MW2\MenuFunctions.h"
+#include "Games\MW2Alpha\MenuFunctions.h"
 
 
 void AlphaMW2::Init()

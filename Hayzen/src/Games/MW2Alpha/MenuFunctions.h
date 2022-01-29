@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core\Menu.h"
-#include "Games\Alpha\MW2\GameFunctions.h"
+#include "Games\MW2Alpha\GameFunctions.h"
 
 
 namespace AlphaMW2MenuFunctions

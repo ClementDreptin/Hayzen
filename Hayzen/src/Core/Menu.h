@@ -36,6 +36,12 @@ public:
     const vec3 &GetSavedAngles() const { return m_SavedAngles; }
     void SetSavedAngles(const vec3 &angles) { m_SavedAngles = angles; }
 
+    bool HasSavedPosition() const { return m_SavedPos != vec3(0.0f, 0.0f, 0.0f) && m_SavedAngles != vec3(0.0f, 0.0f, 0.0f); }
+
+    bool IsTeleportRequested() const { return m_bTeleportRequested; }
+    void RequestTeleport() { m_bTeleportRequested = true; }
+    void NotifyTeleportCompletion() { m_bTeleportRequested = false; }
+
     void SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
     void SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
 
@@ -62,6 +68,7 @@ private:
     vec3 m_SavedPos;
     vec3 m_SavedAngles;
     bool m_bBindsEnabled;
+    bool m_bTeleportRequested;
 
     Callback m_fnSavePosition;
     Callback m_fnLoadPosition;

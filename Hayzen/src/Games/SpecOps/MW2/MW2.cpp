@@ -32,6 +32,7 @@ void SpecOpsMW2::Init()
 
     // Set up the function hooks
     Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821354B0), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
+    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82229E18), reinterpret_cast<DWORD *>(Scr_NotifyStub), reinterpret_cast<DWORD>(Scr_NotifyHook));
     Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821EFFD0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
 }
 
@@ -59,6 +60,26 @@ void SpecOpsMW2::CreateStructure()
     pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode));
     pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe));
     s_RootOption.AddChild(pSecondPlayer);
+}
+
+void SpecOpsMW2::Scr_NotifyHook(SpecOpsMW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
+{
+    // Call the original Scr_Notify function
+    Scr_NotifyStub(entity, stringValue, paramCount);
+
+    // Calling TeleportPlayer on the render thread makes the console freeze sometimes so the function needs
+    // to be called on another thread where it's safer. LoadPosition just requests for a teleport and the game
+    // fulfills the request by calling TeleportPlayer
+    if (s_Menu.IsTeleportRequested())
+    {
+        SpecOpsMW2Structs::gentity_s *pPlayerEntity = SpecOpsMW2GameFunctions::GetEntity(s_Menu.GetClientNum());
+        const vec3 &SavedPos = s_Menu.GetSavedPos();
+        const vec3 &SavedAngles = s_Menu.GetSavedAngles();
+
+        SpecOpsMW2GameFunctions::TeleportPlayer(pPlayerEntity, reinterpret_cast<const float *>(&SavedPos), reinterpret_cast<const float *>(&SavedAngles));
+
+        s_Menu.NotifyTeleportCompletion();
+    }
 }
 
 void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
@@ -96,7 +117,7 @@ void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
     }
 }
 
-void __declspec(naked) SpecOpsMW2::ClientCommandStub(int clientNum, const char *s)
+void __declspec(naked) SpecOpsMW2::Scr_NotifyStub(SpecOpsMW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     __asm
     {
@@ -108,5 +129,20 @@ void __declspec(naked) SpecOpsMW2::ClientCommandStub(int clientNum, const char *
         nop
         nop
         li r3, 1
+    }
+}
+
+void __declspec(naked) SpecOpsMW2::ClientCommandStub(int clientNum, const char *s)
+{
+    __asm
+    {
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        nop
+        li r3, 2
     }
 }

@@ -74,17 +74,15 @@ void SpecOpsMW2MenuFunctions::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
-    const vec3 &SavedPos = pMenu->GetSavedPos();
-    const vec3 &SavedAngles = pMenu->GetSavedAngles();
-
     // Make sure the player previously saved their position
-    if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
+    if (!pMenu->HasSavedPosition())
     {
         iPrintLn(iClientNum, "^1Save a position first!");
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<const float *>(&SavedPos), reinterpret_cast<const float *>(&SavedAngles));
+    // Request tht menu for a teleport
+    pMenu->RequestTeleport();
 }
 
 void SpecOpsMW2MenuFunctions::ToggleUFO(Menu *pMenu)

@@ -185,7 +185,7 @@ void MW2MenuFunctions::LoadPosition(Menu *pMenu)
     const vec3 &SavedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
-    if (SavedPos == vec3(0.0f, 0.0f, 0.0f) || SavedAngles == vec3(0.0f, 0.0f, 0.0f))
+    if (SavedPos.isNull() || SavedAngles.isNull())
     {
         iPrintLn(iClientNum, "^1Save a position first!");
         return;

@@ -2,10 +2,11 @@
 #include "Core\Plugin.h"
 
 #include "Games\MW2\MW2.h"
-#include "Games\MW3\MW3.h"
 #include "Games\SpecOps\MW2\MW2.h"
-#include "Games\SpecOps\MW3\MW3.h"
 #include "Games\MW2Alpha\MW2.h"
+#include "Games\SpecOps\MW2Alpha\MW2.h"
+#include "Games\MW3\MW3.h"
+#include "Games\SpecOps\MW3\MW3.h"
 
 
 bool Plugin::s_bRunning = false;
@@ -77,6 +78,8 @@ void Plugin::InitNewGame(DWORD dwNewTitle)
             s_CurrentGame = new SpecOpsMW2();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
             s_CurrentGame = new AlphaMW2();
+        else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
+            s_CurrentGame = new SpecOpsAlphaMW2();
         break;
     case GAME_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))

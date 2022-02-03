@@ -42,6 +42,33 @@ void SpecOpsMW3MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
+// Threaded function that prompts a keyboard and sets the jump height value to what was entered.
+static DWORD ChangeJumpHeightThread(Menu *pMenu)
+{
+    // Get the value from the user via the virtual keyboard
+    std::string strValue = Xam::ShowKeyboard("Jump Height", "Max value: 999\nDefault value: 39", "39", 3, VKBD_LATIN_NUMERIC);
+
+    // If the user did not enter anything, set the value to its default value
+    if (strValue == "")
+        strValue = "39";
+
+    // Set the new jump height value
+    std::string strFullCommand = "set jump_height " + strValue;
+    Cbuf_AddText(0, strFullCommand.c_str());
+
+    iPrintLn(pMenu->GetClientNum(), "Jump Height set to ^2" + strValue);
+
+    return 0;
+}
+
+void SpecOpsMW3MenuFunctions::ChangeJumpHeight(Menu *pMenu)
+{
+    // This needs to execute on a separate thread because we need to wait for the user
+    // to finish typing. If this wasn't done on a separate thread, it would block the
+    // game's thread and make it crash.
+    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
+}
+
 void SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();

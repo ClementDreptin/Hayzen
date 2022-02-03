@@ -45,6 +45,7 @@ void SpecOpsMW3::CreateStructure()
     auto pMain = MakeOption("Main", 0);
     pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW3MenuFunctions::ToggleGodMode));
     pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW3MenuFunctions::ToggleAmmo));
+    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW3MenuFunctions::ChangeJumpHeight));
     s_RootOption.AddChild(pMain);
 
     // Teleport section

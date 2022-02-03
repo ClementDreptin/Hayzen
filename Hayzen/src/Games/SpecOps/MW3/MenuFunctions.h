@@ -13,6 +13,9 @@ void ToggleGodMode(Menu *pMenu);
 // Toggle unlimited ammo.
 void ToggleAmmo(Menu *pMenu);
 
+// Change the jump height.
+void ChangeJumpHeight(Menu *pMenu);
+
 // Toggle save and load binds.
 void ToggleSaveLoadBinds(Menu *pMenu);
 

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Core\Game.h"
+#include "Core\Title.h"
 #include "Elements\HudElem.h"
 
 #include "Games\MW2\Structs.h"
 
 
 // Class to run MW2 TU9, inherits from Game.
-class MW2 : public Game
+class MW2Title : public Title
 {
 public:
     // Set the draw function pointers and the function hooks.
@@ -17,10 +17,10 @@ private:
     virtual void CreateStructure();
 
     // Stub to hold the original code of Scr_Notify.
-    static void Scr_NotifyStub(MW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
+    static void Scr_NotifyStub(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     // Initialize the menu when the game starts.
-    static void Scr_NotifyHook(MW2Structs::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
+    static void Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     // Stub to hold the original code of SV_ExecuteClientCommand.
     static void SV_ExecuteClientCommandStub(int client, const char *s, int clientOK, int fromOldServer);

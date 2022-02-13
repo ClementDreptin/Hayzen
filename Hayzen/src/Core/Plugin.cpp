@@ -1,25 +1,25 @@
 #include "pch.h"
 #include "Core\Plugin.h"
 
-#include "Games\MW2\MW2.h"
-#include "Games\SpecOps\MW2\MW2.h"
-#include "Games\MW2Alpha\MW2.h"
-#include "Games\SpecOps\MW2Alpha\MW2.h"
-#include "Games\MW3\MW3.h"
-#include "Games\SpecOps\MW3\MW3.h"
+#include "Games\MW2\MW2Title.h"
+#include "Games\SpecOps\MW2\SpecOpsMW2Title.h"
+#include "Games\AlphaMW2\AlphaMW2Title.h"
+#include "Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h"
+#include "Games\MW3\MW3Title.h"
+#include "Games\SpecOps\MW3\SpecOpsMW3Title.h"
 
 
 bool Plugin::s_bRunning = false;
 DWORD Plugin::s_dwCurrentTitle = 0;
-Game *Plugin::s_CurrentGame = nullptr;
+Title *Plugin::s_CurrentTitle = nullptr;
 
 
-// Enum from game IDs.
-enum Games
+// Enum from title IDs.
+enum
 {
-    GAME_DASHBOARD = 0xFFFE07D1,
-    GAME_MW2 = 0x41560817,
-    GAME_MW3 = 0x415608CB
+    TITLE_DASHBOARD = 0xFFFE07D1,
+    TITLE_MW2 = 0x41560817,
+    TITLE_MW3 = 0x415608CB
 };
 
 void Plugin::Start()
@@ -44,22 +44,22 @@ DWORD Plugin::Update(void *)
 {
     while (s_bRunning)
     {
-        // Get the current game running
+        // Get the current title running
         DWORD dwNewTitle = Kernel::XamGetCurrentTitleId();
 
-        // Initialize a new game if the user launches a new game
+        // Initialize a new title if the user launches a new title
         if (dwNewTitle != s_dwCurrentTitle)
-            InitNewGame(dwNewTitle);
+            InitNewTitle(dwNewTitle);
     }
 
     return 0;
 }
 
-void Plugin::InitNewGame(DWORD dwNewTitle)
+void Plugin::InitNewTitle(DWORD dwNewTitle)
 {
     // Clean up what previous game may have left out and reset the pointer
-    delete s_CurrentGame;
-    s_CurrentGame = nullptr;
+    delete s_CurrentTitle;
+    s_CurrentTitle = nullptr;
 
     // Update the current title
     s_dwCurrentTitle = dwNewTitle;
@@ -68,30 +68,30 @@ void Plugin::InitNewGame(DWORD dwNewTitle)
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (dwNewTitle)
     {
-    case GAME_DASHBOARD:
+    case TITLE_DASHBOARD:
         Xam::XNotify("Hayzen - Dashboard Detected");
         break;
-    case GAME_MW2:
+    case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
-            s_CurrentGame = new MW2();
+            s_CurrentTitle = new MW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
-            s_CurrentGame = new SpecOpsMW2();
+            s_CurrentTitle = new SpecOpsMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
-            s_CurrentGame = new AlphaMW2();
+            s_CurrentTitle = new AlphaMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
-            s_CurrentGame = new SpecOpsAlphaMW2();
+            s_CurrentTitle = new SpecOpsAlphaMW2Title();
         break;
-    case GAME_MW3:
+    case TITLE_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
-            s_CurrentGame = new MW3();
+            s_CurrentTitle = new MW3Title();
         else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
-            s_CurrentGame = new SpecOpsMW3();
+            s_CurrentTitle = new SpecOpsMW3Title();
     default:
         break;
     }
 
     // Only init the new game if it's supported
-    if (s_CurrentGame)
-        s_CurrentGame->Init();
+    if (s_CurrentTitle)
+        s_CurrentTitle->Init();
 }
 

@@ -2,11 +2,11 @@
 
 #include "Games\MW2\Structs.h"
 
-using namespace MW2Structs;
-
 
 // MW2 TU9 function pointers to functions from the game.
-namespace MW2GameFunctions
+namespace MW2
+{
+namespace Game
 {
 
 extern const char *(*SL_ConvertToString)(uint32_t stringValue);
@@ -57,4 +57,5 @@ bool IsHost(int clientNum);
 
 gentity_s *GetCurrentMapBrushModel();
 
+}
 }

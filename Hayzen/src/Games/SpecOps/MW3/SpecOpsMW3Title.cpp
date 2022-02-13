@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Games\SpecOps\MW3\MW3.h"
+#include "Games\SpecOps\MW3\SpecOpsMW3Title.h"
 
 #include "Games\SpecOps\MW3\MenuFunctions.h"
 
 
-bool SpecOpsMW3::s_bJumped = false;
+bool SpecOpsMW3Title::s_bJumped = false;
 
 
-void SpecOpsMW3::Init()
+void SpecOpsMW3Title::Init()
 {
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
 
@@ -21,11 +21,11 @@ void SpecOpsMW3::Init()
     m_dwRegisterMaterialFnAddr = 0x823E95E8;
 
     // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(SpecOpsMW3MenuFunctions::SavePosition);
-    s_Menu.SetLoadPositionFn(SpecOpsMW3MenuFunctions::LoadPosition);
+    s_Menu.SetSavePositionFn(SpecOpsMW3::SavePosition);
+    s_Menu.SetLoadPositionFn(SpecOpsMW3::LoadPosition);
 
     // Set the draw function pointers with the addresses above
-    Game::Init();
+    Title::Init();
 
     // Create the structure of the menu
     CreateStructure();
@@ -36,34 +36,34 @@ void SpecOpsMW3::Init()
     Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821FA680), reinterpret_cast<DWORD *>(PlayerCmd_AllowJumpStub), reinterpret_cast<DWORD>(PlayerCmd_AllowJumpHook));
 }
 
-void SpecOpsMW3::CreateStructure()
+void SpecOpsMW3Title::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
 
     // Main section
     auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW3MenuFunctions::ToggleGodMode));
-    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW3MenuFunctions::ToggleAmmo));
-    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW3MenuFunctions::ChangeJumpHeight));
+    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW3::ToggleGodMode));
+    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW3::ToggleAmmo));
+    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW3::ChangeJumpHeight));
     s_RootOption.AddChild(pMain);
 
     // Teleport section
     auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW3MenuFunctions::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW3MenuFunctions::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW3MenuFunctions::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW3MenuFunctions::ToggleUFO));
+    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW3::ToggleSaveLoadBinds));
+    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW3::SavePosition));
+    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW3::LoadPosition));
+    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW3::ToggleUFO));
     s_RootOption.AddChild(pTeleport);
 
     // Second player section
     auto pSecondPlayer = MakeOption("Second Player", 2);
-    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW3MenuFunctions::ToggleSecondPlayerGodMode));
-    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW3MenuFunctions::TeleportSecondPlayerToMe));
+    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW3::ToggleSecondPlayerGodMode));
+    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW3::TeleportSecondPlayerToMe));
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-void SpecOpsMW3::ClientCommandHook(int clientNum, const char *s)
+void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
     ClientCommandStub(clientNum, s);
@@ -94,14 +94,14 @@ void SpecOpsMW3::ClientCommandHook(int clientNum, const char *s)
     }
 }
 
-void SpecOpsMW3::PlayerCmd_AllowJumpHook()
+void SpecOpsMW3Title::PlayerCmd_AllowJumpHook()
 {
     // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
     // missions where you normally can't. This is a bad practice and may have side effects.
     return;
 }
 
-void __declspec(naked) SpecOpsMW3::ClientCommandStub(int clientNum, const char *s)
+void __declspec(naked) SpecOpsMW3Title::ClientCommandStub(int clientNum, const char *s)
 {
     __asm
     {
@@ -116,7 +116,7 @@ void __declspec(naked) SpecOpsMW3::ClientCommandStub(int clientNum, const char *
     }
 }
 
-void __declspec(naked) SpecOpsMW3::PlayerCmd_AllowJumpStub()
+void __declspec(naked) SpecOpsMW3Title::PlayerCmd_AllowJumpStub()
 {
     __asm
     {

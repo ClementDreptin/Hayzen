@@ -4,7 +4,7 @@
 #include "Games\SpecOps\MW3\GameFunctions.h"
 
 
-namespace SpecOpsMW3MenuFunctions
+namespace SpecOpsMW3
 {
 
 // Toggle God Mode.

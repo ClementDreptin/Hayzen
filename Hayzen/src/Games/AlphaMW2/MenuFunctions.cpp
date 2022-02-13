@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Games\MW2Alpha\MenuFunctions.h"
+#include "Games\AlphaMW2\MenuFunctions.h"
 
-using namespace AlphaMW2GameFunctions;
+using namespace AlphaMW2::Game;
 
 
-void AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
+void AlphaMW2::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -23,7 +23,7 @@ void AlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
     }
 }
 
-void AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
+void AlphaMW2::ToggleFallDamage(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -41,7 +41,7 @@ void AlphaMW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
     }
 }
 
-void AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
+void AlphaMW2::ToggleAmmo(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -57,7 +57,7 @@ void AlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
-void AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
+void AlphaMW2::SpawnCP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -98,7 +98,7 @@ void AlphaMW2MenuFunctions::SpawnCP(Menu *pMenu)
     SV_LinkEntity(entity);
 }
 
-void AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void AlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -116,7 +116,7 @@ void AlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-void AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
+void AlphaMW2::SavePosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -126,7 +126,7 @@ void AlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
     iPrintLn(iClientNum, "Position ^2Saved");
 }
 
-void AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
+void AlphaMW2::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -146,7 +146,7 @@ void AlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
 }
 
-void AlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
+void AlphaMW2::ToggleUFO(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -189,12 +189,12 @@ static DWORD SpawnBotThread(Menu *pMenu)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    AlphaMW2MenuFunctions::TeleportBotToMe(pMenu);
+    AlphaMW2::TeleportBotToMe(pMenu);
 
     return 0;
 }
 
-void AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
+void AlphaMW2::SpawnBot(Menu *pMenu)
 {
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
@@ -215,7 +215,7 @@ void AlphaMW2MenuFunctions::SpawnBot(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
-void AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
+void AlphaMW2::TeleportBotToMe(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -237,7 +237,7 @@ void AlphaMW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-void AlphaMW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
+void AlphaMW2::ToggleBotMovement(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 

@@ -4,11 +4,11 @@
 
 
 // Interface that game classes inherit from.
-class Game
+class Title
 {
 public:
     // Stop the menu and cleanup the root option when the game is destroyed.
-    virtual ~Game();
+    virtual ~Title();
 
     // Common initialization behavior to all games.
     virtual void Init() = 0;

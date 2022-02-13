@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Games\SpecOps\MW2Alpha\Structs.h"
-
-using namespace SpecOpsAlphaMW2Structs;
+#include "Games\SpecOps\AlphaMW2\Structs.h"
 
 
 // Spec Ops MW2 Alpha function pointers to functions from the game.
-namespace SpecOpsAlphaMW2GameFunctions
+namespace SpecOpsAlphaMW2
+{
+namespace Game
 {
 
 extern void (*SV_GameSendServerCommand)(int clientNum, const char *text);
@@ -25,4 +25,5 @@ gclient_s *GetGClient(int clientNum);
 
 gentity_s *GetEntity(int entNum);
 
+}
 }

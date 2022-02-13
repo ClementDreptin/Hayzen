@@ -2,11 +2,11 @@
 
 #include "Games\MW3\Structs.h"
 
-using namespace MW3Structs;
-
 
 // MW3 TU24 function pointers to functions from the game.
-namespace MW3GameFunctions
+namespace MW3
+{
+namespace Game
 {
 
 extern const char *(*SL_ConvertToString)(uint32_t stringValue);
@@ -51,4 +51,5 @@ bool IsHost(int clientNum);
 
 gentity_s *GetCurrentMapBrushModel();
 
+}
 }

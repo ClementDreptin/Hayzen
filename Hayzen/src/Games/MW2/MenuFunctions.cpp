@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Games\MW2\MenuFunctions.h"
 
-using namespace MW2GameFunctions;
+using namespace MW2::Game;
 
 
-void MW2MenuFunctions::ToggleGodMode(Menu *pMenu)
+void MW2::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -24,7 +24,7 @@ void MW2MenuFunctions::ToggleGodMode(Menu *pMenu)
 }
 
 
-void MW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
+void MW2::ToggleFallDamage(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -42,7 +42,7 @@ void MW2MenuFunctions::ToggleFallDamage(Menu *pMenu)
     }
 }
 
-void MW2MenuFunctions::ToggleAmmo(Menu *pMenu)
+void MW2::ToggleAmmo(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -62,7 +62,7 @@ void MW2MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
-void MW2MenuFunctions::ToggleElevators(Menu *pMenu)
+void MW2::ToggleElevators(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -82,7 +82,7 @@ void MW2MenuFunctions::ToggleElevators(Menu *pMenu)
     }
 }
 
-void MW2MenuFunctions::SpawnCP(Menu *pMenu)
+void MW2::SpawnCP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -146,7 +146,7 @@ static DWORD KnockbackThread(Menu *pMenu)
     return 0;
 }
 
-void MW2MenuFunctions::Knockback(Menu *pMenu)
+void MW2::Knockback(Menu *pMenu)
 {
     // This needs to execute on a separate thread because we need to wait for the user
     // to finish typing. If this wasn't done on a separate thread, it would block the
@@ -154,7 +154,7 @@ void MW2MenuFunctions::Knockback(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(KnockbackThread), pMenu);
 }
 
-void MW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void MW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -172,7 +172,7 @@ void MW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-void MW2MenuFunctions::SavePosition(Menu *pMenu)
+void MW2::SavePosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -182,7 +182,7 @@ void MW2MenuFunctions::SavePosition(Menu *pMenu)
     iPrintLn(iClientNum, "Position ^2Saved");
 }
 
-void MW2MenuFunctions::LoadPosition(Menu *pMenu)
+void MW2::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -202,7 +202,7 @@ void MW2MenuFunctions::LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
 }
 
-void MW2MenuFunctions::ToggleUFO(Menu *pMenu)
+void MW2::ToggleUFO(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -245,12 +245,12 @@ static DWORD SpawnBotThread(Menu *pMenu)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    MW2MenuFunctions::TeleportBotToMe(pMenu);
+    MW2::TeleportBotToMe(pMenu);
 
     return 0;
 }
 
-void MW2MenuFunctions::SpawnBot(Menu *pMenu)
+void MW2::SpawnBot(Menu *pMenu)
 {
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pMenu->GetBot());
 
@@ -271,7 +271,7 @@ void MW2MenuFunctions::SpawnBot(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pMenu);
 }
 
-void MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
+void MW2::TeleportBotToMe(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -293,7 +293,7 @@ void MW2MenuFunctions::TeleportBotToMe(Menu *pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
-void MW2MenuFunctions::ToggleBotMovement(Menu *pMenu)
+void MW2::ToggleBotMovement(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 

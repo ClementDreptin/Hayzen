@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Core\Game.h"
+#include "Core\Title.h"
 #include "Elements\HudElem.h"
 
 
-// Class to run Spec Ops MW3, inherits from Game.
-class SpecOpsMW3 : public Game
+// Class to run Spec Ops MW2, inherits from Game.
+class SpecOpsMW2Title : public Title
 {
 public:
     // Set the draw function pointers and the function hooks.
@@ -21,10 +21,4 @@ private:
 
     // Initialize the menu when the game starts.
     static void ClientCommandHook(int clientNum, const char *s);
-
-    // Stub to hold the original code of PlayerCmd_AllowJump.
-    static void PlayerCmd_AllowJumpStub();
-
-    // Make the PlayerCmd_AllowJump function not do anything to be able to jump in missions where you normally can't.
-    static void PlayerCmd_AllowJumpHook();
 };

@@ -1,23 +1,20 @@
 #pragma once
 
 #include "Core\Menu.h"
-#include "Games\MW2Alpha\GameFunctions.h"
+#include "Games\SpecOps\AlphaMW2\GameFunctions.h"
 
 
-namespace AlphaMW2MenuFunctions
+namespace SpecOpsAlphaMW2
 {
 
 // Toggle God Mode.
 void ToggleGodMode(Menu *pMenu);
 
-// Toggle fall damage.
-void ToggleFallDamage(Menu *pMenu);
-
 // Toggle unlimited ammo.
 void ToggleAmmo(Menu *pMenu);
 
-// Spawn a care package.
-void SpawnCP(Menu *pMenu);
+// Change the jump height.
+void ChangeJumpHeight(Menu *pMenu);
 
 // Toggle save and load binds.
 void ToggleSaveLoadBinds(Menu *pMenu);
@@ -31,13 +28,10 @@ void LoadPosition(Menu *pMenu);
 // Toggle UFO.
 void ToggleUFO(Menu *pMenu);
 
-// Spawn a bot.
-void SpawnBot(Menu *pMenu);
+// Toggle God Mode for the second player.
+void ToggleSecondPlayerGodMode(Menu *pMenu);
 
-// Teleport the bot in front of the player.
-void TeleportBotToMe(Menu *pMenu);
-
-// Toggle the bot's movement.
-void ToggleBotMovement(Menu *pMenu);
+// Teleport the second player in front of the first player.
+void TeleportSecondPlayerToMe(Menu *pMenu);
 
 }

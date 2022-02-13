@@ -2,11 +2,11 @@
 
 #include "Games\SpecOps\MW2\Structs.h"
 
-using namespace SpecOpsMW2Structs;
-
 
 // Spec Ops MW2 function pointers to functions from the game.
-namespace SpecOpsMW2GameFunctions
+namespace SpecOpsMW2
+{
+namespace Game
 {
 
 extern void (*SV_GameSendServerCommand)(int clientNum, const char *text);
@@ -25,4 +25,5 @@ gclient_s *GetGClient(int clientNum);
 
 gentity_s *GetEntity(int entNum);
 
+}
 }

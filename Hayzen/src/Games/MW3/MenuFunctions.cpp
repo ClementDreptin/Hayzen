@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Games\MW3\MenuFunctions.h"
 
-using namespace MW3GameFunctions;
+using namespace MW3::Game;
 
 
-void MW3MenuFunctions::ToggleGodMode(Menu *pMenu)
+void MW3::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -23,7 +23,7 @@ void MW3MenuFunctions::ToggleGodMode(Menu *pMenu)
     }
 }
 
-void MW3MenuFunctions::ToggleFallDamage(Menu *pMenu)
+void MW3::ToggleFallDamage(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -41,7 +41,7 @@ void MW3MenuFunctions::ToggleFallDamage(Menu *pMenu)
     }
 }
 
-void MW3MenuFunctions::ToggleAmmo(Menu *pMenu)
+void MW3::ToggleAmmo(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -61,7 +61,7 @@ void MW3MenuFunctions::ToggleAmmo(Menu *pMenu)
     }
 }
 
-void MW3MenuFunctions::SpawnCP(Menu *pMenu)
+void MW3::SpawnCP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -102,7 +102,7 @@ void MW3MenuFunctions::SpawnCP(Menu *pMenu)
     SV_LinkEntity(entity);
 }
 
-void MW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void MW3::ToggleSaveLoadBinds(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -120,7 +120,7 @@ void MW3MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-void MW3MenuFunctions::SavePosition(Menu *pMenu)
+void MW3::SavePosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -130,7 +130,7 @@ void MW3MenuFunctions::SavePosition(Menu *pMenu)
     iPrintLn(iClientNum, "Position ^2Saved");
 }
 
-void MW3MenuFunctions::LoadPosition(Menu *pMenu)
+void MW3::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -150,7 +150,7 @@ void MW3MenuFunctions::LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
 }
 
-void MW3MenuFunctions::ToggleUFO(Menu *pMenu)
+void MW3::ToggleUFO(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 

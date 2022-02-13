@@ -2,7 +2,9 @@
 #include "Games\SpecOps\MW3\GameFunctions.h"
 
 
-namespace SpecOpsMW3GameFunctions
+namespace SpecOpsMW3
+{
+namespace Game
 {
 
 void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x82371680);
@@ -30,4 +32,5 @@ gentity_s *GetEntity(int entNum)
     return reinterpret_cast<gentity_s *>(0x82F66560 + sizeof(gentity_s) * entNum);
 }
 
+}
 }

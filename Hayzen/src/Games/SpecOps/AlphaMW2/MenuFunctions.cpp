@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Games\SpecOps\MW2Alpha\MenuFunctions.h"
+#include "Games\SpecOps\AlphaMW2\MenuFunctions.h"
 
-using namespace SpecOpsAlphaMW2GameFunctions;
+using namespace SpecOpsAlphaMW2::Game;
 
 
-void SpecOpsAlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleGodMode(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -22,7 +22,7 @@ void SpecOpsAlphaMW2MenuFunctions::ToggleGodMode(Menu *pMenu)
     }
 }
 
-void SpecOpsAlphaMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleAmmo(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -66,7 +66,7 @@ static DWORD ChangeJumpHeightThread(Menu *pMenu)
     return 0;
 }
 
-void SpecOpsAlphaMW2MenuFunctions::ChangeJumpHeight(Menu *pMenu)
+void SpecOpsAlphaMW2::ChangeJumpHeight(Menu *pMenu)
 {
     // This needs to execute on a separate thread because we need to wait for the user
     // to finish typing. If this wasn't done on a separate thread, it would block the
@@ -74,7 +74,7 @@ void SpecOpsAlphaMW2MenuFunctions::ChangeJumpHeight(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
 }
 
-void SpecOpsAlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -92,7 +92,7 @@ void SpecOpsAlphaMW2MenuFunctions::ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-void SpecOpsAlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
+void SpecOpsAlphaMW2::SavePosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -102,7 +102,7 @@ void SpecOpsAlphaMW2MenuFunctions::SavePosition(Menu *pMenu)
     iPrintLn(iClientNum, "Position ^2Saved");
 }
 
-void SpecOpsAlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
+void SpecOpsAlphaMW2::LoadPosition(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
@@ -122,12 +122,12 @@ void SpecOpsAlphaMW2MenuFunctions::LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
 }
 
-void SpecOpsAlphaMW2MenuFunctions::ToggleUFO(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleUFO(Menu *pMenu)
 {
     Cbuf_AddText(0, "ufo");
 }
 
-void SpecOpsAlphaMW2MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1
     int iSecondClientNum = 1;
@@ -155,7 +155,7 @@ void SpecOpsAlphaMW2MenuFunctions::ToggleSecondPlayerGodMode(Menu *pMenu)
     }
 }
 
-void SpecOpsAlphaMW2MenuFunctions::TeleportSecondPlayerToMe(Menu *pMenu)
+void SpecOpsAlphaMW2::TeleportSecondPlayerToMe(Menu *pMenu)
 {
     // The second client num is always 1
     int iSecondClientNum = 1;

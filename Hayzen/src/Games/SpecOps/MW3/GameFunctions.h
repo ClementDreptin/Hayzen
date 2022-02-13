@@ -2,11 +2,11 @@
 
 #include "Games\SpecOps\MW3\Structs.h"
 
-using namespace SpecOpsMW3Structs;
-
 
 // Spec Ops MW3 function pointers to functions from the game.
-namespace SpecOpsMW3GameFunctions
+namespace SpecOpsMW3
+{
+namespace Game
 {
 
 extern void (*SV_GameSendServerCommand)(int clientNum, const char *text);
@@ -25,4 +25,5 @@ gclient_s *GetGClient(int clientNum);
 
 gentity_s *GetEntity(int entNum);
 
+}
 }

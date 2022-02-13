@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Games\SpecOps\MW2\MW2.h"
+#include "Games\SpecOps\MW2\SpecOpsMW2Title.h"
 
 #include "Games\SpecOps\MW2\MenuFunctions.h"
 
 
-bool SpecOpsMW2::s_bJumped = false;
+bool SpecOpsMW2Title::s_bJumped = false;
 
 
-void SpecOpsMW2::Init()
+void SpecOpsMW2Title::Init()
 {
     Xam::XNotify("Hayzen - MW2 Spec Ops Detected");
 
@@ -21,11 +21,11 @@ void SpecOpsMW2::Init()
     m_dwRegisterMaterialFnAddr = 0x8238BE08;
 
     // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(SpecOpsMW2MenuFunctions::SavePosition);
-    s_Menu.SetLoadPositionFn(SpecOpsMW2MenuFunctions::LoadPosition);
+    s_Menu.SetSavePositionFn(SpecOpsMW2::SavePosition);
+    s_Menu.SetLoadPositionFn(SpecOpsMW2::LoadPosition);
 
     // Set the draw function pointers with the addresses above
-    Game::Init();
+    Title::Init();
 
     // Create the structure of the menu
     CreateStructure();
@@ -35,34 +35,34 @@ void SpecOpsMW2::Init()
     Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821EFFD0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
 }
 
-void SpecOpsMW2::CreateStructure()
+void SpecOpsMW2Title::CreateStructure()
 {
     // Set the global title of the menu
     s_RootOption.SetText("Cod Jumper");
 
     // Main section
     auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW2MenuFunctions::ToggleGodMode));
-    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW2MenuFunctions::ToggleAmmo));
-    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW2MenuFunctions::ChangeJumpHeight));
+    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW2::ToggleGodMode));
+    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW2::ToggleAmmo));
+    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW2::ChangeJumpHeight));
     s_RootOption.AddChild(pMain);
 
     // Teleport section
     auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW2MenuFunctions::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW2MenuFunctions::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW2MenuFunctions::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2MenuFunctions::ToggleUFO));
+    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW2::ToggleSaveLoadBinds));
+    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW2::SavePosition));
+    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW2::LoadPosition));
+    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2::ToggleUFO));
     s_RootOption.AddChild(pTeleport);
 
     // Second player section
     auto pSecondPlayer = MakeOption("Second Player", 2);
-    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW2MenuFunctions::ToggleSecondPlayerGodMode));
-    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW2MenuFunctions::TeleportSecondPlayerToMe));
+    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW2::ToggleSecondPlayerGodMode));
+    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW2::TeleportSecondPlayerToMe));
     s_RootOption.AddChild(pSecondPlayer);
 }
 
-void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
+void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
     ClientCommandStub(clientNum, s);
@@ -88,8 +88,8 @@ void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
             s_Menu.Init(0, &s_RootOption);
 
             // Disable the unlocalized error messages when printing something in the killfeed
-            SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warnings 0");
-            SpecOpsMW2GameFunctions::Cbuf_AddText(0, "set loc_warningsUI 0");
+            SpecOpsMW2::Game::Cbuf_AddText(0, "set loc_warnings 0");
+            SpecOpsMW2::Game::Cbuf_AddText(0, "set loc_warningsUI 0");
         }
 
         // Register that the user released the A button
@@ -97,7 +97,7 @@ void SpecOpsMW2::ClientCommandHook(int clientNum, const char *s)
     }
 }
 
-void __declspec(naked) SpecOpsMW2::ClientCommandStub(int clientNum, const char *s)
+void __declspec(naked) SpecOpsMW2Title::ClientCommandStub(int clientNum, const char *s)
 {
     __asm
     {

@@ -4,7 +4,7 @@
 #include "Games\MW2\GameFunctions.h"
 
 
-namespace MW2MenuFunctions
+namespace MW2
 {
 
 // Toggle God Mode.

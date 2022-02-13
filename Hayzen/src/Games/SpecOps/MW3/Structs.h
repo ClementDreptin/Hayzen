@@ -2,7 +2,9 @@
 
 
 // Spec Ops MW3 structs used by the game functions.
-namespace SpecOpsMW3Structs
+namespace SpecOpsMW3
+{
+namespace Game
 {
 
 struct playerState_s
@@ -70,4 +72,5 @@ struct gentity_s
 
 static_assert(sizeof(gentity_s) == 0x270, "size of gentity_s different than 0x270");
 
+}
 }

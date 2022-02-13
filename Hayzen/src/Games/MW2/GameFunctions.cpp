@@ -2,7 +2,9 @@
 #include "Games\MW2\GameFunctions.h"
 
 
-namespace MW2GameFunctions
+namespace MW2
+{
+namespace Game
 {
 
 static std::unordered_map<std::string, DWORD> BrushModelMap;
@@ -114,4 +116,5 @@ gentity_s *GetCurrentMapBrushModel()
     return reinterpret_cast<gentity_s *>(BrushModelMap[strMapName]);
 }
 
+}
 }

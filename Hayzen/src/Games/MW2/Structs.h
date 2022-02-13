@@ -2,7 +2,9 @@
 
 
 // MW2 TU9 structs used by the game functions.
-namespace MW2Structs
+namespace MW2
+{
+namespace Game
 {
 
 struct playerState_s
@@ -77,4 +79,5 @@ struct gentity_s
 
 static_assert(sizeof(gentity_s) == 0x280, "size of gentity_s different than 0x280");
 
+}
 }

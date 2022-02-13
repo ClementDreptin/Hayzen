@@ -4,7 +4,7 @@
 #include "Games\MW3\GameFunctions.h"
 
 
-namespace MW3MenuFunctions
+namespace MW3
 {
 
 // Toggle God Mode.

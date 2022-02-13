@@ -1,8 +1,10 @@
 #include "pch.h"
-#include "Games\SpecOps\MW2Alpha\GameFunctions.h"
+#include "Games\SpecOps\AlphaMW2\GameFunctions.h"
 
 
-namespace SpecOpsAlphaMW2GameFunctions
+namespace SpecOpsAlphaMW2
+{
+namespace Game
 {
 
 void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x823329E8);
@@ -30,4 +32,5 @@ gentity_s *GetEntity(int entNum)
     return reinterpret_cast<gentity_s *>(0x82C74E28 + sizeof(gentity_s) * entNum);
 }
 
+}
 }

@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Games\MW2Alpha\Structs.h"
-
-using namespace AlphaMW2Structs;
+#include "Games\AlphaMW2\Structs.h"
 
 
 // MW2 Alpha function pointers to functions from the game.
-namespace AlphaMW2GameFunctions
+namespace AlphaMW2
+{
+namespace Game
 {
 
 extern const char *(*SL_ConvertToString)(uint32_t stringValue);
@@ -57,4 +57,5 @@ bool IsHost(int clientNum);
 
 gentity_s *GetCurrentMapBrushModel();
 
+}
 }

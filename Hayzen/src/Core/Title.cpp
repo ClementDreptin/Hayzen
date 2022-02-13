@@ -1,20 +1,20 @@
 #include "pch.h"
-#include "Core\Game.h"
+#include "Core\Title.h"
 
 #include "Elements\HudElem.h"
 
 
-Menu Game::s_Menu;
-Option Game::s_RootOption;
+Menu Title::s_Menu;
+Option Title::s_RootOption;
 
 
-Game::~Game()
+Title::~Title()
 {
     s_Menu.Stop();
     s_RootOption.Cleanup();
 }
 
-void Game::Init()
+void Title::Init()
 {
     // Make the HudElem draw function pointers point to the drawing functions of the current game
     SetDrawFunctionsPointers();
@@ -23,7 +23,7 @@ void Game::Init()
     RegisterFontAndMaterial();
 }
 
-void Game::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
+void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
     // Call the original SCR_DrawScreenField function
     SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
@@ -39,7 +39,7 @@ void Game::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
     s_Menu.Render();
 }
 
-void __declspec(naked) Game::SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
+void __declspec(naked) Title::SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
 {
     __asm
     {
@@ -54,7 +54,7 @@ void __declspec(naked) Game::SCR_DrawScreenFieldStub(const int localClientNum, i
     }
 }
 
-void Game::SetDrawFunctionsPointers()
+void Title::SetDrawFunctionsPointers()
 {
     HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_dwRegisterFontFnAddr);
     HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_dwRegisterMaterialFnAddr);
@@ -63,7 +63,7 @@ void Game::SetDrawFunctionsPointers()
     HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_dwDrawRectangleFnAddr));
 }
 
-void Game::RegisterFontAndMaterial()
+void Title::RegisterFontAndMaterial()
 {
     HudElem::SetFont(HudElem::R_RegisterFont("fonts/normalFont", 0));
     HudElem::SetMaterialHandle(HudElem::Material_RegisterHandle("white", 0));

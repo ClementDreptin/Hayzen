@@ -2,7 +2,9 @@
 #include "Games\MW3\GameFunctions.h"
 
 
-namespace MW3GameFunctions
+namespace MW3
+{
+namespace Game
 {
 
 static std::unordered_map<std::string, DWORD> BrushModelMap;
@@ -91,4 +93,5 @@ gentity_s *GetCurrentMapBrushModel()
     return pBrushModel;
 }
 
+}
 }

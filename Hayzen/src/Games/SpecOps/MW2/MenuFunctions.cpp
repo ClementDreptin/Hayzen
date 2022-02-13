@@ -46,9 +46,14 @@ void SpecOpsMW2MenuFunctions::ToggleAmmo(Menu *pMenu)
 static DWORD ChangeJumpHeightThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
-    std::string strValue = Xam::ShowKeyboard("Jump Height", "Max value: 999\nDefault value: 39", "39", 3, VKBD_LATIN_NUMERIC);
+    std::string strValue;
+    DWORD dwResult = Xam::ShowKeyboard("Jump Height", "Max value: 999\nDefault value: 39", "39", strValue, 3, VKBD_LATIN_NUMERIC);
 
-    // If the user did not enter anything, set the value to its default value
+    // If the user canceled the keyboard, return early
+    if (dwResult != ERROR_SUCCESS)
+        return 0;
+
+    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
     if (strValue == "")
         strValue = "39";
 

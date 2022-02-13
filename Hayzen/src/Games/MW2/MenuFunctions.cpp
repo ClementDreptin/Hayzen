@@ -127,9 +127,14 @@ void MW2MenuFunctions::SpawnCP(Menu *pMenu)
 static DWORD KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
-    std::string strValue = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", 6, VKBD_LATIN_NUMERIC);
+    std::string strValue;
+    DWORD dwResult = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", strValue, 6, VKBD_LATIN_NUMERIC);
 
-    // If the user did not enter anything, set the value to its default value
+    // If the user canceled the keyboard, return early
+    if (dwResult != ERROR_SUCCESS)
+        return 0;
+
+    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
     if (strValue == "")
         strValue = "1000";
 

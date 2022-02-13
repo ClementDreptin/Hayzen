@@ -11,7 +11,9 @@ void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<vo
 
 playerState_s *(*SV_GetPlayerstateForClientNum)(int num) = reinterpret_cast<playerState_s *(*)(int)>(0x823329B8);
 
-void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles) = reinterpret_cast<void(*)(gentity_s *, const float *, const float *)>(0x821F98A0);
+void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821E1660);
+
+void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821E1798);
 
 void iPrintLn(int clientNum, const std::string &text)
 {

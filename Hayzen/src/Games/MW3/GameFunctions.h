@@ -35,7 +35,9 @@ extern void (*SV_UnlinkEntity)(gentity_s *gEnt);
 
 extern void (*SV_SetBrushModel)(gentity_s *ent);
 
-extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
+extern void (*SetClientOrigin)(gentity_s *ent, const float *origin);
+
+extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
 void iPrintLn(int clientNum, const std::string &text);
 

@@ -144,7 +144,10 @@ void MW3MenuFunctions::LoadPosition(Menu *pMenu)
         return;
     }
 
-    TeleportPlayer(GetEntity(iClientNum), reinterpret_cast<const float *>(&SavedPos), reinterpret_cast<const float *>(&SavedAngles));
+    gentity_s *pPlayerEntity = GetEntity(iClientNum);
+
+    SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&SavedPos));
+    SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
 }
 
 void MW3MenuFunctions::ToggleUFO(Menu *pMenu)

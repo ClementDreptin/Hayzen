@@ -41,7 +41,9 @@ extern gentity_s *(*SV_AddTestClient)();
 
 extern void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer);
 
-extern void (*TeleportPlayer)(gentity_s *player, const float *origin, const float *angles);
+extern void (*SetClientOrigin)(gentity_s *ent, const float *origin);
+
+extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
 void iPrintLn(int clientNum, const std::string &text);
 

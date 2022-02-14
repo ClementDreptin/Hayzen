@@ -1,12 +1,19 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
+// The COMMON_FN_NO_BOTS can be defined to avoid compiling the functions to manipulate bots. Don't
+// forget to undefine the macro after including this file. Example:
+// #define COMMON_FN_NO_BOTS
+// #include "Games\Common\MultiplayerFunctions.h"
+// #undef COMMON_FN_NO_BOTS
+
 #include "Core\Menu.h"
 
 
 namespace COMMON_FN_NAMESPACE
 {
 
+// Toggle God Mode (specific to Multiplayer).
 void ToggleGodModeMP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
@@ -28,6 +35,7 @@ void ToggleGodModeMP(Menu *pMenu)
     }
 }
 
+// Toggle fall damage.
 void ToggleFallDamage(Menu *pMenu, DWORD dwPatchAddress)
 {
     int iClientNum = pMenu->GetClientNum();
@@ -44,6 +52,7 @@ void ToggleFallDamage(Menu *pMenu, DWORD dwPatchAddress)
     }
 }
 
+// Spawn a care package.
 void SpawnCarePackage(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
@@ -86,6 +95,9 @@ void SpawnCarePackage(Menu *pMenu)
 }
 
 #ifndef COMMON_FN_NO_BOTS
+// Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
+// used in another thread which will execute after the scope where the structure is created ends. The threaded
+// function deletes the structure after using it.
 struct SpawnBotOptions
 {
     Menu *pMenu;
@@ -95,6 +107,7 @@ struct SpawnBotOptions
 
 void TeleportBotToMe(Menu *pMenu);
 
+// Threaded function that makes the bot pick a team, then pick a class.
 DWORD SpawnBotThread(SpawnBotOptions *pOptions)
 {
     Sleep(150);
@@ -128,6 +141,7 @@ DWORD SpawnBotThread(SpawnBotOptions *pOptions)
     return 0;
 }
 
+// Spawn a bot.
 void SpawnBot(SpawnBotOptions *pOptions)
 {
     gentity_s *pBot = reinterpret_cast<gentity_s *>(pOptions->pMenu->GetBot());
@@ -149,6 +163,7 @@ void SpawnBot(SpawnBotOptions *pOptions)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
 }
 
+// Teleport the bot in front of the player.
 void TeleportBotToMe(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
@@ -171,6 +186,7 @@ void TeleportBotToMe(Menu *pMenu)
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
 }
 
+// Toggle the bot's movement.
 void ToggleBotMovement(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();

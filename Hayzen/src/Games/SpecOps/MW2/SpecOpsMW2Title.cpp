@@ -52,7 +52,7 @@ void SpecOpsMW2Title::CreateStructure()
     pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW2::ToggleSaveLoadBinds));
     pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW2::SavePosition));
     pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2::ToggleUFO));
+    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW2::ToggleUfo));
     s_RootOption.AddChild(pTeleport);
 
     // Second player section

@@ -71,6 +71,8 @@
     </Deploy>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
+    <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Elements\Rectangle.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Menu.h" />
@@ -82,6 +84,7 @@
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
+    <ClInclude Include="src\Games\Common\CommonFunctions.h" />
     <ClInclude Include="src\Games\MW2\GameFunctions.h" />
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />

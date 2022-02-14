@@ -26,7 +26,7 @@ void SavePosition(Menu *pMenu);
 void LoadPosition(Menu *pMenu);
 
 // Toggle UFO.
-void ToggleUFO(Menu *pMenu);
+void ToggleUfo(Menu *pMenu);
 
 // Toggle God Mode for the second player.
 void ToggleSecondPlayerGodMode(Menu *pMenu);

@@ -20,7 +20,7 @@ void ToggleAmmo(Menu *pMenu);
 void ToggleElevators(Menu *pMenu);
 
 // Spawn a care package.
-void SpawnCP(Menu *pMenu);
+void SpawnCarePackage(Menu *pMenu);
 
 // Open a keyboard to allow the user to change the knockback value.
 void Knockback(Menu *pMenu);
@@ -35,7 +35,7 @@ void SavePosition(Menu *pMenu);
 void LoadPosition(Menu *pMenu);
 
 // Toggle UFO.
-void ToggleUFO(Menu *pMenu);
+void ToggleUfo(Menu *pMenu);
 
 // Spawn a bot.
 void SpawnBot(Menu *pMenu);

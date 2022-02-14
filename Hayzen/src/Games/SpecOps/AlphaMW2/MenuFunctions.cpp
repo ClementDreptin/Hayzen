@@ -3,176 +3,41 @@
 
 using namespace SpecOpsAlphaMW2::Game;
 
+#ifdef COMMON_FN_NAMESPACE
+#undef COMMON_FN_NAMESPACE 
+#endif
+#define COMMON_FN_NAMESPACE SpecOpsAlphaMW2Common
 
-void SpecOpsAlphaMW2::ToggleGodMode(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
+#include "Games\Common\CommonFunctions.h"
+#include "Games\Common\SpecOpsFunctions.h"
 
-    playerState_s *playerState = SV_GetPlayerstateForClientNum(iClientNum);
 
-    if (playerState->otherFlags == 0)
-    {
-        playerState->otherFlags = 1;
-        iPrintLn(iClientNum, "God Mode ^2On");
-    }
-    else
-    {
-        playerState->otherFlags = 0;
-        iPrintLn(iClientNum, "God Mode ^1Off");
-    }
-}
+void SpecOpsAlphaMW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeSP(pMenu); }
 
 void SpecOpsAlphaMW2::ToggleAmmo(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
+    Options.pMenu = pMenu;
+    Options.dwPatchAddress = 0x82328610;
+    Options.dwDefaultValue = 0x7D1D4850;
+    Options.dwPatchValue = 0x7D284B78;
 
-    DWORD dwAddress = 0x82328610;
-    DWORD dwDefaultValue = 0x7D1D4850;
-    DWORD dwModifiedValue = 0x7D284B78;
-
-    if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
-    {
-        Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
-    }
-    else
-    {
-        Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
-    }
+    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
 }
 
-// Threaded function that prompts a keyboard and sets the jump height value to what was entered.
-static DWORD ChangeJumpHeightThread(Menu *pMenu)
-{
-    // Get the value from the user via the virtual keyboard
-    std::string strValue;
-    DWORD dwResult = Xam::ShowKeyboard("Jump Height", "Max value: 999\nDefault value: 39", "39", strValue, 3, VKBD_LATIN_NUMERIC);
+void SpecOpsAlphaMW2::ChangeJumpHeight(Menu *pMenu) { COMMON_FN_NAMESPACE::ChangeJumpHeight(pMenu); }
 
-    // If the user canceled the keyboard, return early
-    if (dwResult != ERROR_SUCCESS)
-        return 0;
+void SpecOpsAlphaMW2::ToggleSaveLoadBinds(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu); }
 
-    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
-    if (strValue == "")
-        strValue = "39";
+void SpecOpsAlphaMW2::SavePosition(Menu *pMenu) { COMMON_FN_NAMESPACE::SavePosition(pMenu); }
 
-    // Set the new jump height value
-    std::string strFullCommand = "set jump_height " + strValue;
-    Cbuf_AddText(0, strFullCommand.c_str());
+void SpecOpsAlphaMW2::LoadPosition(Menu *pMenu) { COMMON_FN_NAMESPACE::LoadPosition(pMenu); }
 
-    iPrintLn(pMenu->GetClientNum(), "Jump Height set to ^2" + strValue);
-
-    return 0;
-}
-
-void SpecOpsAlphaMW2::ChangeJumpHeight(Menu *pMenu)
-{
-    // This needs to execute on a separate thread because we need to wait for the user
-    // to finish typing. If this wasn't done on a separate thread, it would block the
-    // game's thread and make it crash.
-    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
-}
-
-void SpecOpsAlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    if (!pMenu->BindsEnabled())
-    {
-        Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
-        iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
-    }
-    else
-    {
-        Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
-        iPrintLn(iClientNum, "Save and Load binds ^1Off");
-    }
-
-    pMenu->ToggleBinds();
-}
-
-void SpecOpsAlphaMW2::SavePosition(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    pMenu->SetSavedPos(SV_GetPlayerstateForClientNum(iClientNum)->origin);
-    pMenu->SetSavedAngles(SV_GetPlayerstateForClientNum(iClientNum)->viewAngles);
-
-    iPrintLn(iClientNum, "Position ^2Saved");
-}
-
-void SpecOpsAlphaMW2::LoadPosition(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    const vec3 &SavedPos = pMenu->GetSavedPos();
-    const vec3 &SavedAngles = pMenu->GetSavedAngles();
-
-    // Make sure the player previously saved their position
-    if (SavedPos.isNull() || SavedAngles.isNull())
-    {
-        iPrintLn(iClientNum, "^1Save a position first!");
-        return;
-    }
-
-    gentity_s *pPlayerEntity = GetEntity(iClientNum);
-
-    SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&SavedPos));
-    SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
-}
-
-void SpecOpsAlphaMW2::ToggleUFO(Menu *pMenu)
+void SpecOpsAlphaMW2::ToggleUfo(Menu *pMenu)
 {
     Cbuf_AddText(0, "ufo");
 }
 
-void SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(Menu *pMenu)
-{
-    // The second client num is always 1
-    int iSecondClientNum = 1;
-    int iFirstClientNum = pMenu->GetClientNum();
+void SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pMenu); }
 
-    // If the player name of the second client is empty, it means there is no second client
-    gclient_s *pSecondClient = GetGClient(iSecondClientNum);
-    if (!pSecondClient->connected)
-    {
-        iPrintLn(iFirstClientNum, "^1No other player in the game!");
-        return;
-    }
-
-    playerState_s *playerState = SV_GetPlayerstateForClientNum(iSecondClientNum);
-
-    if (playerState->otherFlags == 0)
-    {
-        playerState->otherFlags = 1;
-        iPrintLn(iFirstClientNum, "Second Player God Mode ^2On");
-    }
-    else
-    {
-        playerState->otherFlags = 0;
-        iPrintLn(iFirstClientNum, "Second Player God Mode ^1Off");
-    }
-}
-
-void SpecOpsAlphaMW2::TeleportSecondPlayerToMe(Menu *pMenu)
-{
-    // The second client num is always 1
-    int iSecondClientNum = 1;
-    int iFirstClientNum = pMenu->GetClientNum();
-
-    gclient_s *pSecondClient = GetGClient(iSecondClientNum);
-    if (!pSecondClient->connected)
-    {
-        iPrintLn(iFirstClientNum, "^1No other player in the game!");
-        return;
-    }
-
-    // Get the first player's current position
-    float fDistance = 100.0f;
-    vec3 Origin = SV_GetPlayerstateForClientNum(iFirstClientNum)->origin;
-    float fViewY = SV_GetPlayerstateForClientNum(iFirstClientNum)->viewAngles.y;
-
-    // Teleport the second player in front of the first player
-    pSecondClient->ps.origin = Math::ToFront(Origin, fViewY, fDistance);
-}
+void SpecOpsAlphaMW2::TeleportSecondPlayerToMe(Menu *pMenu) { COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe(pMenu); }

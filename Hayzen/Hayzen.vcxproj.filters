@@ -62,5 +62,8 @@
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\Structs.h" />
+    <ClInclude Include="src\Games\Common\CommonFunctions.h" />
+    <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
+    <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
   </ItemGroup>
 </Project>

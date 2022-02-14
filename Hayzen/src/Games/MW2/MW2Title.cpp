@@ -48,7 +48,7 @@ void MW2Title::CreateStructure()
     pMain->AddChild(MakeOption("Fall Damage", 1, MW2::ToggleFallDamage));
     pMain->AddChild(MakeOption("Ammo", 2, MW2::ToggleAmmo));
     pMain->AddChild(MakeOption("Elevators", 3, MW2::ToggleElevators));
-    pMain->AddChild(MakeOption("Spawn Care Package", 4, MW2::SpawnCP));
+    pMain->AddChild(MakeOption("Spawn Care Package", 4, MW2::SpawnCarePackage));
     pMain->AddChild(MakeOption("Knockback", 5, MW2::Knockback));
     s_RootOption.AddChild(pMain);
 
@@ -57,7 +57,7 @@ void MW2Title::CreateStructure()
     pTeleport->AddChild(MakeOption("Save/Load Binds", 0, MW2::ToggleSaveLoadBinds));
     pTeleport->AddChild(MakeOption("Save Position", 1, MW2::SavePosition));
     pTeleport->AddChild(MakeOption("Load Position", 2, MW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, MW2::ToggleUFO));
+    pTeleport->AddChild(MakeOption("UFO", 3, MW2::ToggleUfo));
     s_RootOption.AddChild(pTeleport);
 
     // Bot section

@@ -47,7 +47,7 @@ void MW3Title::CreateStructure()
     pMain->AddChild(MakeOption("God Mode", 0, MW3::ToggleGodMode));
     pMain->AddChild(MakeOption("Fall Damage", 1, MW3::ToggleFallDamage));
     pMain->AddChild(MakeOption("Ammo", 2, MW3::ToggleAmmo));
-    pMain->AddChild(MakeOption("Spawn Care Package", 3, MW3::SpawnCP));
+    pMain->AddChild(MakeOption("Spawn Care Package", 3, MW3::SpawnCarePackage));
     s_RootOption.AddChild(pMain);
 
     // Teleport section
@@ -55,7 +55,7 @@ void MW3Title::CreateStructure()
     pTeleport->AddChild(MakeOption("Save/Load Binds", 0, MW3::ToggleSaveLoadBinds));
     pTeleport->AddChild(MakeOption("Save Position", 1, MW3::SavePosition));
     pTeleport->AddChild(MakeOption("Load Position", 2, MW3::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, MW3::ToggleUFO));
+    pTeleport->AddChild(MakeOption("UFO", 3, MW3::ToggleUfo));
     s_RootOption.AddChild(pTeleport);
 }
 

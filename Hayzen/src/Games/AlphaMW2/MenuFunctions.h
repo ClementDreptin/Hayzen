@@ -17,7 +17,7 @@ void ToggleFallDamage(Menu *pMenu);
 void ToggleAmmo(Menu *pMenu);
 
 // Spawn a care package.
-void SpawnCP(Menu *pMenu);
+void SpawnCarePackage(Menu *pMenu);
 
 // Toggle save and load binds.
 void ToggleSaveLoadBinds(Menu *pMenu);
@@ -29,7 +29,7 @@ void SavePosition(Menu *pMenu);
 void LoadPosition(Menu *pMenu);
 
 // Toggle UFO.
-void ToggleUFO(Menu *pMenu);
+void ToggleUfo(Menu *pMenu);
 
 // Spawn a bot.
 void SpawnBot(Menu *pMenu);

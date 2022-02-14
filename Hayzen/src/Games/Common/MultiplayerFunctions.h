@@ -136,6 +136,8 @@ DWORD SpawnBotThread(SpawnBotOptions *pOptions)
     // Teleport the bot in front of the player
     TeleportBotToMe(pOptions->pMenu);
 
+    // The options were heap allocated to live long enough to still be available in this thread
+    // so we need to free them
     delete pOptions;
 
     return 0;

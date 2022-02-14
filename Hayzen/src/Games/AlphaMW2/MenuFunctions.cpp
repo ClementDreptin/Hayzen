@@ -14,38 +14,17 @@ using namespace AlphaMW2::Game;
 
 void AlphaMW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }
 
-void AlphaMW2::ToggleFallDamage(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
-    {
-        SetClientDvar(-1, "bg_fallDamageMinHeight", "998");
-        SetClientDvar(-1, "bg_fallDamageMaxHeight", "999");
-        iPrintLn(iClientNum, "Fall Damage ^2Off");
-    }
-    else
-    {
-        SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
-        SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
-        iPrintLn(iClientNum, "Fall Damage ^1On");
-    }
-}
+void AlphaMW2::ToggleFallDamage(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82023F50); }
 
 void AlphaMW2::ToggleAmmo(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
+    Options.pMenu = pMenu;
+    Options.dwPatchAddress = 0x82113628;
+    Options.dwDefaultValue = 0x7D1E4850;
+    Options.dwPatchValue = 0x7D284B78;
 
-    if (!Dvar_GetBool("player_sustainAmmo"))
-    {
-        SetClientDvar(-1, "player_sustainAmmo", "1");
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
-    }
-    else
-    {
-        SetClientDvar(-1, "player_sustainAmmo", "0");
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
-    }
+    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
 }
 
 void AlphaMW2::SpawnCarePackage(Menu *pMenu) {COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu); }

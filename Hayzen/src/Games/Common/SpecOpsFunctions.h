@@ -12,16 +12,16 @@ void ToggleGodModeSP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
-    playerState_s *playerState = GetPlayerState(iClientNum);
+    playerState_s *pPlayerState = GetPlayerState(iClientNum);
 
-    if (playerState->otherFlags == 0)
+    if (pPlayerState->otherFlags == 0)
     {
-        playerState->otherFlags = 1;
+        pPlayerState->otherFlags = 1;
         iPrintLn(iClientNum, "God Mode ^2On");
     }
     else
     {
-        playerState->otherFlags = 0;
+        pPlayerState->otherFlags = 0;
         iPrintLn(iClientNum, "God Mode ^1Off");
     }
 }

@@ -89,14 +89,16 @@ void ToggleUfo(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
-    if (GetGClient(iClientNum)->mFlags != 2)
+    gclient_s *pGClient = GetGClient(iClientNum);
+
+    if (pGClient->mFlags != 2)
     {
-        GetGClient(iClientNum)->mFlags = 2;
+        pGClient->mFlags = 2;
         iPrintLn(iClientNum, "Ufo ^2On");
     }
     else
     {
-        GetGClient(iClientNum)->mFlags = 0;
+        pGClient->mFlags = 0;
         iPrintLn(iClientNum, "Ufo ^1Off");
     }
 }

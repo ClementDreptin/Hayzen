@@ -180,9 +180,10 @@ void TeleportBotToMe(Menu *pMenu)
     }
 
     // Get the player's current position
+    playerState_s *pPlayerState = GetPlayerState(iClientNum);
     float fDistance = 100.0f;
-    vec3 Origin = GetPlayerState(iClientNum)->origin;
-    float fViewY = GetPlayerState(iClientNum)->viewAngles.y;
+    vec3 Origin = pPlayerState->origin;
+    float fViewY = pPlayerState->viewAngles.y;
 
     // Teleport the bot in front of the player
     pBot->client->ps.origin = Math::ToFront(Origin, fViewY, fDistance);

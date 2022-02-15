@@ -53,7 +53,7 @@ void SpecOpsMW3Title::CreateStructure()
     pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW3::ToggleSaveLoadBinds));
     pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW3::SavePosition));
     pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW3::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW3::ToggleUFO));
+    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW3::ToggleUfo));
     s_RootOption.AddChild(pTeleport);
 
     // Second player section

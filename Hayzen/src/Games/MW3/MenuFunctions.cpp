@@ -3,165 +3,39 @@
 
 using namespace MW3::Game;
 
+#ifdef COMMON_FN_NAMESPACE
+#undef COMMON_FN_NAMESPACE 
+#endif
+#define COMMON_FN_NAMESPACE MW3Common
 
-void MW3::ToggleGodMode(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
+#include "Games\Common\CommonFunctions.h"
 
-    const int GOD_MODE_ON = 4097;
-    const int GOD_MODE_OFF = 4096;
+#define COMMON_FN_NO_BOTS
+#include "Games\Common\MultiplayerFunctions.h"
+#undef COMMON_FN_NO_BOTS
 
-    if (GetEntity(iClientNum)->flags == GOD_MODE_OFF)
-    {
-        GetEntity(iClientNum)->flags = GOD_MODE_ON;
-        iPrintLn(iClientNum, "God Mode ^2On");
-    }
-    else
-    {
-        GetEntity(iClientNum)->flags = GOD_MODE_OFF;
-        iPrintLn(iClientNum, "God Mode ^1Off");
-    }
-}
 
-void MW3::ToggleFallDamage(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
+void MW3::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }
 
-    DWORD dwAddress = 0x82000C04;
-
-    if (Memory::Read<float>(dwAddress) == 128.0f)
-    {
-        Memory::Write<float>(dwAddress, 9999.0f);
-        iPrintLn(iClientNum, "Fall Damage ^2Off");
-    }
-    else
-    {
-        Memory::Write<float>(dwAddress, 128.0f);
-        iPrintLn(iClientNum, "Fall Damage ^1On");
-    }
-}
+void MW3::ToggleFallDamage(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82000C04); }
 
 void MW3::ToggleAmmo(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
+    Options.pMenu = pMenu;
+    Options.dwPatchAddress = 0x820F63E4;
+    Options.dwDefaultValue = 0x7D3D5050;
+    Options.dwPatchValue = 0x7D495378;
 
-    DWORD dwAddress = 0x820F63E4;
-    DWORD dwDefaultValue = 0x7D3D5050;
-    DWORD dwModifiedValue = 0x7D495378;
-
-    if (Memory::Read<DWORD>(dwAddress) == dwDefaultValue)
-    {
-        Memory::Write<DWORD>(dwAddress, dwModifiedValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
-    }
-    else
-    {
-        Memory::Write<DWORD>(dwAddress, dwDefaultValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
-    }
+    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
 }
 
-void MW3::SpawnCP(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
+void MW3::SpawnCarePackage(Menu *pMenu) { COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu); }
 
-    gentity_s *currentMapBrushModel = GetCurrentMapBrushModel();
+void MW3::ToggleSaveLoadBinds(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu); }
 
-    // Return early if the map is not supported
-    if (!currentMapBrushModel)
-    {
-        iPrintLn(iClientNum, "^1You cannot spawn a Care Package on this map!");
-        return;
-    }
+void MW3::SavePosition(Menu *pMenu) { COMMON_FN_NAMESPACE::SavePosition(pMenu); }
 
-    // Get the player's current position
-    float distance = 150.0f;
-    vec3 origin = GetPlayerState(iClientNum)->origin;
-    float viewY = GetPlayerState(iClientNum)->viewAngles.y;
+void MW3::LoadPosition(Menu *pMenu) { COMMON_FN_NAMESPACE::LoadPosition(pMenu); }
 
-    // Spawn an entity 150 units in front of the player and oriented towards
-    // where they are looking at
-    gentity_s *entity = G_Spawn();
-    entity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
-    entity->r.currentAngles.y = viewY;
-
-    // Apply the care package mesh to the entity
-    G_SetModel(entity, "com_plasticcase_friendly");
-    SP_script_model(entity);
-    SV_UnlinkEntity(entity);
-    entity->r.bmodel = 4;
-    entity->state.index = currentMapBrushModel->state.index;
-
-    // Make the care package solid
-    int contents = entity->r.contents;
-    SV_SetBrushModel(entity);
-    contents |= entity->r.contents;
-    entity->r.contents = contents;
-
-    // Register the entity for the scene 
-    SV_LinkEntity(entity);
-}
-
-void MW3::ToggleSaveLoadBinds(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    if (!pMenu->BindsEnabled())
-    {
-        Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
-        iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
-    }
-    else
-    {
-        Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
-        iPrintLn(iClientNum, "Save and Load binds ^1Off");
-    }
-
-    pMenu->ToggleBinds();
-}
-
-void MW3::SavePosition(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
-    pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
-
-    iPrintLn(iClientNum, "Position ^2Saved");
-}
-
-void MW3::LoadPosition(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    const vec3 &SavedPos = pMenu->GetSavedPos();
-    const vec3 &SavedAngles = pMenu->GetSavedAngles();
-
-    // Make sure the player previously saved their position
-    if (SavedPos.isNull() || SavedAngles.isNull())
-    {
-        iPrintLn(iClientNum, "^1Save a position first!");
-        return;
-    }
-
-    gentity_s *pPlayerEntity = GetEntity(iClientNum);
-
-    SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&SavedPos));
-    SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
-}
-
-void MW3::ToggleUFO(Menu *pMenu)
-{
-    int iClientNum = pMenu->GetClientNum();
-
-    if (GetGClient(iClientNum)->mFlags != 2)
-    {
-        GetGClient(iClientNum)->mFlags = 2;
-        iPrintLn(iClientNum, "Ufo ^2On");
-    }
-    else
-    {
-        GetGClient(iClientNum)->mFlags = 0;
-        iPrintLn(iClientNum, "Ufo ^1Off");
-    }
-}
+void MW3::ToggleUfo(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleUfo(pMenu); }

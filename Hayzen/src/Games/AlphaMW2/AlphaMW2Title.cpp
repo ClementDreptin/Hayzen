@@ -43,7 +43,7 @@ void AlphaMW2Title::CreateStructure()
     pMain->AddChild(MakeOption("God Mode", 0, AlphaMW2::ToggleGodMode));
     pMain->AddChild(MakeOption("Fall Damage", 1, AlphaMW2::ToggleFallDamage));
     pMain->AddChild(MakeOption("Ammo", 2, AlphaMW2::ToggleAmmo));
-    pMain->AddChild(MakeOption("Spawn Care Package", 3, AlphaMW2::SpawnCP));
+    pMain->AddChild(MakeOption("Spawn Care Package", 3, AlphaMW2::SpawnCarePackage));
     s_RootOption.AddChild(pMain);
 
     // Teleport section
@@ -51,7 +51,7 @@ void AlphaMW2Title::CreateStructure()
     pTeleport->AddChild(MakeOption("Save/Load Binds", 0, AlphaMW2::ToggleSaveLoadBinds));
     pTeleport->AddChild(MakeOption("Save Position", 1, AlphaMW2::SavePosition));
     pTeleport->AddChild(MakeOption("Load Position", 2, AlphaMW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, AlphaMW2::ToggleUFO));
+    pTeleport->AddChild(MakeOption("UFO", 3, AlphaMW2::ToggleUfo));
     s_RootOption.AddChild(pTeleport);
 
     // Bot section

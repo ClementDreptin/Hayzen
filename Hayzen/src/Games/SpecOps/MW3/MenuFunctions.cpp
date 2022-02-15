@@ -18,7 +18,7 @@ void SpecOpsMW3::ToggleAmmo(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
     Options.pMenu = pMenu;
-    Options.dwPatchAddress = 0x820F63E4;
+    Options.dwPatchAddress = 0x8235BB54;
     Options.dwDefaultValue = 0x7D3D5050;
     Options.dwPatchValue = 0x7D495378;
 

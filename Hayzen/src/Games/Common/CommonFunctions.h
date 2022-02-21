@@ -2,6 +2,7 @@
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
 #include "Core\Menu.h"
+#include "Core\Bits.h"
 
 
 namespace COMMON_FN_NAMESPACE
@@ -91,16 +92,11 @@ void ToggleUfo(Menu *pMenu)
 
     gclient_s *pGClient = GetGClient(iClientNum);
 
-    if (pGClient->mFlags != 2)
-    {
-        pGClient->mFlags = 2;
-        iPrintLn(iClientNum, "Ufo ^2On");
-    }
-    else
-    {
-        pGClient->mFlags = 0;
-        iPrintLn(iClientNum, "Ufo ^1Off");
-    }
+    // The default value of mFlags is 0, the UFO value is 2 so we just need to toggle the second bit
+    // to toggle UFO
+    BIT_FLIP(pGClient->mFlags, 1);
+
+    iPrintLn(iClientNum, BIT_CHECK(pGClient->mFlags, 1) ? "Ufo ^2On" : "Ufo ^1Off");
 }
 
 }

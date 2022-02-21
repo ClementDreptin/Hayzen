@@ -71,6 +71,7 @@
     </Deploy>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Elements\Rectangle.h" />

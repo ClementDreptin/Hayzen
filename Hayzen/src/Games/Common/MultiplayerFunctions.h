@@ -8,6 +8,7 @@
 // #undef COMMON_FN_NO_BOTS
 
 #include "Core\Menu.h"
+#include "Core\Bits.h"
 
 
 namespace COMMON_FN_NAMESPACE
@@ -18,21 +19,13 @@ void ToggleGodModeMP(Menu *pMenu)
 {
     int iClientNum = pMenu->GetClientNum();
 
-    const int GOD_MODE_ON = 4097;
-    const int GOD_MODE_OFF = 4096;
-
     gentity_s *pPlayerEntity = GetEntity(iClientNum);
 
-    if (pPlayerEntity->flags == GOD_MODE_OFF)
-    {
-        pPlayerEntity->flags = GOD_MODE_ON;
-        iPrintLn(iClientNum, "God Mode ^2On");
-    }
-    else
-    {
-        pPlayerEntity->flags = GOD_MODE_OFF;
-        iPrintLn(iClientNum, "God Mode ^1Off");
-    }
+    // The default value of flags is 0x1000, the God Mode value is 0x1001 so we just need to toggle the first bit
+    // to toggle God Mode
+    BIT_FLIP(pPlayerEntity->flags, 0);
+
+    iPrintLn(iClientNum, BIT_CHECK(pPlayerEntity->flags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
 }
 
 // Toggle fall damage.

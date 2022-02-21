@@ -2,6 +2,7 @@
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
 #include "Core\Menu.h"
+#include "Core\Bits.h"
 
 
 namespace COMMON_FN_NAMESPACE
@@ -14,16 +15,11 @@ void ToggleGodModeSP(Menu *pMenu)
 
     playerState_s *pPlayerState = GetPlayerState(iClientNum);
 
-    if (pPlayerState->otherFlags == 0)
-    {
-        pPlayerState->otherFlags = 1;
-        iPrintLn(iClientNum, "God Mode ^2On");
-    }
-    else
-    {
-        pPlayerState->otherFlags = 0;
-        iPrintLn(iClientNum, "God Mode ^1Off");
-    }
+    // The default value of otherFlags is 0, the God Mode value is 1 so we just need to toggle the first bit
+    // to toggle God Mode
+    BIT_FLIP(pPlayerState->otherFlags, 0);
+
+    iPrintLn(iClientNum, BIT_CHECK(pPlayerState->otherFlags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
 }
 
 // Threaded function that prompts a keyboard and sets the jump height value to what was entered.
@@ -76,16 +72,9 @@ void ToggleSecondPlayerGodMode(Menu *pMenu)
 
     playerState_s *pSecondPlayerState = GetPlayerState(iSecondClientNum);
 
-    if (pSecondPlayerState->otherFlags == 0)
-    {
-        pSecondPlayerState->otherFlags = 1;
-        iPrintLn(iFirstClientNum, "Second Player God Mode ^2On");
-    }
-    else
-    {
-        pSecondPlayerState->otherFlags = 0;
-        iPrintLn(iFirstClientNum, "Second Player God Mode ^1Off");
-    }
+    BIT_FLIP(pSecondPlayerState->otherFlags, 0);
+
+    iPrintLn(iFirstClientNum, BIT_CHECK(pSecondPlayerState->otherFlags, 0) ? "Second Player God Mode ^2On" : "Second Player God Mode ^1Off");
 }
 
 // Teleport the second player in front of the first player.

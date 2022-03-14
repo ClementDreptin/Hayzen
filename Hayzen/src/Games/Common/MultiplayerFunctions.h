@@ -71,7 +71,11 @@ void SpawnCarePackage(Menu *pMenu)
     pEntity->r.currentAngles.y = fViewY;
 
     // Apply the care package mesh to the entity
+#ifdef CARE_PACKAGE_MODEL
+    G_SetModel(pEntity, CARE_PACKAGE_MODEL);
+#else
     G_SetModel(pEntity, "com_plasticcase_friendly");
+#endif
     SP_script_model(pEntity);
     SV_UnlinkEntity(pEntity);
     pEntity->r.bmodel = 4;

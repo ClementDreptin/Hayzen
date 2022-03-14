@@ -11,7 +11,9 @@ using namespace MW3::Game;
 #include "Games\Common\CommonFunctions.h"
 
 #define COMMON_FN_NO_BOTS
+#define CARE_PACKAGE_MODEL "com_plasticcase_trap_friendly"
 #include "Games\Common\MultiplayerFunctions.h"
+#undef CARE_PACKAGE_MODEL
 #undef COMMON_FN_NO_BOTS
 
 

@@ -4,12 +4,14 @@
 using namespace SpecOpsMW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
-#undef COMMON_FN_NAMESPACE 
+#undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE SpecOpsMW2Common
-
 #include "Games\Common\CommonFunctions.h"
+
+#define GAME_MW2
 #include "Games\Common\SpecOpsFunctions.h"
+#undef GAME_MW2
 
 
 void SpecOpsMW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeSP(pMenu); }

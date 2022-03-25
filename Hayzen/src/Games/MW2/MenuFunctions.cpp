@@ -4,12 +4,14 @@
 using namespace MW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
-#undef COMMON_FN_NAMESPACE 
+#undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW2Common
-
 #include "Games\Common\CommonFunctions.h"
+
+#define GAME_MW2
 #include "Games\Common\MultiplayerFunctions.h"
+#undef GAME_MW2
 
 
 void MW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }
@@ -54,7 +56,7 @@ static DWORD KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue;
-    DWORD dwResult = Xam::ShowKeyboard("Knockback", "Recommended value: 30000", "30000", strValue, 6, VKBD_LATIN_NUMERIC);
+    DWORD dwResult = Xam::ShowKeyboard("Knockback", "Recommended value: 30000\nDefault value: 1000", "30000", strValue, 6, VKBD_LATIN_NUMERIC);
 
     // If the user canceled the keyboard, return early
     if (dwResult != ERROR_SUCCESS)

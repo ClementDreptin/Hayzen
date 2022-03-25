@@ -71,8 +71,8 @@ void SpawnCarePackage(Menu *pMenu)
     pEntity->r.currentAngles.y = fViewY;
 
     // Apply the care package mesh to the entity
-#ifdef CARE_PACKAGE_MODEL
-    G_SetModel(pEntity, CARE_PACKAGE_MODEL);
+#ifdef GAME_MW3
+    G_SetModel(pEntity, "com_plasticcase_trap_friendly");
 #else
     G_SetModel(pEntity, "com_plasticcase_friendly");
 #endif
@@ -91,7 +91,7 @@ void SpawnCarePackage(Menu *pMenu)
     SV_LinkEntity(pEntity);
 }
 
-#ifndef COMMON_FN_NO_BOTS
+#ifndef GAME_MW3
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
@@ -111,8 +111,14 @@ DWORD SpawnBotThread(SpawnBotOptions *pOptions)
 
     // Prepare the commands to send to SV_ExecuteClientCommand
     int serverId = Memory::Read<int>(pOptions->dwServerIdAddress);
+
+#if defined(GAME_ALPHAMW2)
+    std::string strChooseTeamCmd = Formatter::Format("mr %i 4 autoassign", serverId);
+    std::string strChooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
+#elif defined(GAME_MW2)
     std::string strChooseTeamCmd = Formatter::Format("mr %i 3 autoassign", serverId);
     std::string strChooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
+#endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
     DWORD dwBotAddr = Memory::Read<DWORD>(pOptions->dwClientsBaseAddress) + reinterpret_cast<gentity_s *>(pOptions->pMenu->GetBot())->state.number * 0x97F80;

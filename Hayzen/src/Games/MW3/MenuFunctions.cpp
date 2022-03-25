@@ -4,17 +4,14 @@
 using namespace MW3::Game;
 
 #ifdef COMMON_FN_NAMESPACE
-#undef COMMON_FN_NAMESPACE 
+#undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW3Common
-
 #include "Games\Common\CommonFunctions.h"
 
-#define COMMON_FN_NO_BOTS
-#define CARE_PACKAGE_MODEL "com_plasticcase_trap_friendly"
+#define GAME_MW3
 #include "Games\Common\MultiplayerFunctions.h"
-#undef CARE_PACKAGE_MODEL
-#undef COMMON_FN_NO_BOTS
+#undef GAME_MW3
 
 
 void MW3::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }

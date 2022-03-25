@@ -56,7 +56,7 @@ static DWORD KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue;
-    DWORD dwResult = Xam::ShowKeyboard("Knockback", "Recommended value: 30000\nDefault value: 1000", "30000", strValue, 6, VKBD_LATIN_NUMERIC);
+    DWORD dwResult = Xam::ShowKeyboard(L"Knockback", L"Recommended value: 30000\nDefault value: 1000", L"30000", strValue, 6, VKBD_LATIN_NUMERIC);
 
     // If the user canceled the keyboard, return early
     if (dwResult != ERROR_SUCCESS)

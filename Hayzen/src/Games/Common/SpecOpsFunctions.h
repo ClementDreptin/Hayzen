@@ -27,7 +27,7 @@ static DWORD ChangeJumpHeightThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
     std::string strValue;
-    DWORD dwResult = Xam::ShowKeyboard("Jump Height", "Max value: 999\nDefault value: 39", "39", strValue, 3, VKBD_LATIN_NUMERIC);
+    DWORD dwResult = Xam::ShowKeyboard(L"Jump Height", L"Max value: 999\nDefault value: 39", L"39", strValue, 3, VKBD_LATIN_NUMERIC);
 
     // If the user canceled the keyboard, return early
     if (dwResult != ERROR_SUCCESS)

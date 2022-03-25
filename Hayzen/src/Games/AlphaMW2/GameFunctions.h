@@ -17,6 +17,8 @@ extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 
 extern bool (*Dvar_GetBool)(const char *dvarName);
 
+extern float (*Dvar_GetFloat)(const char *dvarName);
+
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
 extern playerState_s *(*GetPlayerState)(int clientNum);

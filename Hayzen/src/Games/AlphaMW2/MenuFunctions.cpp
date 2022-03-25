@@ -16,7 +16,25 @@ using namespace AlphaMW2::Game;
 
 void AlphaMW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }
 
-void AlphaMW2::ToggleFallDamage(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82023F50); }
+void AlphaMW2::ToggleFallDamage(Menu *pMenu)
+{
+    // For the MW2 Alpha we can't use the common function because changing the constant value
+    // doesn't work so we went back to the old dvar way
+    int iClientNum = pMenu->GetClientNum();
+
+    if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
+    {
+        SetClientDvar(-1, "bg_fallDamageMinHeight", "998");
+        SetClientDvar(-1, "bg_fallDamageMaxHeight", "999");
+        iPrintLn(iClientNum, "Fall Damage ^2Off");
+    }
+    else
+    {
+        SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
+        SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
+        iPrintLn(iClientNum, "Fall Damage ^1On");
+    }
+}
 
 void AlphaMW2::ToggleAmmo(Menu *pMenu)
 {

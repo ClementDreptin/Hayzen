@@ -5,7 +5,15 @@
 
 
 bool SpecOpsMW3Title::s_bJumped = false;
+Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;
+Detour *SpecOpsMW3Title::s_pPlayerCmd_AllowJumpDetour = nullptr;
 
+
+SpecOpsMW3Title::~SpecOpsMW3Title()
+{
+    delete s_pClientCommandDetour;
+    delete s_pPlayerCmd_AllowJumpDetour;
+}
 
 void SpecOpsMW3Title::Init()
 {
@@ -31,9 +39,9 @@ void SpecOpsMW3Title::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82127090), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821FEFB0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821FA680), reinterpret_cast<DWORD *>(PlayerCmd_AllowJumpStub), reinterpret_cast<DWORD>(PlayerCmd_AllowJumpHook));
+    s_pSCR_DrawScreenFieldDetour = new Detour(0x82127090, SCR_DrawScreenFieldHook);
+    s_pClientCommandDetour = new Detour(0x821FEFB0, ClientCommandHook);
+    s_pPlayerCmd_AllowJumpDetour = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
 }
 
 void SpecOpsMW3Title::CreateStructure()
@@ -66,7 +74,7 @@ void SpecOpsMW3Title::CreateStructure()
 void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
-    ClientCommandStub(clientNum, s);
+    s_pClientCommandDetour->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 25"))
@@ -99,34 +107,4 @@ void SpecOpsMW3Title::PlayerCmd_AllowJumpHook()
     // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
     // missions where you normally can't. This is a bad practice and may have side effects.
     return;
-}
-
-void __declspec(naked) SpecOpsMW3Title::ClientCommandStub(int clientNum, const char *s)
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 1
-    }
-}
-
-void __declspec(naked) SpecOpsMW3Title::PlayerCmd_AllowJumpStub()
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 2
-    }
 }

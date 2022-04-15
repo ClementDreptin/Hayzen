@@ -5,7 +5,13 @@
 
 
 bool SpecOpsAlphaMW2Title::s_bJumped = false;
+Detour *SpecOpsAlphaMW2Title::s_pClientCommandDetour = nullptr;
 
+
+SpecOpsAlphaMW2Title::~SpecOpsAlphaMW2Title()
+{
+    delete s_pClientCommandDetour;
+}
 
 void SpecOpsAlphaMW2Title::Init()
 {
@@ -31,8 +37,8 @@ void SpecOpsAlphaMW2Title::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x82133BE0), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821EA940), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
+    s_pSCR_DrawScreenFieldDetour = new Detour(0x82133BE0, SCR_DrawScreenFieldHook);
+    s_pClientCommandDetour = new Detour(0x821EA940, ClientCommandHook);
 }
 
 void SpecOpsAlphaMW2Title::CreateStructure()
@@ -65,7 +71,7 @@ void SpecOpsAlphaMW2Title::CreateStructure()
 void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
-    ClientCommandStub(clientNum, s);
+    s_pClientCommandDetour->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "notify +gostand"))
@@ -94,20 +100,5 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 
         // Register that the user released the A button
         s_bJumped = false;
-    }
-}
-
-void __declspec(naked) SpecOpsAlphaMW2Title::ClientCommandStub(int clientNum, const char *s)
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 1
     }
 }

@@ -6,12 +6,15 @@
 
 Menu Title::s_Menu;
 Option Title::s_RootOption;
+Detour *Title::s_pSCR_DrawScreenFieldDetour = nullptr;
 
 
 Title::~Title()
 {
     s_Menu.Stop();
     s_RootOption.Cleanup();
+
+    delete s_pSCR_DrawScreenFieldDetour;
 }
 
 void Title::Init()
@@ -26,7 +29,7 @@ void Title::Init()
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
     // Call the original SCR_DrawScreenField function
-    SCR_DrawScreenFieldStub(localClientNum, refreshedUI);
+    s_pSCR_DrawScreenFieldDetour->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
     // If the menu is not initialized, no need to go further
     if (!s_Menu.IsInitialized())
@@ -37,21 +40,6 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 
     // Render the menu
     s_Menu.Render();
-}
-
-void __declspec(naked) Title::SCR_DrawScreenFieldStub(const int localClientNum, int refreshedUI)
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 0
-    }
 }
 
 void Title::SetDrawFunctionsPointers()

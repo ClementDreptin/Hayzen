@@ -5,7 +5,13 @@
 
 
 bool SpecOpsMW2Title::s_bJumped = false;
+Detour *SpecOpsMW2Title::s_pClientCommandDetour = nullptr;
 
+
+SpecOpsMW2Title::~SpecOpsMW2Title()
+{
+    delete s_pClientCommandDetour;
+}
 
 void SpecOpsMW2Title::Init()
 {
@@ -31,8 +37,8 @@ void SpecOpsMW2Title::Init()
     CreateStructure();
 
     // Set up the function hooks
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821354B0), reinterpret_cast<DWORD *>(SCR_DrawScreenFieldStub), reinterpret_cast<DWORD>(SCR_DrawScreenFieldHook));
-    Memory::HookFunctionStart(reinterpret_cast<DWORD *>(0x821EFFD0), reinterpret_cast<DWORD *>(ClientCommandStub), reinterpret_cast<DWORD>(ClientCommandHook));
+    s_pSCR_DrawScreenFieldDetour = new Detour(0x821354B0, SCR_DrawScreenFieldHook);
+    s_pClientCommandDetour = new Detour(0x821EFFD0, ClientCommandHook);
 }
 
 void SpecOpsMW2Title::CreateStructure()
@@ -65,7 +71,7 @@ void SpecOpsMW2Title::CreateStructure()
 void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
-    ClientCommandStub(clientNum, s);
+    s_pClientCommandDetour->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 7"))
@@ -94,20 +100,5 @@ void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
 
         // Register that the user released the A button
         s_bJumped = false;
-    }
-}
-
-void __declspec(naked) SpecOpsMW2Title::ClientCommandStub(int clientNum, const char *s)
-{
-    __asm
-    {
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        nop
-        li r3, 1
     }
 }

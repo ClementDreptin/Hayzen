@@ -18,7 +18,7 @@ struct ToggleAmmoOptions
 };
 
 // Toggle unlimited ammo.
-void ToggleAmmo(const ToggleAmmoOptions& Options)
+void ToggleAmmo(const ToggleAmmoOptions &Options)
 {
     int iClientNum = Options.pMenu->GetClientNum();
 

@@ -45,7 +45,7 @@ DWORD Plugin::Update(void *)
     while (s_bRunning)
     {
         // Get the current title running
-        DWORD dwNewTitle = Kernel::XamGetCurrentTitleId();
+        DWORD dwNewTitle = Xam::GetCurrentTitleId();
 
         // Initialize a new title if the user launches a new title
         if (dwNewTitle != s_dwCurrentTitle)

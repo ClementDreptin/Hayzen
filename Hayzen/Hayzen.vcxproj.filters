@@ -67,4 +67,7 @@
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Core\Bits.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
 </Project>

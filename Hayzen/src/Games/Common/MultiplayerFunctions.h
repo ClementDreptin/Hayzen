@@ -1,12 +1,6 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-// The COMMON_FN_NO_BOTS can be defined to avoid compiling the functions to manipulate bots. Don't
-// forget to undefine the macro after including this file. Example:
-// #define COMMON_FN_NO_BOTS
-// #include "Games\Common\MultiplayerFunctions.h"
-// #undef COMMON_FN_NO_BOTS
-
 #include "Core\Menu.h"
 #include "Core\Bits.h"
 

@@ -28,8 +28,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(SolutionDir)bin\</OutDir>
-    <IntDir>$(SolutionDir)bin-int\</IntDir>
+    <OutDir>$(SolutionDir)build\bin\</OutDir>
+    <IntDir>$(SolutionDir)build\obj\</IntDir>
     <RemoteRoot>hdd:\Plugins</RemoteRoot>
     <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     <ImageXexOutput>$(OutDir)$(ProjectName).xex</ImageXexOutput>
@@ -67,7 +67,6 @@
     </ImageXex>
     <Deploy>
       <DeploymentType>CopyToHardDrive</DeploymentType>
-      <ExcludedFromBuild>false</ExcludedFromBuild>
     </Deploy>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -142,7 +141,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\XexUtils\XexUtils.vcxproj">
+    <ProjectReference Include="XexUtils\XexUtils.vcxproj">
       <Project>{c598d106-4f6d-4505-95de-aa896a0ac7fa}</Project>
     </ProjectReference>
   </ItemGroup>

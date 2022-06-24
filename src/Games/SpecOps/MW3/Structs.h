@@ -61,7 +61,7 @@ struct entityShared_t
     int eventTime;
 };
 
-static_assert(sizeof(entityShared_t) == 0x60, "size of entityShared_t different than 0x5C");
+static_assert(sizeof(entityShared_t) == 0x60, "size of entityShared_t different than 0x60");
 
 struct gentity_s
 {

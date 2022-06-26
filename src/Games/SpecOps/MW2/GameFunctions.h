@@ -2,7 +2,6 @@
 
 #include "Games\SpecOps\MW2\Structs.h"
 
-
 // Spec Ops MW2 function pointers to functions from the game.
 namespace SpecOpsMW2
 {

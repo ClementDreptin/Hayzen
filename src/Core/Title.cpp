@@ -3,11 +3,9 @@
 
 #include "Elements\HudElem.h"
 
-
 Menu Title::s_Menu;
 Option Title::s_RootOption;
 Detour *Title::s_pSCR_DrawScreenFieldDetour = nullptr;
-
 
 Title::~Title()
 {

@@ -1,6 +1,5 @@
 #pragma once
 
-
 // MW2 TU9 structs used by the game functions.
 namespace MW2
 {

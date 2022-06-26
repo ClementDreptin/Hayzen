@@ -3,15 +3,12 @@
 
 #include "Core\Menu.h"
 
-
 Option::Option(const std::string &strName, uint32_t uiIndex, Callback fnCallback)
     : m_uiIndex(uiIndex),
-    m_fnCallback(fnCallback),
-    Text(strName,
-        HudElem::s_MenuX + HudElem::s_Padding,
-        HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * (uiIndex + 1),
-        HudElem::s_ColorWhite, 1.2f
-    ) {}
+      m_fnCallback(fnCallback),
+      Text(strName, HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * (uiIndex + 1), HudElem::s_ColorWhite, 1.2f)
+{
+}
 
 void Option::OnClick(Menu *pMenu)
 {
@@ -27,6 +24,12 @@ void Option::OnClick(Menu *pMenu)
     // It should have children but we still make sure it's the case just for safety.
     if (!m_Children.empty())
         pMenu->SetCurrentOption(this);
+}
+
+void Option::AddChild(const std::shared_ptr<Option> &pChild)
+{
+    pChild->m_pParent = this;
+    m_Children.emplace_back(pChild);
 }
 
 void Option::Cleanup()

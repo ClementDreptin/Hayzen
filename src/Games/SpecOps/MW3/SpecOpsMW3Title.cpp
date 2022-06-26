@@ -3,11 +3,9 @@
 
 #include "Games\SpecOps\MW3\MenuFunctions.h"
 
-
 bool SpecOpsMW3Title::s_bJumped = false;
 Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;
 Detour *SpecOpsMW3Title::s_pPlayerCmd_AllowJumpDetour = nullptr;
-
 
 SpecOpsMW3Title::~SpecOpsMW3Title()
 {

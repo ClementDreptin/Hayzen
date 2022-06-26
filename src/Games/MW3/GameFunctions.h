@@ -2,7 +2,6 @@
 
 #include "Games\MW3\Structs.h"
 
-
 // MW3 TU24 function pointers to functions from the game.
 namespace MW3
 {

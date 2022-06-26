@@ -2,7 +2,6 @@
 
 #include "Games\MW2\Structs.h"
 
-
 // MW2 TU9 function pointers to functions from the game.
 namespace MW2
 {

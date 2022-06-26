@@ -1,21 +1,20 @@
 #include "pch.h"
 #include "Games\SpecOps\MW2\GameFunctions.h"
 
-
 namespace SpecOpsMW2
 {
 namespace Game
 {
 
-void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x8233CB60);
+void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x8233CB60);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x8227CF90);
+void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x8227CF90);
 
 playerState_s *(*GetPlayerState)(int num) = reinterpret_cast<playerState_s *(*)(int)>(0x8233CB30);
 
-void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821E6898);
+void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821E6898);
 
-void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821E69D0);
+void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821E69D0);
 
 void iPrintLn(int clientNum, const std::string &text)
 {

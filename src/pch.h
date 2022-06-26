@@ -1,6 +1,5 @@
 #pragma once
 
-
 // Xbox headers
 #include <xtl.h>
 

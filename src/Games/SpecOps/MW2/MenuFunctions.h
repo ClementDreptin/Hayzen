@@ -3,7 +3,6 @@
 #include "Core\Menu.h"
 #include "Games\SpecOps\MW2\GameFunctions.h"
 
-
 namespace SpecOpsMW2
 {
 

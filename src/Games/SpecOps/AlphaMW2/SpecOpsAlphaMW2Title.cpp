@@ -3,10 +3,8 @@
 
 #include "Games\SpecOps\AlphaMW2\MenuFunctions.h"
 
-
 bool SpecOpsAlphaMW2Title::s_bJumped = false;
 Detour *SpecOpsAlphaMW2Title::s_pClientCommandDetour = nullptr;
-
 
 SpecOpsAlphaMW2Title::~SpecOpsAlphaMW2Title()
 {

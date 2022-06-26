@@ -1,6 +1,5 @@
 #pragma once
 
-
 // Spec Ops MW3 structs used by the game functions.
 namespace SpecOpsMW3
 {

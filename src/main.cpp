@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Core\Plugin.h"
 
-
 // The application's entry point.
 BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, void *pReserved)
 {

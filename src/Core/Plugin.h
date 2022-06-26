@@ -2,7 +2,6 @@
 
 #include "Core\Title.h"
 
-
 // Main class that serves as entry point.
 class Plugin
 {
@@ -12,6 +11,7 @@ public:
 
     // Therminate the main loop.
     static void Stop();
+
 private:
     static bool s_bRunning;
     static DWORD s_dwCurrentTitle;

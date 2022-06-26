@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Core\Menu.h"
 
-
 void Menu::Init(int iClientNum, Option *pOption)
 {
     // Save the arguments to class members
@@ -17,8 +16,7 @@ void Menu::Init(int iClientNum, Option *pOption)
     m_Scroller = Rectangle(HudElem::s_MenuX, HudElem::s_MenuY + (HudElem::s_Padding * 2) + HudElem::s_TitleHeight, HudElem::s_MenuWidth, HudElem::s_LineHeight, HudElem::s_ColorWhite);
     m_Scroller.SetAlpha(0.7f);
 
-    m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS,
-        HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
+    m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS, HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
 
     // Initialize the scroller position
     m_iCurrentScrollerPos = 0;

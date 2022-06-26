@@ -4,7 +4,7 @@
 using namespace MW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
-#undef COMMON_FN_NAMESPACE
+    #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW2Common
 #include "Games\Common\CommonFunctions.h"
@@ -13,10 +13,15 @@ using namespace MW2::Game;
 #include "Games\Common\MultiplayerFunctions.h"
 #undef GAME_MW2
 
+void MW2::ToggleGodMode(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu);
+}
 
-void MW2::ToggleGodMode(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu); }
-
-void MW2::ToggleFallDamage(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82019C48); }
+void MW2::ToggleFallDamage(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82019C48);
+}
 
 void MW2::ToggleAmmo(Menu *pMenu)
 {
@@ -49,7 +54,10 @@ void MW2::ToggleElevators(Menu *pMenu)
     }
 }
 
-void MW2::SpawnCarePackage(Menu *pMenu) { COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu); }
+void MW2::SpawnCarePackage(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
+}
 
 // Threaded function that prompts a keyboard and sets the knockback strength to what was entered.
 static DWORD KnockbackThread(Menu *pMenu)
@@ -82,13 +90,25 @@ void MW2::Knockback(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(KnockbackThread), pMenu);
 }
 
-void MW2::ToggleSaveLoadBinds(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu); }
+void MW2::ToggleSaveLoadBinds(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
+}
 
-void MW2::SavePosition(Menu *pMenu) { COMMON_FN_NAMESPACE::SavePosition(pMenu); }
+void MW2::SavePosition(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+}
 
-void MW2::LoadPosition(Menu *pMenu) { COMMON_FN_NAMESPACE::LoadPosition(pMenu); }
+void MW2::LoadPosition(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+}
 
-void MW2::ToggleUfo(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleUfo(pMenu); }
+void MW2::ToggleUfo(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
+}
 
 void MW2::SpawnBot(Menu *pMenu)
 {
@@ -100,6 +120,12 @@ void MW2::SpawnBot(Menu *pMenu)
     COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-void MW2::TeleportBotToMe(Menu *pMenu) { COMMON_FN_NAMESPACE::TeleportBotToMe(pMenu); }
+void MW2::TeleportBotToMe(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::TeleportBotToMe(pMenu);
+}
 
-void MW2::ToggleBotMovement(Menu *pMenu) { COMMON_FN_NAMESPACE::ToggleBotMovement(pMenu); }
+void MW2::ToggleBotMovement(Menu *pMenu)
+{
+    COMMON_FN_NAMESPACE::ToggleBotMovement(pMenu);
+}

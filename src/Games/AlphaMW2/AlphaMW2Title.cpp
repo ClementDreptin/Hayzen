@@ -3,10 +3,8 @@
 
 #include "Games\AlphaMW2\MenuFunctions.h"
 
-
 Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *AlphaMW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
-
 
 AlphaMW2Title::~AlphaMW2Title()
 {

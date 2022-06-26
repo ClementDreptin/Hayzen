@@ -1,6 +1,5 @@
 #pragma once
 
-
 // Set the Nth bit of X to 1.
 #define BIT_SET(X, N) ((X) |= (1 << (N)))
 

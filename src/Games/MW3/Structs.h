@@ -1,6 +1,5 @@
 #pragma once
 
-
 // MW3 TU24 structs used by the game functions.
 namespace MW3
 {

@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Elements\Text.h"
 
-
 Text::Text(const std::string &strText, float fX, float fY, const Color &color, float fFontScale)
-    : HudElem(fX, fY, color), m_fFontScale(fFontScale), m_strText(strText) {}
+    : HudElem(fX, fY, color), m_fFontScale(fFontScale), m_strText(strText)
+{
+}
 
 void Text::Draw()
 {

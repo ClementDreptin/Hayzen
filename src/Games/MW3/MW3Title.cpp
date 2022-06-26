@@ -3,10 +3,8 @@
 
 #include "Games\MW3\MenuFunctions.h"
 
-
 Detour *MW3Title::s_pScr_NotifyDetour = nullptr;
 Detour *MW3Title::s_pSV_ExecuteClientCommandDetour = nullptr;
-
 
 MW3Title::~MW3Title()
 {

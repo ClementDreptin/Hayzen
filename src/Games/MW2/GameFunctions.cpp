@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Games\MW2\GameFunctions.h"
 
-
 namespace MW2
 {
 namespace Game
@@ -9,14 +8,13 @@ namespace Game
 
 static std::unordered_map<std::string, DWORD> BrushModelMap;
 
-
 const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x82241898);
 
-void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void(*)(int, int, const char *)>(0x822548D8);
+void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void (*)(int, int, const char *)>(0x822548D8);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void(*)(int, const char *)>(0x82224990);
+void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x82224990);
 
-bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool(*)(const char *)>(0x8229EEE8);
+bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool (*)(const char *)>(0x8229EEE8);
 
 const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x8229F0A8);
 
@@ -24,27 +22,27 @@ clientState_s *(*GetClientState)(int clientNum) = reinterpret_cast<clientState_s
 
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x821E6628);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool(*)(DWORD, int)>(0x82320138);
+bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(DWORD, int)>(0x82320138);
 
-void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void(*)(gentity_s *)>(0x82206D88);
+void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void (*)(gentity_s *)>(0x82206D88);
 
-gentity_s*(*G_Spawn)() = reinterpret_cast<gentity_s *(*)()>(0x8220DB50);
+gentity_s *(*G_Spawn)() = reinterpret_cast<gentity_s *(*)()>(0x8220DB50);
 
-void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<void(*)(gentity_s *, const char *)>(0x8220D278);
+void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<void (*)(gentity_s *, const char *)>(0x8220D278);
 
-void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x8225F518);
+void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>(0x8225F518);
 
-void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void(*)(gentity_s *)>(0x8225F430);
+void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>(0x8225F430);
 
-void (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<void(*)(gentity_s *)>(0x82254B50);
+void (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<void (*)(gentity_s *)>(0x82254B50);
 
 gentity_s *(*SV_AddTestClient)() = reinterpret_cast<gentity_s *(*)()>(0x82254690);
 
-void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<void(*)(int, const char *, int, int)>(0x82253140);
+void (*SV_ExecuteClientCommand)(int client, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<void (*)(int, const char *, int, int)>(0x82253140);
 
-void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821D3798);
+void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821D3798);
 
-void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void(*)(gentity_s *, const float *)>(0x821D3550);
+void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821D3550);
 
 void iPrintLn(int clientNum, const std::string &text)
 {

@@ -8,18 +8,16 @@
 #include "Games\MW3\MW3Title.h"
 #include "Games\SpecOps\MW3\SpecOpsMW3Title.h"
 
-
 bool Plugin::s_bRunning = false;
 DWORD Plugin::s_dwCurrentTitle = 0;
 Title *Plugin::s_CurrentTitle = nullptr;
-
 
 // Enum from title IDs.
 enum
 {
     TITLE_DASHBOARD = 0xFFFE07D1,
     TITLE_MW2 = 0x41560817,
-    TITLE_MW3 = 0x415608CB
+    TITLE_MW3 = 0x415608CB,
 };
 
 void Plugin::Start()
@@ -94,4 +92,3 @@ void Plugin::InitNewTitle(DWORD dwNewTitle)
     if (s_CurrentTitle)
         s_CurrentTitle->Init();
 }
-

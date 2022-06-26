@@ -5,7 +5,6 @@
 
 #include "Games\MW2\Structs.h"
 
-
 // Class to run MW2 TU9, inherits from Game.
 class MW2Title : public Title
 {
@@ -14,6 +13,7 @@ public:
 
     // Set the draw function pointers and the function hooks.
     virtual void Init();
+
 private:
     // Create the structure of the menu and save it a static member.
     virtual void CreateStructure();

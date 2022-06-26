@@ -1,6 +1,5 @@
 #pragma once
 
-
 // Struct to describe a four-component color in the RGBA format.
 struct Color
 {
@@ -9,7 +8,6 @@ struct Color
     float b;
     float a;
 };
-
 
 // Struct to describe a font (struct defined in the games).
 struct Font_s
@@ -22,12 +20,10 @@ struct Font_s
     int glyphs;
 };
 
-
 typedef void (*R_ADDCMDDRAWTEXT)(const char *text, int maxChars, Font_s *font, float x, float y, float xScale, float yScale, float rotation, const float *color, int style);
 typedef void (*R_ADDCMDDRAWSTRETCHPIC)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float *color, HANDLE material);
 typedef Font_s *(*R_REGISTERFONT)(const char *font, int imageTrack);
 typedef HANDLE (*MATERIAL_REGISTERHANDLE)(const char *name, int imageTrack);
-
 
 #define CHAR_UP "\x14"
 #define CHAR_DOWN "\x15"
@@ -35,7 +31,6 @@ typedef HANDLE (*MATERIAL_REGISTERHANDLE)(const char *name, int imageTrack);
 #define CHAR_LB "\x5"
 #define CHAR_RB "\x6"
 #define CHAR_RS "\x11"
-
 
 // Interface that the other elements inherit from.
 class HudElem
@@ -67,20 +62,29 @@ public:
     virtual void Draw() = 0;
 
     float GetX() const { return m_fX; }
+
     float GetY() const { return m_fY; }
+
     const Color &GetColor() const { return m_Color; }
 
     void SetX(float fX) { m_fX = fX; }
+
     void SetY(float fY) { m_fY = fY; }
+
     void SetColor(const Color &color) { m_Color = color; }
+
     void SetColor(float fR, float fG, float fB, float fA);
+
     void SetAlpha(float fAlpha) { m_Color.a = fAlpha; }
 
     static void SetFont(Font_s *pFont) { s_pFont = pFont; }
+
     static void SetMaterialHandle(HANDLE hMaterial) { s_hMaterial = hMaterial; }
 
     static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT pFn) { R_AddCmdDrawText = pFn; }
+
     static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC pFn) { R_AddCmdDrawStretchPic = pFn; }
+
 protected:
     float m_fX;
     float m_fY;

@@ -1,6 +1,5 @@
 #pragma once
 
-
 // Spec Ops MW2 structs used by the game functions.
 namespace SpecOpsMW2
 {

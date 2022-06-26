@@ -2,19 +2,17 @@
 
 #include "Elements\Text.h"
 
-
 class Menu;
 
 // Function called when an option is clicked.
 typedef void (*Callback)(Menu *pMenu);
-
 
 // Class describing a clickage option, inherits from Text.
 class Option : public Text
 {
 public:
     // Default constructor.
-    Option() {};
+    Option(){};
 
     // Constructor.
     Option(const std::string &strName, uint32_t uiIndex, Callback fnCallback = nullptr);
@@ -23,15 +21,17 @@ public:
     void OnClick(Menu *pMenu);
 
     // Push a child to the list of children.
-    void AddChild(const std::shared_ptr<Option> &pChild) { pChild->m_pParent = this; m_Children.emplace_back(pChild); }
+    void AddChild(const std::shared_ptr<Option> &pChild);
 
     bool HasParent() const { return m_pParent != nullptr; }
+
     Option *GetParent() const { return m_pParent; }
 
     const std::vector<std::shared_ptr<Option>> &GetChildren() const { return m_Children; }
 
     // Reset the members.
     void Cleanup();
+
 private:
     uint32_t m_uiIndex;
     Callback m_fnCallback;
@@ -39,7 +39,6 @@ private:
     Option *m_pParent;
     std::vector<std::shared_ptr<Option>> m_Children;
 };
-
 
 // Macro to create a shared pointer of an option.
 #define MakeOption(...) std::make_shared<Option>(__VA_ARGS__)

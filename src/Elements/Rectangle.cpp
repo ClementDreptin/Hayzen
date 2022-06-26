@@ -1,9 +1,10 @@
 #include "pch.h"
 #include "Elements\Rectangle.h"
 
-
 Rectangle::Rectangle(float fX, float fY, float fWidth, float fHeight, const Color &color)
-    : HudElem(fX, fY, color), m_fWidth(fWidth), m_fHeight(fHeight) {}
+    : HudElem(fX, fY, color), m_fWidth(fWidth), m_fHeight(fHeight)
+{
+}
 
 void Rectangle::Draw()
 {

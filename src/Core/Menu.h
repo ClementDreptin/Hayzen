@@ -4,7 +4,6 @@
 #include "Elements\Rectangle.h"
 #include "Elements\Text.h"
 
-
 // Class to describe the general behavior of the menu.
 class Menu
 {
@@ -25,25 +24,32 @@ public:
     void Stop();
 
     bool IsInitialized() const { return m_bInitialized; }
+
     int GetClientNum() const { return m_iClientNum; }
 
     bool BindsEnabled() const { return m_bBindsEnabled; }
+
     void ToggleBinds() { m_bBindsEnabled = !m_bBindsEnabled; }
 
     const vec3 &GetSavedPos() const { return m_SavedPos; }
+
     void SetSavedPos(const vec3 &pos) { m_SavedPos = pos; }
 
     const vec3 &GetSavedAngles() const { return m_SavedAngles; }
+
     void SetSavedAngles(const vec3 &angles) { m_SavedAngles = angles; }
 
     void SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
+
     void SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
 
     void *GetBot() const { return m_pBotEntity; }
+
     void SetBot(void *pBotEntity) { m_pBotEntity = pBotEntity; }
 
     // Change the current menu section.
     void SetCurrentOption(Option *pOption);
+
 private:
     bool m_bInitialized;
     bool m_bOpen;

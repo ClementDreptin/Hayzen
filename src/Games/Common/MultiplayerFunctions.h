@@ -4,7 +4,6 @@
 #include "Core\Menu.h"
 #include "Core\Bits.h"
 
-
 namespace COMMON_FN_NAMESPACE
 {
 
@@ -81,7 +80,7 @@ void SpawnCarePackage(Menu *pMenu)
     iContents |= pEntity->r.contents;
     pEntity->r.contents = iContents;
 
-    // Register the entity for the scene 
+    // Register the entity for the scene
     SV_LinkEntity(pEntity);
 }
 
@@ -106,13 +105,13 @@ DWORD SpawnBotThread(SpawnBotOptions *pOptions)
     // Prepare the commands to send to SV_ExecuteClientCommand
     int serverId = Memory::Read<int>(pOptions->dwServerIdAddress);
 
-#if defined(GAME_ALPHAMW2)
+    #if defined(GAME_ALPHAMW2)
     std::string strChooseTeamCmd = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string strChooseClassCmd = Formatter::Format("mr %i 11 class0", serverId);
-#elif defined(GAME_MW2)
+    #elif defined(GAME_MW2)
     std::string strChooseTeamCmd = Formatter::Format("mr %i 3 autoassign", serverId);
     std::string strChooseClassCmd = Formatter::Format("mr %i 10 class0", serverId);
-#endif
+    #endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
     DWORD dwBotAddr = Memory::Read<DWORD>(pOptions->dwClientsBaseAddress) + reinterpret_cast<gentity_s *>(pOptions->pMenu->GetBot())->state.number * 0x97F80;

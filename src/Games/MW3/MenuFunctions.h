@@ -3,7 +3,6 @@
 #include "Core\Menu.h"
 #include "Games\MW3\GameFunctions.h"
 
-
 namespace MW3
 {
 

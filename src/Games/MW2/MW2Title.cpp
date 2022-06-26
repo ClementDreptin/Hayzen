@@ -3,10 +3,8 @@
 
 #include "Games\MW2\MenuFunctions.h"
 
-
 Detour *MW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *MW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
-
 
 MW2Title::~MW2Title()
 {
@@ -90,7 +88,7 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
 
     // Get the string representing the event
     const char *szNotify = MW2::Game::SL_ConvertToString(stringValue);
-   
+
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())

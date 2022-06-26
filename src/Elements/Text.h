@@ -2,7 +2,6 @@
 
 #include "Elements\HudElem.h"
 
-
 // Class to draw a text element, inherits from HudElem.
 class Text : public HudElem
 {
@@ -17,10 +16,13 @@ public:
     virtual void Draw();
 
     float GetFontScale() const { return m_fFontScale; }
+
     const std::string &GetText() const { return m_strText; }
 
     void SetFontScale(float fFontScale) { m_fFontScale = fFontScale; }
+
     void SetText(const std::string &strText) { m_strText = strText; }
+
 private:
     float m_fFontScale;
     std::string m_strText;

@@ -4,7 +4,6 @@
 #include "Core\Menu.h"
 #include "Core\Bits.h"
 
-
 namespace COMMON_FN_NAMESPACE
 {
 

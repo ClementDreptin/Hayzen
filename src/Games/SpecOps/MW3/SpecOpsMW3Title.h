@@ -3,7 +3,6 @@
 #include "Core\Title.h"
 #include "Elements\HudElem.h"
 
-
 // Class to run Spec Ops MW3, inherits from Game.
 class SpecOpsMW3Title : public Title
 {
@@ -12,6 +11,7 @@ public:
 
     // Set the draw function pointers and the function hooks.
     virtual void Init();
+
 private:
     static bool s_bJumped;
 

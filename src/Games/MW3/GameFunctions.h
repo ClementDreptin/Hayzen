@@ -20,7 +20,7 @@ extern clientState_s *(*GetClientState)(int clientNum);
 
 extern playerState_s *(*GetPlayerState)(int clientNum);
 
-extern bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum);
+extern bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum);
 
 extern void (*SP_script_model)(gentity_s *mSelf);
 

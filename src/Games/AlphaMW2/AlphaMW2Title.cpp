@@ -20,10 +20,10 @@ void AlphaMW2Title::Init()
     Sleep(200);
 
     // Set the draw function addresses
-    m_dwDrawTextFnAddr = 0x823BB4D8;
-    m_dwDrawRectangleFnAddr = 0x823BAC18;
-    m_dwRegisterFontFnAddr = 0x823B6D58;
-    m_dwRegisterMaterialFnAddr = 0x823B6928;
+    m_DrawTextFnAddr = 0x823BB4D8;
+    m_DrawRectangleFnAddr = 0x823BAC18;
+    m_RegisterFontFnAddr = 0x823B6D58;
+    m_RegisterMaterialFnAddr = 0x823B6928;
 
     // Set the save and load functions to use fr the current game
     s_Menu.SetSavePositionFn(AlphaMW2::SavePosition);
@@ -76,23 +76,22 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     s_pScr_NotifyDetour->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
-    int iClientNum = entity->state.number;
-    if (!AlphaMW2::Game::IsHost(iClientNum))
+    int clientNum = entity->state.number;
+    if (!AlphaMW2::Game::IsHost(clientNum))
         return;
 
     // Get the string representing the event
-    const char *szNotify = AlphaMW2::Game::SL_ConvertToString(stringValue);
+    const char *eventName = AlphaMW2::Game::SL_ConvertToString(stringValue);
 
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
+    if (!strcmp(eventName, "begin") && !s_Menu.IsInitialized())
     {
-        s_Menu.Init(iClientNum, &s_RootOption);
+        s_Menu.Init(clientNum, &s_RootOption);
 
         // Disable the unlocalized error messages when printing something in the killfeed
-        int iClientNum = s_Menu.GetClientNum();
-        AlphaMW2::Game::SetClientDvar(iClientNum, "loc_warnings", "0");
-        AlphaMW2::Game::SetClientDvar(iClientNum, "loc_warningsUI", "0");
+        AlphaMW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
+        AlphaMW2::Game::SetClientDvar(clientNum, "loc_warningsUI", "0");
     }
 }
 
@@ -102,8 +101,8 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int c
     s_pSV_ExecuteClientCommandDetour->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    int iClientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;
-    if (!AlphaMW2::Game::IsHost(iClientNum))
+    int clientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;
+    if (!AlphaMW2::Game::IsHost(clientNum))
         return;
 
     // Stop the menu when the game ends

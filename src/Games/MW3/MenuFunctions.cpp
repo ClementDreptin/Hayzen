@@ -25,13 +25,13 @@ void MW3::ToggleFallDamage(Menu *pMenu)
 
 void MW3::ToggleAmmo(Menu *pMenu)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
-    Options.pMenu = pMenu;
-    Options.dwPatchAddress = 0x820F63E4;
-    Options.dwDefaultValue = 0x7D3D5050;
-    Options.dwPatchValue = 0x7D495378;
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
+    options.pMenu = pMenu;
+    options.patchAddress = 0x820F63E4;
+    options.defaultValue = 0x7D3D5050;
+    options.patchValue = 0x7D495378;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
+    COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
 void MW3::SpawnCarePackage(Menu *pMenu)

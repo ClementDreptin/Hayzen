@@ -16,10 +16,10 @@ protected:
     static Menu s_Menu;
     static Option s_RootOption;
 
-    DWORD m_dwDrawTextFnAddr;
-    DWORD m_dwDrawRectangleFnAddr;
-    DWORD m_dwRegisterFontFnAddr;
-    DWORD m_dwRegisterMaterialFnAddr;
+    uintptr_t m_DrawTextFnAddr;
+    uintptr_t m_DrawRectangleFnAddr;
+    uintptr_t m_RegisterFontFnAddr;
+    uintptr_t m_RegisterMaterialFnAddr;
 
     // Create the menu structure (one implementation per game).
     virtual void CreateStructure() = 0;

@@ -53,7 +53,7 @@ public:
     HudElem() {}
 
     // Constructor.
-    HudElem(float fX, float fY, const Color &color);
+    HudElem(float x, float y, const Color &color);
 
     // Virtual destructor.
     virtual ~HudElem() {}
@@ -61,37 +61,37 @@ public:
     // Draw the element (one implementation per element).
     virtual void Draw() = 0;
 
-    float GetX() const { return m_fX; }
+    float GetX() const { return m_X; }
 
-    float GetY() const { return m_fY; }
+    float GetY() const { return m_Y; }
 
     const Color &GetColor() const { return m_Color; }
 
-    void SetX(float fX) { m_fX = fX; }
+    void SetX(float x) { m_X = x; }
 
-    void SetY(float fY) { m_fY = fY; }
+    void SetY(float y) { m_Y = y; }
 
     void SetColor(const Color &color) { m_Color = color; }
 
-    void SetColor(float fR, float fG, float fB, float fA);
+    void SetColor(float r, float g, float b, float a);
 
-    void SetAlpha(float fAlpha) { m_Color.a = fAlpha; }
+    void SetAlpha(float alpha) { m_Color.a = alpha; }
 
     static void SetFont(Font_s *pFont) { s_pFont = pFont; }
 
-    static void SetMaterialHandle(HANDLE hMaterial) { s_hMaterial = hMaterial; }
+    static void SetMaterialHandle(HANDLE materialHandle) { s_MaterialHandle = materialHandle; }
 
-    static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT pFn) { R_AddCmdDrawText = pFn; }
+    static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT drawTextFn) { R_AddCmdDrawText = drawTextFn; }
 
-    static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC pFn) { R_AddCmdDrawStretchPic = pFn; }
+    static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC drawRectangleFn) { R_AddCmdDrawStretchPic = drawRectangleFn; }
 
 protected:
-    float m_fX;
-    float m_fY;
+    float m_X;
+    float m_Y;
     Color m_Color;
 
     static Font_s *s_pFont;
-    static HANDLE s_hMaterial;
+    static HANDLE s_MaterialHandle;
 
     static R_ADDCMDDRAWTEXT R_AddCmdDrawText;
     static R_ADDCMDDRAWSTRETCHPIC R_AddCmdDrawStretchPic;

@@ -24,10 +24,10 @@ void MW2Title::Init()
     Memory::Write<int>(0x821690E4, 0x60000000);
 
     // Set the draw function addresses
-    m_dwDrawTextFnAddr = 0x82350278;
-    m_dwDrawRectangleFnAddr = 0x821384D8;
-    m_dwRegisterFontFnAddr = 0x8234DCB0;
-    m_dwRegisterMaterialFnAddr = 0x8234E510;
+    m_DrawTextFnAddr = 0x82350278;
+    m_DrawRectangleFnAddr = 0x821384D8;
+    m_RegisterFontFnAddr = 0x8234DCB0;
+    m_RegisterMaterialFnAddr = 0x8234E510;
 
     // Set the save and load functions to use fr the current game
     s_Menu.SetSavePositionFn(MW2::SavePosition);
@@ -82,23 +82,22 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     s_pScr_NotifyDetour->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
-    int iClientNum = entity->state.number;
-    if (!MW2::Game::IsHost(iClientNum))
+    int clientNum = entity->state.number;
+    if (!MW2::Game::IsHost(clientNum))
         return;
 
     // Get the string representing the event
-    const char *szNotify = MW2::Game::SL_ConvertToString(stringValue);
+    const char *eventName = MW2::Game::SL_ConvertToString(stringValue);
 
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(szNotify, "begin") && !s_Menu.IsInitialized())
+    if (!strcmp(eventName, "begin") && !s_Menu.IsInitialized())
     {
-        s_Menu.Init(iClientNum, &s_RootOption);
+        s_Menu.Init(clientNum, &s_RootOption);
 
         // Disable the unlocalized error messages when printing something in the killfeed
-        int iClientNum = s_Menu.GetClientNum();
-        MW2::Game::SetClientDvar(iClientNum, "loc_warnings", "0");
-        MW2::Game::SetClientDvar(iClientNum, "loc_warningsUI", "0");
+        MW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
+        MW2::Game::SetClientDvar(clientNum, "loc_warningsUI", "0");
     }
 }
 
@@ -108,8 +107,8 @@ void MW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int client
     s_pSV_ExecuteClientCommandDetour->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    int iClientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
-    if (!MW2::Game::IsHost(iClientNum))
+    int clientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
+    if (!MW2::Game::IsHost(clientNum))
         return;
 
     // Stop the menu when the game ends

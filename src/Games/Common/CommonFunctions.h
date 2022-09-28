@@ -11,42 +11,42 @@ namespace COMMON_FN_NAMESPACE
 struct ToggleAmmoOptions
 {
     Menu *pMenu;
-    DWORD dwPatchAddress;
-    DWORD dwDefaultValue;
-    DWORD dwPatchValue;
+    uintptr_t patchAddress;
+    POWERPC_INSTRUCTION defaultValue;
+    POWERPC_INSTRUCTION patchValue;
 };
 
 // Toggle unlimited ammo.
-void ToggleAmmo(const ToggleAmmoOptions &Options)
+void ToggleAmmo(const ToggleAmmoOptions &options)
 {
-    int iClientNum = Options.pMenu->GetClientNum();
+    int clientNum = options.pMenu->GetClientNum();
 
-    if (Memory::Read<DWORD>(Options.dwPatchAddress) == Options.dwDefaultValue)
+    if (Memory::Read<POWERPC_INSTRUCTION>(options.patchAddress) == options.defaultValue)
     {
-        Memory::Write<DWORD>(Options.dwPatchAddress, Options.dwPatchValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^2On");
+        Memory::Write<POWERPC_INSTRUCTION>(options.patchAddress, options.patchValue);
+        iPrintLn(clientNum, "Unlimited Ammo ^2On");
     }
     else
     {
-        Memory::Write<DWORD>(Options.dwPatchAddress, Options.dwDefaultValue);
-        iPrintLn(iClientNum, "Unlimited Ammo ^1Off");
+        Memory::Write<POWERPC_INSTRUCTION>(options.patchAddress, options.defaultValue);
+        iPrintLn(clientNum, "Unlimited Ammo ^1Off");
     }
 }
 
 // Toggle save and load binds.
 void ToggleSaveLoadBinds(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
     if (!pMenu->BindsEnabled())
     {
         Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
-        iPrintLn(iClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
+        iPrintLn(clientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     }
     else
     {
         Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
-        iPrintLn(iClientNum, "Save and Load binds ^1Off");
+        iPrintLn(clientNum, "Save and Load binds ^1Off");
     }
 
     pMenu->ToggleBinds();
@@ -55,47 +55,47 @@ void ToggleSaveLoadBinds(Menu *pMenu)
 // Save the current player's position.
 void SavePosition(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
-    pMenu->SetSavedPos(GetPlayerState(iClientNum)->origin);
-    pMenu->SetSavedAngles(GetPlayerState(iClientNum)->viewAngles);
+    pMenu->SetSavedPosition(GetPlayerState(clientNum)->origin);
+    pMenu->SetSavedAngles(GetPlayerState(clientNum)->viewAngles);
 
-    iPrintLn(iClientNum, "Position ^2Saved");
+    iPrintLn(clientNum, "Position ^2Saved");
 }
 
 // Load the previously saved player's position.
 void LoadPosition(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
-    const vec3 &SavedPos = pMenu->GetSavedPos();
-    const vec3 &SavedAngles = pMenu->GetSavedAngles();
+    const vec3 &savedPosition = pMenu->GetSavedPosition();
+    const vec3 &savedAngles = pMenu->GetSavedAngles();
 
     // Make sure the player previously saved their position
-    if (SavedPos.isNull() || SavedAngles.isNull())
+    if (savedPosition.isNull() || savedAngles.isNull())
     {
-        iPrintLn(iClientNum, "^1Save a position first!");
+        iPrintLn(clientNum, "^1Save a position first!");
         return;
     }
 
-    gentity_s *pPlayerEntity = GetEntity(iClientNum);
+    gentity_s *pPlayerEntity = GetEntity(clientNum);
 
-    SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&SavedPos));
-    SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&SavedAngles));
+    SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&savedPosition));
+    SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
 }
 
 // Toggle UFO.
 void ToggleUfo(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
-    gclient_s *pGClient = GetGClient(iClientNum);
+    gclient_s *pGClient = GetGClient(clientNum);
 
     // The default value of mFlags is 0, the UFO value is 2 so we just need to toggle the second bit
     // to toggle UFO
     BIT_FLIP(pGClient->mFlags, 1);
 
-    iPrintLn(iClientNum, BIT_CHECK(pGClient->mFlags, 1) ? "Ufo ^2On" : "Ufo ^1Off");
+    iPrintLn(clientNum, BIT_CHECK(pGClient->mFlags, 1) ? "Ufo ^2On" : "Ufo ^1Off");
 }
 
 }

@@ -23,25 +23,25 @@ public:
     // Stop the menu.
     void Stop();
 
-    bool IsInitialized() const { return m_bInitialized; }
+    bool IsInitialized() const { return m_Initialized; }
 
-    int GetClientNum() const { return m_iClientNum; }
+    int GetClientNum() const { return m_ClientNum; }
 
-    bool BindsEnabled() const { return m_bBindsEnabled; }
+    bool BindsEnabled() const { return m_BindsEnabled; }
 
-    void ToggleBinds() { m_bBindsEnabled = !m_bBindsEnabled; }
+    void ToggleBinds() { m_BindsEnabled = !m_BindsEnabled; }
 
-    const vec3 &GetSavedPos() const { return m_SavedPos; }
+    const vec3 &GetSavedPosition() const { return m_SavedPosition; }
 
-    void SetSavedPos(const vec3 &pos) { m_SavedPos = pos; }
+    void SetSavedPosition(const vec3 &position) { m_SavedPosition = position; }
 
     const vec3 &GetSavedAngles() const { return m_SavedAngles; }
 
     void SetSavedAngles(const vec3 &angles) { m_SavedAngles = angles; }
 
-    void SetSavePositionFn(Callback fnSavePosition) { m_fnSavePosition = fnSavePosition; }
+    void SetSavePositionFn(Callback savePositionFn) { m_SavePositionFn = savePositionFn; }
 
-    void SetLoadPositionFn(Callback fnLoadPosition) { m_fnLoadPosition = fnLoadPosition; }
+    void SetLoadPositionFn(Callback loadPositionFn) { m_LoadPositionFn = loadPositionFn; }
 
     void *GetBot() const { return m_pBotEntity; }
 
@@ -51,10 +51,10 @@ public:
     void SetCurrentOption(Option *pOption);
 
 private:
-    bool m_bInitialized;
-    bool m_bOpen;
+    bool m_Initialized;
+    bool m_Open;
 
-    int m_iClientNum;
+    int m_ClientNum;
 
     Option *m_pCurrentOption;
     std::queue<Option *> m_ChangeSectionQueue;
@@ -63,14 +63,14 @@ private:
     Text m_Title;
     Rectangle m_Scroller;
     Text m_Instructions;
-    int m_iCurrentScrollerPos;
+    int m_CurrentScrollerPos;
 
-    vec3 m_SavedPos;
+    vec3 m_SavedPosition;
     vec3 m_SavedAngles;
-    bool m_bBindsEnabled;
+    bool m_BindsEnabled;
 
-    Callback m_fnSavePosition;
-    Callback m_fnLoadPosition;
+    Callback m_SavePositionFn;
+    Callback m_LoadPositionFn;
 
     void *m_pBotEntity;
 

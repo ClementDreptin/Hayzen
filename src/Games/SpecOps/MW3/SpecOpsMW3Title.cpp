@@ -3,7 +3,7 @@
 
 #include "Games\SpecOps\MW3\MenuFunctions.h"
 
-bool SpecOpsMW3Title::s_bJumped = false;
+bool SpecOpsMW3Title::s_HasJumped = false;
 Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;
 Detour *SpecOpsMW3Title::s_pPlayerCmd_AllowJumpDetour = nullptr;
 
@@ -21,10 +21,10 @@ void SpecOpsMW3Title::Init()
     Sleep(200);
 
     // Set the draw function addresses
-    m_dwDrawTextFnAddr = 0x823F4E30;
-    m_dwDrawRectangleFnAddr = 0x823F4878;
-    m_dwRegisterFontFnAddr = 0x823DD130;
-    m_dwRegisterMaterialFnAddr = 0x823E95E8;
+    m_DrawTextFnAddr = 0x823F4E30;
+    m_DrawRectangleFnAddr = 0x823F4878;
+    m_RegisterFontFnAddr = 0x823DD130;
+    m_RegisterMaterialFnAddr = 0x823E95E8;
 
     // Set the save and load functions to use fr the current game
     s_Menu.SetSavePositionFn(SpecOpsMW3::SavePosition);
@@ -76,7 +76,7 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 25"))
-        s_bJumped = true;
+        s_HasJumped = true;
 
     // The 'n 26' event means the game started
     if (!strcmp(s, "n 26"))
@@ -84,7 +84,7 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
         // The 'n 26' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
         // 'n 25' event didn't occur just before.
-        if (!s_bJumped)
+        if (!s_HasJumped)
         {
             // We have no way of knowing when the game ends so, if the menu was already
             // initialized, reset it first
@@ -96,7 +96,7 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
         }
 
         // Register that the user released the A button
-        s_bJumped = false;
+        s_HasJumped = false;
     }
 }
 

@@ -13,7 +13,7 @@ public:
     virtual void Init();
 
 private:
-    static bool s_bJumped;
+    static bool s_HasJumped;
 
     // Create the structure of the menu and save it a static member.
     virtual void CreateStructure();

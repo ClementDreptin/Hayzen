@@ -22,31 +22,31 @@ void AlphaMW2::ToggleFallDamage(Menu *pMenu)
 {
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
     if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
     {
         SetClientDvar(-1, "bg_fallDamageMinHeight", "998");
         SetClientDvar(-1, "bg_fallDamageMaxHeight", "999");
-        iPrintLn(iClientNum, "Fall Damage ^2Off");
+        iPrintLn(clientNum, "Fall Damage ^2Off");
     }
     else
     {
         SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
         SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
-        iPrintLn(iClientNum, "Fall Damage ^1On");
+        iPrintLn(clientNum, "Fall Damage ^1On");
     }
 }
 
 void AlphaMW2::ToggleAmmo(Menu *pMenu)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
-    Options.pMenu = pMenu;
-    Options.dwPatchAddress = 0x82113628;
-    Options.dwDefaultValue = 0x7D1E4850;
-    Options.dwPatchValue = 0x7D284B78;
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
+    options.pMenu = pMenu;
+    options.patchAddress = 0x82113628;
+    options.defaultValue = 0x7D1E4850;
+    options.patchValue = 0x7D284B78;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
+    COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
 void AlphaMW2::SpawnCarePackage(Menu *pMenu)
@@ -78,8 +78,8 @@ void AlphaMW2::SpawnBot(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->pMenu = pMenu;
-    pOptions->dwServerIdAddress = 0x8355D5C4;
-    pOptions->dwClientsBaseAddress = 0x83577D98;
+    pOptions->serverIdAddress = 0x8355D5C4;
+    pOptions->clientsBaseAddress = 0x83577D98;
 
     COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }

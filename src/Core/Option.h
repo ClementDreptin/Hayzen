@@ -12,10 +12,10 @@ class Option : public Text
 {
 public:
     // Default constructor.
-    Option(){};
+    Option() {}
 
     // Constructor.
-    Option(const std::string &strName, uint32_t uiIndex, Callback fnCallback = nullptr);
+    Option(const std::string &name, uint32_t index, Callback callback = nullptr);
 
     // Call the callback function if it's defined, otherwise set the option as the current option in the menu.
     void OnClick(Menu *pMenu);
@@ -33,8 +33,8 @@ public:
     void Cleanup();
 
 private:
-    uint32_t m_uiIndex;
-    Callback m_fnCallback;
+    uint32_t m_Index;
+    Callback m_Callback;
 
     Option *m_pParent;
     std::vector<std::shared_ptr<Option>> m_Children;

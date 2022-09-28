@@ -10,20 +10,20 @@ public:
     Rectangle() {}
 
     // Constructor.
-    Rectangle(float fX, float fY, float fWidth, float fHeight, const Color &color);
+    Rectangle(float x, float y, float width, float height, const Color &color);
 
     // Call R_AddCmdDrawStretchPic() of the current game.
     virtual void Draw();
 
-    float GetWidth() const { return m_fWidth; }
+    float GetWidth() const { return m_Width; }
 
-    float GetHeight() const { return m_fHeight; }
+    float GetHeight() const { return m_Height; }
 
-    void SetWidth(float width) { m_fWidth = width; }
+    void SetWidth(float width) { m_Width = width; }
 
-    void SetHeight(float height) { m_fHeight = height; }
+    void SetHeight(float height) { m_Height = height; }
 
 private:
-    float m_fWidth;
-    float m_fHeight;
+    float m_Width;
+    float m_Height;
 };

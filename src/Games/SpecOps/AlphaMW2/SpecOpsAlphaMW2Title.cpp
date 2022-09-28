@@ -3,7 +3,7 @@
 
 #include "Games\SpecOps\AlphaMW2\MenuFunctions.h"
 
-bool SpecOpsAlphaMW2Title::s_bJumped = false;
+bool SpecOpsAlphaMW2Title::s_HasJumped = false;
 Detour *SpecOpsAlphaMW2Title::s_pClientCommandDetour = nullptr;
 
 SpecOpsAlphaMW2Title::~SpecOpsAlphaMW2Title()
@@ -19,10 +19,10 @@ void SpecOpsAlphaMW2Title::Init()
     Sleep(200);
 
     // Set the draw function addresses
-    m_dwDrawTextFnAddr = 0x82386E50;
-    m_dwDrawRectangleFnAddr = 0x82386590;
-    m_dwRegisterFontFnAddr = 0x82380CB0;
-    m_dwRegisterMaterialFnAddr = 0x82380880;
+    m_DrawTextFnAddr = 0x82386E50;
+    m_DrawRectangleFnAddr = 0x82386590;
+    m_RegisterFontFnAddr = 0x82380CB0;
+    m_RegisterMaterialFnAddr = 0x82380880;
 
     // Set the save and load functions to use fr the current game
     s_Menu.SetSavePositionFn(SpecOpsAlphaMW2::SavePosition);
@@ -73,7 +73,7 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 
     // Register when the user pressed the A button
     if (!strcmp(s, "notify +gostand"))
-        s_bJumped = true;
+        s_HasJumped = true;
 
     // The 'n 42' event means the game started
     if (!strcmp(s, "notify -gostand"))
@@ -81,7 +81,7 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         // The 'n 42' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
         // 'n 7' event didn't occur just before.
-        if (!s_bJumped)
+        if (!s_HasJumped)
         {
             // We have no way of knowing when the game ends so, if the menu was already
             // initialized, reset it first
@@ -97,6 +97,6 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         }
 
         // Register that the user released the A button
-        s_bJumped = false;
+        s_HasJumped = false;
     }
 }

@@ -20,13 +20,13 @@ void SpecOpsAlphaMW2::ToggleGodMode(Menu *pMenu)
 
 void SpecOpsAlphaMW2::ToggleAmmo(Menu *pMenu)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
-    Options.pMenu = pMenu;
-    Options.dwPatchAddress = 0x82328610;
-    Options.dwDefaultValue = 0x7D1D4850;
-    Options.dwPatchValue = 0x7D284B78;
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
+    options.pMenu = pMenu;
+    options.patchAddress = 0x82328610;
+    options.defaultValue = 0x7D1D4850;
+    options.patchValue = 0x7D284B78;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
+    COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
 void SpecOpsAlphaMW2::ChangeJumpHeight(Menu *pMenu)

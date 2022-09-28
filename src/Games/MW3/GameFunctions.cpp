@@ -6,7 +6,7 @@ namespace MW3
 namespace Game
 {
 
-static std::unordered_map<std::string, DWORD> BrushModelMap;
+static std::unordered_map<std::string, uintptr_t> brushModelMap;
 
 const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x822B5120);
 
@@ -20,7 +20,7 @@ clientState_s *(*GetClientState)(int clientNum) = reinterpret_cast<clientState_s
 
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x82244148);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(DWORD, int)>(0x823BFE78);
+bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x823BFE78);
 
 void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void (*)(gentity_s *)>(0x82268138);
 
@@ -65,26 +65,26 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    BrushModelMap["mp_seatown"] = 0x82DD1280;
-    BrushModelMap["mp_mogadishu"] = 0x82E08A00;
-    BrushModelMap["mp_exchange"] = 0x82E14580;
-    BrushModelMap["mp_radar"] = 0x82DD3A80;
-    BrushModelMap["mp_terminal_cls"] = 0x82DF9C80;
+    brushModelMap["mp_seatown"] = 0x82DD1280;
+    brushModelMap["mp_mogadishu"] = 0x82E08A00;
+    brushModelMap["mp_exchange"] = 0x82E14580;
+    brushModelMap["mp_radar"] = 0x82DD3A80;
+    brushModelMap["mp_terminal_cls"] = 0x82DF9C80;
 }
 
 gentity_s *GetCurrentMapBrushModel()
 {
-    static bool bBrushModelMapInitialized = false;
+    static bool isBrushModelMapInitialized = false;
 
-    if (!bBrushModelMapInitialized)
+    if (!isBrushModelMapInitialized)
     {
         InitBrushModelMap();
-        bBrushModelMapInitialized = true;
+        isBrushModelMapInitialized = true;
     }
 
-    std::string strMapName = Dvar_GetString("ui_mapname");
+    std::string mapName = Dvar_GetString("ui_mapname");
 
-    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(BrushModelMap[strMapName]);
+    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
     if (!pBrushModel)
         pBrushModel = reinterpret_cast<gentity_s *>(0x82DD1500);
 

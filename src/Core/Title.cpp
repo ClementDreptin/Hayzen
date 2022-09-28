@@ -42,11 +42,11 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 
 void Title::SetDrawFunctionsPointers()
 {
-    HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_dwRegisterFontFnAddr);
-    HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_dwRegisterMaterialFnAddr);
+    HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_RegisterFontFnAddr);
+    HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_RegisterMaterialFnAddr);
 
-    HudElem::SetDrawTextFnPtr(reinterpret_cast<R_ADDCMDDRAWTEXT>(m_dwDrawTextFnAddr));
-    HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_dwDrawRectangleFnAddr));
+    HudElem::SetDrawTextFnPtr(reinterpret_cast<R_ADDCMDDRAWTEXT>(m_DrawTextFnAddr));
+    HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_DrawRectangleFnAddr));
 }
 
 void Title::RegisterFontAndMaterial()

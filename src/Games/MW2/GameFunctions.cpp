@@ -6,7 +6,7 @@ namespace MW2
 namespace Game
 {
 
-static std::unordered_map<std::string, DWORD> BrushModelMap;
+static std::unordered_map<std::string, uintptr_t> brushModelMap;
 
 const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x82241898);
 
@@ -22,7 +22,7 @@ clientState_s *(*GetClientState)(int clientNum) = reinterpret_cast<clientState_s
 
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x821E6628);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(DWORD, int)>(0x82320138);
+bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x82320138);
 
 void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void (*)(gentity_s *)>(0x82206D88);
 
@@ -71,47 +71,47 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    BrushModelMap["mp_afghan"] = 0x82F7E800;
-    BrushModelMap["mp_derail"] = 0x82F5F680;
-    BrushModelMap["mp_estate"] = 0x82F4AF00;
-    BrushModelMap["mp_favela"] = 0x82F70C00;
-    BrushModelMap["mp_highrise"] = 0x82F76380;
-    BrushModelMap["mp_invasion"] = 0x82F73180;
-    BrushModelMap["mp_checkpoint"] = 0x82F6D280;
-    BrushModelMap["mp_quarry"] = 0x82F99600;
-    BrushModelMap["mp_rundown"] = 0x82F65800;
-    BrushModelMap["mp_rust"] = 0x82F3C900;
-    BrushModelMap["mp_boneyard"] = 0x82F0B300;
-    BrushModelMap["mp_nightshift"] = 0x82F3A880;
-    BrushModelMap["mp_subbase"] = 0x82F59780;
-    BrushModelMap["mp_terminal"] = 0x82F0DD80;
-    BrushModelMap["mp_underpass"] = 0x82F66C00;
-    BrushModelMap["mp_brecourt"] = 0x82F15580;
-    BrushModelMap["mp_complex"] = 0x82F09F00;
-    BrushModelMap["mp_crash"] = 0x82F18280;
-    BrushModelMap["mp_overgrown"] = 0x82F34980;
-    BrushModelMap["mp_compact"] = 0x82F14180;
-    BrushModelMap["mp_storm"] = 0x82F5DB00;
-    BrushModelMap["mp_abandon"] = 0x82F48980;
-    BrushModelMap["mp_fuel2"] = 0x82F65300;
-    BrushModelMap["mp_strike"] = 0x82F4D980;
-    BrushModelMap["mp_trailerpark"] = 0x82F17380;
-    BrushModelMap["mp_vacant"] = 0x82F55900;
+    brushModelMap["mp_afghan"] = 0x82F7E800;
+    brushModelMap["mp_derail"] = 0x82F5F680;
+    brushModelMap["mp_estate"] = 0x82F4AF00;
+    brushModelMap["mp_favela"] = 0x82F70C00;
+    brushModelMap["mp_highrise"] = 0x82F76380;
+    brushModelMap["mp_invasion"] = 0x82F73180;
+    brushModelMap["mp_checkpoint"] = 0x82F6D280;
+    brushModelMap["mp_quarry"] = 0x82F99600;
+    brushModelMap["mp_rundown"] = 0x82F65800;
+    brushModelMap["mp_rust"] = 0x82F3C900;
+    brushModelMap["mp_boneyard"] = 0x82F0B300;
+    brushModelMap["mp_nightshift"] = 0x82F3A880;
+    brushModelMap["mp_subbase"] = 0x82F59780;
+    brushModelMap["mp_terminal"] = 0x82F0DD80;
+    brushModelMap["mp_underpass"] = 0x82F66C00;
+    brushModelMap["mp_brecourt"] = 0x82F15580;
+    brushModelMap["mp_complex"] = 0x82F09F00;
+    brushModelMap["mp_crash"] = 0x82F18280;
+    brushModelMap["mp_overgrown"] = 0x82F34980;
+    brushModelMap["mp_compact"] = 0x82F14180;
+    brushModelMap["mp_storm"] = 0x82F5DB00;
+    brushModelMap["mp_abandon"] = 0x82F48980;
+    brushModelMap["mp_fuel2"] = 0x82F65300;
+    brushModelMap["mp_strike"] = 0x82F4D980;
+    brushModelMap["mp_trailerpark"] = 0x82F17380;
+    brushModelMap["mp_vacant"] = 0x82F55900;
 }
 
 gentity_s *GetCurrentMapBrushModel()
 {
-    static bool bBrushModelMapInitialized = false;
+    static bool isBrushModelMapInitialized = false;
 
-    if (!bBrushModelMapInitialized)
+    if (!isBrushModelMapInitialized)
     {
         InitBrushModelMap();
-        bBrushModelMapInitialized = true;
+        isBrushModelMapInitialized = true;
     }
 
-    std::string strMapName = Dvar_GetString("ui_mapname");
+    std::string mapName = Dvar_GetString("ui_mapname");
 
-    return reinterpret_cast<gentity_s *>(BrushModelMap[strMapName]);
+    return reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
 }
 
 }

@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "Core\Menu.h"
 
-void Menu::Init(int iClientNum, Option *pOption)
+void Menu::Init(int clientNum, Option *pOption)
 {
     // Save the arguments to class members
-    m_iClientNum = iClientNum;
+    m_ClientNum = clientNum;
     m_pCurrentOption = pOption;
 
     // Create the constant HUD elements
@@ -19,65 +19,65 @@ void Menu::Init(int iClientNum, Option *pOption)
     m_Instructions = Text("Navigate: " CHAR_UP " - " CHAR_DOWN " | Select: " CHAR_X " | Back: " CHAR_RS, HudElem::s_MenuX + HudElem::s_Padding, HudElem::s_MenuY + HudElem::s_MenuHeight - HudElem::s_Padding - 80.0f, HudElem::s_ColorWhite, 0.7f);
 
     // Initialize the scroller position
-    m_iCurrentScrollerPos = 0;
+    m_CurrentScrollerPos = 0;
 
     // Reset the pointer to the bot
     m_pBotEntity = nullptr;
 
     // Remember that initialization has been done
-    m_bInitialized = true;
+    m_Initialized = true;
 }
 
 void Menu::Update()
 {
     // If the menu is not initialized, don't go further
-    if (!m_bInitialized)
+    if (!m_Initialized)
         return;
 
     // Get the current gamepad state
-    XINPUT_STATE InputState;
-    XInputGetState(0, &InputState);
+    XINPUT_STATE inputState;
+    XInputGetState(0, &inputState);
 
     // Save the buttons pressed at the previous frame to set the currently pressed buttons only if
     // they were not already pressed at the previous frame, we need to do this because pressing
     // then releasing a button (even done really fast) takes multiple frames.
-    static uint16_t wLastButtons = 0;
-    uint16_t wPressedButtons = (wLastButtons ^ InputState.Gamepad.wButtons) & InputState.Gamepad.wButtons;
-    wLastButtons = InputState.Gamepad.wButtons;
+    static uint16_t lastButtons = 0;
+    uint16_t pressedButtons = (lastButtons ^ inputState.Gamepad.wButtons) & inputState.Gamepad.wButtons;
+    lastButtons = inputState.Gamepad.wButtons;
 
     // Open/Close the menu
-    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
-        m_bOpen = !m_bOpen;
+    if (pressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+        m_Open = !m_Open;
 
     // Allow the user to select options with the DPAD only when the menu is open
-    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_UP && m_bOpen)
+    if (pressedButtons & XINPUT_GAMEPAD_DPAD_UP && m_Open)
     {
-        m_iCurrentScrollerPos--;
+        m_CurrentScrollerPos--;
 
         // If the scroller is already at the top, send it to the bottom
-        if (m_iCurrentScrollerPos < 0)
-            m_iCurrentScrollerPos = static_cast<int>(m_pCurrentOption->GetChildren().size()) - 1;
+        if (m_CurrentScrollerPos < 0)
+            m_CurrentScrollerPos = static_cast<int>(m_pCurrentOption->GetChildren().size()) - 1;
 
         MoveScroller();
     }
 
-    if (wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN && m_bOpen)
+    if (pressedButtons & XINPUT_GAMEPAD_DPAD_DOWN && m_Open)
     {
-        m_iCurrentScrollerPos++;
+        m_CurrentScrollerPos++;
 
         // If the scroller is already at the bottom, send it to the top
-        if (m_iCurrentScrollerPos >= static_cast<int>(m_pCurrentOption->GetChildren().size()))
-            m_iCurrentScrollerPos = 0;
+        if (m_CurrentScrollerPos >= static_cast<int>(m_pCurrentOption->GetChildren().size()))
+            m_CurrentScrollerPos = 0;
 
         MoveScroller();
     }
 
     // Allow the user to click on an option
-    if (wPressedButtons & XINPUT_GAMEPAD_X && m_bOpen)
-        m_pCurrentOption->GetChildren()[m_iCurrentScrollerPos]->OnClick(this);
+    if (pressedButtons & XINPUT_GAMEPAD_X && m_Open)
+        m_pCurrentOption->GetChildren()[m_CurrentScrollerPos]->OnClick(this);
 
     // Allow the user to go back to the previous menu section
-    if (wPressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB && m_bOpen)
+    if (pressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB && m_Open)
     {
         // We can't just update the current option right away because its children
         // might still be rendering. That's why we push the new option to a queue
@@ -87,18 +87,18 @@ void Menu::Update()
     }
 
     // Call the current load position function if the save and load binds are enabled
-    if (wPressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && m_bBindsEnabled)
-        m_fnLoadPosition(this);
+    if (pressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER && m_BindsEnabled)
+        m_LoadPositionFn(this);
 
     // Call the current save position function if the save and load binds are enabled
-    if (wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && m_bBindsEnabled)
-        m_fnSavePosition(this);
+    if (pressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER && m_BindsEnabled)
+        m_SavePositionFn(this);
 }
 
 void Menu::Render()
 {
     // If the menu is not initialized or not open, don't go further
-    if (!m_bInitialized || !m_bOpen)
+    if (!m_Initialized || !m_Open)
         return;
 
     // Draw the constant HUD elements
@@ -122,12 +122,12 @@ void Menu::Render()
 void Menu::Stop()
 {
     // Reset the members
-    m_bInitialized = false;
-    m_bOpen = false;
+    m_Initialized = false;
+    m_Open = false;
 
-    m_SavedPos = vec3(0.0f, 0.0f, 0.0f);
+    m_SavedPosition = vec3(0.0f, 0.0f, 0.0f);
     m_SavedAngles = vec3(0.0f, 0.0f, 0.0f);
-    m_bBindsEnabled = false;
+    m_BindsEnabled = false;
 
     m_pBotEntity = nullptr;
 }
@@ -135,7 +135,7 @@ void Menu::Stop()
 void Menu::SetCurrentOption(Option *pOption)
 {
     // Reset the scroller position
-    m_iCurrentScrollerPos = 0;
+    m_CurrentScrollerPos = 0;
     MoveScroller();
 
     // Set the current option
@@ -147,5 +147,5 @@ void Menu::SetCurrentOption(Option *pOption)
 
 void Menu::MoveScroller()
 {
-    m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * m_iCurrentScrollerPos);
+    m_Scroller.SetY(HudElem::s_MenuY + HudElem::s_Padding * 2 + HudElem::s_TitleHeight + HudElem::s_LineHeight * m_CurrentScrollerPos);
 }

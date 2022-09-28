@@ -25,32 +25,32 @@ void MW2::ToggleFallDamage(Menu *pMenu)
 
 void MW2::ToggleAmmo(Menu *pMenu)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions Options;
-    Options.pMenu = pMenu;
-    Options.dwPatchAddress = 0x820E1724;
-    Options.dwDefaultValue = 0x7D1D4850;
-    Options.dwPatchValue = 0x7D284B78;
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
+    options.pMenu = pMenu;
+    options.patchAddress = 0x820E1724;
+    options.defaultValue = 0x7D1D4850;
+    options.patchValue = 0x7D284B78;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(Options);
+    COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
 void MW2::ToggleElevators(Menu *pMenu)
 {
-    int iClientNum = pMenu->GetClientNum();
+    int clientNum = pMenu->GetClientNum();
 
-    DWORD dwBranchAddress = 0x820D8360;
-    uint16_t wDefaultValue = 0x419A;
-    uint16_t wModifiedValue = 0x4800;
+    uintptr_t branchAddress = 0x820D8360;
+    uint16_t defaultValue = 0x419A;
+    uint16_t modifiedValue = 0x4800;
 
-    if (Memory::Read<uint16_t>(dwBranchAddress) == wDefaultValue)
+    if (Memory::Read<uint16_t>(branchAddress) == defaultValue)
     {
-        Memory::Write<uint16_t>(dwBranchAddress, wModifiedValue);
-        iPrintLn(iClientNum, "Elevators ^2On");
+        Memory::Write<uint16_t>(branchAddress, modifiedValue);
+        iPrintLn(clientNum, "Elevators ^2On");
     }
     else
     {
-        Memory::Write<uint16_t>(dwBranchAddress, wDefaultValue);
-        iPrintLn(iClientNum, "Elevators ^1Off");
+        Memory::Write<uint16_t>(branchAddress, defaultValue);
+        iPrintLn(clientNum, "Elevators ^1Off");
     }
 }
 
@@ -60,24 +60,24 @@ void MW2::SpawnCarePackage(Menu *pMenu)
 }
 
 // Threaded function that prompts a keyboard and sets the knockback strength to what was entered.
-static DWORD KnockbackThread(Menu *pMenu)
+static uint32_t KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
-    std::string strValue;
-    DWORD dwResult = Xam::ShowKeyboard(L"Knockback", L"Recommended value: 30000\nDefault value: 1000", L"30000", strValue, 6, VKBD_LATIN_NUMERIC);
+    std::string value;
+    uint32_t result = Xam::ShowKeyboard(L"Knockback", L"Recommended value: 30000\nDefault value: 1000", L"30000", value, 6, VKBD_LATIN_NUMERIC);
 
     // If the user canceled the keyboard, return early
-    if (dwResult != ERROR_SUCCESS)
+    if (result != ERROR_SUCCESS)
         return 0;
 
     // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
-    if (strValue == "")
-        strValue = "1000";
+    if (value.empty())
+        value = "1000";
 
     // Set the g_knockback value to what the user entered
-    SetClientDvar(-1, "g_knockback", strValue);
+    SetClientDvar(-1, "g_knockback", value);
 
-    iPrintLn(pMenu->GetClientNum(), "Knockback set to ^2" + strValue);
+    iPrintLn(pMenu->GetClientNum(), "Knockback set to ^2" + value);
 
     return 0;
 }
@@ -114,8 +114,8 @@ void MW2::SpawnBot(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->pMenu = pMenu;
-    pOptions->dwServerIdAddress = 0x8360922C;
-    pOptions->dwClientsBaseAddress = 0x83623B98;
+    pOptions->serverIdAddress = 0x8360922C;
+    pOptions->clientsBaseAddress = 0x83623B98;
 
     COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }

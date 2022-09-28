@@ -10,20 +10,20 @@ public:
     Text() {}
 
     // Constructor.
-    Text(const std::string &strText, float fX, float fY, const Color &color, float fFontScale = 1.0f);
+    Text(const std::string &text, float x, float y, const Color &color, float fontScale = 1.0f);
 
     // Call R_AddCmdDrawText() of the current game.
     virtual void Draw();
 
-    float GetFontScale() const { return m_fFontScale; }
+    float GetFontScale() const { return m_FontScale; }
 
-    const std::string &GetText() const { return m_strText; }
+    const std::string &GetText() const { return m_Text; }
 
-    void SetFontScale(float fFontScale) { m_fFontScale = fFontScale; }
+    void SetFontScale(float fontScale) { m_FontScale = fontScale; }
 
-    void SetText(const std::string &strText) { m_strText = strText; }
+    void SetText(const std::string &text) { m_Text = text; }
 
 private:
-    float m_fFontScale;
-    std::string m_strText;
+    float m_FontScale;
+    std::string m_Text;
 };

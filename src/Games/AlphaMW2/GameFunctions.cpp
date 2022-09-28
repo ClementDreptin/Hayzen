@@ -6,7 +6,7 @@ namespace AlphaMW2
 namespace Game
 {
 
-static std::unordered_map<std::string, DWORD> BrushModelMap;
+static std::unordered_map<std::string, uintptr_t> brushModelMap;
 
 const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x8229A730);
 
@@ -22,7 +22,7 @@ const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const cha
 
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x8222C108);
 
-bool (*Session_IsHost)(DWORD sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(DWORD, int)>(0x82388338);
+bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x82388338);
 
 void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void (*)(gentity_s *)>(0x82250A20);
 
@@ -71,36 +71,36 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    BrushModelMap["mp_afghan"] = 0x82D60880;
-    BrushModelMap["mp_checkpoint"] = 0x82D76B80;
-    BrushModelMap["mp_derail"] = 0x82D95800;
-    BrushModelMap["mp_estate"] = 0x82D5B600;
-    BrushModelMap["mp_favela"] = 0x82D9A300;
-    BrushModelMap["mp_highrise"] = 0x82DC4380;
-    BrushModelMap["mp_invasion"] = 0x82D7E100;
-    BrushModelMap["mp_quarry"] = 0x82D70F00;
-    BrushModelMap["mp_rundown"] = 0x82D93780;
-    BrushModelMap["mp_rust"] = 0x82D5A980;
-    BrushModelMap["mp_boneyard"] = 0x82D64E80;
-    BrushModelMap["mp_nightshift"] = 0x82D58180;
-    BrushModelMap["mp_subbase"] = 0x82D7CF80;
-    BrushModelMap["mp_terminal"] = 0x82D61A00;
-    BrushModelMap["mp_underpass"] = 0x82D52000;
+    brushModelMap["mp_afghan"] = 0x82D60880;
+    brushModelMap["mp_checkpoint"] = 0x82D76B80;
+    brushModelMap["mp_derail"] = 0x82D95800;
+    brushModelMap["mp_estate"] = 0x82D5B600;
+    brushModelMap["mp_favela"] = 0x82D9A300;
+    brushModelMap["mp_highrise"] = 0x82DC4380;
+    brushModelMap["mp_invasion"] = 0x82D7E100;
+    brushModelMap["mp_quarry"] = 0x82D70F00;
+    brushModelMap["mp_rundown"] = 0x82D93780;
+    brushModelMap["mp_rust"] = 0x82D5A980;
+    brushModelMap["mp_boneyard"] = 0x82D64E80;
+    brushModelMap["mp_nightshift"] = 0x82D58180;
+    brushModelMap["mp_subbase"] = 0x82D7CF80;
+    brushModelMap["mp_terminal"] = 0x82D61A00;
+    brushModelMap["mp_underpass"] = 0x82D52000;
 }
 
 gentity_s *GetCurrentMapBrushModel()
 {
-    static bool bBrushModelMapInitialized = false;
+    static bool isBrushModelMapInitialized = false;
 
-    if (!bBrushModelMapInitialized)
+    if (!isBrushModelMapInitialized)
     {
         InitBrushModelMap();
-        bBrushModelMapInitialized = true;
+        isBrushModelMapInitialized = true;
     }
 
-    std::string strMapName = Dvar_GetString("ui_mapname");
+    std::string mapName = Dvar_GetString("ui_mapname");
 
-    return reinterpret_cast<gentity_s *>(BrushModelMap[strMapName]);
+    return reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
 }
 
 }

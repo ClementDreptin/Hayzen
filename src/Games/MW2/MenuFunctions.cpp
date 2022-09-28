@@ -39,17 +39,17 @@ void MW2::ToggleElevators(Menu *pMenu)
     int iClientNum = pMenu->GetClientNum();
 
     DWORD dwBranchAddress = 0x820D8360;
-    WORD wDefaultValue = 0x419A;
-    WORD wModifiedValue = 0x4800;
+    uint16_t wDefaultValue = 0x419A;
+    uint16_t wModifiedValue = 0x4800;
 
-    if (Memory::Read<WORD>(dwBranchAddress) == wDefaultValue)
+    if (Memory::Read<uint16_t>(dwBranchAddress) == wDefaultValue)
     {
-        Memory::Write<WORD>(dwBranchAddress, wModifiedValue);
+        Memory::Write<uint16_t>(dwBranchAddress, wModifiedValue);
         iPrintLn(iClientNum, "Elevators ^2On");
     }
     else
     {
-        Memory::Write<WORD>(dwBranchAddress, wDefaultValue);
+        Memory::Write<uint16_t>(dwBranchAddress, wDefaultValue);
         iPrintLn(iClientNum, "Elevators ^1Off");
     }
 }

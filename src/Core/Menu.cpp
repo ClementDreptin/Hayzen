@@ -41,8 +41,8 @@ void Menu::Update()
     // Save the buttons pressed at the previous frame to set the currently pressed buttons only if
     // they were not already pressed at the previous frame, we need to do this because pressing
     // then releasing a button (even done really fast) takes multiple frames.
-    static WORD wLastButtons = 0;
-    WORD wPressedButtons = (wLastButtons ^ InputState.Gamepad.wButtons) & InputState.Gamepad.wButtons;
+    static uint16_t wLastButtons = 0;
+    uint16_t wPressedButtons = (wLastButtons ^ InputState.Gamepad.wButtons) & InputState.Gamepad.wButtons;
     wLastButtons = InputState.Gamepad.wButtons;
 
     // Open/Close the menu

@@ -1,7 +1,64 @@
 #include "pch.h"
-#include "Dashboard.h"
+#include "Games\Dashboard\Dashboard.h"
+
+#include "Games\Dashboard\AutoUpdater.h"
 
 void Dashboard::Init()
 {
     Xam::XNotify("Hayzen - Dashboard Detected");
+
+    // Just for now for debug
+    Sleep(5000);
+
+    HRESULT hr = S_OK;
+
+    // Initiliaze the auto updater
+    hr = AutoUpdater::Init();
+    if (FAILED(hr))
+        return;
+
+    // Check if there is a new update available
+    bool newVersionAvailable = false;
+    hr = AutoUpdater::NewVersionAvailable(newVersionAvailable);
+    if (FAILED(hr))
+        return;
+
+    // If we already have the latest version, just stop here
+    if (!newVersionAvailable)
+        return;
+
+    // Display a message box asking the user if they want to download the new version
+    const wchar_t *buttonLabels[] = { L"Yes", L"No" };
+    MESSAGEBOX_RESULT messageBoxResult = { 0 };
+    XOVERLAPPED overlapped = { 0 };
+
+    XShowMessageBoxUI(
+        0,
+        L"New version available",
+        L"A new version of Hayzen is available, would you like to download it?",
+        ARRAYSIZE(buttonLabels),
+        buttonLabels,
+        0,
+        XMB_ALERTICON,
+        &messageBoxResult,
+        &overlapped
+    );
+
+    // Wait until the message box closes
+    while (!XHasOverlappedIoCompleted(&overlapped))
+        Sleep(100);
+
+    // Get how the message box was closed (success, canceled or internal error)
+    DWORD overlappedResult = XGetOverlappedResult(&overlapped, nullptr, TRUE);
+    if (overlappedResult != ERROR_SUCCESS)
+        return;
+
+    // If the user pressed anything else than "Yes", exit early
+    if (messageBoxResult.dwButtonPressed != 0)
+        return;
+
+    // TODO:
+    // - Send the request to download the latest version of the plugin
+    // - Write the file at the right place
+    // - Ask the user to reboot to load the new version of the plugin
 }

@@ -29,6 +29,7 @@
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
+    <ClCompile Include="src\Games\Dashboard\AutoUpdater.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -68,6 +69,7 @@
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
+    <ClInclude Include="src\Games\Dashboard\AutoUpdater.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

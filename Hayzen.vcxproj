@@ -61,6 +61,7 @@
       <ProgramDatabaseFile>$(IntDir)$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
       <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>xnet.lib</AdditionalDependencies>
     </Link>
     <ImageXex>
       <ConfigurationFile>config.xml</ConfigurationFile>
@@ -85,6 +86,7 @@
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
+    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\MW2\GameFunctions.h" />
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />
@@ -118,6 +120,7 @@
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
+    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
     <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2Title.cpp" />

@@ -5,7 +5,7 @@
 
 #include "Games\MW3\Structs.h"
 
-// Class to run MW3 TU24, inherits from Game.
+// Class to run MW3 TU24, inherits from Title.
 class MW3Title : public Title
 {
 public:

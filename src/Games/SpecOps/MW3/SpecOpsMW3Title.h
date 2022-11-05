@@ -3,7 +3,7 @@
 #include "Core\Title.h"
 #include "Elements\HudElem.h"
 
-// Class to run Spec Ops MW3, inherits from Game.
+// Class to run Spec Ops MW3, inherits from Title.
 class SpecOpsMW3Title : public Title
 {
 public:

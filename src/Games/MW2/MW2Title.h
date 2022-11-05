@@ -5,7 +5,7 @@
 
 #include "Games\MW2\Structs.h"
 
-// Class to run MW2 TU9, inherits from Game.
+// Class to run MW2 TU9, inherits from Title.
 class MW2Title : public Title
 {
 public:

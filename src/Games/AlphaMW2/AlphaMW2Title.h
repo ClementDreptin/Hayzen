@@ -5,7 +5,7 @@
 
 #include "Games\AlphaMW2\Structs.h"
 
-// Class to run MW2 Alpha, inherits from Game.
+// Class to run MW2 Alpha, inherits from Title.
 class AlphaMW2Title : public Title
 {
 public:

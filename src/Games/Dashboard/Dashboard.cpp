@@ -29,32 +29,23 @@ void Dashboard::Init()
 
     // Display a message box asking the user if they want to download the new version
     const wchar_t *buttonLabels[] = { L"Yes", L"No" };
-    MESSAGEBOX_RESULT messageBoxResult = { 0 };
-    XOVERLAPPED overlapped = { 0 };
+    uint32_t buttonPressedIndex = 0;
 
-    XShowMessageBoxUI(
-        0,
+    uint32_t result = Xam::ShowMessageBox(
         L"New version available",
         L"A new version of Hayzen is available, would you like to download it?",
-        ARRAYSIZE(buttonLabels),
         buttonLabels,
-        0,
-        XMB_ALERTICON,
-        &messageBoxResult,
-        &overlapped
+        ARRAYSIZE(buttonLabels),
+        &buttonPressedIndex,
+        XMB_ALERTICON
     );
 
-    // Wait until the message box closes
-    while (!XHasOverlappedIoCompleted(&overlapped))
-        Sleep(100);
-
-    // Get how the message box was closed (success, canceled or internal error)
-    DWORD overlappedResult = XGetOverlappedResult(&overlapped, nullptr, TRUE);
-    if (overlappedResult != ERROR_SUCCESS)
+    // If the user cancelled the message box, return early
+    if (result != ERROR_SUCCESS)
         return;
 
     // If the user pressed anything else than "Yes", exit early
-    if (messageBoxResult.dwButtonPressed != 0)
+    if (buttonPressedIndex != 0)
         return;
 
     // TODO:

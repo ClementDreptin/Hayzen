@@ -1,11 +1,14 @@
 #pragma once
 
+// Automatic updating system.
 class AutoUpdater
 {
 public:
+    // Get the full path to the Hayzen plugin and create the socket.
     static HRESULT Init();
 
-    static HRESULT NewVersionAvailable(bool &newVersionAvailable);
+    // Send a request to the server to check if a new version is available.
+    static HRESULT CheckForNewVersion(bool &newVersionAvailable);
 
 private:
     static Socket s_Socket;

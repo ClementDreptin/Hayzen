@@ -10,22 +10,27 @@ void Dashboard::Init()
     // Just for now for debug
     Sleep(5000);
 
+    LookForUpdates();
+}
+
+HRESULT Dashboard::LookForUpdates()
+{
     HRESULT hr = S_OK;
 
     // Initiliaze the auto updater
     hr = AutoUpdater::Init();
     if (FAILED(hr))
-        return;
+        return E_FAIL;
 
     // Check if there is a new update available
     bool newVersionAvailable = false;
-    hr = AutoUpdater::NewVersionAvailable(newVersionAvailable);
+    hr = AutoUpdater::CheckForNewVersion(newVersionAvailable);
     if (FAILED(hr))
-        return;
+        return E_FAIL;
 
     // If we already have the latest version, just stop here
     if (!newVersionAvailable)
-        return;
+        return E_FAIL;
 
     // Display a message box asking the user if they want to download the new version
     const wchar_t *buttonLabels[] = { L"Yes", L"No" };
@@ -42,14 +47,16 @@ void Dashboard::Init()
 
     // If the user cancelled the message box, return early
     if (result != ERROR_SUCCESS)
-        return;
+        return E_FAIL;
 
     // If the user pressed anything else than "Yes", exit early
     if (buttonPressedIndex != 0)
-        return;
+        return E_FAIL;
 
     // TODO:
     // - Send the request to download the latest version of the plugin
     // - Write the file at the right place
     // - Ask the user to reboot to load the new version of the plugin
+
+    return hr;
 }

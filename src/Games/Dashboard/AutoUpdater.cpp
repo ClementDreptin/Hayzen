@@ -24,17 +24,17 @@ HRESULT AutoUpdater::Init()
     // Create the socket that will be used to communicate with the server
     s_Socket = Socket("3.219.96.23", 80);
 
-    // Connect to the server
-    hr = s_Socket.Connect();
-    if (FAILED(hr))
-        return E_FAIL;
-
     return hr;
 }
 
-HRESULT AutoUpdater::NewVersionAvailable(bool &newVersionAvailable)
+HRESULT AutoUpdater::CheckForNewVersion(bool &newVersionAvailable)
 {
-    std::string request = "HEAD /" HAYZEN_VERSION " HTTP/1.1\r\nHost: hayzen-updater.herokuapp.com\r\nConnection: keep-alive\r\n\r\n";
+    // Connect to the server
+    HRESULT hr = s_Socket.Connect();
+    if (FAILED(hr))
+        return E_FAIL;
+
+    std::string request = "HEAD /" HAYZEN_VERSION " HTTP/1.1\r\nHost: hayzen-updater.herokuapp.com\r\n\r\n";
 
     // Send the request to the server
     int bytesSent = s_Socket.Send(request.c_str(), request.size());
@@ -57,6 +57,9 @@ HRESULT AutoUpdater::NewVersionAvailable(bool &newVersionAvailable)
 
         Sleep(100);
     }
+
+    // Disconnect from the server
+    s_Socket.Disconnect();
 
     // Get the status code
     size_t pos = response.find("\r\n");

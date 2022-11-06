@@ -4,24 +4,6 @@
 // Version set to an incorrect value for now just for testing
 #define HAYZEN_VERSION "6.0.1"
 
-typedef enum
-{
-    DL_ORDINALS_LDAT = 1,
-    DL_ORDINALS_STARTSYSMOD = 2,
-    DL_ORDINALS_SHUTDOWN = 3,
-    DL_ORDINALS_FORCEINILOAD = 4,
-    DL_ORDINALS_GETNUMOPTS = 5,
-    DL_ORDINALS_GETOPTINFO = 6,
-    DL_ORDINALS_GETOPTVAL = 7,
-    DL_ORDINALS_SETOPTVAL = 8,
-    DL_ORDINALS_GETOPTVALBYNAME = 9,
-    DL_ORDINALS_SETOPTVALBYNAME = 10,
-    DL_ORDINALS_GETDRIVELIST = 11,
-    DL_ORDINALS_GETDRIVEINFO = 12,
-    DL_ORDINALS_PLUGINPATH = 14,
-} DL_ORDINALS;
-
-DLAUNCHGETOPTVALBYNAME AutoUpdater::s_DlaunchGetOptValByName = nullptr;
 Socket AutoUpdater::s_Socket;
 std::string AutoUpdater::s_PluginPath;
 
@@ -29,9 +11,9 @@ HRESULT AutoUpdater::Init()
 {
     HRESULT hr = S_OK;
 
-    // Get a pointer to the DashLaunch function to get a DashLaunch option value by name
-    s_DlaunchGetOptValByName = static_cast<DLAUNCHGETOPTVALBYNAME>(Memory::ResolveFunction("launch.xex", DL_ORDINALS_GETOPTVALBYNAME));
-    if (s_DlaunchGetOptValByName == nullptr)
+    // Initialize the DashLaunch functions
+    hr = DashLaunch::Init();
+    if (FAILED(hr))
         return E_FAIL;
 
     // Get the full path to the Hayzen plugin
@@ -115,7 +97,7 @@ std::string AutoUpdater::GetPluginPath()
         _snprintf_s(pluginKey, _TRUNCATE, "plugin%d", i);
 
         // Get the path set for the current plugin key
-        BOOL res = s_DlaunchGetOptValByName(pluginKey, reinterpret_cast<DWORD *>(&pluginFullPath));
+        BOOL res = DashLaunch::GetOptionValueByName(pluginKey, reinterpret_cast<uint32_t *>(&pluginFullPath));
 
         // Some plugin keys might be missing in launch.ini so just continue to the next plugin if the key is not found
         if (res == FALSE)

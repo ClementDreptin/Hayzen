@@ -1,7 +1,5 @@
 #pragma once
 
-typedef BOOL (*DLAUNCHGETOPTVALBYNAME)(const char *optionName, DWORD *pOptionValue);
-
 class AutoUpdater
 {
 public:
@@ -10,7 +8,6 @@ public:
     static HRESULT NewVersionAvailable(bool &newVersionAvailable);
 
 private:
-    static DLAUNCHGETOPTVALBYNAME s_DlaunchGetOptValByName;
     static Socket s_Socket;
     static std::string s_PluginPath;
 

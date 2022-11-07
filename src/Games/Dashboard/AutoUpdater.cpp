@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "Games\Dashboard\AutoUpdater.h"
 
-// Version set to an incorrect value for now just for testing
-#define HAYZEN_VERSION "6.0.1"
+#define HAYZEN_VERSION "6.0.3"
 
 Socket AutoUpdater::s_Socket;
 std::string AutoUpdater::s_PluginPath;

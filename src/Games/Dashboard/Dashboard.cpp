@@ -7,7 +7,6 @@ void Dashboard::Init()
 {
     Xam::XNotify("Hayzen - Dashboard Detected");
 
-    // Just for now for debug
     Sleep(5000);
 
     LookForUpdates();
@@ -91,7 +90,7 @@ HRESULT Dashboard::LookForUpdates()
         return S_OK;
 
     // Reboot
-    // TODO: Call HalReturnToFirmware with either HalRebootRoutine or HalFatalErrorRebootRoutine (cf. _kernelext.h from xkelib)
+    Xam::Reboot();
 
     return hr;
 }

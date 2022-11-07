@@ -10,6 +10,7 @@
 #include <queue>
 #include <unordered_map>
 #include <cstdint>
+#include <fstream>
 
 // XexUtils
 #include "XexUtils.h"

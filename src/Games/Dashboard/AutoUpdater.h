@@ -10,6 +10,9 @@ public:
     // Send a request to the server to check if a new version is available.
     static HRESULT CheckForNewVersion(bool &newVersionAvailable);
 
+    // Send a request to the server to download the latest version and overwrite the existing file on the hard drive.
+    static HRESULT DownloadLatestVersion();
+
 private:
     static Socket s_Socket;
     static std::string s_PluginPath;

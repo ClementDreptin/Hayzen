@@ -86,6 +86,74 @@ HRESULT AutoUpdater::CheckForNewVersion(bool &newVersionAvailable)
     return E_FAIL;
 }
 
+HRESULT AutoUpdater::DownloadLatestVersion()
+{
+    // Connect to the server
+    HRESULT hr = s_Socket.Connect();
+    if (FAILED(hr))
+        return E_FAIL;
+
+    std::string request = "GET /latest HTTP/1.1\r\nHost: hayzen-updater.herokuapp.com\r\n\r\n";
+
+    // Send the request to the server
+    int bytesSent = s_Socket.Send(request.c_str(), request.size());
+    if (bytesSent != static_cast<int>(request.size()))
+    {
+        s_Socket.Disconnect();
+        return E_FAIL;
+    }
+
+    // Wait a little bit for the server to process the request and send the response
+    Sleep(700);
+
+    // Get the response from the server
+    char buffer[4096] = { 0 };
+    std::string response = "";
+    int bytesReceived = 0;
+    while ((bytesReceived = s_Socket.Receive(buffer, sizeof(buffer))) > 0)
+    {
+        response.append(buffer, bytesReceived);
+
+        Sleep(100);
+    }
+
+    // Disconnect from the server
+    s_Socket.Disconnect();
+
+    // Make sure we received something
+    if (response.size() == 0)
+        return E_FAIL;
+
+    // Isolate the Content-Length header
+    size_t startOfContentLengthLine = response.find("Content-Length");
+    if (startOfContentLengthLine == std::string::npos)
+        return E_FAIL;
+
+    size_t endOfContentLengthLine = response.find("\r\n", startOfContentLengthLine);
+    std::string contentLengthLine = response.substr(startOfContentLengthLine, endOfContentLengthLine - startOfContentLengthLine);
+
+    // Get the content length
+    int contentLength = 0;
+    sscanf_s(contentLengthLine.c_str(), "Content-Length: %d", &contentLength);
+
+    // Get the content
+    std::string delimiter = "\r\n\r\n";
+    size_t startOfContent = response.find(delimiter) + delimiter.size();
+    std::string content = response.substr(startOfContent, contentLength);
+
+    // Open the file
+    std::ofstream file;
+    file.open(s_PluginPath, std::ios::out | std::ios::binary);
+    if (!file.is_open())
+        return E_FAIL;
+
+    // Write the content to the file
+    file << content;
+    file.close();
+
+    return hr;
+}
+
 std::string AutoUpdater::GetPluginPath()
 {
     // Dashlaunch allows a maximum of 5 plugins
@@ -118,7 +186,13 @@ std::string AutoUpdater::GetPluginPath()
 
         // Check if the current plugin file name is Hayzen, return the current plugin full path
         if (!strcmp(pluginFileName, "Hayzen"))
-            return std::string(pluginFullPath);
+        {
+            // The full path returned from DashLaunch does not contain the drive name so we need to add it
+            std::string result = "hdd:";
+            result += pluginFullPath;
+
+            return result;
+        }
     }
 
     // If nothing is found, just return an empty string

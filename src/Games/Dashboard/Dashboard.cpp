@@ -30,7 +30,7 @@ HRESULT Dashboard::LookForUpdates()
 
     // If we already have the latest version, just stop here
     if (!newVersionAvailable)
-        return E_FAIL;
+        return S_OK;
 
     // Display a message box asking the user if they want to download the new version
     const wchar_t *buttonLabels[] = { L"Yes", L"No" };
@@ -47,16 +47,51 @@ HRESULT Dashboard::LookForUpdates()
 
     // If the user cancelled the message box, return early
     if (result != ERROR_SUCCESS)
-        return E_FAIL;
+        return S_OK;
 
-    // If the user pressed anything else than "Yes", exit early
+    // If the user pressed anything else than "Yes", return early
     if (buttonPressedIndex != 0)
-        return E_FAIL;
+        return S_OK;
 
-    // TODO:
-    // - Send the request to download the latest version of the plugin
-    // - Write the file at the right place
-    // - Ask the user to reboot to load the new version of the plugin
+    // Download the latest version and write it to disk
+    hr = AutoUpdater::DownloadLatestVersion();
+    if (FAILED(hr))
+    {
+        const wchar_t *okButton[] = { L"OK" };
+
+        Xam::ShowMessageBox(
+            L"Download error",
+            L"An error occured while downloading the latest version of Hayzen.",
+            okButton,
+            ARRAYSIZE(okButton),
+            nullptr,
+            XMB_ERRORICON
+        );
+
+        return E_FAIL;
+    }
+
+    // Display a success message box to the user and ask them if they want to reboot to load the latest version
+    result = Xam::ShowMessageBox(
+        L"Download complete",
+        L"The latest version of Hayzen was successfully downloaded.\nThe changes won't be applied until the next reboot, would you like to reboot now?",
+        buttonLabels,
+        ARRAYSIZE(buttonLabels),
+        &buttonPressedIndex,
+        XMB_ALERTICON,
+        1
+    );
+
+    // If the user cancelled the message box, return early
+    if (result != ERROR_SUCCESS)
+        return S_OK;
+
+    // If the user pressed anything else than "Yes", return early
+    if (buttonPressedIndex != 0)
+        return S_OK;
+
+    // Reboot
+    // TODO: Call HalReturnToFirmware with either HalRebootRoutine or HalFatalErrorRebootRoutine (cf. _kernelext.h from xkelib)
 
     return hr;
 }

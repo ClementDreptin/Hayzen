@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core\Plugin.h"
 
+#include "Games\Dashboard\Dashboard.h"
 #include "Games\MW2\MW2Title.h"
 #include "Games\SpecOps\MW2\SpecOpsMW2Title.h"
 #include "Games\AlphaMW2\AlphaMW2Title.h"
@@ -67,7 +68,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     switch (newTitleId)
     {
     case TITLE_DASHBOARD:
-        Xam::XNotify("Hayzen - Dashboard Detected");
+        Dashboard::Init();
         break;
     case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))

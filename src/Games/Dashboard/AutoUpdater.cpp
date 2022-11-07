@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Games\Dashboard\AutoUpdater.h"
 
-#define HAYZEN_VERSION "6.0.3"
+#define HAYZEN_VERSION "6.1.0"
 
 Socket AutoUpdater::s_Socket;
 std::string AutoUpdater::s_PluginPath;

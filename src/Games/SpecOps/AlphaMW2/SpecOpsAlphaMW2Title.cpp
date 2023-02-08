@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h"
+#include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 
-#include "Games\SpecOps\AlphaMW2\MenuFunctions.h"
+#include "Games/SpecOps/AlphaMW2/MenuFunctions.h"
 
 bool SpecOpsAlphaMW2Title::s_HasJumped = false;
 Detour *SpecOpsAlphaMW2Title::s_pClientCommandDetour = nullptr;

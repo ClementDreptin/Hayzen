@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Games\SpecOps\MW3\SpecOpsMW3Title.h"
+#include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
-#include "Games\SpecOps\MW3\MenuFunctions.h"
+#include "Games/SpecOps/MW3/MenuFunctions.h"
 
 bool SpecOpsMW3Title::s_HasJumped = false;
 Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;

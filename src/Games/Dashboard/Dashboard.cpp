@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Games\Dashboard\Dashboard.h"
+#include "Games/Dashboard/Dashboard.h"
 
-#include "Games\Dashboard\AutoUpdater.h"
+#include "Games/Dashboard/AutoUpdater.h"
 
 void Dashboard::Init()
 {

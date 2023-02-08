@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Elements\HudElem.h"
+#include "Elements/HudElem.h"
 
 const Color HudElem::s_ColorWhite = { 1.0f, 1.0f, 1.0f, 1.0f };
 const Color HudElem::s_ColorBlack = { 0.0f, 0.0f, 0.0f, 1.0f };

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\MW3\GameFunctions.h"
+#include "Games/MW3/GameFunctions.h"
 
 namespace MW3
 {

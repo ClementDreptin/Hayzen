@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Core\Title.h"
-#include "Elements\HudElem.h"
+#include "Core/Title.h"
+#include "Elements/HudElem.h"
 
 // Class to run Spec Ops MW2, inherits from Title.
 class SpecOpsMW2Title : public Title

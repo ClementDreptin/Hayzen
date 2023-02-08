@@ -1,13 +1,13 @@
 #include "pch.h"
-#include "Core\Plugin.h"
+#include "Core/Plugin.h"
 
-#include "Games\Dashboard\Dashboard.h"
-#include "Games\MW2\MW2Title.h"
-#include "Games\SpecOps\MW2\SpecOpsMW2Title.h"
-#include "Games\AlphaMW2\AlphaMW2Title.h"
-#include "Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h"
-#include "Games\MW3\MW3Title.h"
-#include "Games\SpecOps\MW3\SpecOpsMW3Title.h"
+#include "Games/Dashboard/Dashboard.h"
+#include "Games/MW2/MW2Title.h"
+#include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
+#include "Games/AlphaMW2/AlphaMW2Title.h"
+#include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
+#include "Games/MW3/MW3Title.h"
+#include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
 bool Plugin::s_Running = false;
 uint32_t Plugin::s_CurrentTitleId = 0;

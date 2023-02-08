@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elements\Text.h"
+#include "Elements/Text.h"
 
 class Menu;
 

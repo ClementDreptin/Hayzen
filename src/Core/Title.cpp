@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Core\Title.h"
+#include "Core/Title.h"
 
-#include "Elements\HudElem.h"
+#include "Elements/HudElem.h"
 
 Menu Title::s_Menu;
 Option Title::s_RootOption;

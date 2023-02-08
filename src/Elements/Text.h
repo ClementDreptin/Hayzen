@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Elements\HudElem.h"
+#include "Elements/HudElem.h"
 
 // Class to draw a text element, inherits from HudElem.
 class Text : public HudElem

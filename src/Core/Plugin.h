@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core\Title.h"
+#include "Core/Title.h"
 
 // Main class that serves as entry point.
 class Plugin

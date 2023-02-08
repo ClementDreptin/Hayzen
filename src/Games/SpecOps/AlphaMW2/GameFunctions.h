@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Games\SpecOps\AlphaMW2\Structs.h"
+#include "Games/SpecOps/AlphaMW2/Structs.h"
 
 // Spec Ops MW2 Alpha function pointers to functions from the game.
 namespace SpecOpsAlphaMW2

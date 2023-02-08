@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\SpecOps\MW3\GameFunctions.h"
+#include "Games/SpecOps/MW3/GameFunctions.h"
 
 namespace SpecOpsMW3
 {

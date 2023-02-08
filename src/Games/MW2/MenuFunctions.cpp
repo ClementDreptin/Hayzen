@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\MW2\MenuFunctions.h"
+#include "Games/MW2/MenuFunctions.h"
 
 using namespace MW2::Game;
 
@@ -7,10 +7,10 @@ using namespace MW2::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW2Common
-#include "Games\Common\CommonFunctions.h"
+#include "Games/Common/CommonFunctions.h"
 
 #define GAME_MW2
-#include "Games\Common\MultiplayerFunctions.h"
+#include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_MW2
 
 void MW2::ToggleGodMode(Menu *pMenu)

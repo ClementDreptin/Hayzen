@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Core\Title.h"
-#include "Elements\HudElem.h"
+#include "Core/Title.h"
+#include "Elements/HudElem.h"
 
-#include "Games\MW2\Structs.h"
+#include "Games/MW2/Structs.h"
 
 // Class to run MW2 TU9, inherits from Title.
 class MW2Title : public Title

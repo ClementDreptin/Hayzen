@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\Dashboard\AutoUpdater.h"
+#include "Games/Dashboard/AutoUpdater.h"
 
 #define HAYZEN_VERSION "6.1.0"
 

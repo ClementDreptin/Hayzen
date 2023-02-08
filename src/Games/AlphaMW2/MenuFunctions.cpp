@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\AlphaMW2\MenuFunctions.h"
+#include "Games/AlphaMW2/MenuFunctions.h"
 
 using namespace AlphaMW2::Game;
 
@@ -7,10 +7,10 @@ using namespace AlphaMW2::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE AlphaMW2Common
-#include "Games\Common\CommonFunctions.h"
+#include "Games/Common/CommonFunctions.h"
 
 #define GAME_ALPHAMW2
-#include "Games\Common\MultiplayerFunctions.h"
+#include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_ALPHAMW2
 
 void AlphaMW2::ToggleGodMode(Menu *pMenu)

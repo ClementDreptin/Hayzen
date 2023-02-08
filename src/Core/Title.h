@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core\Menu.h"
+#include "Core/Menu.h"
 
 // Interface that game classes inherit from.
 class Title

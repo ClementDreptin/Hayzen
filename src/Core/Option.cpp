@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Core\Option.h"
+#include "Core/Option.h"
 
-#include "Core\Menu.h"
+#include "Core/Menu.h"
 
 Option::Option(const std::string &name, uint32_t index, Callback callback)
     : m_Index(index),

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\SpecOps\MW3\MenuFunctions.h"
+#include "Games/SpecOps/MW3/MenuFunctions.h"
 
 using namespace SpecOpsMW3::Game;
 
@@ -7,10 +7,10 @@ using namespace SpecOpsMW3::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE SpecOpsMW3Common
-#include "Games\Common\CommonFunctions.h"
+#include "Games/Common/CommonFunctions.h"
 
 #define GAME_MW3
-#include "Games\Common\SpecOpsFunctions.h"
+#include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_MW3
 
 void SpecOpsMW3::ToggleGodMode(Menu *pMenu)

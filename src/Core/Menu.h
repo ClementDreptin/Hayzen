@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Core\Option.h"
-#include "Elements\Rectangle.h"
-#include "Elements\Text.h"
+#include "Core/Option.h"
+#include "Elements/Rectangle.h"
+#include "Elements/Text.h"
 
 // Class to describe the general behavior of the menu.
 class Menu

@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Games\AlphaMW2\GameFunctions.h"
+#include "Games/AlphaMW2/GameFunctions.h"
 
 namespace AlphaMW2
 {

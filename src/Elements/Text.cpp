@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Elements\Text.h"
+#include "Elements/Text.h"
 
 Text::Text(const std::string &text, float x, float y, const Color &color, float fontScale)
     : HudElem(x, y, color), m_FontScale(fontScale), m_Text(text)

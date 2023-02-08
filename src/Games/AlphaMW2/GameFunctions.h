@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Games\AlphaMW2\Structs.h"
+#include "Games/AlphaMW2/Structs.h"
 
 // MW2 Alpha function pointers to functions from the game.
 namespace AlphaMW2

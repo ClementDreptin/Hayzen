@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Games\MW2\MW2Title.h"
+#include "Games/MW2/MW2Title.h"
 
-#include "Games\MW2\MenuFunctions.h"
+#include "Games/MW2/MenuFunctions.h"
 
 Detour *MW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *MW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;

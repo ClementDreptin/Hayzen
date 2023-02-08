@@ -12,12 +12,10 @@ void ToggleFallDamage(Menu *pMenu);
 
 void ToggleAmmo(Menu *pMenu);
 
-// Toggle elvators.
 void ToggleElevators(Menu *pMenu);
 
 void SpawnCarePackage(Menu *pMenu);
 
-// Open a keyboard to allow the user to change the knockback value.
 void Knockback(Menu *pMenu);
 
 void ToggleSaveLoadBinds(Menu *pMenu);

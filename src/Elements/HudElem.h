@@ -1,6 +1,5 @@
 #pragma once
 
-// Struct to describe a four-component color in the RGBA format.
 struct Color
 {
     float r;
@@ -9,7 +8,7 @@ struct Color
     float a;
 };
 
-// Struct to describe a font (struct defined in the games).
+// Struct defined in the games.
 struct Font_s
 {
     int fontName;
@@ -32,7 +31,6 @@ typedef HANDLE (*MATERIAL_REGISTERHANDLE)(const char *name, int imageTrack);
 #define CHAR_RB "\x6"
 #define CHAR_RS "\x11"
 
-// Interface that the other elements inherit from.
 class HudElem
 {
 public:
@@ -49,41 +47,37 @@ public:
     static R_REGISTERFONT R_RegisterFont;
     static MATERIAL_REGISTERHANDLE Material_RegisterHandle;
 
-    // Default constructor.
     HudElem() {}
 
-    // Constructor.
     HudElem(float x, float y, const Color &color);
 
-    // Virtual destructor.
     virtual ~HudElem() {}
 
-    // Draw the element (one implementation per element).
     virtual void Draw() = 0;
 
-    float GetX() const { return m_X; }
+    inline float GetX() const { return m_X; }
 
-    float GetY() const { return m_Y; }
+    inline float GetY() const { return m_Y; }
 
-    const Color &GetColor() const { return m_Color; }
+    inline const Color &GetColor() const { return m_Color; }
 
-    void SetX(float x) { m_X = x; }
+    inline void SetX(float x) { m_X = x; }
 
-    void SetY(float y) { m_Y = y; }
+    inline void SetY(float y) { m_Y = y; }
 
-    void SetColor(const Color &color) { m_Color = color; }
+    inline void SetColor(const Color &color) { m_Color = color; }
 
-    void SetColor(float r, float g, float b, float a);
+    inline void SetColor(float r, float g, float b, float a);
 
-    void SetAlpha(float alpha) { m_Color.a = alpha; }
+    inline void SetAlpha(float alpha) { m_Color.a = alpha; }
 
-    static void SetFont(Font_s *pFont) { s_pFont = pFont; }
+    inline static void SetFont(Font_s *pFont) { s_pFont = pFont; }
 
-    static void SetMaterialHandle(HANDLE materialHandle) { s_MaterialHandle = materialHandle; }
+    inline static void SetMaterialHandle(HANDLE materialHandle) { s_MaterialHandle = materialHandle; }
 
-    static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT drawTextFn) { R_AddCmdDrawText = drawTextFn; }
+    inline static void SetDrawTextFnPtr(R_ADDCMDDRAWTEXT drawTextFn) { R_AddCmdDrawText = drawTextFn; }
 
-    static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC drawRectangleFn) { R_AddCmdDrawStretchPic = drawRectangleFn; }
+    inline static void SetDrawRectangleFnPtr(R_ADDCMDDRAWSTRETCHPIC drawRectangleFn) { R_AddCmdDrawStretchPic = drawRectangleFn; }
 
 protected:
     float m_X;

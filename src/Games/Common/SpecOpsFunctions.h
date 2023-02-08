@@ -7,7 +7,6 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-// Toggle God Mode (specific to Spec Ops).
 void ToggleGodModeSP(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -21,7 +20,6 @@ void ToggleGodModeSP(Menu *pMenu)
     iPrintLn(clientNum, BIT_CHECK(pPlayerState->otherFlags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
 }
 
-// Threaded function that prompts a keyboard and sets the jump height value to what was entered.
 static uint32_t ChangeJumpHeightThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
@@ -45,7 +43,6 @@ static uint32_t ChangeJumpHeightThread(Menu *pMenu)
     return 0;
 }
 
-// Change the jump height.
 void ChangeJumpHeight(Menu *pMenu)
 {
     // This needs to execute on a separate thread because we need to wait for the user
@@ -54,7 +51,6 @@ void ChangeJumpHeight(Menu *pMenu)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
 }
 
-// Toggle God Mode for the second player.
 void ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1
@@ -76,7 +72,6 @@ void ToggleSecondPlayerGodMode(Menu *pMenu)
     iPrintLn(firstClientNum, BIT_CHECK(pSecondPlayerState->otherFlags, 0) ? "Second Player God Mode ^2On" : "Second Player God Mode ^1Off");
 }
 
-// Teleport the second player in front of the first player.
 void TeleportSecondPlayerToMe(Menu *pMenu)
 {
     // The second client num is always 1

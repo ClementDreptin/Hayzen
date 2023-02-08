@@ -2,17 +2,13 @@
 
 #include "HudElem.h"
 
-// Class to draw a rectangle element, inherits from HudElem.
 class Rectangle : public HudElem
 {
 public:
-    // Default constructor.
     Rectangle() {}
 
-    // Constructor.
     Rectangle(float x, float y, float width, float height, const Color &color);
 
-    // Call R_AddCmdDrawStretchPic() of the current game.
     virtual void Draw();
 
     float GetWidth() const { return m_Width; }

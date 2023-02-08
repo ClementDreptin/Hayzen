@@ -13,7 +13,6 @@ bool Plugin::s_Running = false;
 uint32_t Plugin::s_CurrentTitleId = 0;
 Title *Plugin::s_pCurrentTitle = nullptr;
 
-// Enum from title IDs.
 enum
 {
     TITLE_DASHBOARD = 0xFFFE07D1,

@@ -7,7 +7,6 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-// Toggle God Mode (specific to Multiplayer).
 void ToggleGodModeMP(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -21,7 +20,6 @@ void ToggleGodModeMP(Menu *pMenu)
     iPrintLn(clientNum, BIT_CHECK(pPlayerEntity->flags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
 }
 
-// Toggle fall damage.
 void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
 {
     int clientNum = pMenu->GetClientNum();
@@ -38,7 +36,6 @@ void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
     }
 }
 
-// Spawn a care package.
 void SpawnCarePackage(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -97,7 +94,6 @@ struct SpawnBotOptions
 
 void TeleportBotToMe(Menu *pMenu);
 
-// Threaded function that makes the bot pick a team, then pick a class.
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
     Sleep(150);
@@ -139,7 +135,6 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     return 0;
 }
 
-// Spawn a bot.
 void SpawnBot(SpawnBotOptions *pOptions)
 {
     gentity_s *pBot = static_cast<gentity_s *>(pOptions->pMenu->GetBot());
@@ -161,7 +156,6 @@ void SpawnBot(SpawnBotOptions *pOptions)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
 }
 
-// Teleport the bot in front of the player.
 void TeleportBotToMe(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -185,7 +179,6 @@ void TeleportBotToMe(Menu *pMenu)
     pBot->client->ps.origin = Math::ToFront(origin, viewY, distance);
 }
 
-// Toggle the bot's movement.
 void ToggleBotMovement(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();

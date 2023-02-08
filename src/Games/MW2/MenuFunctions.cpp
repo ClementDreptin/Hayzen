@@ -59,7 +59,6 @@ void MW2::SpawnCarePackage(Menu *pMenu)
     COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
 }
 
-// Threaded function that prompts a keyboard and sets the knockback strength to what was entered.
 static uint32_t KnockbackThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard

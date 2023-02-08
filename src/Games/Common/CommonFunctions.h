@@ -7,7 +7,6 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-// Options passed to the ToggleAmmo function.
 struct ToggleAmmoOptions
 {
     Menu *pMenu;
@@ -16,7 +15,6 @@ struct ToggleAmmoOptions
     POWERPC_INSTRUCTION patchValue;
 };
 
-// Toggle unlimited ammo.
 void ToggleAmmo(const ToggleAmmoOptions &options)
 {
     int clientNum = options.pMenu->GetClientNum();
@@ -33,7 +31,6 @@ void ToggleAmmo(const ToggleAmmoOptions &options)
     }
 }
 
-// Toggle save and load binds.
 void ToggleSaveLoadBinds(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -52,7 +49,6 @@ void ToggleSaveLoadBinds(Menu *pMenu)
     pMenu->ToggleBinds();
 }
 
-// Save the current player's position.
 void SavePosition(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -63,7 +59,6 @@ void SavePosition(Menu *pMenu)
     iPrintLn(clientNum, "Position ^2Saved");
 }
 
-// Load the previously saved player's position.
 void LoadPosition(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
@@ -84,7 +79,6 @@ void LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
 }
 
-// Toggle UFO.
 void ToggleUfo(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();

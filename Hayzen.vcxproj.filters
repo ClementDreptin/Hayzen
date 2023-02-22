@@ -4,32 +4,17 @@
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Core\Menu.cpp" />
-    <ClCompile Include="src\Core\Option.cpp" />
-    <ClCompile Include="src\Elements\HudElem.cpp" />
-    <ClCompile Include="src\Elements\Text.cpp" />
-    <ClCompile Include="src\Elements\Rectangle.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
-    <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\Core\Menu.h" />
-    <ClInclude Include="src\Core\Option.h" />
     <ClInclude Include="src\Core\Title.h" />
-    <ClInclude Include="src\Elements\HudElem.h" />
-    <ClInclude Include="src\Elements\Text.h" />
-    <ClInclude Include="src\Elements\Rectangle.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
-    <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
-    <ClInclude Include="src\Games\Common\CommonFunctions.h" />
-    <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
-    <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Core\Bits.h" />
   </ItemGroup>
   <ItemGroup>

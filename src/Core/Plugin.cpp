@@ -89,6 +89,6 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     }
 
     // Only init the new game if it's supported
-    if (s_pCurrentTitle)
-        s_pCurrentTitle->Init();
+    // if (s_pCurrentTitle)
+    //     s_pCurrentTitle->Init();
 }

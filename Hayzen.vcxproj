@@ -86,28 +86,6 @@
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
-    <ClInclude Include="src\Games\Dashboard\AutoUpdater.h" />
-    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
-    <ClInclude Include="src\Games\MW2\GameFunctions.h" />
-    <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
-    <ClInclude Include="src\Games\MW2\MW2Title.h" />
-    <ClInclude Include="src\Games\MW2\Structs.h" />
-    <ClInclude Include="src\Games\MW3\GameFunctions.h" />
-    <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
-    <ClInclude Include="src\Games\MW3\MW3Title.h" />
-    <ClInclude Include="src\Games\MW3\Structs.h" />
-    <ClInclude Include="src\Games\SpecOps\AlphaMW2\GameFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h" />
-    <ClInclude Include="src\Games\SpecOps\AlphaMW2\Structs.h" />
-    <ClInclude Include="src\Games\SpecOps\MW2\GameFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\MW2\MenuFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.h" />
-    <ClInclude Include="src\Games\SpecOps\MW2\Structs.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\GameFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\MenuFunctions.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
-    <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -121,23 +99,6 @@
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
-    <ClCompile Include="src\Games\Dashboard\AutoUpdater.cpp" />
-    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
-    <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
-    <ClCompile Include="src\Games\MW2\MW2Title.cpp" />
-    <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
-    <ClCompile Include="src\Games\MW3\MW3Title.cpp" />
-    <ClCompile Include="src\Games\SpecOps\AlphaMW2\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW2\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW2\MenuFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW3\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW3\MenuFunctions.cpp" />
-    <ClCompile Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseG|Xbox 360'">Create</PrecompiledHeader>

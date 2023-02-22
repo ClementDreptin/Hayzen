@@ -22,11 +22,13 @@ private:
 
     static Detour *s_pScr_NotifyDetour;
 
-    virtual void Update() override;
-
     static void Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     static void SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer);
+
+    virtual void Update() override;
+
+    virtual void InitRenderer() override;
 };
 
 #pragma warning(pop)

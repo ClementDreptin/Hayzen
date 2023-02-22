@@ -19,7 +19,9 @@ protected:
     static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 
 private:
+    bool m_InMatch;
+
     virtual void Update() = 0;
 
-    bool m_InMatch;
+    virtual void InitRenderer() = 0;
 };

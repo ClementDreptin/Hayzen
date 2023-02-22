@@ -26,6 +26,20 @@ AlphaMW2Title::~AlphaMW2Title()
     delete s_pSV_ExecuteClientCommandDetour;
 }
 
+void AlphaMW2Title::Update()
+{
+    if (!InMatch())
+        return;
+
+    Line::Props props = { 0 };
+    props.X = 100;
+    props.Y = 100;
+    props.Width = 300;
+    props.Height = 50;
+    props.Color = D3DCOLOR_XRGB(255, 0, 0);
+    m_Line.Render(props);
+}
+
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     // Call the original Scr_Notify function
@@ -43,7 +57,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     // to recreate the menu every round so we make sure it's not already initialized
     if (!strcmp(eventName, "begin"))
     {
-        Log::Info("game begin");
+        s_CurrentInstance->InMatch(true);
 
         // Disable the unlocalized error messages when printing something in the killfeed
         AlphaMW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -63,5 +77,5 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int c
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
-        Log::Info("game end");
+        s_CurrentInstance->InMatch(false);
 }

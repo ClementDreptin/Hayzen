@@ -78,6 +78,7 @@
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\UI\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Title.cpp" />
@@ -90,6 +91,7 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\UI\Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="deps\XexUtils\XexUtils.vcxproj">

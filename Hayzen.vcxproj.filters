@@ -7,6 +7,7 @@
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
+    <ClCompile Include="src\UI\Line.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -16,6 +17,7 @@
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Core\Bits.h" />
+    <ClInclude Include="src\UI\Line.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

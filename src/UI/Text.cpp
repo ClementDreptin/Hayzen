@@ -35,6 +35,7 @@ void Text::Render(const Props &props)
 
     // Render the text
     float x = props.X + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
-    float y = props.Y + R_TextHeight(pFont) + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
+    float y = props.Y + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
+    y += R_TextHeight(pFont); // The text anchor is at the bottom left instead of top left so we need to add the text height to the Y coordinate
     R_AddCmdDrawText(props.Text.c_str(), props.Text.size(), pFont, x, y, 1.0f, 1.0f, 0.0f, color, 0);
 }

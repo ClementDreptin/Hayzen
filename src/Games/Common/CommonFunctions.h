@@ -51,9 +51,9 @@ void LoadPosition()
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
 }
 
-void ToggleSaveLoadBinds(void *pParameters)
+void ToggleSaveLoadBinds()
 {
-    Context::BindsEnabled = *reinterpret_cast<bool *>(pParameters);
+    // The ToggleOption is responsible for toggling Context::BindsEnabled
 
     if (Context::BindsEnabled)
     {

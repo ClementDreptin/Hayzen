@@ -57,9 +57,9 @@ void AlphaMW2::SpawnCarePackage(void *)
     COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-void AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
+void AlphaMW2::ToggleSaveLoadBinds(void *)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
 }
 
 void AlphaMW2::SavePosition(void *)

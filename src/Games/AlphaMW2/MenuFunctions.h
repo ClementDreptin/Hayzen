@@ -6,9 +6,9 @@ namespace AlphaMW2
 void ToggleGodMode(void *pParameters);
 
 void ToggleFallDamage(void *pParameters);
-/*
-void ToggleAmmo(Menu *pMenu);
 
+void ToggleAmmo(void *pParameters);
+/*
 void SpawnCarePackage(Menu *pMenu);
 
 void ToggleSaveLoadBinds(Menu *pMenu);

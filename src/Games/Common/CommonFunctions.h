@@ -4,31 +4,20 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-/*
+
 struct ToggleAmmoOptions
 {
-    Menu *pMenu;
-    uintptr_t patchAddress;
-    POWERPC_INSTRUCTION defaultValue;
-    POWERPC_INSTRUCTION patchValue;
+    bool Enabled;
+    uintptr_t PatchAddress;
+    POWERPC_INSTRUCTION DefaultValue;
+    POWERPC_INSTRUCTION PatchValue;
 };
 
 void ToggleAmmo(const ToggleAmmoOptions &options)
 {
-    int clientNum = options.pMenu->GetClientNum();
-
-    if (Memory::Read<POWERPC_INSTRUCTION>(options.patchAddress) == options.defaultValue)
-    {
-        Memory::Write<POWERPC_INSTRUCTION>(options.patchAddress, options.patchValue);
-        iPrintLn(clientNum, "Unlimited Ammo ^2On");
-    }
-    else
-    {
-        Memory::Write<POWERPC_INSTRUCTION>(options.patchAddress, options.defaultValue);
-        iPrintLn(clientNum, "Unlimited Ammo ^1Off");
-    }
+    Memory::Write<POWERPC_INSTRUCTION>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
 }
-
+/*
 void ToggleSaveLoadBinds(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();

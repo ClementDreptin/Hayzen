@@ -39,18 +39,20 @@ void AlphaMW2::ToggleFallDamage(void *pParameters)
     }
 }
 
-/* void AlphaMW2::ToggleAmmo(Menu *pMenu)
+void AlphaMW2::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x82113628;
-    options.defaultValue = 0x7D1E4850;
-    options.patchValue = 0x7D284B78;
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.Enabled = enabled;
+    options.PatchAddress = 0x82113628;
+    options.DefaultValue = 0x7D1E4850;
+    options.PatchValue = 0x7D284B78;
 
     COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void AlphaMW2::SpawnCarePackage(Menu *pMenu)
+/* void AlphaMW2::SpawnCarePackage(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
 }

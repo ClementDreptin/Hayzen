@@ -64,7 +64,7 @@ void AlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
-    // Teleport section
+    // Bot section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", AlphaMW2::SpawnBot));

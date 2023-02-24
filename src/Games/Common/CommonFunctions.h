@@ -1,6 +1,8 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
+#include "Core/Context.h"
+
 namespace COMMON_FN_NAMESPACE
 {
 
@@ -35,23 +37,23 @@ void ToggleSaveLoadBinds(Menu *pMenu)
 
     pMenu->ToggleBinds();
 }
-
-void SavePosition(Menu *pMenu)
+*/
+void SavePosition()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
-    pMenu->SetSavedPosition(GetPlayerState(clientNum)->origin);
-    pMenu->SetSavedAngles(GetPlayerState(clientNum)->viewAngles);
+    Context::SavedPosition = GetPlayerState(clientNum)->origin;
+    Context::SavedAngles = GetPlayerState(clientNum)->viewAngles;
 
     iPrintLn(clientNum, "Position ^2Saved");
 }
 
-void LoadPosition(Menu *pMenu)
+void LoadPosition()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
-    const vec3 &savedPosition = pMenu->GetSavedPosition();
-    const vec3 &savedAngles = pMenu->GetSavedAngles();
+    const vec3 &savedPosition = Context::SavedPosition;
+    const vec3 &savedAngles = Context::SavedAngles;
 
     // Make sure the player previously saved their position
     if (savedPosition.isNull() || savedAngles.isNull())
@@ -66,7 +68,7 @@ void LoadPosition(Menu *pMenu)
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
 }
 
-void ToggleUfo(Menu *pMenu)
+/* void ToggleUfo(Menu *pMenu)
 {
     int clientNum = pMenu->GetClientNum();
 

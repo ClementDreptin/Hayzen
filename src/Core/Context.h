@@ -5,6 +5,10 @@ namespace Context
 
 extern int ClientNum;
 
+extern vec3 SavedPosition;
+
+extern vec3 SavedAngles;
+
 void Reset();
 
 }

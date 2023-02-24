@@ -54,6 +54,16 @@ void AlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 
+    // Teleport section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        // options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", AlphaMW2::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", AlphaMW2::LoadPosition));
+        // options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
     m_Menu.Init(optionGroups);
 }
 

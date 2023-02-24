@@ -60,19 +60,19 @@ void AlphaMW2::SpawnCarePackage(void *)
 /* void AlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
-}
+} */
 
-void AlphaMW2::SavePosition(Menu *pMenu)
+void AlphaMW2::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+    COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void AlphaMW2::LoadPosition(Menu *pMenu)
+void AlphaMW2::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+    COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void AlphaMW2::ToggleUfo(Menu *pMenu)
+/* void AlphaMW2::ToggleUfo(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
 }

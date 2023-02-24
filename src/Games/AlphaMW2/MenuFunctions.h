@@ -12,11 +12,11 @@ void ToggleAmmo(void *pParameters);
 void SpawnCarePackage(void *);
 /*
 void ToggleSaveLoadBinds(Menu *pMenu);
+*/
+void SavePosition(void *);
 
-void SavePosition(Menu *pMenu);
-
-void LoadPosition(Menu *pMenu);
-
+void LoadPosition(void *);
+/*
 void ToggleUfo(Menu *pMenu);
 
 void SpawnBot(Menu *pMenu);

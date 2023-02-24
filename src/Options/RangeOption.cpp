@@ -53,12 +53,9 @@ void RangeOption<T>::Render(float x, float y, float width)
     // Create a wide string from the current number value
     std::string text = std::to_string(static_cast<long double>(*m_Current));
 
-    // Calculate the width of the wide string of the number value
-    float textWidth = static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont));
-
     // Render the text with the number
     Text::Props props = { 0 };
-    props.X = x + width - textWidth - Layout::Padding;
+    props.X = x + width - GetTextWidth(text) - Layout::Padding;
     props.Y = y + Layout::Padding;
     props.Text = text;
     props.Color = Layout::TextColor;

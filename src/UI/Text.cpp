@@ -15,7 +15,7 @@ void Text::Render(const Props &props)
         Rectangle::Props rectProps = { 0 };
         rectProps.X = props.X;
         rectProps.Y = props.Y;
-        rectProps.Width = R_TextWidth(props.Text.c_str(), props.Text.size(), pFont) + Layout::Padding * 2;
+        rectProps.Width = GetTextWidth(props.Text) + Layout::Padding * 2;
         rectProps.Height = Layout::LineHeight;
         rectProps.Color = props.BackgroundColor;
         rectProps.BorderWidth = props.BorderWidth;
@@ -36,6 +36,6 @@ void Text::Render(const Props &props)
     // Render the text
     float x = props.X + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
     float y = props.Y + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
-    y += R_TextHeight(pFont); // The text anchor is at the bottom left instead of top left so we need to add the text height to the Y coordinate
+    y += GetTextHeight(); // The text anchor is at the bottom left instead of top left so we need to add the text height to the Y coordinate
     R_AddCmdDrawText(props.Text.c_str(), props.Text.size(), pFont, x, y, 1.0f, 1.0f, 0.0f, color, 0);
 }

@@ -46,7 +46,7 @@ float Option::GetMinWidth()
     if (m_CachedMinWidth != 0.0f)
         return m_CachedMinWidth;
 
-    m_CachedMinWidth = R_TextWidth(m_Name.c_str(), m_Name.size(), pFont) + Layout::Padding * 2;
+    m_CachedMinWidth = GetTextWidth(m_Name) + Layout::Padding * 2;
 
     // Take into account some space between the option name and the potential text on the right (e.g. the number for RangeOption)
     m_CachedMinWidth += 100.0f;

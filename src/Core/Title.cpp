@@ -80,5 +80,5 @@ void Title::InitRenderer()
     pFont = R_RegisterFont("fonts/normalFont", 0);
     MaterialHandle = Material_RegisterHandle("white", 0);
 
-    Layout::LineHeight = R_TextHeight(pFont) + Layout::Padding * 2;
+    Layout::LineHeight = GetTextHeight() + Layout::Padding * 2;
 }

@@ -14,4 +14,14 @@ MATERIAL_REGISTERHANDLE Material_RegisterHandle = nullptr;
 Font_s *pFont = nullptr;
 HANDLE MaterialHandle = nullptr;
 
+float GetTextWidth(const std::string &text)
+{
+    return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont));
+}
+
+float GetTextHeight()
+{
+    return static_cast<float>(R_TextHeight(pFont));
+}
+
 }

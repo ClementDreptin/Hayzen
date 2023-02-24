@@ -25,9 +25,6 @@ AlphaMW2Title::AlphaMW2Title()
     // Initialize the renderer
     InitRenderer();
 
-    // Initialize the menu
-    InitMenu();
-
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
     s_pScr_NotifyDetour = new Detour(0x822539C0, Scr_NotifyHook);
@@ -44,12 +41,15 @@ void AlphaMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
+    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x82113628) == 0x7D284B78;
+
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
-        options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
@@ -93,12 +93,15 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     // Get the string representing the event
     const char *eventName = AlphaMW2::Game::SL_ConvertToString(stringValue);
 
-    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
-    // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(eventName, "begin") && !s_CurrentInstance->InMatch())
+    if (!strcmp(eventName, "begin"))
     {
-        s_CurrentInstance->InMatch(true);
+        // Reset the context
+        Context::Reset();
         Context::ClientNum = clientNum;
+
+        // Initialize the menu
+        s_CurrentInstance->InMatch(true);
+        s_CurrentInstance->InitMenu();
 
         // Disable the unlocalized error messages when printing something in the killfeed
         AlphaMW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -118,10 +121,7 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int c
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
-    {
         s_CurrentInstance->InMatch(false);
-        Context::Reset();
-    }
 }
 
 void AlphaMW2Title::InitRenderer()

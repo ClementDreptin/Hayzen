@@ -14,6 +14,8 @@ public:
 
     inline void InMatch(bool inMatch) { m_InMatch = inMatch; }
 
+    virtual void InitMenu() = 0;
+
 protected:
     Menu m_Menu;
     bool m_MenuOpen;
@@ -30,8 +32,6 @@ private:
     bool m_InMatch;
 
     Text m_ControlsText;
-
-    virtual void InitMenu() = 0;
 
     void Update();
 

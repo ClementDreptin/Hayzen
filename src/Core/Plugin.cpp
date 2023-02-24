@@ -7,7 +7,7 @@
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 // #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 // #include "Games/MW3/MW3Title.h"
-// #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
 bool Plugin::s_Running = false;
 uint32_t Plugin::s_CurrentTitleId = 0;
@@ -79,11 +79,12 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
         // else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
         //     s_pCurrentTitle = new SpecOpsAlphaMW2Title();
         break;
-    // case TITLE_MW3:
+    case TITLE_MW3:
     //     if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
     //         s_pCurrentTitle = new MW3Title();
-    //     else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
-    //         s_pCurrentTitle = new SpecOpsMW3Title();
+        /* else */if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+             s_pCurrentTitle = new SpecOpsMW3Title();
+        break;
     default:
         break;
     }

@@ -90,6 +90,10 @@
     <ClInclude Include="src\Games\SpecOps\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.h" />
     <ClInclude Include="src\Games\SpecOps\MW2\Structs.h" />
+    <ClInclude Include="src\Games\SpecOps\MW3\GameFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\MW3\MenuFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
+    <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
     <ClInclude Include="src\Options\Option.h" />
@@ -118,6 +122,9 @@
     <ClCompile Include="src\Games\SpecOps\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW3\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW3\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />

@@ -1,40 +1,26 @@
 #include "pch.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
+#include "Core/Context.h"
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
+#include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
+#include "UI/Renderer.h"
 #include "Games/SpecOps/MW3/MenuFunctions.h"
 
-bool SpecOpsMW3Title::s_HasJumped = false;
 Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;
 Detour *SpecOpsMW3Title::s_pPlayerCmd_AllowJumpDetour = nullptr;
 
-SpecOpsMW3Title::~SpecOpsMW3Title()
-{
-    delete s_pClientCommandDetour;
-    delete s_pPlayerCmd_AllowJumpDetour;
-}
-
-void SpecOpsMW3Title::Init()
+SpecOpsMW3Title::SpecOpsMW3Title()
 {
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
 
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Set the draw function addresses
-    m_DrawTextFnAddr = 0x823F4E30;
-    m_DrawRectangleFnAddr = 0x823F4878;
-    m_RegisterFontFnAddr = 0x823DD130;
-    m_RegisterMaterialFnAddr = 0x823E95E8;
-
-    // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(SpecOpsMW3::SavePosition);
-    s_Menu.SetLoadPositionFn(SpecOpsMW3::LoadPosition);
-
-    // Set the draw function pointers with the addresses above
-    Title::Init();
-
-    // Create the structure of the menu
-    CreateStructure();
+    // Initialize the renderer
+    InitRenderer();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x82127090, SCR_DrawScreenFieldHook);
@@ -42,32 +28,54 @@ void SpecOpsMW3Title::Init()
     s_pPlayerCmd_AllowJumpDetour = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
 }
 
-void SpecOpsMW3Title::CreateStructure()
+SpecOpsMW3Title::~SpecOpsMW3Title()
 {
-    // Set the global title of the menu
-    s_RootOption.SetText("Cod Jumper");
+    delete s_pClientCommandDetour;
+    delete s_pPlayerCmd_AllowJumpDetour;
+}
+
+void SpecOpsMW3Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x8235BB54) == 0x7D495378;
 
     // Main section
-    auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsMW3::ToggleGodMode));
-    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsMW3::ToggleAmmo));
-    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsMW3::ChangeJumpHeight));
-    s_RootOption.AddChild(pMain);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW3::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW3::ChangeJumpHeight, 39, 0, 999, 1));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
 
     // Teleport section
-    auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsMW3::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsMW3::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsMW3::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsMW3::ToggleUfo));
-    s_RootOption.AddChild(pTeleport);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", SpecOpsMW3::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", SpecOpsMW3::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsMW3::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
 
     // Second player section
-    auto pSecondPlayer = MakeOption("Second Player", 2);
-    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsMW3::ToggleSecondPlayerGodMode));
-    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsMW3::TeleportSecondPlayerToMe));
-    s_RootOption.AddChild(pSecondPlayer);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleSecondPlayerGodMode));
+        options.emplace_back(MakeOption(ClickOption, "Teleport to Me", SpecOpsMW3::TeleportSecondPlayerToMe));
+        optionGroups.emplace_back(OptionGroup("Second Player", options));
+    }
+
+    // Set the save and load functions
+    Context::SavePositionFn = SpecOpsMW3::SavePosition;
+    Context::LoadPositionFn = SpecOpsMW3::LoadPosition;
+
+    m_Menu.Init(optionGroups);
 }
+
+static bool hasJumped = false;
 
 void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 {
@@ -76,7 +84,7 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 25"))
-        s_HasJumped = true;
+        hasJumped = true;
 
     // The 'n 26' event means the game started
     if (!strcmp(s, "n 26"))
@@ -84,19 +92,19 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
         // The 'n 26' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
         // 'n 25' event didn't occur just before.
-        if (!s_HasJumped)
+        if (!hasJumped)
         {
-            // We have no way of knowing when the game ends so, if the menu was already
-            // initialized, reset it first
-            if (s_Menu.IsInitialized())
-                s_Menu.Stop();
+            // Reset the context
+            Context::Reset();
+            Context::ClientNum = 0;
 
             // Initialize the menu
-            s_Menu.Init(0, &s_RootOption);
+            s_CurrentInstance->InMatch(true);
+            s_CurrentInstance->InitMenu();
         }
 
         // Register that the user released the A button
-        s_HasJumped = false;
+        hasJumped = false;
     }
 }
 
@@ -105,4 +113,18 @@ void SpecOpsMW3Title::PlayerCmd_AllowJumpHook()
     // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
     // missions where you normally can't. This is a bad practice and may have side effects.
     return;
+}
+
+void SpecOpsMW3Title::InitRenderer()
+{
+    using namespace Renderer;
+
+    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x823F4878);
+    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x823F4E30);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x823DD318);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x823DD320);
+    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x823DD130);
+    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x823E95E8);
+
+    Title::InitRenderer();
 }

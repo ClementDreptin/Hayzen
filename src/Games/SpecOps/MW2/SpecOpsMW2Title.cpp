@@ -5,6 +5,7 @@
 #include "Core/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
 #include "UI/Renderer.h"
 #include "Games/SpecOps/MW2/MenuFunctions.h"
 
@@ -42,7 +43,7 @@ void SpecOpsMW2Title::InitMenu()
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW2::ToggleGodMode));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
-        // options.emplace_back(MakeOption(ClickOption, "Jump Height", SpecOpsMW2::ChangeJumpHeight));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW2::ChangeJumpHeight, 39, 0, 999, 1));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

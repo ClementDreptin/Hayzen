@@ -9,9 +9,9 @@ namespace SpecOpsMW2
 void ToggleGodMode(void *pParameters);
 
 void ToggleAmmo(void *pParameters);
-/*
-void ChangeJumpHeight(Menu *pMenu);
 
+void ChangeJumpHeight(void *pParameters);
+/*
 void ToggleSaveLoadBinds(Menu *pMenu);
 
 void SavePosition(Menu *pMenu);

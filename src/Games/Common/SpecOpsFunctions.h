@@ -15,38 +15,16 @@ void ToggleGodModeSP(void *pParameters)
     pPlayerState->otherFlags = enabled ? 1 : 0;
 
 }
-/*
-static uint32_t ChangeJumpHeightThread(Menu *pMenu)
+
+void ChangeJumpHeight(void *pParameters)
 {
-    // Get the value from the user via the virtual keyboard
-    std::string value;
-    uint32_t result = Xam::ShowKeyboard(L"Jump Height", L"Max value: 999\nDefault value: 39", L"39", value, 3, VKBD_LATIN_NUMERIC);
-
-    // If the user canceled the keyboard, return early
-    if (result != ERROR_SUCCESS)
-        return 0;
-
-    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
-    if (value.empty())
-        value = "39";
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
 
     // Set the new jump height value
-    std::string fullCommand = "set jump_height " + value;
-    Cbuf_AddText(0, fullCommand.c_str());
-
-    iPrintLn(pMenu->GetClientNum(), "Jump Height set to ^2" + value);
-
-    return 0;
+    std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
+    Cbuf_AddText(0, command.c_str());
 }
-
-void ChangeJumpHeight(Menu *pMenu)
-{
-    // This needs to execute on a separate thread because we need to wait for the user
-    // to finish typing. If this wasn't done on a separate thread, it would block the
-    // game's thread and make it crash.
-    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
-}
-
+/*
 void ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     // The second client num is always 1

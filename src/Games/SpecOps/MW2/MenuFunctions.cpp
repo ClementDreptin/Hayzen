@@ -27,12 +27,12 @@ void SpecOpsMW2::ToggleAmmo(void *pParameters)
 
     COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
-/*
-void SpecOpsMW2::ChangeJumpHeight(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::ChangeJumpHeight(pMenu);
-}
 
+void SpecOpsMW2::ChangeJumpHeight(void *pParameters)
+{
+    COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+/*
 void SpecOpsMW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);

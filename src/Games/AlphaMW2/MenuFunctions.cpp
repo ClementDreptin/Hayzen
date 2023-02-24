@@ -52,12 +52,12 @@ void AlphaMW2::ToggleAmmo(void *pParameters)
     COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-/* void AlphaMW2::SpawnCarePackage(Menu *pMenu)
+void AlphaMW2::SpawnCarePackage(void *)
 {
-    COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
+    COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-void AlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
+/* void AlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
 }

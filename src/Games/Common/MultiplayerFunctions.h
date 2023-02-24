@@ -32,11 +32,11 @@ void ToggleGodModeMP(void *pParameters)
         Memory::Write<float>(patchAddress, 128.0f);
         iPrintLn(clientNum, "Fall Damage ^1On");
     }
-}
+} */
 
-void SpawnCarePackage(Menu *pMenu)
+void SpawnCarePackage()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
     gentity_s *pCurrentMapBrushModel = GetCurrentMapBrushModel();
 
@@ -79,6 +79,7 @@ void SpawnCarePackage(Menu *pMenu)
     SV_LinkEntity(pEntity);
 }
 
+/*
 #ifndef GAME_MW3
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded

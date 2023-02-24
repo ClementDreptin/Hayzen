@@ -8,9 +8,9 @@ void ToggleGodMode(void *pParameters);
 void ToggleFallDamage(void *pParameters);
 
 void ToggleAmmo(void *pParameters);
-/*
-void SpawnCarePackage(Menu *pMenu);
 
+void SpawnCarePackage(void *);
+/*
 void ToggleSaveLoadBinds(Menu *pMenu);
 
 void SavePosition(Menu *pMenu);

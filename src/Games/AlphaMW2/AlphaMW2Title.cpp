@@ -1,8 +1,12 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
+#include "Core/Callbacks.h"
 #include "Core/OptionGroup.h"
 #include "Options/ClickOption.h"
+#include "Options/RangeOption.h"
+#include "Options/ToggleOption.h"
+#include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
@@ -35,11 +39,6 @@ AlphaMW2Title::~AlphaMW2Title()
     delete s_pSV_ExecuteClientCommandDetour;
 }
 
-static void ClickCallback(void *)
-{
-    Log::Info("Clicked");
-}
-
 void AlphaMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
@@ -47,21 +46,30 @@ void AlphaMW2Title::InitMenu()
     // First group
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ClickOption, "God Mode", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Fall Damage", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Ammo", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", ClickCallback));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", Callback::ToggleCallback));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", Callback::ToggleCallback));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", Callback::ToggleCallback));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", Callback::ClickCallback));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 
     // Second group
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ClickOption, "Save/Load Binds", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Save Position", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Load Position", ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "UFO", ClickCallback));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", Callback::ToggleBinds));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", Callback::ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", Callback::ClickCallback));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", Callback::ToggleCallback));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
+    // Third group
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, 1280.0f, 10.0f));
+        options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, 720.0f, 10.0f));
+        options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
+        optionGroups.emplace_back(OptionGroup("Customization", options));
     }
 
     m_Menu.Init(optionGroups);

@@ -18,6 +18,11 @@
     <ClCompile Include="src\Core\OptionGroup.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
+    <ClCompile Include="src\Options\ColorPickerOption.cpp" />
+    <ClCompile Include="src\Options\RangeOption.cpp" />
+    <ClCompile Include="src\Options\SubOptionGroup.cpp" />
+    <ClCompile Include="src\Options\ToggleOption.cpp" />
+    <ClCompile Include="src\Core\Callbacks.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -38,6 +43,11 @@
     <ClInclude Include="src\Core\OptionGroup.h" />
     <ClInclude Include="src\Options\Option.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
+    <ClInclude Include="src\Options\ColorPickerOption.h" />
+    <ClInclude Include="src\Options\RangeOption.h" />
+    <ClInclude Include="src\Options\SubOptionGroup.h" />
+    <ClInclude Include="src\Options\ToggleOption.h" />
+    <ClInclude Include="src\Core\Callbacks.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

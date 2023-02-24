@@ -48,8 +48,8 @@ void Title::Render()
 void Title::RenderControlsText()
 {
     Text::Props props = { 0 };
-    props.X = 100.0f;
-    props.Y = 100.0f;
+    props.X = 10.0f;
+    props.Y = 10.0f;
     props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open" : "Close");
     props.Color = Layout::TextColor;
     props.BackgroundColor = Layout::BackgroundColor;

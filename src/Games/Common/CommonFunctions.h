@@ -70,10 +70,7 @@ void ToggleUfo(void *pParameters)
 
     gclient_s *pGClient = GetGClient(Context::ClientNum);
 
-    if (enabled)
-        pGClient->mFlags = 2;
-    else
-        pGClient->mFlags = 0;
+    pGClient->mFlags = enabled ? 2 : 0;
 }
 
 }

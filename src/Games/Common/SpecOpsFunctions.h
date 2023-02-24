@@ -1,25 +1,21 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Menu.h"
-#include "Core/Bits.h"
+#include "Core/Context.h"
 
 namespace COMMON_FN_NAMESPACE
 {
 
-void ToggleGodModeSP(Menu *pMenu)
+void ToggleGodModeSP(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    playerState_s *pPlayerState = GetPlayerState(clientNum);
+    playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
 
-    // The default value of otherFlags is 0, the God Mode value is 1 so we just need to toggle the first bit
-    // to toggle God Mode
-    BIT_FLIP(pPlayerState->otherFlags, 0);
+    pPlayerState->otherFlags = enabled ? 1 : 0;
 
-    iPrintLn(clientNum, BIT_CHECK(pPlayerState->otherFlags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
 }
-
+/*
 static uint32_t ChangeJumpHeightThread(Menu *pMenu)
 {
     // Get the value from the user via the virtual keyboard
@@ -93,5 +89,5 @@ void TeleportSecondPlayerToMe(Menu *pMenu)
     // Teleport the second player in front of the first player
     pSecondClient->ps.origin = Math::ToFront(origin, viewY, distance);
 }
-
+*/
 }

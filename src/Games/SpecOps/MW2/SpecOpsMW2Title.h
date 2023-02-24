@@ -1,21 +1,26 @@
 #pragma once
 
 #include "Core/Title.h"
-#include "Elements/HudElem.h"
+
+// Disable the C4481 warning for the override keyword
+#pragma warning(push)
+#pragma warning(disable : 4481)
 
 class SpecOpsMW2Title : public Title
 {
 public:
+    SpecOpsMW2Title();
+
     ~SpecOpsMW2Title();
 
-    virtual void Init();
+    virtual void InitMenu() override;
 
 private:
-    static bool s_HasJumped;
-
-    virtual void CreateStructure();
-
     static Detour *s_pClientCommandDetour;
 
     static void ClientCommandHook(int clientNum, const char *s);
+
+    virtual void InitRenderer() override;
 };
+
+#pragma warning(pop)

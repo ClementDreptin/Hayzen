@@ -6,10 +6,10 @@
 namespace SpecOpsMW2
 {
 
-void ToggleGodMode(Menu *pMenu);
+void ToggleGodMode(void *pParameters);
 
-void ToggleAmmo(Menu *pMenu);
-
+void ToggleAmmo(void *pParameters);
+/*
 void ChangeJumpHeight(Menu *pMenu);
 
 void ToggleSaveLoadBinds(Menu *pMenu);
@@ -23,5 +23,5 @@ void ToggleUfo(Menu *pMenu);
 void ToggleSecondPlayerGodMode(Menu *pMenu);
 
 void TeleportSecondPlayerToMe(Menu *pMenu);
-
+*/
 }

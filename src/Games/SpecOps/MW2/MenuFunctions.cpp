@@ -13,22 +13,21 @@ using namespace SpecOpsMW2::Game;
 #include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_MW2
 
-void SpecOpsMW2::ToggleGodMode(Menu *pMenu)
+void SpecOpsMW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeSP(pMenu);
+    COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
 }
 
-void SpecOpsMW2::ToggleAmmo(Menu *pMenu)
+void SpecOpsMW2::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x82331F48;
-    options.defaultValue = 0x7D1D4850;
-    options.patchValue = 0x7D284B78;
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.PatchAddress = 0x82331F48;
+    options.DefaultValue = 0x7D1D4850;
+    options.PatchValue = 0x7D284B78;
 
     COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
-
+/*
 void SpecOpsMW2::ChangeJumpHeight(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ChangeJumpHeight(pMenu);
@@ -63,3 +62,4 @@ void SpecOpsMW2::TeleportSecondPlayerToMe(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe(pMenu);
 }
+*/

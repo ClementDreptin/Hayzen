@@ -12,10 +12,7 @@ void ToggleGodModeMP(void *pParameters)
 
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
 
-    if (enabled)
-        pPlayerEntity->flags = 0x1001;
-    else
-        pPlayerEntity->flags = 0x1000;
+    pPlayerEntity->flags = enabled ? 0x1001 : 0x1000;
 }
 
 /* void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)

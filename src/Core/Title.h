@@ -1,5 +1,7 @@
 #pragma once
 
+#include "UI/Text.h"
+
 class Title
 {
 public:
@@ -18,10 +20,17 @@ protected:
 
     static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 
+    virtual void InitRenderer() = 0;
+
 private:
     bool m_InMatch;
+    bool m_MenuOpen;
 
-    virtual void Update() = 0;
+    Text m_ControlsText;
 
-    virtual void InitRenderer() = 0;
+    void Update();
+
+    void Render();
+
+    void RenderControlsText();
 };

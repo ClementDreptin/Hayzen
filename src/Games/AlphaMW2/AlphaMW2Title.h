@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Title.h"
-#include "UI/Text.h"
 #include "Games/AlphaMW2/Structs.h"
 
 // Disable the C4481 warning for the override keyword
@@ -16,9 +15,6 @@ public:
     ~AlphaMW2Title();
 
 private:
-    bool m_MenuOpen;
-    Text m_Text;
-
     static Detour *s_pSV_ExecuteClientCommandDetour;
 
     static Detour *s_pScr_NotifyDetour;
@@ -26,8 +22,6 @@ private:
     static void Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     static void SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer);
-
-    virtual void Update() override;
 
     virtual void InitRenderer() override;
 };

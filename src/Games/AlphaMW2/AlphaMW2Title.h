@@ -23,6 +23,8 @@ private:
 
     static void SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer);
 
+    virtual void InitMenu() override;
+
     virtual void InitRenderer() override;
 };
 

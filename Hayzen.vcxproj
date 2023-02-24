@@ -73,11 +73,15 @@
   <ItemGroup>
     <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Core\Menu.h" />
+    <ClInclude Include="src\Core\OptionGroup.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
+    <ClInclude Include="src\Options\ClickOption.h" />
+    <ClInclude Include="src\Options\Option.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\UI\Border.h" />
     <ClInclude Include="src\UI\Layout.h" />
@@ -88,11 +92,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Input.cpp" />
+    <ClCompile Include="src\Core\Menu.cpp" />
+    <ClCompile Include="src\Core\OptionGroup.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Options\ClickOption.cpp" />
+    <ClCompile Include="src\Options\Option.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseG|Xbox 360'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">pch.h</PrecompiledHeaderFile>

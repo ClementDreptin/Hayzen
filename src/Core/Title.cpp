@@ -29,10 +29,19 @@ void Title::Update()
         m_MenuOpen = !m_MenuOpen;
         return;
     }
+
+    // Update the menu if it's open
+    if (m_MenuOpen)
+        m_Menu.Update(pGamepad);
 }
 
 void Title::Render()
 {
+    // Render the menu if it's open
+    if (m_MenuOpen)
+        m_Menu.Render();
+
+    // Render the controls text
     RenderControlsText();
 }
 

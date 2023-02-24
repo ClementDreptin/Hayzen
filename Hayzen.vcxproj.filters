@@ -14,6 +14,10 @@
     <ClCompile Include="src\UI\Text.cpp" />
     <ClCompile Include="src\UI\Layout.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
+    <ClCompile Include="src\Core\Menu.cpp" />
+    <ClCompile Include="src\Core\OptionGroup.cpp" />
+    <ClCompile Include="src\Options\Option.cpp" />
+    <ClCompile Include="src\Options\ClickOption.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -30,6 +34,10 @@
     <ClInclude Include="src\UI\Text.h" />
     <ClInclude Include="src\UI\Layout.h" />
     <ClInclude Include="src\Core\Input.h" />
+    <ClInclude Include="src\Core\Menu.h" />
+    <ClInclude Include="src\Core\OptionGroup.h" />
+    <ClInclude Include="src\Options\Option.h" />
+    <ClInclude Include="src\Options\ClickOption.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

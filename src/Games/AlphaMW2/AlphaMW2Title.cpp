@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
 #include "UI/Renderer.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
@@ -18,6 +20,9 @@ AlphaMW2Title::AlphaMW2Title()
     // Initialize the renderer
     InitRenderer();
 
+    // Initialize the menu
+    InitMenu();
+
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
     s_pScr_NotifyDetour = new Detour(0x822539C0, Scr_NotifyHook);
@@ -28,6 +33,38 @@ AlphaMW2Title::~AlphaMW2Title()
 {
     delete s_pScr_NotifyDetour;
     delete s_pSV_ExecuteClientCommandDetour;
+}
+
+static void ClickCallback(void *)
+{
+    Log::Info("Clicked");
+}
+
+void AlphaMW2Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    // First group
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "God Mode", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Fall Damage", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Ammo", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", ClickCallback));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
+
+    // Second group
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Save/Load Binds", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", ClickCallback));
+        options.emplace_back(MakeOption(ClickOption, "UFO", ClickCallback));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
+    m_Menu.Init(optionGroups);
 }
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -57,7 +94,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 
 void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
 {
-    // Call the original Scr_Notify SV_ExecuteClientCommand
+    // Call the original SV_ExecuteClientCommand function
     s_pSV_ExecuteClientCommandDetour->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further

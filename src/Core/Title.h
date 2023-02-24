@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Menu.h"
 #include "UI/Text.h"
 
 class Title
@@ -14,6 +15,9 @@ public:
     inline void InMatch(bool inMatch) { m_InMatch = inMatch; }
 
 protected:
+    Menu m_Menu;
+    bool m_MenuOpen;
+
     static Title *s_CurrentInstance;
 
     static Detour *s_pSCR_DrawScreenFieldDetour;
@@ -24,9 +28,10 @@ protected:
 
 private:
     bool m_InMatch;
-    bool m_MenuOpen;
 
     Text m_ControlsText;
+
+    virtual void InitMenu() = 0;
 
     void Update();
 

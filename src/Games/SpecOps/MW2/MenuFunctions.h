@@ -11,15 +11,15 @@ void ToggleGodMode(void *pParameters);
 void ToggleAmmo(void *pParameters);
 
 void ChangeJumpHeight(void *pParameters);
+
+void ToggleSaveLoadBinds(void *);
+
+void SavePosition(void *);
+
+void LoadPosition(void *);
+
+void ToggleUfo(void *pParameters);
 /*
-void ToggleSaveLoadBinds(Menu *pMenu);
-
-void SavePosition(Menu *pMenu);
-
-void LoadPosition(Menu *pMenu);
-
-void ToggleUfo(Menu *pMenu);
-
 void ToggleSecondPlayerGodMode(Menu *pMenu);
 
 void TeleportSecondPlayerToMe(Menu *pMenu);

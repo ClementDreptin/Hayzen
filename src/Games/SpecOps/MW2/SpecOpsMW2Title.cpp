@@ -47,9 +47,19 @@ void SpecOpsMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 
+    // Teleport section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", SpecOpsMW2::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", SpecOpsMW2::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsMW2::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
     // Set the save and load functions
-    // Context::SavePositionFn = SpecOpsMW2::SavePosition;
-    // Context::LoadPositionFn = SpecOpsMW2::LoadPosition;
+    Context::SavePositionFn = SpecOpsMW2::SavePosition;
+    Context::LoadPositionFn = SpecOpsMW2::LoadPosition;
 
     m_Menu.Init(optionGroups);
 }

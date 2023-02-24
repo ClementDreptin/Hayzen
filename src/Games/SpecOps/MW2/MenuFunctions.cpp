@@ -32,27 +32,27 @@ void SpecOpsMW2::ChangeJumpHeight(void *pParameters)
 {
     COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
+
+void SpecOpsMW2::ToggleSaveLoadBinds(void *)
+{
+    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+}
+
+void SpecOpsMW2::SavePosition(void *)
+{
+    COMMON_FN_NAMESPACE::SavePosition();
+}
+
+void SpecOpsMW2::LoadPosition(void *)
+{
+    COMMON_FN_NAMESPACE::LoadPosition();
+}
+
+void SpecOpsMW2::ToggleUfo(void *pParameters)
+{
+    COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+}
 /*
-void SpecOpsMW2::ToggleSaveLoadBinds(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
-}
-
-void SpecOpsMW2::SavePosition(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
-}
-
-void SpecOpsMW2::LoadPosition(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
-}
-
-void SpecOpsMW2::ToggleUfo(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
-}
-
 void SpecOpsMW2::ToggleSecondPlayerGodMode(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pMenu);

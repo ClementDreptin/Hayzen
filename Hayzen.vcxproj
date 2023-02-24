@@ -78,7 +78,9 @@
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\UI\Border.h" />
     <ClInclude Include="src\UI\Line.h" />
+    <ClInclude Include="src\UI\Rectangle.h" />
     <ClInclude Include="src\UI\Renderer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +94,9 @@
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Xbox 360'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\UI\Border.cpp" />
     <ClCompile Include="src\UI\Line.cpp" />
+    <ClCompile Include="src\UI\Rectangle.cpp" />
     <ClCompile Include="src\UI\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>

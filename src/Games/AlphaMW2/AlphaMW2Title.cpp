@@ -35,13 +35,16 @@ void AlphaMW2Title::Update()
     if (!InMatch())
         return;
 
-    Line::Props props = { 0 };
-    props.X = 100;
-    props.Y = 100;
-    props.Width = 300;
-    props.Height = 50;
-    props.Color = D3DCOLOR_XRGB(255, 0, 0);
-    m_Line.Render(props);
+    Rectangle::Props props = { 0 };
+    props.X = 100.0f;
+    props.Y = 100.0f;
+    props.Width = 600.0f;
+    props.Height = 200.0f;
+    props.Color = D3DCOLOR_XRGB(255, 0, 255);
+    props.BorderWidth = 10.0f;
+    props.BorderColor = D3DCOLOR_XRGB(0, 255, 0);
+    props.BorderPosition = static_cast<Border::Position>(Border::Border_Bottom | Border::Border_Left | Border::Border_Top);
+    m_Rectangle.Render(props);
 }
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -59,7 +62,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(eventName, "begin"))
+    if (!strcmp(eventName, "begin") && !s_CurrentInstance->InMatch())
     {
         s_CurrentInstance->InMatch(true);
 

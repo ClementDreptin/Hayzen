@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Title.h"
-#include "UI/Line.h"
+#include "UI/Rectangle.h"
 #include "Games/AlphaMW2/Structs.h"
 
 // Disable the C4481 warning for the override keyword
@@ -16,7 +16,7 @@ public:
     ~AlphaMW2Title();
 
 private:
-    Line m_Line;
+    Rectangle m_Rectangle;
 
     static Detour *s_pSV_ExecuteClientCommandDetour;
 

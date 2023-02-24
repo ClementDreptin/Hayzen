@@ -13,7 +13,6 @@ void ToggleGodModeSP(void *pParameters)
     playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
 
     pPlayerState->otherFlags = enabled ? 1 : 0;
-
 }
 
 void ChangeJumpHeight(void *pParameters)
@@ -24,12 +23,14 @@ void ChangeJumpHeight(void *pParameters)
     std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
     Cbuf_AddText(0, command.c_str());
 }
-/*
-void ToggleSecondPlayerGodMode(Menu *pMenu)
+
+void ToggleSecondPlayerGodMode(void *pParameters)
 {
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
     // The second client num is always 1
     int secondClientNum = 1;
-    int firstClientNum = pMenu->GetClientNum();
+    int firstClientNum = Context::ClientNum;
 
     // If the player name of the second client is empty, it means there is no second client
     gclient_s *pSecondClient = GetGClient(secondClientNum);
@@ -41,16 +42,14 @@ void ToggleSecondPlayerGodMode(Menu *pMenu)
 
     playerState_s *pSecondPlayerState = GetPlayerState(secondClientNum);
 
-    BIT_FLIP(pSecondPlayerState->otherFlags, 0);
-
-    iPrintLn(firstClientNum, BIT_CHECK(pSecondPlayerState->otherFlags, 0) ? "Second Player God Mode ^2On" : "Second Player God Mode ^1Off");
+    pSecondPlayerState->otherFlags = enabled ? 1 : 0;
 }
 
-void TeleportSecondPlayerToMe(Menu *pMenu)
+void TeleportSecondPlayerToMe()
 {
     // The second client num is always 1
     int secondClientNum = 1;
-    int firstClientNum = pMenu->GetClientNum();
+    int firstClientNum = Context::ClientNum;
 
     gclient_s *pSecondClient = GetGClient(secondClientNum);
     if (!pSecondClient->connected)
@@ -67,5 +66,5 @@ void TeleportSecondPlayerToMe(Menu *pMenu)
     // Teleport the second player in front of the first player
     pSecondClient->ps.origin = Math::ToFront(origin, viewY, distance);
 }
-*/
+
 }

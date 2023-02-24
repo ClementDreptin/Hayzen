@@ -19,9 +19,9 @@ void SavePosition(void *);
 void LoadPosition(void *);
 
 void ToggleUfo(void *pParameters);
-/*
-void ToggleSecondPlayerGodMode(Menu *pMenu);
 
-void TeleportSecondPlayerToMe(Menu *pMenu);
-*/
+void ToggleSecondPlayerGodMode(void *pParameters);
+
+void TeleportSecondPlayerToMe(void *);
+
 }

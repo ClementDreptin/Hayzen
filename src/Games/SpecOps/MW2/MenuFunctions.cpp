@@ -52,14 +52,13 @@ void SpecOpsMW2::ToggleUfo(void *pParameters)
 {
     COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
-/*
-void SpecOpsMW2::ToggleSecondPlayerGodMode(Menu *pMenu)
+
+void SpecOpsMW2::ToggleSecondPlayerGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pMenu);
+    COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
 }
 
-void SpecOpsMW2::TeleportSecondPlayerToMe(Menu *pMenu)
+void SpecOpsMW2::TeleportSecondPlayerToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe(pMenu);
+    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
 }
-*/

@@ -57,6 +57,14 @@ void SpecOpsMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
+    // Second player section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW2::ToggleSecondPlayerGodMode));
+        options.emplace_back(MakeOption(ClickOption, "Teleport to Me", SpecOpsMW2::TeleportSecondPlayerToMe));
+        optionGroups.emplace_back(OptionGroup("Second Player", options));
+    }
+
     // Set the save and load functions
     Context::SavePositionFn = SpecOpsMW2::SavePosition;
     Context::LoadPositionFn = SpecOpsMW2::LoadPosition;

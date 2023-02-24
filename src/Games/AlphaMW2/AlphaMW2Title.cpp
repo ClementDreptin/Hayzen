@@ -35,16 +35,16 @@ void AlphaMW2Title::Update()
     if (!InMatch())
         return;
 
-    Rectangle::Props props = { 0 };
+    Text::Props props = { 0 };
     props.X = 100.0f;
     props.Y = 100.0f;
-    props.Width = 600.0f;
-    props.Height = 200.0f;
-    props.Color = D3DCOLOR_XRGB(255, 0, 255);
-    props.BorderWidth = 10.0f;
-    props.BorderColor = D3DCOLOR_XRGB(0, 255, 0);
-    props.BorderPosition = static_cast<Border::Position>(Border::Border_Bottom | Border::Border_Left | Border::Border_Top);
-    m_Rectangle.Render(props);
+    props.Text = "This is a test text";
+    props.Color = Layout::TextColor;
+    props.BackgroundColor = Layout::BackgroundColor;
+    props.BorderWidth = Layout::BorderWidth;
+    props.BorderColor = Layout::Color;
+    props.BorderPosition = Border::Border_All;
+    m_Text.Render(props);
 }
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -98,4 +98,6 @@ void AlphaMW2Title::InitRenderer()
 
     pFont = R_RegisterFont("fonts/normalFont", 0);
     MaterialHandle = Material_RegisterHandle("white", 0);
+
+    Layout::LineHeight = 20.0f; // TODO: Get the line height with the proper text height function from the game
 }

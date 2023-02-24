@@ -11,6 +11,8 @@
     <ClCompile Include="src\UI\Renderer.cpp" />
     <ClCompile Include="src\UI\Rectangle.cpp" />
     <ClCompile Include="src\UI\Border.cpp" />
+    <ClCompile Include="src\UI\Text.cpp" />
+    <ClCompile Include="src\UI\Layout.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -24,6 +26,8 @@
     <ClInclude Include="src\UI\Renderer.h" />
     <ClInclude Include="src\UI\Rectangle.h" />
     <ClInclude Include="src\UI\Border.h" />
+    <ClInclude Include="src\UI\Text.h" />
+    <ClInclude Include="src\UI\Layout.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

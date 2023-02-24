@@ -10,9 +10,9 @@ void ToggleFallDamage(void *pParameters);
 void ToggleAmmo(void *pParameters);
 
 void SpawnCarePackage(void *);
-/*
-void ToggleSaveLoadBinds(Menu *pMenu);
-*/
+
+void ToggleSaveLoadBinds(void *pParameters);
+
 void SavePosition(void *);
 
 void LoadPosition(void *);

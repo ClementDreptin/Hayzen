@@ -2,6 +2,7 @@
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
 #include "Core/Context.h"
+#include "UI/Renderer.h"
 
 namespace COMMON_FN_NAMESPACE
 {
@@ -19,25 +20,7 @@ void ToggleAmmo(const ToggleAmmoOptions &options)
 {
     Memory::Write<POWERPC_INSTRUCTION>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
 }
-/*
-void ToggleSaveLoadBinds(Menu *pMenu)
-{
-    int clientNum = pMenu->GetClientNum();
 
-    if (!pMenu->BindsEnabled())
-    {
-        Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
-        iPrintLn(clientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
-    }
-    else
-    {
-        Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
-        iPrintLn(clientNum, "Save and Load binds ^1Off");
-    }
-
-    pMenu->ToggleBinds();
-}
-*/
 void SavePosition()
 {
     int clientNum = Context::ClientNum;
@@ -66,6 +49,19 @@ void LoadPosition()
 
     SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&savedPosition));
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
+}
+
+void ToggleSaveLoadBinds(void *pParameters)
+{
+    Context::BindsEnabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (Context::BindsEnabled)
+    {
+        Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
+        iPrintLn(Context::ClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
+    }
+    else
+        Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
 }
 
 void ToggleUfo(void *pParameters)

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core/Title.h"
 
+#include "Core/Context.h"
 #include "Core/Input.h"
 #include "UI/Renderer.h"
 
@@ -33,6 +34,15 @@ void Title::Update()
     // Update the menu if it's open
     if (m_MenuOpen)
         m_Menu.Update(pGamepad);
+
+    // Save and Load with LB/RB when Save and Load binds are enabled
+    if (Context::BindsEnabled)
+    {
+        if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+            Context::LoadPositionFn(nullptr);
+        else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+            Context::SavePositionFn(nullptr);
+    }
 }
 
 void Title::Render()

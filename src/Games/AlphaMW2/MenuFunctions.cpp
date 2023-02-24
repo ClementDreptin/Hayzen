@@ -57,10 +57,10 @@ void AlphaMW2::SpawnCarePackage(void *)
     COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-/* void AlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
+void AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
-} */
+    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+}
 
 void AlphaMW2::SavePosition(void *)
 {

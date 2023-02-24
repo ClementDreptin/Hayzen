@@ -48,7 +48,7 @@ void AlphaMW2Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode));
-        // options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
         // options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo));
         // options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
         optionGroups.emplace_back(OptionGroup("Main", options));

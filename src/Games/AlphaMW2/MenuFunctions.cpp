@@ -20,27 +20,26 @@ void AlphaMW2::ToggleGodMode(void *pParameters)
     COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
-/* void AlphaMW2::ToggleFallDamage(Menu *pMenu)
+void AlphaMW2::ToggleFallDamage(void *pParameters)
 {
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-    int clientNum = pMenu->GetClientNum();
 
-    if (Dvar_GetFloat("bg_fallDamageMinHeight") == 128.0f)
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
     {
         SetClientDvar(-1, "bg_fallDamageMinHeight", "998");
         SetClientDvar(-1, "bg_fallDamageMaxHeight", "999");
-        iPrintLn(clientNum, "Fall Damage ^2Off");
     }
     else
     {
         SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
         SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
-        iPrintLn(clientNum, "Fall Damage ^1On");
     }
 }
 
-void AlphaMW2::ToggleAmmo(Menu *pMenu)
+/* void AlphaMW2::ToggleAmmo(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
     options.pMenu = pMenu;

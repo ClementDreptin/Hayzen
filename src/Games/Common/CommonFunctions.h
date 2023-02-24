@@ -68,17 +68,16 @@ void LoadPosition()
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
 }
 
-/* void ToggleUfo(Menu *pMenu)
+void ToggleUfo(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    gclient_s *pGClient = GetGClient(clientNum);
+    gclient_s *pGClient = GetGClient(Context::ClientNum);
 
-    // The default value of mFlags is 0, the UFO value is 2 so we just need to toggle the second bit
-    // to toggle UFO
-    BIT_FLIP(pGClient->mFlags, 1);
-
-    iPrintLn(clientNum, BIT_CHECK(pGClient->mFlags, 1) ? "Ufo ^2On" : "Ufo ^1Off");
+    if (enabled)
+        pGClient->mFlags = 2;
+    else
+        pGClient->mFlags = 0;
 }
-*/
+
 }

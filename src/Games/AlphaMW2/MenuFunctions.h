@@ -16,9 +16,9 @@ void ToggleSaveLoadBinds(Menu *pMenu);
 void SavePosition(void *);
 
 void LoadPosition(void *);
-/*
-void ToggleUfo(Menu *pMenu);
 
+void ToggleUfo(void *pParameters);
+/*
 void SpawnBot(Menu *pMenu);
 
 void TeleportBotToMe(Menu *pMenu);

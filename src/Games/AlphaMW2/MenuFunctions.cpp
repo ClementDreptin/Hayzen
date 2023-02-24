@@ -72,12 +72,12 @@ void AlphaMW2::LoadPosition(void *)
     COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-/* void AlphaMW2::ToggleUfo(Menu *pMenu)
+void AlphaMW2::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
+    COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-void AlphaMW2::SpawnBot(Menu *pMenu)
+/* void AlphaMW2::SpawnBot(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->pMenu = pMenu;

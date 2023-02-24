@@ -15,12 +15,12 @@ using namespace AlphaMW2::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_ALPHAMW2
 
-void AlphaMW2::ToggleGodMode(void *pParameters)
+bool AlphaMW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
-void AlphaMW2::ToggleFallDamage(void *pParameters)
+bool AlphaMW2::ToggleFallDamage(void *pParameters)
 {
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
@@ -37,9 +37,11 @@ void AlphaMW2::ToggleFallDamage(void *pParameters)
         SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
         SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
     }
+
+    return true;
 }
 
-void AlphaMW2::ToggleAmmo(void *pParameters)
+bool AlphaMW2::ToggleAmmo(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
@@ -49,49 +51,49 @@ void AlphaMW2::ToggleAmmo(void *pParameters)
     options.DefaultValue = 0x7D1E4850;
     options.PatchValue = 0x7D284B78;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void AlphaMW2::SpawnCarePackage(void *)
+bool AlphaMW2::SpawnCarePackage(void *)
 {
-    COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-void AlphaMW2::ToggleSaveLoadBinds(void *)
+bool AlphaMW2::ToggleSaveLoadBinds(void *)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
 }
 
-void AlphaMW2::SavePosition(void *)
+bool AlphaMW2::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition();
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void AlphaMW2::LoadPosition(void *)
+bool AlphaMW2::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition();
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void AlphaMW2::ToggleUfo(void *pParameters)
+bool AlphaMW2::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-void AlphaMW2::SpawnBot(void *)
+bool AlphaMW2::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8355D5C4;
     pOptions->ClientsBaseAddress = 0x83577D98;
 
-    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-void AlphaMW2::TeleportBotToMe(void *)
+bool AlphaMW2::TeleportBotToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportBotToMe();
+    return COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-void AlphaMW2::ToggleBotMovement(void *pParameters)
+bool AlphaMW2::ToggleBotMovement(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
 }

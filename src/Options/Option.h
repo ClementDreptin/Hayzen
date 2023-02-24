@@ -8,7 +8,7 @@
 class Option
 {
 public:
-    typedef void (*Callback)(void *pParameters);
+    typedef bool (*Callback)(void *pParameters);
 
     Option();
 

@@ -13,52 +13,52 @@ using namespace SpecOpsMW2::Game;
 #include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_MW2
 
-void SpecOpsMW2::ToggleGodMode(void *pParameters)
+bool SpecOpsMW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
 }
 
-void SpecOpsMW2::ToggleAmmo(void *pParameters)
+bool SpecOpsMW2::ToggleAmmo(void *pParameters)
 {
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
     options.PatchAddress = 0x82331F48;
     options.DefaultValue = 0x7D1D4850;
     options.PatchValue = 0x7D284B78;
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void SpecOpsMW2::ChangeJumpHeight(void *pParameters)
+bool SpecOpsMW2::ChangeJumpHeight(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
 
-void SpecOpsMW2::ToggleSaveLoadBinds(void *)
+bool SpecOpsMW2::ToggleSaveLoadBinds(void *)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
 }
 
-void SpecOpsMW2::SavePosition(void *)
+bool SpecOpsMW2::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition();
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void SpecOpsMW2::LoadPosition(void *)
+bool SpecOpsMW2::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition();
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void SpecOpsMW2::ToggleUfo(void *pParameters)
+bool SpecOpsMW2::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-void SpecOpsMW2::ToggleSecondPlayerGodMode(void *pParameters)
+bool SpecOpsMW2::ToggleSecondPlayerGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
 }
 
-void SpecOpsMW2::TeleportSecondPlayerToMe(void *)
+bool SpecOpsMW2::TeleportSecondPlayerToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
+    return COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
 }

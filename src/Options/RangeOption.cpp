@@ -24,18 +24,30 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
     {
         if (*m_Current < m_Max)
         {
-            m_Current += m_Step;
+            T newValue = m_Current + m_Step;
             if (m_Callback != nullptr)
-                m_Callback(&m_Current);
+            {
+                bool success = m_Callback(&newValue);
+                if (success)
+                    m_Current = newValue;
+            }
+            else
+                m_Current = newValue;
         }
     }
     else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
     {
         if (*m_Current > m_Min)
         {
-            m_Current -= m_Step;
+            T newValue = m_Current - m_Step;
             if (m_Callback != nullptr)
-                m_Callback(&m_Current);
+            {
+                bool success = m_Callback(&newValue);
+                if (success)
+                    m_Current = newValue;
+            }
+            else
+                m_Current = newValue;
         }
     }
 

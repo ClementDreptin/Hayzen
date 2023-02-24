@@ -29,9 +29,15 @@ bool ColorPickerOption::Update(Input::Gamepad *pGamepad)
     // Update the color value when it's changed with DPAD LEFT/DPAD RIGHT
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT || pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
     {
-        m_Color = D3DCOLOR_RGBA(m_Red, m_Green, m_Blue, m_Alpha);
+        D3DCOLOR newColor = D3DCOLOR_RGBA(m_Red, m_Green, m_Blue, m_Alpha);
         if (m_Callback != nullptr)
-            m_Callback(&m_Color);
+        {
+            bool success = m_Callback(&newColor);
+            if (success)
+                m_Color = newColor;
+        }
+        else
+            m_Color = newColor;
     }
 
     return true;

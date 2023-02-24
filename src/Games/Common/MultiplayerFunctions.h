@@ -6,13 +6,15 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-void ToggleGodModeMP(void *pParameters)
+bool ToggleGodModeMP(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
 
     pPlayerEntity->flags = enabled ? 0x1001 : 0x1000;
+
+    return true;
 }
 
 /* void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
@@ -31,7 +33,7 @@ void ToggleGodModeMP(void *pParameters)
     }
 } */
 
-void SpawnCarePackage()
+bool SpawnCarePackage()
 {
     int clientNum = Context::ClientNum;
 
@@ -41,7 +43,7 @@ void SpawnCarePackage()
     if (!pCurrentMapBrushModel)
     {
         iPrintLn(clientNum, "^1You cannot spawn a Care Package on this map!");
-        return;
+        return false;
     }
 
     // Get the player's current position
@@ -74,6 +76,8 @@ void SpawnCarePackage()
 
     // Register the entity for the scene
     SV_LinkEntity(pEntity);
+
+    return true;
 }
 
 
@@ -87,7 +91,7 @@ struct SpawnBotOptions
     uintptr_t ClientsBaseAddress;
 };
 
-void TeleportBotToMe();
+bool TeleportBotToMe();
 
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
@@ -130,7 +134,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     return 0;
 }
 
-void SpawnBot(SpawnBotOptions *pOptions)
+bool SpawnBot(SpawnBotOptions *pOptions)
 {
     gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
@@ -138,7 +142,7 @@ void SpawnBot(SpawnBotOptions *pOptions)
     if (pBot != nullptr)
     {
         iPrintLn(Context::ClientNum, "^1There is already a bot in the game!");
-        return;
+        return false;
     }
 
     // Create the bot
@@ -149,9 +153,11 @@ void SpawnBot(SpawnBotOptions *pOptions)
     // wait between certain operations. If this wasn't done on a separate thread, it
     // would block the game's thread and make it crash.
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
+
+    return true;
 }
 
-void TeleportBotToMe()
+bool TeleportBotToMe()
 {
     int clientNum = Context::ClientNum;
 
@@ -161,7 +167,7 @@ void TeleportBotToMe()
     if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
-        return;
+        return false;
     }
 
     // Get the player's current position
@@ -172,9 +178,11 @@ void TeleportBotToMe()
 
     // Teleport the bot in front of the player
     pBot->client->ps.origin = Math::ToFront(origin, viewY, distance);
+
+    return true;
 }
 
-void ToggleBotMovement(void *pParameters)
+bool ToggleBotMovement(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
@@ -184,10 +192,12 @@ void ToggleBotMovement(void *pParameters)
     if (Context::pBotEntity == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
-        return;
+        return false;
     }
 
     SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
+
+    return true;
 }
 #endif
 

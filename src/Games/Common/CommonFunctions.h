@@ -16,12 +16,14 @@ struct ToggleAmmoOptions
     POWERPC_INSTRUCTION PatchValue;
 };
 
-void ToggleAmmo(const ToggleAmmoOptions &options)
+bool ToggleAmmo(const ToggleAmmoOptions &options)
 {
     Memory::Write<POWERPC_INSTRUCTION>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
+
+    return true;
 }
 
-void SavePosition()
+bool SavePosition()
 {
     int clientNum = Context::ClientNum;
 
@@ -29,9 +31,11 @@ void SavePosition()
     Context::SavedAngles = GetPlayerState(clientNum)->viewAngles;
 
     iPrintLn(clientNum, "Position ^2Saved");
+
+    return true;
 }
 
-void LoadPosition()
+bool LoadPosition()
 {
     int clientNum = Context::ClientNum;
 
@@ -42,16 +46,18 @@ void LoadPosition()
     if (savedPosition.isNull() || savedAngles.isNull())
     {
         iPrintLn(clientNum, "^1Save a position first!");
-        return;
+        return false;
     }
 
     gentity_s *pPlayerEntity = GetEntity(clientNum);
 
     SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&savedPosition));
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
+
+    return true;
 }
 
-void ToggleSaveLoadBinds()
+bool ToggleSaveLoadBinds()
 {
     // The ToggleOption is responsible for toggling Context::BindsEnabled
 
@@ -62,15 +68,19 @@ void ToggleSaveLoadBinds()
     }
     else
         Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
+
+    return true;
 }
 
-void ToggleUfo(void *pParameters)
+bool ToggleUfo(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     gclient_s *pGClient = GetGClient(Context::ClientNum);
 
     pGClient->mFlags = enabled ? 2 : 0;
+
+    return true;
 }
 
 }

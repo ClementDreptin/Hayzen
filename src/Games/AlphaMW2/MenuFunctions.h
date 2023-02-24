@@ -3,26 +3,26 @@
 namespace AlphaMW2
 {
 
-void ToggleGodMode(void *pParameters);
+bool ToggleGodMode(void *pParameters);
 
-void ToggleFallDamage(void *pParameters);
+bool ToggleFallDamage(void *pParameters);
 
-void ToggleAmmo(void *pParameters);
+bool ToggleAmmo(void *pParameters);
 
-void SpawnCarePackage(void *);
+bool SpawnCarePackage(void *);
 
-void ToggleSaveLoadBinds(void *);
+bool ToggleSaveLoadBinds(void *);
 
-void SavePosition(void *);
+bool SavePosition(void *);
 
-void LoadPosition(void *);
+bool LoadPosition(void *);
 
-void ToggleUfo(void *pParameters);
+bool ToggleUfo(void *pParameters);
 
-void SpawnBot(void *);
+bool SpawnBot(void *);
 
-void TeleportBotToMe(void *);
+bool TeleportBotToMe(void *);
 
-void ToggleBotMovement(void *pParameters);
+bool ToggleBotMovement(void *pParameters);
 
 }

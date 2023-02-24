@@ -6,22 +6,22 @@
 namespace SpecOpsMW2
 {
 
-void ToggleGodMode(void *pParameters);
+bool ToggleGodMode(void *pParameters);
 
-void ToggleAmmo(void *pParameters);
+bool ToggleAmmo(void *pParameters);
 
-void ChangeJumpHeight(void *pParameters);
+bool ChangeJumpHeight(void *pParameters);
 
-void ToggleSaveLoadBinds(void *);
+bool ToggleSaveLoadBinds(void *);
 
-void SavePosition(void *);
+bool SavePosition(void *);
 
-void LoadPosition(void *);
+bool LoadPosition(void *);
 
-void ToggleUfo(void *pParameters);
+bool ToggleUfo(void *pParameters);
 
-void ToggleSecondPlayerGodMode(void *pParameters);
+bool ToggleSecondPlayerGodMode(void *pParameters);
 
-void TeleportSecondPlayerToMe(void *);
+bool TeleportSecondPlayerToMe(void *);
 
 }

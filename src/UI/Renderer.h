@@ -14,13 +14,17 @@ struct Font_s
     int glyphs;
 };
 
-typedef void (*R_ADDCMDDRAWTEXT)(const char *text, int maxChars, Font_s *font, float x, float y, float xScale, float yScale, float rotation, const float *color, int style);
 typedef void (*R_ADDCMDDRAWSTRETCHPIC)(float x, float y, float w, float h, float s0, float t0, float s1, float t1, const float *color, HANDLE material);
+typedef void (*R_ADDCMDDRAWTEXT)(const char *text, int maxChars, Font_s *font, float x, float y, float xScale, float yScale, float rotation, const float *color, int style);
+typedef int (*R_TEXTWIDTH)(const char *text, int maxChars, Font_s *font);
+typedef int (*R_TEXTHEIGHT)(Font_s *font);
 typedef Font_s *(*R_REGISTERFONT)(const char *font, int imageTrack);
 typedef HANDLE (*MATERIAL_REGISTERHANDLE)(const char *name, int imageTrack);
 
 extern R_ADDCMDDRAWSTRETCHPIC R_AddCmdDrawStretchPic;
 extern R_ADDCMDDRAWTEXT R_AddCmdDrawText;
+extern R_TEXTWIDTH R_TextWidth;
+extern R_TEXTHEIGHT R_TextHeight;
 extern R_REGISTERFONT R_RegisterFont;
 extern MATERIAL_REGISTERHANDLE Material_RegisterHandle;
 

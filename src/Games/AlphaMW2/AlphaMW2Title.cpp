@@ -93,11 +93,13 @@ void AlphaMW2Title::InitRenderer()
 
     R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x823BAC18);
     R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x823BB4D8);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x823B6DC8);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x823B6EB8);
     R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x823B6D58);
     Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x823B6928);
 
     pFont = R_RegisterFont("fonts/normalFont", 0);
     MaterialHandle = Material_RegisterHandle("white", 0);
 
-    Layout::LineHeight = 20.0f; // TODO: Get the line height with the proper text height function from the game
+    Layout::LineHeight = R_TextHeight(pFont) + Layout::Padding * 2;
 }

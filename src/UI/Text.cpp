@@ -15,7 +15,7 @@ void Text::Render(const Props &props)
         Rectangle::Props rectProps = { 0 };
         rectProps.X = props.X;
         rectProps.Y = props.Y;
-        rectProps.Width = (props.Text.size() * 16) + Layout::Padding * 2; // TODO: Get the text width with the proper text width function from the game
+        rectProps.Width = R_TextWidth(props.Text.c_str(), props.Text.size(), pFont) + Layout::Padding * 2;
         rectProps.Height = Layout::LineHeight;
         rectProps.Color = props.BackgroundColor;
         rectProps.BorderWidth = props.BorderWidth;
@@ -35,6 +35,6 @@ void Text::Render(const Props &props)
 
     // Render the text
     float x = props.X + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
-    float y = props.Y + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
+    float y = props.Y + R_TextHeight(pFont) + (hasBackgroundOrBorder ? Layout::Padding : 0.0f);
     R_AddCmdDrawText(props.Text.c_str(), props.Text.size(), pFont, x, y, 1.0f, 1.0f, 0.0f, color, 0);
 }

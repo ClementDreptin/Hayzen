@@ -1,12 +1,10 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Menu.h"
-#include "Core/Bits.h"
-
 namespace COMMON_FN_NAMESPACE
 {
 
+/*
 struct ToggleAmmoOptions
 {
     Menu *pMenu;
@@ -91,5 +89,5 @@ void ToggleUfo(Menu *pMenu)
 
     iPrintLn(clientNum, BIT_CHECK(pGClient->mFlags, 1) ? "Ufo ^2On" : "Ufo ^1Off");
 }
-
+*/
 }

@@ -23,6 +23,8 @@
     <ClCompile Include="src\Options\SubOptionGroup.cpp" />
     <ClCompile Include="src\Options\ToggleOption.cpp" />
     <ClCompile Include="src\Core\Callbacks.cpp" />
+    <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Core\Context.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -48,6 +50,10 @@
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
     <ClInclude Include="src\Core\Callbacks.h" />
+    <ClInclude Include="src\Games\Common\CommonFunctions.h" />
+    <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
+    <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
+    <ClInclude Include="src\Core\Context.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

@@ -73,6 +73,7 @@
   <ItemGroup>
     <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\Core\Callbacks.h" />
+    <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Menu.h" />
     <ClInclude Include="src\Core\OptionGroup.h" />
@@ -80,7 +81,10 @@
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
+    <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
+    <ClInclude Include="src\Games\Common\CommonFunctions.h" />
+    <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
     <ClInclude Include="src\Options\Option.h" />
@@ -97,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Callbacks.cpp" />
+    <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
     <ClCompile Include="src\Core\OptionGroup.cpp" />
@@ -104,6 +109,7 @@
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
+    <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />

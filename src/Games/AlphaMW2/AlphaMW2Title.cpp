@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
-#include "Core/Callbacks.h"
+#include "Core/Context.h"
 #include "Core/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/RangeOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
+#include "Games/AlphaMW2/MenuFunctions.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
 Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
@@ -43,33 +44,14 @@ void AlphaMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    // First group
+    // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", Callback::ToggleCallback));
-        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", Callback::ToggleCallback));
-        options.emplace_back(MakeOption(ToggleOption, "Ammo", Callback::ToggleCallback));
-        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", Callback::ClickCallback));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode));
+        // options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
+        // options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo));
+        // options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
         optionGroups.emplace_back(OptionGroup("Main", options));
-    }
-
-    // Second group
-    {
-        std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", Callback::ToggleBinds));
-        options.emplace_back(MakeOption(ClickOption, "Save Position", Callback::ClickCallback));
-        options.emplace_back(MakeOption(ClickOption, "Load Position", Callback::ClickCallback));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", Callback::ToggleCallback));
-        optionGroups.emplace_back(OptionGroup("Teleport", options));
-    }
-
-    // Third group
-    {
-        std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, 1280.0f, 10.0f));
-        options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, 720.0f, 10.0f));
-        options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
-        optionGroups.emplace_back(OptionGroup("Customization", options));
     }
 
     m_Menu.Init(optionGroups);
@@ -93,6 +75,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     if (!strcmp(eventName, "begin") && !s_CurrentInstance->InMatch())
     {
         s_CurrentInstance->InMatch(true);
+        Context::ClientNum = clientNum;
 
         // Disable the unlocalized error messages when printing something in the killfeed
         AlphaMW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -112,7 +95,10 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int c
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
+    {
         s_CurrentInstance->InMatch(false);
+        Context::Reset();
+    }
 }
 
 void AlphaMW2Title::InitRenderer()

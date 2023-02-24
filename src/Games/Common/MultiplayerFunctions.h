@@ -1,26 +1,24 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Menu.h"
-#include "Core/Bits.h"
+#include "Core/Context.h"
 
 namespace COMMON_FN_NAMESPACE
 {
 
-void ToggleGodModeMP(Menu *pMenu)
+void ToggleGodModeMP(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    gentity_s *pPlayerEntity = GetEntity(clientNum);
+    gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
 
-    // The default value of flags is 0x1000, the God Mode value is 0x1001 so we just need to toggle the first bit
-    // to toggle God Mode
-    BIT_FLIP(pPlayerEntity->flags, 0);
-
-    iPrintLn(clientNum, BIT_CHECK(pPlayerEntity->flags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
+    if (enabled)
+        pPlayerEntity->flags = 0x1001;
+    else
+        pPlayerEntity->flags = 0x1000;
 }
 
-void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
+/* void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
 {
     int clientNum = pMenu->GetClientNum();
 
@@ -201,6 +199,6 @@ void ToggleBotMovement(Menu *pMenu)
         iPrintLn(clientNum, "Bot ^1Unfrozen");
     }
 }
-#endif
+#endif */
 
 }

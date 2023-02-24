@@ -1,13 +1,10 @@
 #pragma once
 
-#include "Core/Menu.h"
-#include "Games/AlphaMW2/GameFunctions.h"
-
 namespace AlphaMW2
 {
 
-void ToggleGodMode(Menu *pMenu);
-
+void ToggleGodMode(void *pParameters);
+/*
 void ToggleFallDamage(Menu *pMenu);
 
 void ToggleAmmo(Menu *pMenu);
@@ -27,5 +24,5 @@ void SpawnBot(Menu *pMenu);
 void TeleportBotToMe(Menu *pMenu);
 
 void ToggleBotMovement(Menu *pMenu);
-
+*/
 }

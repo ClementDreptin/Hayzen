@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/AlphaMW2/MenuFunctions.h"
 
+#include "Games/AlphaMW2/GameFunctions.h"
+
 using namespace AlphaMW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -13,12 +15,12 @@ using namespace AlphaMW2::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_ALPHAMW2
 
-void AlphaMW2::ToggleGodMode(Menu *pMenu)
+void AlphaMW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu);
+    COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
-void AlphaMW2::ToggleFallDamage(Menu *pMenu)
+/* void AlphaMW2::ToggleFallDamage(Menu *pMenu)
 {
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
@@ -92,4 +94,4 @@ void AlphaMW2::TeleportBotToMe(Menu *pMenu)
 void AlphaMW2::ToggleBotMovement(Menu *pMenu)
 {
     COMMON_FN_NAMESPACE::ToggleBotMovement(pMenu);
-}
+} */

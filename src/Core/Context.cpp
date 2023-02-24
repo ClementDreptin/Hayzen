@@ -16,6 +16,8 @@ Option::Callback SavePositionFn = nullptr;
 
 Option::Callback LoadPositionFn = nullptr;
 
+void *pBotEntity = nullptr;
+
 void Reset()
 {
     ClientNum = 0;
@@ -24,6 +26,7 @@ void Reset()
     SavedAngles = vec3();
     SavePositionFn = nullptr;
     LoadPositionFn = nullptr;
+    pBotEntity = nullptr;
 }
 
 }

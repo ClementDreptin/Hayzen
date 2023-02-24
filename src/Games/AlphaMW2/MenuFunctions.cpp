@@ -77,22 +77,21 @@ void AlphaMW2::ToggleUfo(void *pParameters)
     COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-/* void AlphaMW2::SpawnBot(Menu *pMenu)
+void AlphaMW2::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
-    pOptions->pMenu = pMenu;
-    pOptions->serverIdAddress = 0x8355D5C4;
-    pOptions->clientsBaseAddress = 0x83577D98;
+    pOptions->ServerIdAddress = 0x8355D5C4;
+    pOptions->ClientsBaseAddress = 0x83577D98;
 
     COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-void AlphaMW2::TeleportBotToMe(Menu *pMenu)
+void AlphaMW2::TeleportBotToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportBotToMe(pMenu);
+    COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-void AlphaMW2::ToggleBotMovement(Menu *pMenu)
+void AlphaMW2::ToggleBotMovement(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleBotMovement(pMenu);
-} */
+    COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+}

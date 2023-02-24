@@ -79,26 +79,25 @@ void SpawnCarePackage()
     SV_LinkEntity(pEntity);
 }
 
-/*
+
 #ifndef GAME_MW3
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
 struct SpawnBotOptions
 {
-    Menu *pMenu;
-    uintptr_t serverIdAddress;
-    uintptr_t clientsBaseAddress;
+    uintptr_t ServerIdAddress;
+    uintptr_t ClientsBaseAddress;
 };
 
-void TeleportBotToMe(Menu *pMenu);
+void TeleportBotToMe();
 
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
-    int serverId = Memory::Read<int>(pOptions->serverIdAddress);
+    int serverId = Memory::Read<int>(pOptions->ServerIdAddress);
 
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
@@ -109,7 +108,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->clientsBaseAddress) + static_cast<gentity_s *>(pOptions->pMenu->GetBot())->state.number * 0x97F80;
+    uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->ClientsBaseAddress) + static_cast<gentity_s *>(Context::pBotEntity)->state.number * 0x97F80;
 
     // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(botAddr, chooseTeamCommand.c_str(), 1, 0);
@@ -125,7 +124,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    TeleportBotToMe(pOptions->pMenu);
+    TeleportBotToMe();
 
     // The options were heap allocated to live long enough to still be available in this thread
     // so we need to free them
@@ -136,18 +135,18 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 
 void SpawnBot(SpawnBotOptions *pOptions)
 {
-    gentity_s *pBot = static_cast<gentity_s *>(pOptions->pMenu->GetBot());
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
     // Prevent the user from spawning multiple bots
-    if (pBot)
+    if (pBot != nullptr)
     {
-        iPrintLn(pOptions->pMenu->GetClientNum(), "^1There is already a bot in the game!");
+        iPrintLn(Context::ClientNum, "^1There is already a bot in the game!");
         return;
     }
 
     // Create the bot
     pBot = SV_AddTestClient();
-    pOptions->pMenu->SetBot(pBot);
+    Context::pBotEntity = pBot;
 
     // The rest of the code needs to execute on a separate thread because we need to
     // wait between certain operations. If this wasn't done on a separate thread, it
@@ -155,14 +154,14 @@ void SpawnBot(SpawnBotOptions *pOptions)
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
 }
 
-void TeleportBotToMe(Menu *pMenu)
+void TeleportBotToMe()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
-    gentity_s *pBot = static_cast<gentity_s *>(pMenu->GetBot());
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
     // Make sure there is a bot in the game
-    if (!pBot)
+    if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
         return;
@@ -178,28 +177,21 @@ void TeleportBotToMe(Menu *pMenu)
     pBot->client->ps.origin = Math::ToFront(origin, viewY, distance);
 }
 
-void ToggleBotMovement(Menu *pMenu)
+void ToggleBotMovement(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    int clientNum = Context::ClientNum;
 
     // Make sure there is a bot in the game
-    if (!pMenu->GetBot())
+    if (Context::pBotEntity == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
         return;
     }
 
-    if (Dvar_GetBool("testClients_doMove"))
-    {
-        SetClientDvar(-1, "testClients_doMove", "0");
-        iPrintLn(clientNum, "Bot ^2Frozen");
-    }
-    else
-    {
-        SetClientDvar(-1, "testClients_doMove", "1");
-        iPrintLn(clientNum, "Bot ^1Unfrozen");
-    }
+    SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
 }
-#endif */
+#endif
 
 }

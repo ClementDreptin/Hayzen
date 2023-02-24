@@ -64,6 +64,15 @@ void AlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
+    // Teleport section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Spawn Bot", AlphaMW2::SpawnBot));
+        options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", AlphaMW2::TeleportBotToMe));
+        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", AlphaMW2::ToggleBotMovement, true));
+        optionGroups.emplace_back(OptionGroup("Bot", options));
+    }
+
     // Set the save and load functions
     Context::SavePositionFn = AlphaMW2::SavePosition;
     Context::LoadPositionFn = AlphaMW2::LoadPosition;

@@ -18,11 +18,11 @@ void SavePosition(void *);
 void LoadPosition(void *);
 
 void ToggleUfo(void *pParameters);
-/*
-void SpawnBot(Menu *pMenu);
 
-void TeleportBotToMe(Menu *pMenu);
+void SpawnBot(void *);
 
-void ToggleBotMovement(Menu *pMenu);
-*/
+void TeleportBotToMe(void *);
+
+void ToggleBotMovement(void *pParameters);
+
 }

@@ -17,6 +17,8 @@ extern Option::Callback SavePositionFn;
 
 extern Option::Callback LoadPositionFn;
 
+extern void *pBotEntity;
+
 void Reset();
 
 }

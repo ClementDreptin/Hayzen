@@ -16,6 +16,7 @@ public:
     ~AlphaMW2Title();
 
 private:
+    bool m_MenuOpen;
     Text m_Text;
 
     static Detour *s_pSV_ExecuteClientCommandDetour;

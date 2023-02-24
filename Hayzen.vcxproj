@@ -72,6 +72,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Bits.h" />
+    <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
@@ -86,6 +87,7 @@
     <ClInclude Include="src\UI\Text.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />

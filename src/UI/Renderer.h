@@ -33,9 +33,19 @@ extern HANDLE MaterialHandle;
 
 }
 
-#define CHAR_UP "\x14"
-#define CHAR_DOWN "\x15"
+#define CHAR_A "\x1"
+#define CHAR_B "\x2"
 #define CHAR_X "\x3"
+#define CHAR_Y "\x4"
 #define CHAR_LB "\x5"
 #define CHAR_RB "\x6"
+#define CHAR_START "\xE"
+#define CHAR_BACK "\xF"
+#define CHAR_LS "\x10"
 #define CHAR_RS "\x11"
+#define CHAR_LT "\x12"
+#define CHAR_RT "\x13"
+#define CHAR_UP "\x14"
+#define CHAR_DOWN "\x15"
+#define CHAR_LEFT "\x16"
+#define CHAR_RIGHT "\x17"

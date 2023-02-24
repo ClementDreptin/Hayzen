@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
+#include "Core/Input.h"
 #include "UI/Renderer.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
@@ -8,7 +9,7 @@ Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *AlphaMW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
 
 AlphaMW2Title::AlphaMW2Title()
-    : Title()
+    : Title(), m_MenuOpen(false)
 {
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
@@ -35,10 +36,20 @@ void AlphaMW2Title::Update()
     if (!InMatch())
         return;
 
+    // Get the current gamepad state
+    Input::Gamepad *pGamepad = Input::GetInput();
+
+    // Toggle the menu by pressing LT and DPAD LEFT
+    if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+    {
+        m_MenuOpen = !m_MenuOpen;
+        return;
+    }
+
     Text::Props props = { 0 };
     props.X = 100.0f;
     props.Y = 100.0f;
-    props.Text = "This is a test text";
+    props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open" : "Close");
     props.Color = Layout::TextColor;
     props.BackgroundColor = Layout::BackgroundColor;
     props.BorderWidth = Layout::BorderWidth;

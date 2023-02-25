@@ -87,7 +87,7 @@ void Title::InitRenderer()
 {
     using namespace Renderer;
 
-    pFont = R_RegisterFont("fonts/normalFont", 0);
+    pFont = R_RegisterFont("fonts/smallFont", 0);
     MaterialHandle = Material_RegisterHandle("white", 0);
 
     Layout::LineHeight = GetTextHeight() + Layout::Padding * 2;

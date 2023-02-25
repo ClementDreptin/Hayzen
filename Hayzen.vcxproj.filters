@@ -33,6 +33,9 @@
     <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MW3Title.cpp" />
+    <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\MW2\MW2Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -74,6 +77,10 @@
     <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\MW3Title.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
+    <ClInclude Include="src\Games\MW2\GameFunctions.h" />
+    <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
+    <ClInclude Include="src\Games\MW2\MW2Title.h" />
+    <ClInclude Include="src\Games\MW2\Structs.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

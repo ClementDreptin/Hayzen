@@ -1,18 +1,19 @@
 #include "pch.h"
 #include "Games/MW2/MW2Title.h"
 
+#include "Core/Context.h"
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
+#include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
+#include "UI/Renderer.h"
 #include "Games/MW2/MenuFunctions.h"
+#include "Games/MW2/GameFunctions.h"
 
 Detour *MW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *MW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
 
-MW2Title::~MW2Title()
-{
-    delete s_pScr_NotifyDetour;
-    delete s_pSV_ExecuteClientCommandDetour;
-}
-
-void MW2Title::Init()
+MW2Title::MW2Title()
 {
     Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
 
@@ -23,21 +24,8 @@ void MW2Title::Init()
     Memory::Write<int>(0x8216906C, 0x60000000);
     Memory::Write<int>(0x821690E4, 0x60000000);
 
-    // Set the draw function addresses
-    m_DrawTextFnAddr = 0x82350278;
-    m_DrawRectangleFnAddr = 0x821384D8;
-    m_RegisterFontFnAddr = 0x8234DCB0;
-    m_RegisterMaterialFnAddr = 0x8234E510;
-
-    // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(MW2::SavePosition);
-    s_Menu.SetLoadPositionFn(MW2::LoadPosition);
-
-    // Set the draw function pointers with the addresses above
-    Title::Init();
-
-    // Create the structure of the menu
-    CreateStructure();
+    // Initialize the renderer
+    InitRenderer();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
@@ -45,35 +33,58 @@ void MW2Title::Init()
     s_pSV_ExecuteClientCommandDetour = new Detour(0x82253140, SV_ExecuteClientCommandHook);
 }
 
-void MW2Title::CreateStructure()
+MW2Title::~MW2Title()
 {
-    // Set the global title of the menu
-    s_RootOption.SetText("Cod Jumper");
+    delete s_pScr_NotifyDetour;
+    delete s_pSV_ExecuteClientCommandDetour;
+}
+
+void MW2Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820E1724) == 0x7D284B78;
+
+    // Check if the elevators patch address if equal to the patched value
+    bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
 
     // Main section
-    auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, MW2::ToggleGodMode));
-    pMain->AddChild(MakeOption("Fall Damage", 1, MW2::ToggleFallDamage));
-    pMain->AddChild(MakeOption("Ammo", 2, MW2::ToggleAmmo));
-    pMain->AddChild(MakeOption("Elevators", 3, MW2::ToggleElevators));
-    pMain->AddChild(MakeOption("Spawn Care Package", 4, MW2::SpawnCarePackage));
-    pMain->AddChild(MakeOption("Knockback", 5, MW2::Knockback));
-    s_RootOption.AddChild(pMain);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW2::SpawnCarePackage));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
 
     // Teleport section
-    auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, MW2::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, MW2::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, MW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, MW2::ToggleUfo));
-    s_RootOption.AddChild(pTeleport);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", MW2::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", MW2::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", MW2::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
 
     // Bot section
-    auto pBot = MakeOption("Bot", 2);
-    pBot->AddChild(MakeOption("Spawn Bot", 0, MW2::SpawnBot));
-    pBot->AddChild(MakeOption("Teleport Bot to Me", 1, MW2::TeleportBotToMe));
-    pBot->AddChild(MakeOption("Toggle Bot Movement", 2, MW2::ToggleBotMovement));
-    s_RootOption.AddChild(pBot);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Spawn Bot", MW2::SpawnBot));
+        options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", MW2::TeleportBotToMe));
+        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", MW2::ToggleBotMovement, true));
+        optionGroups.emplace_back(OptionGroup("Bot", options));
+    }
+
+    // Set the save and load functions
+    Context::SavePositionFn = MW2::SavePosition;
+    Context::LoadPositionFn = MW2::LoadPosition;
+
+    m_Menu.Init(optionGroups);
 }
 
 void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -89,11 +100,15 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     // Get the string representing the event
     const char *eventName = MW2::Game::SL_ConvertToString(stringValue);
 
-    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
-    // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(eventName, "begin") && !s_Menu.IsInitialized())
+    if (!strcmp(eventName, "begin"))
     {
-        s_Menu.Init(clientNum, &s_RootOption);
+        // Reset the context
+        Context::Reset();
+        Context::ClientNum = clientNum;
+
+        // Initialize the menu
+        s_CurrentInstance->InMatch(true);
+        s_CurrentInstance->InitMenu();
 
         // Disable the unlocalized error messages when printing something in the killfeed
         MW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -113,5 +128,19 @@ void MW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int client
 
     // Stop the menu when the game ends
     if (!strcmp(s, "disconnect"))
-        s_Menu.Stop();
+        s_CurrentInstance->InMatch(false);
+}
+
+void MW2Title::InitRenderer()
+{
+    using namespace Renderer;
+
+    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x821384D8);
+    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x82350278);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x8234DD20);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x8234DE10);
+    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x8234DCB0);
+    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x8234E510);
+
+    Title::InitRenderer();
 }

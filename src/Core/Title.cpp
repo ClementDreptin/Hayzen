@@ -51,8 +51,9 @@ void Title::Render()
     if (m_MenuOpen)
         m_Menu.Render();
 
-    // Render the controls text
-    RenderControlsText();
+    // Render the controls text if enabled
+    if (Context::DisplayControlsText)
+        RenderControlsText();
 }
 
 void Title::RenderControlsText()

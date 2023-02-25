@@ -18,6 +18,8 @@ Option::Callback LoadPositionFn = nullptr;
 
 void *pBotEntity = nullptr;
 
+bool DisplayControlsText = true;
+
 void Reset()
 {
     ClientNum = 0;
@@ -27,6 +29,7 @@ void Reset()
     SavePositionFn = nullptr;
     LoadPositionFn = nullptr;
     pBotEntity = nullptr;
+    DisplayControlsText = true;
 }
 
 }

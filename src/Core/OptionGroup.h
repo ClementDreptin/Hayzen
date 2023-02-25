@@ -15,6 +15,8 @@ public:
 
     inline const std::vector<std::shared_ptr<Option>> &GetOptions() const { return m_Options; }
 
+    inline void AddOption(const std::shared_ptr<Option> &option) { m_Options.emplace_back(option); }
+
     void Update(Input::Gamepad *pGamepad);
 
     void Render(float x, float y, float width = 0.0f, float height = 0.0f);

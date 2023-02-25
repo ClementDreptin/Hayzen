@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Core/Menu.h"
 
+#include "Core/Context.h"
+#include "Options/ToggleOption.h"
 #include "UI/Renderer.h"
 #include "UI/Layout.h"
 
@@ -14,6 +16,10 @@ Menu::Menu()
 void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 {
     m_OptionGroups = optionGroups;
+
+    // Add an option in the first option group to show/hide the controls text
+    if (!m_OptionGroups.empty())
+        m_OptionGroups[0].AddOption(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsText));
 
     CalculateMenuDimensions();
 

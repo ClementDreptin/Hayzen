@@ -59,9 +59,9 @@ bool AlphaMW2::SpawnCarePackage(void *)
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-bool AlphaMW2::ToggleSaveLoadBinds(void *)
+bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
 bool AlphaMW2::SavePosition(void *)

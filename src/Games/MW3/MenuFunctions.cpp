@@ -43,9 +43,9 @@ bool MW3::SpawnCarePackage(void *)
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-bool MW3::ToggleSaveLoadBinds(void *)
+bool MW3::ToggleSaveLoadBinds(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
 bool MW3::SavePosition(void *)

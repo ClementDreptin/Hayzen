@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/SpecOps/MW2/MenuFunctions.h"
 
+#include "Games/SpecOps/MW2/GameFunctions.h"
+
 using namespace SpecOpsMW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -36,9 +38,9 @@ bool SpecOpsMW2::ChangeJumpHeight(void *pParameters)
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
 
-bool SpecOpsMW2::ToggleSaveLoadBinds(void *)
+bool SpecOpsMW2::ToggleSaveLoadBinds(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
 bool SpecOpsMW2::SavePosition(void *)

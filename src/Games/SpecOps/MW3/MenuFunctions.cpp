@@ -38,9 +38,9 @@ bool SpecOpsMW3::ChangeJumpHeight(void *pParameters)
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
 
-bool SpecOpsMW3::ToggleSaveLoadBinds(void *)
+bool SpecOpsMW3::ToggleSaveLoadBinds(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
 bool SpecOpsMW3::SavePosition(void *)

@@ -9,7 +9,7 @@ bool ToggleAmmo(void *pParameters);
 
 bool ChangeJumpHeight(void *pParameters);
 
-bool ToggleSaveLoadBinds(void *);
+bool ToggleSaveLoadBinds(void *pParameters);
 
 bool SavePosition(void *);
 

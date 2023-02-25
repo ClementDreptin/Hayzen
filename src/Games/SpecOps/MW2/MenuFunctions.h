@@ -1,8 +1,5 @@
 #pragma once
 
-#include "Core/Menu.h"
-#include "Games/SpecOps/MW2/GameFunctions.h"
-
 namespace SpecOpsMW2
 {
 
@@ -12,7 +9,7 @@ bool ToggleAmmo(void *pParameters);
 
 bool ChangeJumpHeight(void *pParameters);
 
-bool ToggleSaveLoadBinds(void *);
+bool ToggleSaveLoadBinds(void *pParameters);
 
 bool SavePosition(void *);
 

@@ -8,6 +8,7 @@
 #include "Options/RangeOption.h"
 #include "UI/Renderer.h"
 #include "Games/SpecOps/MW2/MenuFunctions.h"
+#include "Games/SpecOps/MW2/GameFunctions.h"
 
 Detour *SpecOpsMW2Title::s_pClientCommandDetour = nullptr;
 

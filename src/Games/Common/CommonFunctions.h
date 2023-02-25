@@ -57,11 +57,11 @@ bool LoadPosition()
     return true;
 }
 
-bool ToggleSaveLoadBinds()
+bool ToggleSaveLoadBinds(void *pParameters)
 {
-    // The ToggleOption is responsible for toggling Context::BindsEnabled
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    if (Context::BindsEnabled)
+    if (enabled)
     {
         Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
         iPrintLn(Context::ClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");

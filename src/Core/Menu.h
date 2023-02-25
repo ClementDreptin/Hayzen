@@ -22,6 +22,8 @@ private:
 
     std::vector<Text> m_OptionGroupHeaders;
 
+    void AddCustomizationGroup();
+
     void RenderOptionGroupHeaders();
 
     void CalculateMenuDimensions();

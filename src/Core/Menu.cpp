@@ -2,7 +2,10 @@
 #include "Core/Menu.h"
 
 #include "Core/Context.h"
+#include "Core/OptionGroup.h"
 #include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
+#include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
 #include "UI/Layout.h"
 
@@ -17,9 +20,8 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 {
     m_OptionGroups = optionGroups;
 
-    // Add an option in the first option group to show/hide the controls text
-    if (!m_OptionGroups.empty())
-        m_OptionGroups[0].AddOption(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsText));
+    // Append the customization option group to the existing option groups
+    AddCustomizationGroup();
 
     CalculateMenuDimensions();
 
@@ -52,6 +54,16 @@ void Menu::Render()
     // Render the currently selected option group
     float optionGroupHeadersHeight = Layout::LineHeight + Layout::BorderWidth;
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
+}
+
+void Menu::AddCustomizationGroup()
+{
+    std::vector<std::shared_ptr<Option>> options;
+    options.emplace_back(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsText));
+    options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, 1280.0f, 10.0f));
+    options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, 720.0f, 10.0f));
+    options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
+    m_OptionGroups.emplace_back(OptionGroup("Customization", options));
 }
 
 void Menu::RenderOptionGroupHeaders()

@@ -3,8 +3,6 @@
 namespace Layout
 {
 
-extern float X;
-
 extern float Y;
 
 extern D3DCOLOR Color;
@@ -18,6 +16,8 @@ extern const float Padding;
 extern const float Gap;
 
 extern const float BorderWidth;
+
+extern float X;
 
 extern float Width;
 

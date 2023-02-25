@@ -129,9 +129,12 @@ void Menu::CalculateMenuDimensions()
     // Take the space between each group header into account
     allOptionGroupNamesWidth += Layout::BorderWidth * (m_OptionGroups.size() - 1);
 
-    // Increase the menu width by the max between all the option names width and the longest option name
+    // Make the menu width the max between all the option names width and the longest option name
     Layout::Width = std::max<float>(allOptionGroupNamesWidth, biggestOptionGroupWidth);
 
     // Make the menu tall enough for the biggest option group
     Layout::Height = biggestOptionGroupHeight;
+
+    // Move the menu to right side of the screen (double cast to rounded to closest integer value)
+    Layout::X = static_cast<float>(static_cast<uint32_t>(1280.0f - Layout::Width - 10.0f));
 }

@@ -14,6 +14,10 @@ MATERIAL_REGISTERHANDLE Material_RegisterHandle = nullptr;
 Font_s *pFont = nullptr;
 HANDLE MaterialHandle = nullptr;
 
+// The resolution is always 720p, 1080p is created by the hardware scaler
+float DisplayWidth = 1280.0f;
+float DisplayHeight = 720.0f;
+
 float GetTextWidth(const std::string &text)
 {
     return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont));

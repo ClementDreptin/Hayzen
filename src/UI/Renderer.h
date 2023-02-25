@@ -31,6 +31,9 @@ extern MATERIAL_REGISTERHANDLE Material_RegisterHandle;
 extern Font_s *pFont;
 extern HANDLE MaterialHandle;
 
+extern float DisplayWidth;
+extern float DisplayHeight;
+
 float GetTextWidth(const std::string &text);
 float GetTextHeight();
 

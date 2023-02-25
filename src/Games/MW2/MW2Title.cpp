@@ -43,17 +43,15 @@ void MW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820E1724) == 0x7D284B78;
-
-    // Check if the elevators patch address if equal to the patched value
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode));
-        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW2::SpawnCarePackage));

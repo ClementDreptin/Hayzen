@@ -36,7 +36,6 @@ void SpecOpsMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    // Check if the unlimited ammo patch address if equal to the patched value
     bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x82331F48) == 0x7D284B78;
 
     // Main section

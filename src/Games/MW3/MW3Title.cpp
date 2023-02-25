@@ -42,14 +42,14 @@ void MW3Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820F63E4) == 0x7D495378;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode));
-        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW3::SpawnCarePackage));
         optionGroups.emplace_back(OptionGroup("Main", options));

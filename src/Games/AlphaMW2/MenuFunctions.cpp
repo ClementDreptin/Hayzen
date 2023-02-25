@@ -29,8 +29,8 @@ bool AlphaMW2::ToggleFallDamage(void *pParameters)
 
     if (enabled)
     {
-        SetClientDvar(-1, "bg_fallDamageMinHeight", "998");
-        SetClientDvar(-1, "bg_fallDamageMaxHeight", "999");
+        SetClientDvar(-1, "bg_fallDamageMinHeight", "9998");
+        SetClientDvar(-1, "bg_fallDamageMaxHeight", "9999");
     }
     else
     {

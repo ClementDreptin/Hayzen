@@ -21,7 +21,7 @@ bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    Memory::Write<float>(patchAddress, enabled ? 999.0f : 128.0f);
+    Memory::Write<float>(patchAddress, enabled ? 9999.0f : 128.0f);
 
     return true;
 }

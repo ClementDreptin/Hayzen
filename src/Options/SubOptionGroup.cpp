@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Options/SubOptionGroup.h"
 
+#include "UI/Renderer.h"
+
 SubOptionGroup::SubOptionGroup()
     : Option(), m_Open(false)
 {
@@ -33,5 +35,19 @@ void SubOptionGroup::Render(float x, float y, float width)
 
     // Render the option group if it's open
     if (m_Open)
-        m_OptionGroup.Render(x + width + Layout::BorderWidth * 2, y);
+    {
+        // Render the sub option group on the left or the right of the menu, depending on where there's space
+        float subOptionGroupWidth = m_OptionGroup.GetMinWidth() + Layout::BorderWidth * 2;
+        float currentOptionWidth = width + Layout::BorderWidth * 2;
+        float leftX = x - subOptionGroupWidth;
+        float rightX = x + currentOptionWidth;
+
+        float finalX = rightX;
+        if (leftX < 0.0f)
+            finalX = rightX;
+        else if (rightX + subOptionGroupWidth > Renderer::DisplayWidth)
+            finalX = leftX;
+
+        m_OptionGroup.Render(finalX, y);
+    }
 }

@@ -29,7 +29,6 @@ void Reset()
     SavePositionFn = nullptr;
     LoadPositionFn = nullptr;
     pBotEntity = nullptr;
-    DisplayControlsText = true;
 }
 
 }

@@ -36,7 +36,7 @@ void Title::Update()
         m_Menu.Update(pGamepad);
 
     // Save and Load with LB/RB when Save and Load binds are enabled
-    if (Context::BindsEnabled)
+    if (Context::BindsEnabled && !m_MenuOpen)
     {
         if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
             Context::LoadPositionFn(nullptr);

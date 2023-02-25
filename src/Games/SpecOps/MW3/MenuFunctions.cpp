@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/SpecOps/MW3/MenuFunctions.h"
 
+#include "Games/SpecOps/MW3/GameFunctions.h"
+
 using namespace SpecOpsMW3::Game;
 
 #ifdef COMMON_FN_NAMESPACE

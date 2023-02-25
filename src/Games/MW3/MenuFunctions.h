@@ -1,25 +1,22 @@
 #pragma once
 
-#include "Core/Menu.h"
-#include "Games/MW3/GameFunctions.h"
-
 namespace MW3
 {
 
-void ToggleGodMode(Menu *pMenu);
+bool ToggleGodMode(void *pParameters);
 
-void ToggleFallDamage(Menu *pMenu);
+bool ToggleFallDamage(void *pParameters);
 
-void ToggleAmmo(Menu *pMenu);
+bool ToggleAmmo(void *pParameters);
 
-void SpawnCarePackage(Menu *pMenu);
+bool SpawnCarePackage(void *);
 
-void ToggleSaveLoadBinds(Menu *pMenu);
+bool ToggleSaveLoadBinds(void *);
 
-void SavePosition(Menu *pMenu);
+bool SavePosition(void *);
 
-void LoadPosition(Menu *pMenu);
+bool LoadPosition(void *);
 
-void ToggleUfo(Menu *pMenu);
+bool ToggleUfo(void *pParameters);
 
 }

@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/MW3/MenuFunctions.h"
 
+#include "Games/MW3/GameFunctions.h"
+
 using namespace MW3::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -13,48 +15,50 @@ using namespace MW3::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_MW3
 
-void MW3::ToggleGodMode(Menu *pMenu)
+bool MW3::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
-void MW3::ToggleFallDamage(Menu *pMenu)
+bool MW3::ToggleFallDamage(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82000C04);
+    return COMMON_FN_NAMESPACE::ToggleFallDamage(pParameters, 0x82000C04);
 }
 
-void MW3::ToggleAmmo(Menu *pMenu)
+bool MW3::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x820F63E4;
-    options.defaultValue = 0x7D3D5050;
-    options.patchValue = 0x7D495378;
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.Enabled = enabled;
+    options.PatchAddress = 0x820F63E4;
+    options.DefaultValue = 0x7D3D5050;
+    options.PatchValue = 0x7D495378;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void MW3::SpawnCarePackage(Menu *pMenu)
+bool MW3::SpawnCarePackage(void *)
 {
-    COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
+    return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-void MW3::ToggleSaveLoadBinds(Menu *pMenu)
+bool MW3::ToggleSaveLoadBinds(void *)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds();
 }
 
-void MW3::SavePosition(Menu *pMenu)
+bool MW3::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void MW3::LoadPosition(Menu *pMenu)
+bool MW3::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void MW3::ToggleUfo(Menu *pMenu)
+bool MW3::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }

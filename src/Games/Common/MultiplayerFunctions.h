@@ -17,21 +17,14 @@ bool ToggleGodModeMP(void *pParameters)
     return true;
 }
 
-/* void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
+bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    if (Memory::Read<float>(patchAddress) == 128.0f)
-    {
-        Memory::Write<float>(patchAddress, 999.0f);
-        iPrintLn(clientNum, "Fall Damage ^2Off");
-    }
-    else
-    {
-        Memory::Write<float>(patchAddress, 128.0f);
-        iPrintLn(clientNum, "Fall Damage ^1On");
-    }
-} */
+    Memory::Write<float>(patchAddress, enabled ? 999.0f : 128.0f);
+
+    return true;
+}
 
 bool SpawnCarePackage()
 {

@@ -6,7 +6,7 @@
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 // #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
-// #include "Games/MW3/MW3Title.h"
+#include "Games/MW3/MW3Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
 bool Plugin::s_Running = false;
@@ -73,23 +73,19 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
         // if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
         //     s_pCurrentTitle = new MW2Title();
         /* else */if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
-             s_pCurrentTitle = new SpecOpsMW2Title();
+            s_pCurrentTitle = new SpecOpsMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
             s_pCurrentTitle = new AlphaMW2Title();
         // else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
         //     s_pCurrentTitle = new SpecOpsAlphaMW2Title();
         break;
     case TITLE_MW3:
-    //     if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
-    //         s_pCurrentTitle = new MW3Title();
-        /* else */if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
-             s_pCurrentTitle = new SpecOpsMW3Title();
+        if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
+            s_pCurrentTitle = new MW3Title();
+        if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+            s_pCurrentTitle = new SpecOpsMW3Title();
         break;
     default:
         break;
     }
-
-    // Only init the new game if it's supported
-    // if (s_pCurrentTitle)
-    //     s_pCurrentTitle->Init();
 }

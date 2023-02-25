@@ -85,6 +85,7 @@
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
     <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
+    <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\MW2\GameFunctions.h" />
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
     <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2Title.cpp" />

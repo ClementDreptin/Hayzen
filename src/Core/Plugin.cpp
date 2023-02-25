@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Plugin.h"
 
-// #include "Games/Dashboard/Dashboard.h"
+#include "Games/Dashboard/Dashboard.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
@@ -66,9 +66,9 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (newTitleId)
     {
-    // case TITLE_DASHBOARD:
-    //     Dashboard::Init();
-    //     break;
+    case TITLE_DASHBOARD:
+        Dashboard::Init();
+        break;
     case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
             s_pCurrentTitle = new MW2Title();

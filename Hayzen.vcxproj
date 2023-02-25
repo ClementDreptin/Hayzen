@@ -72,7 +72,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Bits.h" />
-    <ClInclude Include="src\Core\Callbacks.h" />
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Menu.h" />
@@ -113,7 +112,6 @@
     <ClInclude Include="src\UI\Text.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Core\Callbacks.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />

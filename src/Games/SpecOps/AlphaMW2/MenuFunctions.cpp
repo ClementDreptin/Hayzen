@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/SpecOps/AlphaMW2/MenuFunctions.h"
 
+#include "Games/SpecOps/AlphaMW2/GameFunctions.h"
+
 using namespace SpecOpsAlphaMW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -13,53 +15,57 @@ using namespace SpecOpsAlphaMW2::Game;
 #include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_ALPHAMW2
 
-void SpecOpsAlphaMW2::ToggleGodMode(Menu *pMenu)
+bool SpecOpsAlphaMW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeSP(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
 }
 
-void SpecOpsAlphaMW2::ToggleAmmo(Menu *pMenu)
+bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x82328610;
-    options.defaultValue = 0x7D1D4850;
-    options.patchValue = 0x7D284B78;
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.Enabled = enabled;
+    options.PatchAddress = 0x82328610;
+    options.DefaultValue = 0x7D1D4850;
+    options.PatchValue = 0x7D284B78;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void SpecOpsAlphaMW2::ChangeJumpHeight(Menu *pMenu)
+bool SpecOpsAlphaMW2::ChangeJumpHeight(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ChangeJumpHeight(pMenu);
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
 
-void SpecOpsAlphaMW2::ToggleSaveLoadBinds(Menu *pMenu)
+bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-void SpecOpsAlphaMW2::SavePosition(Menu *pMenu)
+bool SpecOpsAlphaMW2::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void SpecOpsAlphaMW2::LoadPosition(Menu *pMenu)
+bool SpecOpsAlphaMW2::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void SpecOpsAlphaMW2::ToggleUfo(Menu *pMenu)
+bool SpecOpsAlphaMW2::ToggleUfo(void *)
 {
     Cbuf_AddText(0, "ufo");
+
+    return true;
 }
 
-void SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(Menu *pMenu)
+bool SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
 }
 
-void SpecOpsAlphaMW2::TeleportSecondPlayerToMe(Menu *pMenu)
+bool SpecOpsAlphaMW2::TeleportSecondPlayerToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe(pMenu);
+    return COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
 }

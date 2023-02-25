@@ -36,6 +36,9 @@
     <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2Title.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\pch.h" />
@@ -81,6 +84,10 @@
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />
     <ClInclude Include="src\Games\MW2\Structs.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\GameFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\Structs.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".editorconfig" />

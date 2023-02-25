@@ -93,6 +93,10 @@
     <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\MW3Title.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\GameFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h" />
+    <ClInclude Include="src\Games\SpecOps\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\SpecOps\MW2\GameFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.h" />
@@ -131,6 +135,9 @@
     <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MW3Title.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.cpp" />

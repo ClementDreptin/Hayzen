@@ -1,70 +1,79 @@
 #include "pch.h"
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 
+#include "Core/Context.h"
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
+#include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
+#include "UI/Renderer.h"
 #include "Games/SpecOps/AlphaMW2/MenuFunctions.h"
+#include "Games/SpecOps/AlphaMW2/GameFunctions.h"
 
-bool SpecOpsAlphaMW2Title::s_HasJumped = false;
 Detour *SpecOpsAlphaMW2Title::s_pClientCommandDetour = nullptr;
 
-SpecOpsAlphaMW2Title::~SpecOpsAlphaMW2Title()
-{
-    delete s_pClientCommandDetour;
-}
-
-void SpecOpsAlphaMW2Title::Init()
+SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
 {
     Xam::XNotify("Hayzen - MW2 Alpha Spec Ops Detected");
 
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Set the draw function addresses
-    m_DrawTextFnAddr = 0x82386E50;
-    m_DrawRectangleFnAddr = 0x82386590;
-    m_RegisterFontFnAddr = 0x82380CB0;
-    m_RegisterMaterialFnAddr = 0x82380880;
-
-    // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(SpecOpsAlphaMW2::SavePosition);
-    s_Menu.SetLoadPositionFn(SpecOpsAlphaMW2::LoadPosition);
-
-    // Set the draw function pointers with the addresses above
-    Title::Init();
-
-    // Create the structure of the menu
-    CreateStructure();
+    // Initialize the renderer
+    InitRenderer();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x82133BE0, SCR_DrawScreenFieldHook);
     s_pClientCommandDetour = new Detour(0x821EA940, ClientCommandHook);
 }
 
-void SpecOpsAlphaMW2Title::CreateStructure()
+SpecOpsAlphaMW2Title::~SpecOpsAlphaMW2Title()
 {
-    // Set the global title of the menu
-    s_RootOption.SetText("Cod Jumper");
+    delete s_pClientCommandDetour;
+}
+
+void SpecOpsAlphaMW2Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    // Check if the unlimited ammo patch address if equal to the patched value
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x82328610) == 0x7D284B78;
 
     // Main section
-    auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, SpecOpsAlphaMW2::ToggleGodMode));
-    pMain->AddChild(MakeOption("Ammo", 1, SpecOpsAlphaMW2::ToggleAmmo));
-    pMain->AddChild(MakeOption("Jump Height", 2, SpecOpsAlphaMW2::ChangeJumpHeight));
-    s_RootOption.AddChild(pMain);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsAlphaMW2::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsAlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsAlphaMW2::ChangeJumpHeight, 39, 0, 999, 1));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
 
     // Teleport section
-    auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, SpecOpsAlphaMW2::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, SpecOpsAlphaMW2::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, SpecOpsAlphaMW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, SpecOpsAlphaMW2::ToggleUfo));
-    s_RootOption.AddChild(pTeleport);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsAlphaMW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", SpecOpsAlphaMW2::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", SpecOpsAlphaMW2::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsAlphaMW2::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
 
     // Second player section
-    auto pSecondPlayer = MakeOption("Second Player", 2);
-    pSecondPlayer->AddChild(MakeOption("God Mode", 0, SpecOpsAlphaMW2::ToggleSecondPlayerGodMode));
-    pSecondPlayer->AddChild(MakeOption("Teleport to Me", 1, SpecOpsAlphaMW2::TeleportSecondPlayerToMe));
-    s_RootOption.AddChild(pSecondPlayer);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsAlphaMW2::ToggleSecondPlayerGodMode));
+        options.emplace_back(MakeOption(ClickOption, "Teleport to Me", SpecOpsAlphaMW2::TeleportSecondPlayerToMe));
+        optionGroups.emplace_back(OptionGroup("Second Player", options));
+    }
+
+    // Set the save and load functions
+    Context::SavePositionFn = SpecOpsAlphaMW2::SavePosition;
+    Context::LoadPositionFn = SpecOpsAlphaMW2::LoadPosition;
+
+    m_Menu.Init(optionGroups);
 }
+
+static bool hasJumped = false;
 
 void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
@@ -73,7 +82,7 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 
     // Register when the user pressed the A button
     if (!strcmp(s, "notify +gostand"))
-        s_HasJumped = true;
+        hasJumped = true;
 
     // The 'n 42' event means the game started
     if (!strcmp(s, "notify -gostand"))
@@ -81,15 +90,15 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         // The 'n 42' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
         // 'n 7' event didn't occur just before.
-        if (!s_HasJumped)
+        if (!hasJumped)
         {
-            // We have no way of knowing when the game ends so, if the menu was already
-            // initialized, reset it first
-            if (s_Menu.IsInitialized())
-                s_Menu.Stop();
+            // Reset the context
+            Context::Reset();
+            Context::ClientNum = 0;
 
             // Initialize the menu
-            s_Menu.Init(0, &s_RootOption);
+            s_CurrentInstance->InMatch(true);
+            s_CurrentInstance->InitMenu();
 
             // Disable the unlocalized error messages when printing something in the killfeed
             SpecOpsAlphaMW2::Game::Cbuf_AddText(0, "set loc_warnings 0");
@@ -97,6 +106,20 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         }
 
         // Register that the user released the A button
-        s_HasJumped = false;
+        hasJumped = false;
     }
+}
+
+void SpecOpsAlphaMW2Title::InitRenderer()
+{
+    using namespace Renderer;
+
+    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x82386590);
+    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x82386E50);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x82380D20);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x82380E10);
+    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x82380CB0);
+    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x82380880);
+
+    Title::InitRenderer();
 }

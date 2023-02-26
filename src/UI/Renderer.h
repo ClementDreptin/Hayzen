@@ -34,8 +34,8 @@ extern HANDLE MaterialHandle;
 extern float DisplayWidth;
 extern float DisplayHeight;
 
-float GetTextWidth(const std::string &text);
-float GetTextHeight();
+float GetTextWidth(const std::string &text, float fontScale = 1.0f);
+float GetTextHeight(float fontScale = 1.0f);
 
 }
 

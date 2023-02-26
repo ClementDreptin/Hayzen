@@ -59,13 +59,17 @@ void Title::Render()
 void Title::RenderControlsTexts()
 {
     float baseY = 10.0f;
-    float textHeight = Renderer::GetTextHeight() + Layout::Padding * 2 + Layout::BorderWidth * 2;
+    float fontScale = 0.8f;
+    float padding = Layout::Padding * fontScale;
+    float borderWidth = Layout::BorderWidth * fontScale;
+    float textHeight = Renderer::GetTextHeight(fontScale) + padding * 2 + borderWidth * 2;
 
     Text::Props props = { 0 };
     props.X = 10.0f;
+    props.FontScale = fontScale;
     props.Color = Layout::TextColor;
     props.BackgroundColor = Layout::BackgroundColor;
-    props.BorderWidth = Layout::BorderWidth;
+    props.BorderWidth = borderWidth;
     props.BorderColor = Layout::Color;
     props.BorderPosition = Border::Border_All;
 
@@ -73,11 +77,11 @@ void Title::RenderControlsTexts()
     props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open." : "Close.");
     m_ControlsTexts[0].Render(props);
 
-    props.Y = baseY + textHeight + Layout::Padding;
+    props.Y = baseY + textHeight + padding;
     props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
     m_ControlsTexts[1].Render(props);
 
-    props.Y = baseY + ((textHeight + Layout::Padding) * 2);
+    props.Y = baseY + ((textHeight + padding) * 2);
     props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
     m_ControlsTexts[2].Render(props);
 }

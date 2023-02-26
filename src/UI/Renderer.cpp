@@ -18,14 +18,14 @@ HANDLE MaterialHandle = nullptr;
 float DisplayWidth = 1280.0f;
 float DisplayHeight = 720.0f;
 
-float GetTextWidth(const std::string &text)
+float GetTextWidth(const std::string &text, float fontScale)
 {
-    return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont));
+    return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont)) * fontScale;
 }
 
-float GetTextHeight()
+float GetTextHeight(float fontScale)
 {
-    return static_cast<float>(R_TextHeight(pFont));
+    return static_cast<float>(R_TextHeight(pFont)) * fontScale;
 }
 
 }

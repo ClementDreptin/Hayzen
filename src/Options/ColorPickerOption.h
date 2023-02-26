@@ -2,10 +2,6 @@
 
 #include "Options/SubOptionGroup.h"
 
-// Disable the C4481 warning for the override keyword
-#pragma warning(push)
-#pragma warning(disable : 4481)
-
 class ColorPickerOption : public SubOptionGroup
 {
 public:
@@ -22,5 +18,3 @@ private:
     uint32_t m_Blue;
     uint32_t m_Alpha;
 };
-
-#pragma warning(pop)

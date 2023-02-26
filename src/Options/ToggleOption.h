@@ -3,10 +3,6 @@
 #include "Options/Option.h"
 #include "UI/Rectangle.h"
 
-// Disable the C4481 warning for the override keyword
-#pragma warning(push)
-#pragma warning(disable : 4481)
-
 class ToggleOption : public Option
 {
 public:
@@ -23,5 +19,3 @@ private:
 
     Rectangle m_RadioBox;
 };
-
-#pragma warning(pop)

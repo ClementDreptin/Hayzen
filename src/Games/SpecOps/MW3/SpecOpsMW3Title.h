@@ -2,10 +2,6 @@
 
 #include "Core/Title.h"
 
-// Disable the C4481 warning for the override keyword
-#pragma warning(push)
-#pragma warning(disable : 4481)
-
 class SpecOpsMW3Title : public Title
 {
 public:
@@ -26,5 +22,3 @@ private:
 
     virtual void InitRenderer() override;
 };
-
-#pragma warning(pop)

@@ -31,11 +31,11 @@ protected:
 private:
     bool m_InMatch;
 
-    Text m_ControlsText;
+    Text m_ControlsTexts[3];
 
     void Update();
 
     void Render();
 
-    void RenderControlsText();
+    void RenderControlsTexts();
 };

@@ -59,7 +59,7 @@ void Menu::Render()
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
-    options.emplace_back(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsText));
+    options.emplace_back(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsTexts));
     options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
     options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));

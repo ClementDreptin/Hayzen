@@ -18,7 +18,7 @@ Option::Callback LoadPositionFn = nullptr;
 
 void *pBotEntity = nullptr;
 
-bool DisplayControlsText = true;
+bool DisplayControlsTexts = true;
 
 void Reset()
 {

@@ -48,7 +48,6 @@
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
-    <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\UI\Line.h" />
     <ClInclude Include="src\UI\Renderer.h" />
     <ClInclude Include="src\UI\Rectangle.h" />

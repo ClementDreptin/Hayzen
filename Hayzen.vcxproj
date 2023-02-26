@@ -71,7 +71,6 @@
     </Deploy>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="src\Core\Bits.h" />
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Menu.h" />

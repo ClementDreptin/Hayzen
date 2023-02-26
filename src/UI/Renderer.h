@@ -39,6 +39,9 @@ float GetTextHeight(float fontScale = 1.0f);
 
 }
 
+// Take a color and override its alpha channel.
+#define D3DCOLOR_ALPHA(color, alpha) D3DCOLOR_ARGB(alpha, D3DCOLOR_GETRED(color), D3DCOLOR_GETGREEN(color), D3DCOLOR_GETBLUE(color))
+
 #define CHAR_A "\x1"
 #define CHAR_B "\x2"
 #define CHAR_X "\x3"

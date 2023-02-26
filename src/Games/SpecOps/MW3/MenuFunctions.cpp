@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/SpecOps/MW3/MenuFunctions.h"
 
+#include "Games/SpecOps/MW3/GameFunctions.h"
+
 using namespace SpecOpsMW3::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -13,53 +15,55 @@ using namespace SpecOpsMW3::Game;
 #include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_MW3
 
-void SpecOpsMW3::ToggleGodMode(Menu *pMenu)
+bool SpecOpsMW3::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeSP(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
 }
 
-void SpecOpsMW3::ToggleAmmo(Menu *pMenu)
+bool SpecOpsMW3::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x8235BB54;
-    options.defaultValue = 0x7D3D5050;
-    options.patchValue = 0x7D495378;
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.Enabled = enabled;
+    options.PatchAddress = 0x8235BB54;
+    options.DefaultValue = 0x7D3D5050;
+    options.PatchValue = 0x7D495378;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void SpecOpsMW3::ChangeJumpHeight(Menu *pMenu)
+bool SpecOpsMW3::ChangeJumpHeight(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ChangeJumpHeight(pMenu);
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
 }
 
-void SpecOpsMW3::ToggleSaveLoadBinds(Menu *pMenu)
+bool SpecOpsMW3::ToggleSaveLoadBinds(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-void SpecOpsMW3::SavePosition(Menu *pMenu)
+bool SpecOpsMW3::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void SpecOpsMW3::LoadPosition(Menu *pMenu)
+bool SpecOpsMW3::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void SpecOpsMW3::ToggleUfo(Menu *pMenu)
+bool SpecOpsMW3::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-void SpecOpsMW3::ToggleSecondPlayerGodMode(Menu *pMenu)
+bool SpecOpsMW3::ToggleSecondPlayerGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
 }
 
-void SpecOpsMW3::TeleportSecondPlayerToMe(Menu *pMenu)
+bool SpecOpsMW3::TeleportSecondPlayerToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe(pMenu);
+    return COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
 }

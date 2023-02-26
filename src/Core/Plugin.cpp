@@ -72,7 +72,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
             s_pCurrentTitle = new MW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
+        if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
             s_pCurrentTitle = new SpecOpsMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
             s_pCurrentTitle = new AlphaMW2Title();
@@ -82,13 +82,10 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case TITLE_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
             s_pCurrentTitle = new MW3Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+        if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
             s_pCurrentTitle = new SpecOpsMW3Title();
+        break;
     default:
         break;
     }
-
-    // Only init the new game if it's supported
-    if (s_pCurrentTitle)
-        s_pCurrentTitle->Init();
 }

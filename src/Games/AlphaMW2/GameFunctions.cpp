@@ -14,10 +14,6 @@ void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = re
 
 void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x8226F590);
 
-bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool (*)(const char *)>(0x82303B00);
-
-float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float (*)(const char *)>(0x82303BD0);
-
 const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x82303CC0);
 
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x8222C108);

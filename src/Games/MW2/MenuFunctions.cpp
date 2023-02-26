@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Games/MW2/MenuFunctions.h"
 
+#include "Games/MW2/GameFunctions.h"
+
 using namespace MW2::Game;
 
 #ifdef COMMON_FN_NAMESPACE
@@ -13,118 +15,88 @@ using namespace MW2::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_MW2
 
-void MW2::ToggleGodMode(Menu *pMenu)
+bool MW2::ToggleGodMode(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleGodModeMP(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
-void MW2::ToggleFallDamage(Menu *pMenu)
+bool MW2::ToggleFallDamage(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleFallDamage(pMenu, 0x82019C48);
+    return COMMON_FN_NAMESPACE::ToggleFallDamage(pParameters, 0x82019C48);
 }
 
-void MW2::ToggleAmmo(Menu *pMenu)
+bool MW2::ToggleAmmo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options;
-    options.pMenu = pMenu;
-    options.patchAddress = 0x820E1724;
-    options.defaultValue = 0x7D1D4850;
-    options.patchValue = 0x7D284B78;
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    COMMON_FN_NAMESPACE::ToggleAmmo(options);
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    options.Enabled = enabled;
+    options.PatchAddress = 0x820E1724;
+    options.DefaultValue = 0x7D1D4850;
+    options.PatchValue = 0x7D284B78;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-void MW2::ToggleElevators(Menu *pMenu)
+bool MW2::ToggleElevators(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    uintptr_t branchAddress = 0x820D8360;
-    uint16_t defaultValue = 0x419A;
-    uint16_t modifiedValue = 0x4800;
+    Memory::Write<uint16_t>(0x820D8360, enabled ? 0x4800 : 0x419A);
 
-    if (Memory::Read<uint16_t>(branchAddress) == defaultValue)
-    {
-        Memory::Write<uint16_t>(branchAddress, modifiedValue);
-        iPrintLn(clientNum, "Elevators ^2On");
-    }
-    else
-    {
-        Memory::Write<uint16_t>(branchAddress, defaultValue);
-        iPrintLn(clientNum, "Elevators ^1Off");
-    }
+    return true;
 }
 
-void MW2::SpawnCarePackage(Menu *pMenu)
+bool MW2::SpawnCarePackage(void *)
 {
-    COMMON_FN_NAMESPACE::SpawnCarePackage(pMenu);
+    return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
-static uint32_t KnockbackThread(Menu *pMenu)
+bool MW2::Knockback(void *pParameters)
 {
-    // Get the value from the user via the virtual keyboard
-    std::string value;
-    uint32_t result = Xam::ShowKeyboard(L"Knockback", L"Recommended value: 30000\nDefault value: 1000", L"30000", value, 6, VKBD_LATIN_NUMERIC);
-
-    // If the user canceled the keyboard, return early
-    if (result != ERROR_SUCCESS)
-        return 0;
-
-    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
-    if (value.empty())
-        value = "1000";
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
 
     // Set the g_knockback value to what the user entered
-    SetClientDvar(-1, "g_knockback", value);
+    SetClientDvar(-1, "g_knockback", std::to_string(static_cast<uint64_t>(value)));
 
-    iPrintLn(pMenu->GetClientNum(), "Knockback set to ^2" + value);
-
-    return 0;
+    return true;
 }
 
-void MW2::Knockback(Menu *pMenu)
+bool MW2::ToggleSaveLoadBinds(void *pParameters)
 {
-    // This needs to execute on a separate thread because we need to wait for the user
-    // to finish typing. If this wasn't done on a separate thread, it would block the
-    // game's thread and make it crash.
-    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(KnockbackThread), pMenu);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-void MW2::ToggleSaveLoadBinds(Menu *pMenu)
+bool MW2::SavePosition(void *)
 {
-    COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pMenu);
+    return COMMON_FN_NAMESPACE::SavePosition();
 }
 
-void MW2::SavePosition(Menu *pMenu)
+bool MW2::LoadPosition(void *)
 {
-    COMMON_FN_NAMESPACE::SavePosition(pMenu);
+    return COMMON_FN_NAMESPACE::LoadPosition();
 }
 
-void MW2::LoadPosition(Menu *pMenu)
+bool MW2::ToggleUfo(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::LoadPosition(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-void MW2::ToggleUfo(Menu *pMenu)
-{
-    COMMON_FN_NAMESPACE::ToggleUfo(pMenu);
-}
-
-void MW2::SpawnBot(Menu *pMenu)
+bool MW2::SpawnBot(void *pParameters)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
-    pOptions->pMenu = pMenu;
-    pOptions->serverIdAddress = 0x8360922C;
-    pOptions->clientsBaseAddress = 0x83623B98;
+    pOptions->ServerIdAddress = 0x8360922C;
+    pOptions->ClientsBaseAddress = 0x83623B98;
 
-    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-void MW2::TeleportBotToMe(Menu *pMenu)
+bool MW2::TeleportBotToMe(void *)
 {
-    COMMON_FN_NAMESPACE::TeleportBotToMe(pMenu);
+    return COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-void MW2::ToggleBotMovement(Menu *pMenu)
+bool MW2::ToggleBotMovement(void *pParameters)
 {
-    COMMON_FN_NAMESPACE::ToggleBotMovement(pMenu);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
 }

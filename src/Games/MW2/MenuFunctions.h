@@ -1,35 +1,32 @@
 #pragma once
 
-#include "Core/Menu.h"
-#include "Games/MW2/GameFunctions.h"
-
 namespace MW2
 {
 
-void ToggleGodMode(Menu *pMenu);
+bool ToggleGodMode(void *pParameters);
 
-void ToggleFallDamage(Menu *pMenu);
+bool ToggleFallDamage(void *pParameters);
 
-void ToggleAmmo(Menu *pMenu);
+bool ToggleAmmo(void *pParameters);
 
-void ToggleElevators(Menu *pMenu);
+bool ToggleElevators(void *pParameters);
 
-void SpawnCarePackage(Menu *pMenu);
+bool SpawnCarePackage(void *);
 
-void Knockback(Menu *pMenu);
+bool Knockback(void *pParameters);
 
-void ToggleSaveLoadBinds(Menu *pMenu);
+bool ToggleSaveLoadBinds(void *pParameters);
 
-void SavePosition(Menu *pMenu);
+bool SavePosition(void *);
 
-void LoadPosition(Menu *pMenu);
+bool LoadPosition(void *);
 
-void ToggleUfo(Menu *pMenu);
+bool ToggleUfo(void *pParameters);
 
-void SpawnBot(Menu *pMenu);
+bool SpawnBot(void *);
 
-void TeleportBotToMe(Menu *pMenu);
+bool TeleportBotToMe(void *);
 
-void ToggleBotMovement(Menu *pMenu);
+bool ToggleBotMovement(void *pParameters);
 
 }

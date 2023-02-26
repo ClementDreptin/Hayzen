@@ -1,18 +1,18 @@
 #include "pch.h"
 #include "Games/MW3/MW3Title.h"
 
+#include "Core/Context.h"
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
+#include "Options/ToggleOption.h"
+#include "UI/Renderer.h"
 #include "Games/MW3/MenuFunctions.h"
+#include "Games/MW3/GameFunctions.h"
 
 Detour *MW3Title::s_pScr_NotifyDetour = nullptr;
 Detour *MW3Title::s_pSV_ExecuteClientCommandDetour = nullptr;
 
-MW3Title::~MW3Title()
-{
-    delete s_pScr_NotifyDetour;
-    delete s_pSV_ExecuteClientCommandDetour;
-}
-
-void MW3Title::Init()
+MW3Title::MW3Title()
 {
     Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
 
@@ -23,21 +23,8 @@ void MW3Title::Init()
     Memory::Write<int>(0x821ABA24, 0x60000000);
     Memory::Write<int>(0x821ABA9C, 0x60000000);
 
-    // Set the draw function addresses
-    m_DrawTextFnAddr = 0x8241F9E0;
-    m_DrawRectangleFnAddr = 0x8241F288;
-    m_RegisterFontFnAddr = 0x82407A90;
-    m_RegisterMaterialFnAddr = 0x82413F48;
-
-    // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(MW3::SavePosition);
-    s_Menu.SetLoadPositionFn(MW3::LoadPosition);
-
-    // Set the draw function pointers with the addresses above
-    Title::Init();
-
-    // Create the structure of the menu
-    CreateStructure();
+    // Initialize the renderer
+    InitRenderer();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8217CF90, SCR_DrawScreenFieldHook);
@@ -45,26 +32,44 @@ void MW3Title::Init()
     s_pSV_ExecuteClientCommandDetour = new Detour(0x822C78A0, SV_ExecuteClientCommandHook);
 }
 
-void MW3Title::CreateStructure()
+MW3Title::~MW3Title()
 {
-    // Set the global title of the menu
-    s_RootOption.SetText("Cod Jumper");
+    delete s_pScr_NotifyDetour;
+    delete s_pSV_ExecuteClientCommandDetour;
+}
+
+void MW3Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 999.0f;
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820F63E4) == 0x7D495378;
 
     // Main section
-    auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, MW3::ToggleGodMode));
-    pMain->AddChild(MakeOption("Fall Damage", 1, MW3::ToggleFallDamage));
-    pMain->AddChild(MakeOption("Ammo", 2, MW3::ToggleAmmo));
-    pMain->AddChild(MakeOption("Spawn Care Package", 3, MW3::SpawnCarePackage));
-    s_RootOption.AddChild(pMain);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW3::SpawnCarePackage));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
 
     // Teleport section
-    auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, MW3::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, MW3::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, MW3::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, MW3::ToggleUfo));
-    s_RootOption.AddChild(pTeleport);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", MW3::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", MW3::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", MW3::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
+    // Set the save and load functions
+    Context::SavePositionFn = MW3::SavePosition;
+    Context::LoadPositionFn = MW3::LoadPosition;
+
+    m_Menu.Init(optionGroups);
 }
 
 void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -80,11 +85,15 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
     // Get the string representing the event
     const char *eventName = MW3::Game::SL_ConvertToString(stringValue);
 
-    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
-    // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(eventName, "begin") && !s_Menu.IsInitialized())
+    if (!strcmp(eventName, "begin"))
     {
-        s_Menu.Init(clientNum, &s_RootOption);
+        // Reset the context
+        Context::Reset();
+        Context::ClientNum = clientNum;
+
+        // Initialize the menu
+        s_CurrentInstance->InMatch(true);
+        s_CurrentInstance->InitMenu();
 
         // Disable the unlocalized error messages when printing something in the killfeed
         MW3::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -104,5 +113,19 @@ void MW3Title::SV_ExecuteClientCommandHook(int client, const char *s, int client
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
-        s_Menu.Stop();
+        s_CurrentInstance->InMatch(false);
+}
+
+void MW3Title::InitRenderer()
+{
+    using namespace Renderer;
+
+    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x8241F288);
+    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x8241F9E0);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x82407C78);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x82407C80);
+    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x82407A90);
+    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x82413F48);
+
+    Title::InitRenderer();
 }

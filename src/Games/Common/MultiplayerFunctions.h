@@ -1,44 +1,34 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Menu.h"
-#include "Core/Bits.h"
+#include "Core/Context.h"
 
 namespace COMMON_FN_NAMESPACE
 {
 
-void ToggleGodModeMP(Menu *pMenu)
+bool ToggleGodModeMP(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    gentity_s *pPlayerEntity = GetEntity(clientNum);
+    gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
 
-    // The default value of flags is 0x1000, the God Mode value is 0x1001 so we just need to toggle the first bit
-    // to toggle God Mode
-    BIT_FLIP(pPlayerEntity->flags, 0);
+    pPlayerEntity->flags = enabled ? 0x1001 : 0x1000;
 
-    iPrintLn(clientNum, BIT_CHECK(pPlayerEntity->flags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
+    return true;
 }
 
-void ToggleFallDamage(Menu *pMenu, uintptr_t patchAddress)
+bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    if (Memory::Read<float>(patchAddress) == 128.0f)
-    {
-        Memory::Write<float>(patchAddress, 999.0f);
-        iPrintLn(clientNum, "Fall Damage ^2Off");
-    }
-    else
-    {
-        Memory::Write<float>(patchAddress, 128.0f);
-        iPrintLn(clientNum, "Fall Damage ^1On");
-    }
+    Memory::Write<float>(patchAddress, enabled ? 9999.0f : 128.0f);
+
+    return true;
 }
 
-void SpawnCarePackage(Menu *pMenu)
+bool SpawnCarePackage()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
     gentity_s *pCurrentMapBrushModel = GetCurrentMapBrushModel();
 
@@ -46,7 +36,7 @@ void SpawnCarePackage(Menu *pMenu)
     if (!pCurrentMapBrushModel)
     {
         iPrintLn(clientNum, "^1You cannot spawn a Care Package on this map!");
-        return;
+        return false;
     }
 
     // Get the player's current position
@@ -79,7 +69,10 @@ void SpawnCarePackage(Menu *pMenu)
 
     // Register the entity for the scene
     SV_LinkEntity(pEntity);
+
+    return true;
 }
+
 
 #ifndef GAME_MW3
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
@@ -87,19 +80,18 @@ void SpawnCarePackage(Menu *pMenu)
 // function deletes the structure after using it.
 struct SpawnBotOptions
 {
-    Menu *pMenu;
-    uintptr_t serverIdAddress;
-    uintptr_t clientsBaseAddress;
+    uintptr_t ServerIdAddress;
+    uintptr_t ClientsBaseAddress;
 };
 
-void TeleportBotToMe(Menu *pMenu);
+bool TeleportBotToMe();
 
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
     Sleep(150);
 
     // Prepare the commands to send to SV_ExecuteClientCommand
-    int serverId = Memory::Read<int>(pOptions->serverIdAddress);
+    int serverId = Memory::Read<int>(pOptions->ServerIdAddress);
 
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
@@ -110,7 +102,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->clientsBaseAddress) + static_cast<gentity_s *>(pOptions->pMenu->GetBot())->state.number * 0x97F80;
+    uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->ClientsBaseAddress) + static_cast<gentity_s *>(Context::pBotEntity)->state.number * 0x97F80;
 
     // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(botAddr, chooseTeamCommand.c_str(), 1, 0);
@@ -126,7 +118,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
     // Teleport the bot in front of the player
-    TeleportBotToMe(pOptions->pMenu);
+    TeleportBotToMe();
 
     // The options were heap allocated to live long enough to still be available in this thread
     // so we need to free them
@@ -135,38 +127,40 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     return 0;
 }
 
-void SpawnBot(SpawnBotOptions *pOptions)
+bool SpawnBot(SpawnBotOptions *pOptions)
 {
-    gentity_s *pBot = static_cast<gentity_s *>(pOptions->pMenu->GetBot());
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
     // Prevent the user from spawning multiple bots
-    if (pBot)
+    if (pBot != nullptr)
     {
-        iPrintLn(pOptions->pMenu->GetClientNum(), "^1There is already a bot in the game!");
-        return;
+        iPrintLn(Context::ClientNum, "^1There is already a bot in the game!");
+        return false;
     }
 
     // Create the bot
     pBot = SV_AddTestClient();
-    pOptions->pMenu->SetBot(pBot);
+    Context::pBotEntity = pBot;
 
     // The rest of the code needs to execute on a separate thread because we need to
     // wait between certain operations. If this wasn't done on a separate thread, it
     // would block the game's thread and make it crash.
     Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
+
+    return true;
 }
 
-void TeleportBotToMe(Menu *pMenu)
+bool TeleportBotToMe()
 {
-    int clientNum = pMenu->GetClientNum();
+    int clientNum = Context::ClientNum;
 
-    gentity_s *pBot = static_cast<gentity_s *>(pMenu->GetBot());
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
     // Make sure there is a bot in the game
-    if (!pBot)
+    if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
-        return;
+        return false;
     }
 
     // Get the player's current position
@@ -177,29 +171,26 @@ void TeleportBotToMe(Menu *pMenu)
 
     // Teleport the bot in front of the player
     pBot->client->ps.origin = Math::ToFront(origin, viewY, distance);
+
+    return true;
 }
 
-void ToggleBotMovement(Menu *pMenu)
+bool ToggleBotMovement(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    int clientNum = Context::ClientNum;
 
     // Make sure there is a bot in the game
-    if (!pMenu->GetBot())
+    if (Context::pBotEntity == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
-        return;
+        return false;
     }
 
-    if (Dvar_GetBool("testClients_doMove"))
-    {
-        SetClientDvar(-1, "testClients_doMove", "0");
-        iPrintLn(clientNum, "Bot ^2Frozen");
-    }
-    else
-    {
-        SetClientDvar(-1, "testClients_doMove", "1");
-        iPrintLn(clientNum, "Bot ^1Unfrozen");
-    }
+    SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
+
+    return true;
 }
 #endif
 

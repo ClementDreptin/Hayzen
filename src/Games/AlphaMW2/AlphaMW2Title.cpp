@@ -1,39 +1,27 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
+#include "Core/Context.h"
+#include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
+#include "Options/ToggleOption.h"
+#include "UI/Renderer.h"
 #include "Games/AlphaMW2/MenuFunctions.h"
+#include "Games/AlphaMW2/GameFunctions.h"
 
 Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *AlphaMW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
 
-AlphaMW2Title::~AlphaMW2Title()
-{
-    delete s_pScr_NotifyDetour;
-    delete s_pSV_ExecuteClientCommandDetour;
-}
-
-void AlphaMW2Title::Init()
+AlphaMW2Title::AlphaMW2Title()
+    : Title()
 {
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Set the draw function addresses
-    m_DrawTextFnAddr = 0x823BB4D8;
-    m_DrawRectangleFnAddr = 0x823BAC18;
-    m_RegisterFontFnAddr = 0x823B6D58;
-    m_RegisterMaterialFnAddr = 0x823B6928;
-
-    // Set the save and load functions to use fr the current game
-    s_Menu.SetSavePositionFn(AlphaMW2::SavePosition);
-    s_Menu.SetLoadPositionFn(AlphaMW2::LoadPosition);
-
-    // Set the draw function pointers with the addresses above
-    Title::Init();
-
-    // Create the structure of the menu
-    CreateStructure();
+    // Initialize the renderer
+    InitRenderer();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
@@ -41,33 +29,52 @@ void AlphaMW2Title::Init()
     s_pSV_ExecuteClientCommandDetour = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
 }
 
-void AlphaMW2Title::CreateStructure()
+AlphaMW2Title::~AlphaMW2Title()
 {
-    // Set the global title of the menu
-    s_RootOption.SetText("Cod Jumper");
+    delete s_pScr_NotifyDetour;
+    delete s_pSV_ExecuteClientCommandDetour;
+}
+
+void AlphaMW2Title::InitMenu()
+{
+    std::vector<OptionGroup> optionGroups;
+
+    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x82113628) == 0x7D284B78;
 
     // Main section
-    auto pMain = MakeOption("Main", 0);
-    pMain->AddChild(MakeOption("God Mode", 0, AlphaMW2::ToggleGodMode));
-    pMain->AddChild(MakeOption("Fall Damage", 1, AlphaMW2::ToggleFallDamage));
-    pMain->AddChild(MakeOption("Ammo", 2, AlphaMW2::ToggleAmmo));
-    pMain->AddChild(MakeOption("Spawn Care Package", 3, AlphaMW2::SpawnCarePackage));
-    s_RootOption.AddChild(pMain);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
+        optionGroups.emplace_back(OptionGroup("Main", options));
+    }
 
     // Teleport section
-    auto pTeleport = MakeOption("Teleport", 1);
-    pTeleport->AddChild(MakeOption("Save/Load Binds", 0, AlphaMW2::ToggleSaveLoadBinds));
-    pTeleport->AddChild(MakeOption("Save Position", 1, AlphaMW2::SavePosition));
-    pTeleport->AddChild(MakeOption("Load Position", 2, AlphaMW2::LoadPosition));
-    pTeleport->AddChild(MakeOption("UFO", 3, AlphaMW2::ToggleUfo));
-    s_RootOption.AddChild(pTeleport);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ClickOption, "Save Position", AlphaMW2::SavePosition));
+        options.emplace_back(MakeOption(ClickOption, "Load Position", AlphaMW2::LoadPosition));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo));
+        optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
 
     // Bot section
-    auto pBot = MakeOption("Bot", 2);
-    pBot->AddChild(MakeOption("Spawn Bot", 0, AlphaMW2::SpawnBot));
-    pBot->AddChild(MakeOption("Teleport Bot to Me", 1, AlphaMW2::TeleportBotToMe));
-    pBot->AddChild(MakeOption("Toggle Bot Movement", 2, AlphaMW2::ToggleBotMovement));
-    s_RootOption.AddChild(pBot);
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Spawn Bot", AlphaMW2::SpawnBot));
+        options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", AlphaMW2::TeleportBotToMe));
+        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", AlphaMW2::ToggleBotMovement, true));
+        optionGroups.emplace_back(OptionGroup("Bot", options));
+    }
+
+    // Set the save and load functions
+    Context::SavePositionFn = AlphaMW2::SavePosition;
+    Context::LoadPositionFn = AlphaMW2::LoadPosition;
+
+    m_Menu.Init(optionGroups);
 }
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
@@ -83,11 +90,15 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     // Get the string representing the event
     const char *eventName = AlphaMW2::Game::SL_ConvertToString(stringValue);
 
-    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
-    // to recreate the menu every round so we make sure it's not already initialized
-    if (!strcmp(eventName, "begin") && !s_Menu.IsInitialized())
+    if (!strcmp(eventName, "begin"))
     {
-        s_Menu.Init(clientNum, &s_RootOption);
+        // Reset the context
+        Context::Reset();
+        Context::ClientNum = clientNum;
+
+        // Initialize the menu
+        s_CurrentInstance->InMatch(true);
+        s_CurrentInstance->InitMenu();
 
         // Disable the unlocalized error messages when printing something in the killfeed
         AlphaMW2::Game::SetClientDvar(clientNum, "loc_warnings", "0");
@@ -97,7 +108,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 
 void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
 {
-    // Call the original Scr_Notify SV_ExecuteClientCommand
+    // Call the original SV_ExecuteClientCommand function
     s_pSV_ExecuteClientCommandDetour->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
@@ -107,5 +118,19 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int c
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
-        s_Menu.Stop();
+        s_CurrentInstance->InMatch(false);
+}
+
+void AlphaMW2Title::InitRenderer()
+{
+    using namespace Renderer;
+
+    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x823BAC18);
+    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x823BB4D8);
+    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x823B6DC8);
+    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x823B6EB8);
+    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x823B6D58);
+    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x823B6928);
+
+    Title::InitRenderer();
 }

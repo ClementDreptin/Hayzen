@@ -1,88 +1,67 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Menu.h"
-#include "Core/Bits.h"
+#include "Core/Context.h"
 
 namespace COMMON_FN_NAMESPACE
 {
 
-void ToggleGodModeSP(Menu *pMenu)
+bool ToggleGodModeSP(void *pParameters)
 {
-    int clientNum = pMenu->GetClientNum();
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    playerState_s *pPlayerState = GetPlayerState(clientNum);
+    playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
 
-    // The default value of otherFlags is 0, the God Mode value is 1 so we just need to toggle the first bit
-    // to toggle God Mode
-    BIT_FLIP(pPlayerState->otherFlags, 0);
+    pPlayerState->otherFlags = enabled ? 1 : 0;
 
-    iPrintLn(clientNum, BIT_CHECK(pPlayerState->otherFlags, 0) ? "God Mode ^2On" : "God Mode ^1Off");
+    return true;
 }
 
-static uint32_t ChangeJumpHeightThread(Menu *pMenu)
+bool ChangeJumpHeight(void *pParameters)
 {
-    // Get the value from the user via the virtual keyboard
-    std::string value;
-    uint32_t result = Xam::ShowKeyboard(L"Jump Height", L"Max value: 999\nDefault value: 39", L"39", value, 3, VKBD_LATIN_NUMERIC);
-
-    // If the user canceled the keyboard, return early
-    if (result != ERROR_SUCCESS)
-        return 0;
-
-    // If the user did not enter anything but still closed the keyboard by pressing START, set the value to its default value
-    if (value.empty())
-        value = "39";
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
 
     // Set the new jump height value
-    std::string fullCommand = "set jump_height " + value;
-    Cbuf_AddText(0, fullCommand.c_str());
+    std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
+    Cbuf_AddText(0, command.c_str());
 
-    iPrintLn(pMenu->GetClientNum(), "Jump Height set to ^2" + value);
-
-    return 0;
+    return true;
 }
 
-void ChangeJumpHeight(Menu *pMenu)
+bool ToggleSecondPlayerGodMode(void *pParameters)
 {
-    // This needs to execute on a separate thread because we need to wait for the user
-    // to finish typing. If this wasn't done on a separate thread, it would block the
-    // game's thread and make it crash.
-    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(ChangeJumpHeightThread), pMenu);
-}
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-void ToggleSecondPlayerGodMode(Menu *pMenu)
-{
     // The second client num is always 1
     int secondClientNum = 1;
-    int firstClientNum = pMenu->GetClientNum();
+    int firstClientNum = Context::ClientNum;
 
     // If the player name of the second client is empty, it means there is no second client
     gclient_s *pSecondClient = GetGClient(secondClientNum);
     if (!pSecondClient->connected)
     {
         iPrintLn(firstClientNum, "^1No other player in the game!");
-        return;
+        return false;
     }
 
     playerState_s *pSecondPlayerState = GetPlayerState(secondClientNum);
 
-    BIT_FLIP(pSecondPlayerState->otherFlags, 0);
+    pSecondPlayerState->otherFlags = enabled ? 1 : 0;
 
-    iPrintLn(firstClientNum, BIT_CHECK(pSecondPlayerState->otherFlags, 0) ? "Second Player God Mode ^2On" : "Second Player God Mode ^1Off");
+    return true;
 }
 
-void TeleportSecondPlayerToMe(Menu *pMenu)
+bool TeleportSecondPlayerToMe()
 {
     // The second client num is always 1
     int secondClientNum = 1;
-    int firstClientNum = pMenu->GetClientNum();
+    int firstClientNum = Context::ClientNum;
 
     gclient_s *pSecondClient = GetGClient(secondClientNum);
     if (!pSecondClient->connected)
     {
         iPrintLn(firstClientNum, "^1No other player in the game!");
-        return;
+        return false;
     }
 
     // Get the first player's current position
@@ -92,6 +71,8 @@ void TeleportSecondPlayerToMe(Menu *pMenu)
 
     // Teleport the second player in front of the first player
     pSecondClient->ps.origin = Math::ToFront(origin, viewY, distance);
+
+    return true;
 }
 
 }

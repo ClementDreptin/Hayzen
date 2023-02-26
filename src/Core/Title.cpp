@@ -1,27 +1,89 @@
 #include "pch.h"
 #include "Core/Title.h"
 
-#include "Elements/HudElem.h"
+#include "Core/Context.h"
+#include "Core/Input.h"
+#include "UI/Renderer.h"
 
-Menu Title::s_Menu;
-Option Title::s_RootOption;
 Detour *Title::s_pSCR_DrawScreenFieldDetour = nullptr;
+Title *Title::s_CurrentInstance = nullptr;
+
+Title::Title()
+    : m_InMatch(false), m_MenuOpen(false)
+{
+    s_CurrentInstance = this;
+}
 
 Title::~Title()
 {
-    s_Menu.Stop();
-    s_RootOption.Cleanup();
-
     delete s_pSCR_DrawScreenFieldDetour;
 }
 
-void Title::Init()
+void Title::Update()
 {
-    // Make the HudElem draw function pointers point to the drawing functions of the current game
-    SetDrawFunctionsPointers();
+    // Get the current gamepad state
+    Input::Gamepad *pGamepad = Input::GetInput();
 
-    // Register and font and a material globally with the drawing functions set above
-    RegisterFontAndMaterial();
+    // Toggle the menu by pressing LT and DPAD LEFT
+    if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+    {
+        m_MenuOpen = !m_MenuOpen;
+        return;
+    }
+
+    // Update the menu if it's open
+    if (m_MenuOpen)
+        m_Menu.Update(pGamepad);
+
+    // Save and Load with LB/RB when Save and Load binds are enabled
+    if (Context::BindsEnabled && !m_MenuOpen)
+    {
+        if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
+            Context::LoadPositionFn(nullptr);
+        else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+            Context::SavePositionFn(nullptr);
+    }
+}
+
+void Title::Render()
+{
+    // Render the menu if it's open
+    if (m_MenuOpen)
+        m_Menu.Render();
+
+    // Render the controls text if enabled
+    if (Context::DisplayControlsTexts)
+        RenderControlsTexts();
+}
+
+void Title::RenderControlsTexts()
+{
+    float baseY = 10.0f;
+    float fontScale = 0.8f;
+    float padding = Layout::Padding * fontScale;
+    float borderWidth = Layout::BorderWidth * fontScale;
+    float textHeight = Renderer::GetTextHeight(fontScale) + padding * 2 + borderWidth * 2;
+
+    Text::Props props = { 0 };
+    props.X = 10.0f;
+    props.FontScale = fontScale;
+    props.Color = Layout::TextColor;
+    props.BackgroundColor = Layout::BackgroundColor;
+    props.BorderWidth = borderWidth;
+    props.BorderColor = Layout::Color;
+    props.BorderPosition = Border::Border_All;
+
+    props.Y = baseY;
+    props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open." : "Close.");
+    m_ControlsTexts[0].Render(props);
+
+    props.Y = baseY + textHeight + padding;
+    props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
+    m_ControlsTexts[1].Render(props);
+
+    props.Y = baseY + ((textHeight + padding) * 2);
+    props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
+    m_ControlsTexts[2].Render(props);
 }
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
@@ -29,28 +91,20 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
     // Call the original SCR_DrawScreenField function
     s_pSCR_DrawScreenFieldDetour->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
-    // If the menu is not initialized, no need to go further
-    if (!s_Menu.IsInitialized())
-        return;
+    if (s_CurrentInstance != nullptr && s_CurrentInstance->InMatch())
+    {
+        s_CurrentInstance->Update();
 
-    // Update the menu
-    s_Menu.Update();
-
-    // Render the menu
-    s_Menu.Render();
+        s_CurrentInstance->Render();
+    }
 }
 
-void Title::SetDrawFunctionsPointers()
+void Title::InitRenderer()
 {
-    HudElem::R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(m_RegisterFontFnAddr);
-    HudElem::Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(m_RegisterMaterialFnAddr);
+    using namespace Renderer;
 
-    HudElem::SetDrawTextFnPtr(reinterpret_cast<R_ADDCMDDRAWTEXT>(m_DrawTextFnAddr));
-    HudElem::SetDrawRectangleFnPtr(reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(m_DrawRectangleFnAddr));
-}
+    pFont = R_RegisterFont("fonts/smallFont", 0);
+    MaterialHandle = Material_RegisterHandle("white", 0);
 
-void Title::RegisterFontAndMaterial()
-{
-    HudElem::SetFont(HudElem::R_RegisterFont("fonts/normalFont", 0));
-    HudElem::SetMaterialHandle(HudElem::Material_RegisterHandle("white", 0));
+    Layout::LineHeight = GetTextHeight() + Layout::Padding * 2;
 }

@@ -1,27 +1,24 @@
 #pragma once
 
-#include "Core/Menu.h"
-#include "Games/SpecOps/MW2/GameFunctions.h"
-
 namespace SpecOpsMW2
 {
 
-void ToggleGodMode(Menu *pMenu);
+bool ToggleGodMode(void *pParameters);
 
-void ToggleAmmo(Menu *pMenu);
+bool ToggleAmmo(void *pParameters);
 
-void ChangeJumpHeight(Menu *pMenu);
+bool ChangeJumpHeight(void *pParameters);
 
-void ToggleSaveLoadBinds(Menu *pMenu);
+bool ToggleSaveLoadBinds(void *pParameters);
 
-void SavePosition(Menu *pMenu);
+bool SavePosition(void *);
 
-void LoadPosition(Menu *pMenu);
+bool LoadPosition(void *);
 
-void ToggleUfo(Menu *pMenu);
+bool ToggleUfo(void *pParameters);
 
-void ToggleSecondPlayerGodMode(Menu *pMenu);
+bool ToggleSecondPlayerGodMode(void *pParameters);
 
-void TeleportSecondPlayerToMe(Menu *pMenu);
+bool TeleportSecondPlayerToMe(void *);
 
 }

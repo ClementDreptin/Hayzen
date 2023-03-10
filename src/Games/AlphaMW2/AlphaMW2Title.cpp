@@ -12,6 +12,35 @@
 Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
 Detour *AlphaMW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
 
+// Structs and function prototypes from xboxkrnl.exe
+typedef struct _STRING
+{
+    uint16_t Length;
+    uint16_t MaxLength;
+    char *Buffer;
+} STRING;
+
+void (*RtlInitAnsiString)(STRING *pDestinationString, const char *sourceString) = reinterpret_cast<void (*)(STRING *, const char *)>(0x82420B8C);
+HRESULT (*ObCreateSymbolicLink)(STRING *pLinkName, STRING *pDevicePath) = reinterpret_cast<HRESULT (*)(STRING *, STRING *)>(0x824214AC);
+
+// Allow the game to access the entire hard drive.
+// The system only allows executables to access the directory they live in and binds it to
+// the "game:" drive. Nothing else is accessible unless you create a symbolic link.
+static HRESULT MountHdd()
+{
+    STRING deviceName = { 0 };
+    STRING linkName = { 0 };
+    const char *destinationDrive = "\\??\\hdd:";
+    const char *hddDevicePath = "\\Device\\Harddisk0\\Partition1\\";
+
+    // Initialize the STRING structs
+    RtlInitAnsiString(&deviceName, hddDevicePath);
+    RtlInitAnsiString(&linkName, destinationDrive);
+
+    // Bind the root of the hard drive to the "hdd:" drive.
+    return ObCreateSymbolicLink(&linkName, &deviceName);
+}
+
 AlphaMW2Title::AlphaMW2Title()
     : Title()
 {
@@ -22,6 +51,8 @@ AlphaMW2Title::AlphaMW2Title()
 
     // Initialize the renderer
     InitRenderer();
+
+    MountHdd();
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);

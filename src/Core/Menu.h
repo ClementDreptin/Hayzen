@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Input.h"
+#include "Core/Config.h"
 #include "Core/OptionGroup.h"
 #include "UI/Rectangle.h"
 #include "UI/Text.h"
@@ -21,6 +22,8 @@ private:
     size_t m_CurrentOptionGroupIndex;
 
     std::vector<Text> m_OptionGroupHeaders;
+
+    Config m_Config;
 
     void AddCustomizationGroup();
 

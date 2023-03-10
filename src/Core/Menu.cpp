@@ -3,6 +3,7 @@
 
 #include "Core/Context.h"
 #include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
 #include "Options/ColorPickerOption.h"
@@ -12,7 +13,7 @@
 using namespace Renderer;
 
 Menu::Menu()
-    : m_CurrentOptionGroupIndex(0)
+    : m_CurrentOptionGroupIndex(0), m_Config("hdd:\\Hayzen.ini")
 {
 }
 
@@ -56,6 +57,20 @@ void Menu::Render()
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
 }
 
+static bool SaveSettings(void *pParameters)
+{
+    Config *pConfig = reinterpret_cast<Config *>(pParameters);
+
+    bool result = pConfig->Save();
+
+    Xam::XNotify(
+        result ? "Settings were saved" : "Settings could not be saved",
+        result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
+    );
+
+    return result;
+}
+
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
@@ -63,6 +78,7 @@ void Menu::AddCustomizationGroup()
     options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
     options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", SaveSettings, &m_Config));
     m_OptionGroups.emplace_back(OptionGroup("Customization", options));
 }
 

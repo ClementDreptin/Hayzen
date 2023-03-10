@@ -26,6 +26,9 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 
     CalculateMenuDimensions();
 
+    // Load the menu settings from the config (doesn't do anything if the config file doesn't exist)
+    m_Config.Load();
+
     m_OptionGroupHeaders = std::vector<Text>(m_OptionGroups.size(), Text());
 }
 

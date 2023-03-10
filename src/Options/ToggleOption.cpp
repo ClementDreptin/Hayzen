@@ -8,6 +8,11 @@ ToggleOption::ToggleOption()
 {
 }
 
+ToggleOption::ToggleOption(const std::string &name, const ValueOrPtr<bool> &active)
+    : Option(name, nullptr), m_Active(active)
+{
+}
+
 ToggleOption::ToggleOption(const std::string &name, Callback callback, const ValueOrPtr<bool> &active)
     : Option(name, callback), m_Active(active)
 {

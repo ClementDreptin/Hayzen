@@ -7,7 +7,7 @@ class SubOptionGroup : public Option
 public:
     SubOptionGroup();
 
-    SubOptionGroup(const std::string &name, Callback callback, const OptionGroup &optionGroup);
+    SubOptionGroup(const std::string &name, const OptionGroup &optionGroup);
 
     virtual bool Update(Input::Gamepad *pGamepad) override;
 

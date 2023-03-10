@@ -30,5 +30,12 @@ bool ColorPickerOption::Update(Input::Gamepad *pGamepad)
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT || pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
         m_Color = D3DCOLOR_RGBA(m_Red, m_Green, m_Blue, m_Alpha);
 
+    // Each channel needs to be set the what is currently in m_Color because it might be a pointer
+    // to a color and this color can be changed from outside of the color picker
+    m_Red = D3DCOLOR_GETRED(*m_Color);
+    m_Green = D3DCOLOR_GETGREEN(*m_Color);
+    m_Blue = D3DCOLOR_GETBLUE(*m_Color);
+    m_Alpha = D3DCOLOR_GETALPHA(*m_Color);
+
     return true;
 }

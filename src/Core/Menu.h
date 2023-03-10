@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Input.h"
+#include "Core/Config.h"
 #include "Core/OptionGroup.h"
 #include "UI/Rectangle.h"
 #include "UI/Text.h"
@@ -22,9 +23,13 @@ private:
 
     std::vector<Text> m_OptionGroupHeaders;
 
+    Config m_Config;
+
     void AddCustomizationGroup();
 
     void RenderOptionGroupHeaders();
 
     void CalculateMenuDimensions();
+
+    void CreateConfig();
 };

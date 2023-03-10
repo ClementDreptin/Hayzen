@@ -8,15 +8,15 @@ ColorPickerOption::ColorPickerOption()
 {
 }
 
-ColorPickerOption::ColorPickerOption(const std::string &name, Callback callback, const ValueOrPtr<D3DCOLOR> &color)
-    : SubOptionGroup(name, callback, OptionGroup()), m_Color(color), m_Red(D3DCOLOR_GETRED(*color)), m_Green(D3DCOLOR_GETGREEN(*color)), m_Blue(D3DCOLOR_GETBLUE(*color)), m_Alpha(D3DCOLOR_GETALPHA(*color))
+ColorPickerOption::ColorPickerOption(const std::string &name, const ValueOrPtr<D3DCOLOR> &color)
+    : SubOptionGroup(name, std::vector<std::shared_ptr<Option>>()), m_Color(color), m_Red(D3DCOLOR_GETRED(*color)), m_Green(D3DCOLOR_GETGREEN(*color)), m_Blue(D3DCOLOR_GETBLUE(*color)), m_Alpha(D3DCOLOR_GETALPHA(*color))
 {
     std::vector<std::shared_ptr<Option>> options;
-    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Red", nullptr, &m_Red, 0, 255, 1));
-    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Green", nullptr, &m_Green, 0, 255, 1));
-    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Blue", nullptr, &m_Blue, 0, 255, 1));
-    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Alpha", nullptr, &m_Alpha, 0, 255, 1));
-    m_OptionGroup = OptionGroup("Color Picker", options);
+    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Red", &m_Red, 0, 255, 1));
+    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Green", &m_Green, 0, 255, 1));
+    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Blue", &m_Blue, 0, 255, 1));
+    options.emplace_back(MakeOption(RangeOption<uint32_t>, "Alpha", &m_Alpha, 0, 255, 1));
+    m_OptionGroup = OptionGroup(options);
 }
 
 bool ColorPickerOption::Update(Input::Gamepad *pGamepad)
@@ -28,17 +28,14 @@ bool ColorPickerOption::Update(Input::Gamepad *pGamepad)
 
     // Update the color value when it's changed with DPAD LEFT/DPAD RIGHT
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT || pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
-    {
-        D3DCOLOR newColor = D3DCOLOR_RGBA(m_Red, m_Green, m_Blue, m_Alpha);
-        if (m_Callback != nullptr)
-        {
-            bool success = m_Callback(&newColor);
-            if (success)
-                m_Color = newColor;
-        }
-        else
-            m_Color = newColor;
-    }
+        m_Color = D3DCOLOR_RGBA(m_Red, m_Green, m_Blue, m_Alpha);
+
+    // Each channel needs to be set the what is currently in m_Color because it might be a pointer
+    // to a color and this color can be changed from outside of the color picker
+    m_Red = D3DCOLOR_GETRED(*m_Color);
+    m_Green = D3DCOLOR_GETGREEN(*m_Color);
+    m_Blue = D3DCOLOR_GETBLUE(*m_Color);
+    m_Alpha = D3DCOLOR_GETALPHA(*m_Color);
 
     return true;
 }

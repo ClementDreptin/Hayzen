@@ -11,6 +11,12 @@ RangeOption<T>::RangeOption()
 }
 
 template<typename T>
+RangeOption<T>::RangeOption(const std::string &name, const ValueOrPtr<T> &value, T min, T max, T step)
+    : Option(name, nullptr), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
+{
+}
+
+template<typename T>
 RangeOption<T>::RangeOption(const std::string &name, Callback callback, const ValueOrPtr<T> &value, T min, T max, T step)
     : Option(name, callback), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
 {

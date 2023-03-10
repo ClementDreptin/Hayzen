@@ -9,6 +9,8 @@ public:
 
     static void Stop();
 
+    static std::string GetPath();
+
 private:
     static bool s_Running;
     static uint32_t s_CurrentTitleId;

@@ -7,7 +7,7 @@ class ColorPickerOption : public SubOptionGroup
 public:
     ColorPickerOption();
 
-    ColorPickerOption(const std::string &name, Callback callback, const ValueOrPtr<D3DCOLOR> &color);
+    ColorPickerOption(const std::string &name, const ValueOrPtr<D3DCOLOR> &color);
 
     virtual bool Update(Input::Gamepad *pGamepad) override;
 

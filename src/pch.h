@@ -11,6 +11,7 @@
 #include <unordered_map>
 #include <cstdint>
 #include <fstream>
+#include <sstream>
 
 // XexUtils
 #include "XexUtils.h"

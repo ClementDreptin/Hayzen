@@ -1,10 +1,13 @@
 #include "pch.h"
 #include "Core/Menu.h"
 
+#include "Core/Plugin.h"
 #include "Core/Context.h"
 #include "Core/OptionGroup.h"
+#include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
+#include "Options/SubOptionGroup.h"
 #include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
 #include "UI/Layout.h"
@@ -12,8 +15,9 @@
 using namespace Renderer;
 
 Menu::Menu()
-    : m_CurrentOptionGroupIndex(0)
+    : m_CurrentOptionGroupIndex(0), m_Config("hdd:\\Hayzen.ini")
 {
+    CreateConfig();
 }
 
 void Menu::Init(const std::vector<OptionGroup> &optionGroups)
@@ -24,6 +28,9 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
     AddCustomizationGroup();
 
     CalculateMenuDimensions();
+
+    // Load the menu settings from the config (doesn't do anything if the config file doesn't exist)
+    m_Config.Load();
 
     m_OptionGroupHeaders = std::vector<Text>(m_OptionGroups.size(), Text());
 }
@@ -56,13 +63,42 @@ void Menu::Render()
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
 }
 
+static bool SaveSettings(void *pParameters)
+{
+    Config *pConfig = reinterpret_cast<Config *>(pParameters);
+
+    bool result = pConfig->Save();
+
+    Xam::XNotify(
+        result ? "Settings Saved" : "Could not save settings",
+        result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
+    );
+
+    return result;
+}
+
+static bool ResetSettings(void *)
+{
+    Layout::Reset();
+    Context::DisplayControlsTexts = true;
+
+    return true;
+}
+
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
-    options.emplace_back(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsTexts));
-    options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
-    options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
-    options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
+
+    options.emplace_back(MakeOption(ToggleOption, "Show Controls", &Context::DisplayControlsTexts));
+
+    std::vector<std::shared_ptr<Option>> menuPositionOptions;
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
+    options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
+
+    options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &Layout::Color));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", SaveSettings, &m_Config));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", ResetSettings));
     m_OptionGroups.emplace_back(OptionGroup("Customization", options));
 }
 
@@ -138,4 +174,32 @@ void Menu::CalculateMenuDimensions()
 
     // Move the menu to right side of the screen (double cast to rounded to closest integer value)
     Layout::X = static_cast<float>(static_cast<uint32_t>(DisplayWidth - Layout::Width - 10.0f));
+}
+
+void Menu::CreateConfig()
+{
+    // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
+    // just keep the default config path used in the constructor initializer list
+    std::string pluginPath = Plugin::GetPath();
+    if (pluginPath.empty())
+        return;
+
+    // Extract the directory from the plugin path
+    char pluginDirectory[MAX_PATH] = { 0 };
+    _splitpath_s(
+        pluginPath.c_str(),
+        nullptr, 0,
+        pluginDirectory, sizeof(pluginDirectory),
+        nullptr, 0,
+        nullptr, 0
+    );
+
+    // Rebuild the config file path from the plugin directory
+    std::stringstream configFilePath;
+    configFilePath << "hdd:";
+    configFilePath << pluginDirectory;
+    configFilePath << "Hayzen.ini";
+
+    // Create the config
+    m_Config = Config(configFilePath.str());
 }

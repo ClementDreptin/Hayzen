@@ -9,6 +9,8 @@ class OptionGroup
 public:
     OptionGroup();
 
+    OptionGroup(const std::vector<std::shared_ptr<Option>> &options);
+
     OptionGroup(const std::string &name, const std::vector<std::shared_ptr<Option>> &options);
 
     inline const std::string &GetName() const { return m_Name; }

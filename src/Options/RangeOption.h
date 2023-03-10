@@ -9,6 +9,8 @@ class RangeOption : public Option
 public:
     RangeOption();
 
+    RangeOption(const std::string &name, const ValueOrPtr<T> &value, T min, T max, T step);
+
     RangeOption(const std::string &name, Callback callback, const ValueOrPtr<T> &value, T min, T max, T step);
 
     virtual bool Update(Input::Gamepad *pGamepad) override;

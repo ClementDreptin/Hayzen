@@ -16,4 +16,6 @@ private:
     std::string m_FilePath;
     IniConfigFile m_ConfigFile;
     IniConfig m_Config;
+
+    static bool s_HddMounted;
 };

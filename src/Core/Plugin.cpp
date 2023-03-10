@@ -38,6 +38,50 @@ void Plugin::Stop()
     Sleep(250);
 }
 
+std::string Plugin::GetPath()
+{
+    // Initialize DashLaunch
+    HRESULT hr = DashLaunch::Init();
+    if (FAILED(hr))
+        return std::string();
+
+    // Dashlaunch allows a maximum of 5 plugins
+    const size_t maxNumberOfPlugins = 5;
+
+    for (size_t i = 0; i <= maxNumberOfPlugins; i++)
+    {
+        char *pluginFullPath = nullptr;
+        char pluginKey[8] = { 0 };
+
+        // Create the plugin key, plugin1, plugin2 and so on
+        _snprintf_s(pluginKey, _TRUNCATE, "plugin%d", i);
+
+        // Get the path set for the current plugin key
+        BOOL res = DashLaunch::GetOptionValueByName(pluginKey, reinterpret_cast<uint32_t *>(&pluginFullPath));
+
+        // Some plugin keys might be missing in launch.ini so just continue to the next plugin if the key is not found
+        if (res == FALSE)
+            continue;
+
+        // Extract the file name from the full plugin path
+        char pluginFileName[MAX_PATH] = { 0 };
+        _splitpath_s(
+            pluginFullPath,
+            nullptr, 0,
+            nullptr, 0,
+            pluginFileName, sizeof(pluginFileName),
+            nullptr, 0
+        );
+
+        // If the current plugin file name is "Hayzen", return the current plugin full path
+        if (!strcmp(pluginFileName, "Hayzen"))
+            return pluginFullPath;
+    }
+
+    // If nothing is found, just return an empty string
+    return std::string();
+}
+
 uint32_t Plugin::Update(void *)
 {
     while (s_Running)

@@ -30,4 +30,6 @@ private:
     void RenderOptionGroupHeaders();
 
     void CalculateMenuDimensions();
+
+    void CreateConfig();
 };

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Core/Menu.h"
 
+#include "Core/Plugin.h"
 #include "Core/Context.h"
 #include "Core/OptionGroup.h"
 #include "Options/ClickOption.h"
@@ -15,6 +16,7 @@ using namespace Renderer;
 Menu::Menu()
     : m_CurrentOptionGroupIndex(0), m_Config("hdd:\\Hayzen.ini")
 {
+    CreateConfig();
 }
 
 void Menu::Init(const std::vector<OptionGroup> &optionGroups)
@@ -157,4 +159,32 @@ void Menu::CalculateMenuDimensions()
 
     // Move the menu to right side of the screen (double cast to rounded to closest integer value)
     Layout::X = static_cast<float>(static_cast<uint32_t>(DisplayWidth - Layout::Width - 10.0f));
+}
+
+void Menu::CreateConfig()
+{
+    // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
+    // just keep the default config path used in the constructor initializer list
+    std::string pluginPath = Plugin::GetPath();
+    if (pluginPath.empty())
+        return;
+
+    // Extract the directory from the plugin path
+    char pluginDirectory[MAX_PATH] = { 0 };
+    _splitpath_s(
+        pluginPath.c_str(),
+        nullptr, 0,
+        pluginDirectory, sizeof(pluginDirectory),
+        nullptr, 0,
+        nullptr, 0
+    );
+
+    // Rebuild the config file path from the plugin directory
+    std::stringstream configFilePath;
+    configFilePath << "hdd:";
+    configFilePath << pluginDirectory;
+    configFilePath << "Hayzen.ini";
+
+    // Create the config
+    m_Config = Config(configFilePath.str());
 }

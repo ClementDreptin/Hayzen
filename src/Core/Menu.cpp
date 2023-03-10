@@ -76,6 +76,14 @@ static bool SaveSettings(void *pParameters)
     return result;
 }
 
+static bool ResetSettings(void *)
+{
+    Layout::Reset();
+    Context::DisplayControlsTexts = true;
+
+    return true;
+}
+
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
@@ -84,6 +92,7 @@ void Menu::AddCustomizationGroup()
     options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
     options.emplace_back(MakeOption(ClickOption, "Save Settings", SaveSettings, &m_Config));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", ResetSettings));
     m_OptionGroups.emplace_back(OptionGroup("Customization", options));
 }
 

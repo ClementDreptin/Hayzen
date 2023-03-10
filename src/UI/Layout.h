@@ -7,9 +7,9 @@ extern float Y;
 
 extern D3DCOLOR Color;
 
-extern D3DCOLOR BackgroundColor;
+extern const D3DCOLOR BackgroundColor;
 
-extern D3DCOLOR TextColor;
+extern const D3DCOLOR TextColor;
 
 extern const float Padding;
 
@@ -24,5 +24,7 @@ extern float Width;
 extern float Height;
 
 extern float LineHeight;
+
+void Reset();
 
 }

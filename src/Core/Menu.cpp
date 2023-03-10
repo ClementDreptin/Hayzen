@@ -7,6 +7,7 @@
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
+#include "Options/SubOptionGroup.h"
 #include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
 #include "UI/Layout.h"
@@ -87,9 +88,14 @@ static bool ResetSettings(void *)
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
+
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", nullptr, &Context::DisplayControlsTexts));
-    options.emplace_back(MakeOption(RangeOption<float>, "Menu X", nullptr, &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
-    options.emplace_back(MakeOption(RangeOption<float>, "Menu Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
+
+    std::vector<std::shared_ptr<Option>> menuPositionOptions;
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", nullptr, &Layout::X, Layout::BorderWidth, DisplayWidth, 10.0f));
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", nullptr, &Layout::Y, Layout::BorderWidth, DisplayHeight, 10.0f));
+    options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", nullptr, OptionGroup("", menuPositionOptions)));
+
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", nullptr, &Layout::Color));
     options.emplace_back(MakeOption(ClickOption, "Save Settings", SaveSettings, &m_Config));
     options.emplace_back(MakeOption(ClickOption, "Reset Settings", ResetSettings));

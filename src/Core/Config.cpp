@@ -3,6 +3,7 @@
 
 #include "Core/Context.h"
 #include "UI/Layout.h"
+#include "UI/Renderer.h"
 
 bool Config::s_HddMounted = false;
 
@@ -58,44 +59,16 @@ bool Config::Load()
     if (m_Config.has("color"))
     {
         if (m_Config["color"].has("r"))
-        {
-            Layout::Color = D3DCOLOR_RGBA(
-                atoi(m_Config["color"]["r"].c_str()),
-                D3DCOLOR_GETGREEN(Layout::Color),
-                D3DCOLOR_GETBLUE(Layout::Color),
-                D3DCOLOR_GETALPHA(Layout::Color)
-            );
-        }
+            Layout::Color = D3DCOLOR_RED(Layout::Color, atoi(m_Config["color"]["r"].c_str()));
 
         if (m_Config["color"].has("g"))
-        {
-            Layout::Color = D3DCOLOR_RGBA(
-                D3DCOLOR_GETRED(Layout::Color),
-                atoi(m_Config["color"]["g"].c_str()),
-                D3DCOLOR_GETBLUE(Layout::Color),
-                D3DCOLOR_GETALPHA(Layout::Color)
-            );
-        }
+            Layout::Color = D3DCOLOR_GREEN(Layout::Color, atoi(m_Config["color"]["g"].c_str()));
 
         if (m_Config["color"].has("b"))
-        {
-            Layout::Color = D3DCOLOR_RGBA(
-                D3DCOLOR_GETRED(Layout::Color),
-                D3DCOLOR_GETGREEN(Layout::Color),
-                atoi(m_Config["color"]["b"].c_str()),
-                D3DCOLOR_GETALPHA(Layout::Color)
-            );
-        }
+            Layout::Color = D3DCOLOR_BLUE(Layout::Color, atoi(m_Config["color"]["b"].c_str()));
 
         if (m_Config["color"].has("a"))
-        {
-            Layout::Color = D3DCOLOR_RGBA(
-                D3DCOLOR_GETRED(Layout::Color),
-                D3DCOLOR_GETGREEN(Layout::Color),
-                D3DCOLOR_GETBLUE(Layout::Color),
-                atoi(m_Config["color"]["a"].c_str())
-            );
-        }
+            Layout::Color = D3DCOLOR_ALPHA(Layout::Color, atoi(m_Config["color"]["a"].c_str()));
     }
 
     return true;

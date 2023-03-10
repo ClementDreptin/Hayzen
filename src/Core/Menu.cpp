@@ -67,7 +67,7 @@ static bool SaveSettings(void *pParameters)
     bool result = pConfig->Save();
 
     Xam::XNotify(
-        result ? "Settings were saved" : "Could not save settings",
+        result ? "Settings Saved" : "Could not save settings",
         result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
     );
 

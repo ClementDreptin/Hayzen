@@ -9,14 +9,14 @@ ColorPickerOption::ColorPickerOption()
 }
 
 ColorPickerOption::ColorPickerOption(const std::string &name, const ValueOrPtr<D3DCOLOR> &color)
-    : SubOptionGroup(name, OptionGroup()), m_Color(color), m_Red(D3DCOLOR_GETRED(*color)), m_Green(D3DCOLOR_GETGREEN(*color)), m_Blue(D3DCOLOR_GETBLUE(*color)), m_Alpha(D3DCOLOR_GETALPHA(*color))
+    : SubOptionGroup(name, std::vector<std::shared_ptr<Option>>()), m_Color(color), m_Red(D3DCOLOR_GETRED(*color)), m_Green(D3DCOLOR_GETGREEN(*color)), m_Blue(D3DCOLOR_GETBLUE(*color)), m_Alpha(D3DCOLOR_GETALPHA(*color))
 {
     std::vector<std::shared_ptr<Option>> options;
     options.emplace_back(MakeOption(RangeOption<uint32_t>, "Red", &m_Red, 0, 255, 1));
     options.emplace_back(MakeOption(RangeOption<uint32_t>, "Green", &m_Green, 0, 255, 1));
     options.emplace_back(MakeOption(RangeOption<uint32_t>, "Blue", &m_Blue, 0, 255, 1));
     options.emplace_back(MakeOption(RangeOption<uint32_t>, "Alpha", &m_Alpha, 0, 255, 1));
-    m_OptionGroup = OptionGroup("Color Picker", options);
+    m_OptionGroup = OptionGroup(options);
 }
 
 bool ColorPickerOption::Update(Input::Gamepad *pGamepad)

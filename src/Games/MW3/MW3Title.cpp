@@ -48,7 +48,7 @@ void MW3Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW3::SpawnCarePackage));
@@ -61,7 +61,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", MW3::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", MW3::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", MW3::ToggleUfo));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", MW3::ToggleUfo, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

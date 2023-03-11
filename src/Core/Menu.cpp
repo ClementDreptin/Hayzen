@@ -63,28 +63,6 @@ void Menu::Render()
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
 }
 
-static bool SaveSettings(void *pParameters)
-{
-    Config *pConfig = reinterpret_cast<Config *>(pParameters);
-
-    bool result = pConfig->Save();
-
-    Xam::XNotify(
-        result ? "Settings Saved" : "Could not save settings",
-        result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
-    );
-
-    return result;
-}
-
-static bool ResetSettings(void *)
-{
-    Layout::Reset();
-    Context::DisplayControlsTexts = true;
-
-    return true;
-}
-
 void Menu::AddCustomizationGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
@@ -97,8 +75,8 @@ void Menu::AddCustomizationGroup()
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &Layout::Color));
-    options.emplace_back(MakeOption(ClickOption, "Save Settings", SaveSettings, &m_Config));
-    options.emplace_back(MakeOption(ClickOption, "Reset Settings", ResetSettings));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", std::bind(&Menu::SaveSettings, this, std::placeholders::_1)));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", std::bind(&Menu::ResetSettings, this, std::placeholders::_1)));
     m_OptionGroups.emplace_back(OptionGroup("Customization", options));
 }
 
@@ -202,4 +180,24 @@ void Menu::CreateConfig()
 
     // Create the config
     m_Config = Config(configFilePath.str());
+}
+
+bool Menu::SaveSettings(void *)
+{
+    bool result = m_Config.Save();
+
+    Xam::XNotify(
+        result ? "Settings Saved" : "Could not save settings",
+        result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
+    );
+
+    return result;
+}
+
+bool Menu::ResetSettings(void *)
+{
+    Layout::Reset();
+    Context::DisplayControlsTexts = true;
+
+    return true;
 }

@@ -43,7 +43,7 @@ void SpecOpsMW3Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW3::ChangeJumpHeight, 39, 0, 999, 1));
         optionGroups.emplace_back(OptionGroup("Main", options));
@@ -55,14 +55,14 @@ void SpecOpsMW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", SpecOpsMW3::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", SpecOpsMW3::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsMW3::ToggleUfo));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsMW3::ToggleUfo, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
     // Second player section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleSecondPlayerGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleSecondPlayerGodMode, false));
         options.emplace_back(MakeOption(ClickOption, "Teleport to Me", SpecOpsMW3::TeleportSecondPlayerToMe));
         optionGroups.emplace_back(OptionGroup("Second Player", options));
     }

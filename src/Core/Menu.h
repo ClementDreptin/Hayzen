@@ -32,4 +32,8 @@ private:
     void CalculateMenuDimensions();
 
     void CreateConfig();
+
+    bool SaveSettings(void *);
+
+    bool ResetSettings(void *);
 };

@@ -50,7 +50,7 @@ void MW2Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
@@ -65,7 +65,7 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", MW2::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", MW2::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", MW2::ToggleUfo));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", MW2::ToggleUfo, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

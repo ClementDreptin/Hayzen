@@ -8,7 +8,7 @@
 class Option
 {
 public:
-    typedef bool (*Callback)(void *pParameters);
+    typedef std::function<bool(void *)> Callback;
 
     Option();
 

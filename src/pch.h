@@ -12,6 +12,7 @@
 #include <cstdint>
 #include <fstream>
 #include <sstream>
+#include <functional>
 
 // XexUtils
 #include "XexUtils.h"

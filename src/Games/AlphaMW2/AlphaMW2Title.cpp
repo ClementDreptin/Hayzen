@@ -44,8 +44,8 @@ void AlphaMW2Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode));
-        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage));
+        options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode, false));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
         optionGroups.emplace_back(OptionGroup("Main", options));
@@ -57,7 +57,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", AlphaMW2::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", AlphaMW2::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo));
+        options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

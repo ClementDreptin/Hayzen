@@ -24,6 +24,8 @@ bool ToggleOption::Update(Input::Gamepad *pGamepad)
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_X)
     {
         bool newValue = !*m_Active;
+
+        // If there is a callback, only update the value if the call succeeds
         if (m_Callback != nullptr)
         {
             bool success = m_Callback(&newValue);

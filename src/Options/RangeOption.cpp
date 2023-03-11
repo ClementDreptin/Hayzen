@@ -28,33 +28,44 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
     // Allow the user to change the value with DPAD LEFT/DPAD RIGHT
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
     {
-        if (*m_Current < m_Max)
+        // If newValue is greater than m_Max, don't go further
+        // We also need to check if newValue is not smaller than m_Current,
+        // this can happen when newValue overflows beyond the integer type upper limit.
+        // e.g. with 8-bit unsigned integers: 254 + 2 = 1 and not 256 => If newValue
+        // smaller than m_Current after adding m_Step, then we overflowed.
+        T newValue = m_Current + m_Step;
+        if (newValue > m_Max || newValue < *m_Current)
+            return false;
+
+        if (m_Callback != nullptr)
         {
-            T newValue = m_Current + m_Step;
-            if (m_Callback != nullptr)
-            {
-                bool success = m_Callback(&newValue);
-                if (success)
-                    m_Current = newValue;
-            }
-            else
+            bool success = m_Callback(&newValue);
+            if (success)
                 m_Current = newValue;
         }
+        else
+            m_Current = newValue;
     }
     else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
     {
-        if (*m_Current > m_Min)
+        // If newValue is smaller than m_Min, don't go further
+        // We also need to check if newValue is not bigger than m_Current,
+        // this can happen when newValue overflows beyond the integer type lower limit.
+        // e.g. with 8-bit unsigned integers: 1 - 2 = 255 and not -1 => If newValue
+        // greater than m_Current after substracting m_Step, then we overflowed.
+        T newValue = m_Current - m_Step;
+        if (newValue < m_Min || newValue > *m_Current)
+            return false;
+
+        // If there is a callback, only update the value if the call succeeds
+        if (m_Callback != nullptr)
         {
-            T newValue = m_Current - m_Step;
-            if (m_Callback != nullptr)
-            {
-                bool success = m_Callback(&newValue);
-                if (success)
-                    m_Current = newValue;
-            }
-            else
+            bool success = m_Callback(&newValue);
+            if (success)
                 m_Current = newValue;
         }
+        else
+            m_Current = newValue;
     }
 
     return false;
@@ -77,8 +88,10 @@ void RangeOption<T>::Render(float x, float y, float width)
     props.Y = y + Layout::Padding;
     props.Text = text;
     props.Color = Layout::TextColor;
+
     m_Text.Render(props);
 }
 
 template class RangeOption<float>;
 template class RangeOption<uint32_t>;
+template class RangeOption<uint8_t>;

@@ -23,7 +23,6 @@ MW3Title::MW3Title()
     Memory::Write<int>(0x821ABA24, 0x60000000);
     Memory::Write<int>(0x821ABA9C, 0x60000000);
 
-    // Initialize the renderer
     InitRenderer();
 
     // Set up the function hooks
@@ -87,11 +86,9 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
 
     if (!strcmp(eventName, "begin"))
     {
-        // Reset the context
         Context::Reset();
         Context::ClientNum = clientNum;
 
-        // Initialize the menu
         s_CurrentInstance->InMatch(true);
         s_CurrentInstance->InitMenu();
 

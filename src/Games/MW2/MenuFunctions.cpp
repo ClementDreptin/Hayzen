@@ -56,7 +56,6 @@ bool MW2::Knockback(void *pParameters)
 {
     uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
 
-    // Set the g_knockback value to what the user entered
     SetClientDvar(-1, "g_knockback", std::to_string(static_cast<uint64_t>(value)));
 
     return true;

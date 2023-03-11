@@ -20,7 +20,6 @@ AlphaMW2Title::AlphaMW2Title()
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Initialize the renderer
     InitRenderer();
 
     // Set up the function hooks
@@ -92,11 +91,9 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 
     if (!strcmp(eventName, "begin"))
     {
-        // Reset the context
         Context::Reset();
         Context::ClientNum = clientNum;
 
-        // Initialize the menu
         s_CurrentInstance->InMatch(true);
         s_CurrentInstance->InitMenu();
 

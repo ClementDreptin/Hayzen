@@ -19,7 +19,6 @@ SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Initialize the renderer
     InitRenderer();
 
     // Set up the function hooks
@@ -83,19 +82,17 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
     if (!strcmp(s, "notify +gostand"))
         hasJumped = true;
 
-    // The 'n 42' event means the game started
+    // The 'notify -gostand' event means the game started
     if (!strcmp(s, "notify -gostand"))
     {
-        // The 'n 42' event also occurs when the A button is released so, to avoid
+        // The 'notify -gostand' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
-        // 'n 7' event didn't occur just before.
+        // 'notify +gostand' event didn't occur just before.
         if (!hasJumped)
         {
-            // Reset the context
             Context::Reset();
             Context::ClientNum = 0;
 
-            // Initialize the menu
             s_CurrentInstance->InMatch(true);
             s_CurrentInstance->InitMenu();
 

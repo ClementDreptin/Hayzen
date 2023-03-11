@@ -40,7 +40,6 @@ void Plugin::Stop()
 
 std::string Plugin::GetPath()
 {
-    // Initialize DashLaunch
     HRESULT hr = DashLaunch::Init();
     if (FAILED(hr))
         return std::string();
@@ -86,10 +85,7 @@ uint32_t Plugin::Update(void *)
 {
     while (s_Running)
     {
-        // Get the current title running
         uint32_t newTitleId = Xam::GetCurrentTitleId();
-
-        // Initialize a new title if the user launches a new title
         if (newTitleId != s_CurrentTitleId)
             InitNewTitle(newTitleId);
     }
@@ -103,7 +99,6 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     delete s_pCurrentTitle;
     s_pCurrentTitle = nullptr;
 
-    // Update the current title
     s_CurrentTitleId = newTitleId;
 
     // Initialize the new game if it's supported

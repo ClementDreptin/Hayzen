@@ -90,9 +90,9 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
     Sleep(150);
 
-    // Prepare the commands to send to SV_ExecuteClientCommand
     int serverId = Memory::Read<int>(pOptions->ServerIdAddress);
 
+    // Prepare the commands to send to SV_ExecuteClientCommand
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 11 class0", serverId);
@@ -104,11 +104,9 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     // Get the address of the bot to pass to SV_ExecuteClientCommand
     uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->ClientsBaseAddress) + static_cast<gentity_s *>(Context::pBotEntity)->state.number * 0x97F80;
 
-    // Make the bot choose the opposite team and wait until it's done
     SV_ExecuteClientCommand(botAddr, chooseTeamCommand.c_str(), 1, 0);
     Sleep(150);
 
-    // Make the bot pick the first custom class and wait until it's done
     SV_ExecuteClientCommand(botAddr, chooseClassCommand.c_str(), 1, 0);
     Sleep(150);
 
@@ -117,7 +115,6 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     SetClientDvar(-1, "testClients_doAttack", "0");
     SetClientDvar(-1, "testClients_watchKillcam", "0");
 
-    // Teleport the bot in front of the player
     TeleportBotToMe();
 
     // The options were heap allocated to live long enough to still be available in this thread
@@ -138,7 +135,6 @@ bool SpawnBot(SpawnBotOptions *pOptions)
         return false;
     }
 
-    // Create the bot
     pBot = SV_AddTestClient();
     Context::pBotEntity = pBot;
 

@@ -54,10 +54,8 @@ void OptionGroup::Render(float x, float y, float width, float height)
     float widthToUse = width != 0.0f ? width : GetMinWidth();
     float heightToUse = height != 0.0f ? height : GetMinHeight();
 
-    // Render the background
     RenderBackground(x, y, widthToUse, heightToUse);
 
-    // Render the options
     for (size_t i = 0; i < m_Options.size(); i++)
         m_Options[i]->Render(x, y + i * Layout::LineHeight, widthToUse);
 }
@@ -81,7 +79,7 @@ float OptionGroup::GetMinWidth()
 
 float OptionGroup::GetMinHeight()
 {
-    // Return the cached value if the minimum width has already been calculated
+    // Return the cached value if the minimum height has already been calculated
     if (m_CachedMinHeight != 0.0f)
         return m_CachedMinHeight;
 

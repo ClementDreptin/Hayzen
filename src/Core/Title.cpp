@@ -21,7 +21,6 @@ Title::~Title()
 
 void Title::Update()
 {
-    // Get the current gamepad state
     Input::Gamepad *pGamepad = Input::GetInput();
 
     // Toggle the menu by pressing LT and DPAD LEFT
@@ -31,7 +30,6 @@ void Title::Update()
         return;
     }
 
-    // Update the menu if it's open
     if (m_MenuOpen)
         m_Menu.Update(pGamepad);
 
@@ -47,11 +45,9 @@ void Title::Update()
 
 void Title::Render()
 {
-    // Render the menu if it's open
     if (m_MenuOpen)
         m_Menu.Render();
 
-    // Render the controls text if enabled
     if (Context::DisplayControlsTexts)
         RenderControlsTexts();
 }

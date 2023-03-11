@@ -24,7 +24,6 @@ MW2Title::MW2Title()
     Memory::Write<int>(0x8216906C, 0x60000000);
     Memory::Write<int>(0x821690E4, 0x60000000);
 
-    // Initialize the renderer
     InitRenderer();
 
     // Set up the function hooks
@@ -100,11 +99,9 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
 
     if (!strcmp(eventName, "begin"))
     {
-        // Reset the context
         Context::Reset();
         Context::ClientNum = clientNum;
 
-        // Initialize the menu
         s_CurrentInstance->InMatch(true);
         s_CurrentInstance->InitMenu();
 

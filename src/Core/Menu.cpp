@@ -24,7 +24,6 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 {
     m_OptionGroups = optionGroups;
 
-    // Append the customization option group to the existing option groups
     AddCustomizationGroup();
 
     CalculateMenuDimensions();
@@ -49,16 +48,13 @@ void Menu::Update(Input::Gamepad *pGamepad)
             m_CurrentOptionGroupIndex++;
     }
 
-    // Update the currently selected option group
     m_OptionGroups[m_CurrentOptionGroupIndex].Update(pGamepad);
 }
 
 void Menu::Render()
 {
-    // Render the option group headers
     RenderOptionGroupHeaders();
 
-    // Render the currently selected option group
     float optionGroupHeadersHeight = Layout::LineHeight + Layout::BorderWidth;
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
 }
@@ -89,7 +85,6 @@ void Menu::RenderOptionGroupHeaders()
         for (size_t j = 0; j < i; j++)
             offset += (GetTextWidth(m_OptionGroups[j].GetName()) + Layout::Padding * 2 + Layout::BorderWidth);
 
-        // Create the props
         Text::Props props = { 0 };
         props.X = offset;
         props.Y = Layout::Y;
@@ -114,7 +109,6 @@ void Menu::RenderOptionGroupHeaders()
         else if (i > m_CurrentOptionGroupIndex)
             props.BorderPosition = static_cast<Border::Position>(Border::Border_Right | Border::Border_Top);
 
-        // Render m_OptionsGroups[i]
         m_OptionGroupHeaders[i].Render(props);
     }
 }
@@ -178,7 +172,6 @@ void Menu::CreateConfig()
     configFilePath << pluginDirectory;
     configFilePath << "Hayzen.ini";
 
-    // Create the config
     m_Config = Config(configFilePath.str());
 }
 

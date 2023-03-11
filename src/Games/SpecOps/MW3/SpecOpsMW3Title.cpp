@@ -19,7 +19,6 @@ SpecOpsMW3Title::SpecOpsMW3Title()
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
-    // Initialize the renderer
     InitRenderer();
 
     // Set up the function hooks
@@ -93,11 +92,9 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
         // 'n 25' event didn't occur just before.
         if (!hasJumped)
         {
-            // Reset the context
             Context::Reset();
             Context::ClientNum = 0;
 
-            // Initialize the menu
             s_CurrentInstance->InMatch(true);
             s_CurrentInstance->InitMenu();
         }

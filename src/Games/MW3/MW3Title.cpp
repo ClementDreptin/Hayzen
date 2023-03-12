@@ -41,7 +41,7 @@ void MW3Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 999.0f;
+    bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820F63E4) == 0x7D495378;
 
     // Main section

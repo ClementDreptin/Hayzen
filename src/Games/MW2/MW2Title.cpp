@@ -42,7 +42,7 @@ void MW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 999.0f;
+    bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
 

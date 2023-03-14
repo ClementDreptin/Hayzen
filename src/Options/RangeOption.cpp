@@ -6,7 +6,7 @@
 
 template <typename T>
 RangeOption<T>::RangeOption()
-    : Option(), m_Min(static_cast<T>(0)), m_Max(static_cast<T>(0)), m_Current(static_cast<T>(0))
+    : Option(), m_Min(T()), m_Max(T()), m_Current(T())
 {
 }
 
@@ -32,9 +32,9 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
         // We also need to check if newValue is not smaller than m_Current,
         // this can happen when newValue overflows beyond the integer type upper limit.
         // e.g. with 8-bit unsigned integers: 254 + 2 = 1 and not 256 => If newValue
-        // smaller than m_Current after adding m_Step, then we overflowed.
+        // is smaller than m_Current after adding m_Step, then we overflowed.
         T newValue = m_Current + m_Step;
-        if (newValue > m_Max || newValue < *m_Current)
+        if (newValue > m_Max || newValue < m_Current)
             return false;
 
         if (m_Callback != nullptr)
@@ -52,9 +52,9 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
         // We also need to check if newValue is not bigger than m_Current,
         // this can happen when newValue overflows beyond the integer type lower limit.
         // e.g. with 8-bit unsigned integers: 1 - 2 = 255 and not -1 => If newValue
-        // greater than m_Current after substracting m_Step, then we overflowed.
+        // is greater than m_Current after substracting m_Step, then we overflowed.
         T newValue = m_Current - m_Step;
-        if (newValue < m_Min || newValue > *m_Current)
+        if (newValue < m_Min || newValue > m_Current)
             return false;
 
         // If there is a callback, only update the value if the call succeeds
@@ -80,7 +80,7 @@ void RangeOption<T>::Render(float x, float y, float width)
     Option::Render(x, y, width);
 
     // Create a wide string from the current number value
-    std::string text = std::to_string(static_cast<long double>(*m_Current));
+    std::string text = std::to_string(static_cast<long double>(m_Current));
 
     // Render the text with the number
     Text::Props props = { 0 };

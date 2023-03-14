@@ -23,7 +23,7 @@ bool ToggleOption::Update(Input::Gamepad *pGamepad)
     // Allow the user to toggle the option
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_X)
     {
-        bool newValue = !*m_Active;
+        bool newValue = !m_Active;
 
         // If there is a callback, only update the value if the call succeeds
         if (m_Callback != nullptr)
@@ -51,7 +51,7 @@ void ToggleOption::Render(float x, float y, float width)
     props.Y = y + Layout::LineHeight / 2 - radioBoxSize / 2;
     props.Width = radioBoxSize;
     props.Height = radioBoxSize;
-    props.Color = *m_Active ? Layout::Color : D3DCOLOR_XRGB(0, 0, 0);
+    props.Color = m_Active ? Layout::Color : D3DCOLOR_XRGB(0, 0, 0);
     props.BorderWidth = 1.0f;
     props.BorderColor = D3DCOLOR_XRGB(255, 255, 255);
     props.BorderPosition = Border::Border_All;

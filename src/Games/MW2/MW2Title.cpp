@@ -97,7 +97,9 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     // Get the string representing the event
     const char *eventName = MW2::Game::SL_ConvertToString(stringValue);
 
-    if (!strcmp(eventName, "begin"))
+    // "begin" can happen multiple times a game in round-based gamemodes and we don't want
+    // to recreate the menu every round so we make sure we are not already in a match
+    if (!strcmp(eventName, "begin") && !s_CurrentInstance->InMatch())
     {
         Context::Reset();
         Context::ClientNum = clientNum;

@@ -74,7 +74,6 @@
   <ItemGroup>
     <ClInclude Include="src\Core\Config.h" />
     <ClInclude Include="src\Core\Context.h" />
-    <ClInclude Include="src\Core\Input.h" />
     <ClInclude Include="src\Core\Menu.h" />
     <ClInclude Include="src\Core\OptionGroup.h" />
     <ClInclude Include="src\Core\Title.h" />
@@ -124,7 +123,6 @@
   <ItemGroup>
     <ClCompile Include="src\Core\Config.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
-    <ClCompile Include="src\Core\Input.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
     <ClCompile Include="src\Core\OptionGroup.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />

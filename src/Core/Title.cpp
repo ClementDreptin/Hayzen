@@ -2,7 +2,6 @@
 #include "Core/Title.h"
 
 #include "Core/Context.h"
-#include "Core/Input.h"
 #include "UI/Renderer.h"
 
 Detour *Title::s_pSCR_DrawScreenFieldDetour = nullptr;

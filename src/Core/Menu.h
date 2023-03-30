@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Input.h"
 #include "Core/Config.h"
 #include "Core/OptionGroup.h"
 #include "UI/Rectangle.h"

@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# clangd compile flags (only used by the clangd neovim language server)
+compile_flags.txt
+
 # User-specific files
 *.rsuser
 *.suo

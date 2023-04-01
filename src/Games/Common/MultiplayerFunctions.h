@@ -47,7 +47,7 @@ bool SpawnCarePackage()
     // Spawn an entity 150 units in front of the player and oriented towards
     // where they are looking at
     gentity_s *pEntity = G_Spawn();
-    pEntity->r.currentOrigin = Math::ToFront(origin, viewY, distance);
+    pEntity->r.currentOrigin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
     pEntity->r.currentAngles.y = viewY;
 
     // Apply the care package mesh to the entity
@@ -166,7 +166,7 @@ bool TeleportBotToMe()
     float viewY = pPlayerState->viewAngles.y;
 
     // Teleport the bot in front of the player
-    pBot->client->ps.origin = Math::ToFront(origin, viewY, distance);
+    pBot->client->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
 
     return true;
 }

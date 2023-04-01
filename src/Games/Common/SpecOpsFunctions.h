@@ -70,7 +70,7 @@ bool TeleportSecondPlayerToMe()
     float viewY = GetPlayerState(firstClientNum)->viewAngles.y;
 
     // Teleport the second player in front of the first player
-    pSecondClient->ps.origin = Math::ToFront(origin, viewY, distance);
+    pSecondClient->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
 
     return true;
 }

@@ -64,12 +64,12 @@ bool TeleportSecondPlayerToMe()
         return false;
     }
 
-    // Get the first player's current position
-    float distance = 100.0f;
+    // Get the first player's current position and viewY
     vec3 origin = GetPlayerState(firstClientNum)->origin;
     float viewY = GetPlayerState(firstClientNum)->viewAngles.y;
 
     // Teleport the second player in front of the first player
+    float distance = 100.0f;
     pSecondClient->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
 
     return true;

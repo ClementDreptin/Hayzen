@@ -52,6 +52,11 @@ bool MW2::SpawnCarePackage(void *)
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
+bool MW2::SpawnBlocker(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnBlocker();
+}
+
 bool MW2::Knockback(void *pParameters)
 {
     uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);

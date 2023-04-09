@@ -26,7 +26,7 @@ bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
     return true;
 }
 
-bool SpawnCarePackage()
+static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
 {
     int clientNum = Context::ClientNum;
 
@@ -39,16 +39,10 @@ bool SpawnCarePackage()
         return false;
     }
 
-    // Get the player's current position
-    float distance = 150.0f;
-    vec3 origin = GetPlayerState(clientNum)->origin;
-    float viewY = GetPlayerState(clientNum)->viewAngles.y;
-
-    // Spawn an entity 150 units in front of the player and oriented towards
-    // where they are looking at
+    // Spawn a care package and place it at origin and facing angles
     gentity_s *pEntity = G_Spawn();
-    pEntity->r.currentOrigin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
-    pEntity->r.currentAngles.y = viewY;
+    pEntity->r.currentOrigin = origin;
+    pEntity->r.currentAngles = angles;
 
     // Apply the care package mesh to the entity
 #ifdef GAME_MW3
@@ -73,6 +67,39 @@ bool SpawnCarePackage()
     return true;
 }
 
+bool SpawnCarePackage()
+{
+    int clientNum = Context::ClientNum;
+
+    // Get the player's current position and viewY
+    playerState_s *pPlayerSate = GetPlayerState(clientNum);
+    vec3 playerOrigin = pPlayerSate->origin;
+    float playerViewY = pPlayerSate->viewAngles.y;
+
+    // Spawn a care package 150 units in front of the player and oriented towards
+    // where they are looking at
+    float distance = 150.0f;
+    vec3 carePackageOrigin = Math::ProjectForward(playerOrigin, Math::Radians(playerViewY), distance);
+    vec3 carePackageAngles = vec3(0.0f, playerViewY, 0.0f);
+    return SpawnCarePackage(carePackageOrigin, carePackageAngles);
+}
+
+bool SpawnBlocker()
+{
+    int clientNum = Context::ClientNum;
+
+    // Get the player's current position and viewY
+    playerState_s *pPlayerSate = GetPlayerState(clientNum);
+    vec3 playerOrigin = pPlayerSate->origin;
+    float playerViewY = pPlayerSate->viewAngles.y;
+
+    // Spawn a standing care package 40 units in front of the player
+    float distance = 40.0f;
+    vec3 carePackageOrigin = Math::ProjectForward(playerOrigin, Math::Radians(playerViewY), distance);
+    carePackageOrigin.z += 40.0f;
+    vec3 carePackageAngles = vec3(90.0f, playerViewY, 0.0f);
+    return SpawnCarePackage(carePackageOrigin, carePackageAngles);
+}
 
 #ifndef GAME_MW3
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
@@ -159,13 +186,13 @@ bool TeleportBotToMe()
         return false;
     }
 
-    // Get the player's current position
+    // Get the player's current position and viewY
     playerState_s *pPlayerState = GetPlayerState(clientNum);
-    float distance = 100.0f;
     vec3 origin = pPlayerState->origin;
     float viewY = pPlayerState->viewAngles.y;
 
     // Teleport the bot in front of the player
+    float distance = 100.0f;
     pBot->client->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
 
     return true;

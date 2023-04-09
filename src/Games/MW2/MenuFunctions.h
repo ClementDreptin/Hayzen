@@ -13,6 +13,8 @@ bool ToggleElevators(void *pParameters);
 
 bool SpawnCarePackage(void *);
 
+bool SpawnBlocker(void *);
+
 bool Knockback(void *pParameters);
 
 bool ToggleSaveLoadBinds(void *pParameters);

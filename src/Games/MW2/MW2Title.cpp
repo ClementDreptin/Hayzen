@@ -54,6 +54,7 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW2::SpawnCarePackage));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Blocker", MW2::SpawnBlocker));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }

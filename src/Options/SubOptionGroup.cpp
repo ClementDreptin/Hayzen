@@ -15,14 +15,19 @@ SubOptionGroup::SubOptionGroup(const std::string &name, const std::vector<std::s
 
 bool SubOptionGroup::Update(Input::Gamepad *pGamepad)
 {
-    // Allow the user to open/close the sub option group with X/RS
-    if (pGamepad->PressedButtons & XINPUT_GAMEPAD_X)
-        m_Open = true;
-    else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+    // Allow the user to close the sub option group with RS
+    if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
         m_Open = false;
 
     if (m_Open)
         m_OptionGroup.Update(pGamepad);
+
+    // Allow the user to open the sub option group with X
+    // Opening the option group is done after updating it so that its first option doesn't
+    // get a gamepad state with X pressed. If opening was done before, the first option of
+    // the option group would be click right after the option group is open.
+    if (pGamepad->PressedButtons & XINPUT_GAMEPAD_X)
+        m_Open = true;
 
     return m_Open;
 }

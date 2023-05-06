@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Core/Config.h"
-#include "Core/OptionGroup.h"
+#include "Options/OptionGroup.h"
 #include "UI/Rectangle.h"
 #include "UI/Text.h"
 

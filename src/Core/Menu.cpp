@@ -3,7 +3,6 @@
 
 #include "Core/Plugin.h"
 #include "Core/Context.h"
-#include "Core/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"

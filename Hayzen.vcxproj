@@ -73,7 +73,7 @@
     <ClInclude Include="src\Core\Config.h" />
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Menu.h" />
-    <ClInclude Include="src\Core\OptionGroup.h" />
+    <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
@@ -122,7 +122,7 @@
     <ClCompile Include="src\Core\Config.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
-    <ClCompile Include="src\Core\OptionGroup.cpp" />
+    <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Core/OptionGroup.h"
+#include "Options/OptionGroup.h"
 
 class SubOptionGroup : public Option
 {

@@ -2,7 +2,7 @@
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 
 #include "Core/Context.h"
-#include "Core/OptionGroup.h"
+#include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"

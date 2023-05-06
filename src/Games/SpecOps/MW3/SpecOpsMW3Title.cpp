@@ -2,7 +2,7 @@
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
 #include "Core/Context.h"
-#include "Core/OptionGroup.h"
+#include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"

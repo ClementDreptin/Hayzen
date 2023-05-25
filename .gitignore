@@ -1,9 +1,7 @@
 # Output binaries
 build/
 
-# clangd compile flags (only used by the clangd neovim language server)
-compile_flags.txt
-
 # Visual Studio files
 .vs/
+.vscode/
 *.user

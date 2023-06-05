@@ -3,8 +3,6 @@
 
 #include "UI/Renderer.h"
 
-using namespace Renderer;
-
 void Line::Render(const Props &props)
 {
     // Turn the color into a float array
@@ -16,5 +14,11 @@ void Line::Render(const Props &props)
     };
 
     // Render the line
-    R_AddCmdDrawStretchPic(props.X, props.Y, props.Width, props.Height, 0.0f, 0.0f, 1.0f, 1.0f, color, MaterialHandle);
+    Renderer::R_AddCmdDrawStretchPic(
+        props.X, props.Y,
+        props.Width, props.Height,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        color,
+        Renderer::MaterialHandle
+    );
 }

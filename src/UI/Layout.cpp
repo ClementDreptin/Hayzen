@@ -28,8 +28,6 @@ float Width = 0.0f;
 
 float Height = 0.0f;
 
-float LineHeight = 0.0f;
-
 void Reset()
 {
     // Double cast to round to the closest integer value

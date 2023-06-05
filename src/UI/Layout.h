@@ -23,8 +23,6 @@ extern float Width;
 
 extern float Height;
 
-extern float LineHeight;
-
 void Reset();
 
 }

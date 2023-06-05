@@ -4,7 +4,7 @@
 #include "UI/Renderer.h"
 #include "UI/Layout.h"
 
-template <typename T>
+template<typename T>
 RangeOption<T>::RangeOption()
     : Option(), m_Min(T()), m_Max(T()), m_Current(T())
 {
@@ -74,8 +74,6 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
 template<typename T>
 void RangeOption<T>::Render(float x, float y, float width)
 {
-    using namespace Renderer;
-
     // Call the parent to render the option name
     Option::Render(x, y, width);
 
@@ -84,7 +82,7 @@ void RangeOption<T>::Render(float x, float y, float width)
 
     // Render the text with the number
     Text::Props props = { 0 };
-    props.X = x + width - GetTextWidth(text) - Layout::Padding;
+    props.X = x + width - Renderer::GetTextWidth(text) - Layout::Padding;
     props.Y = y + Layout::Padding;
     props.Text = text;
     props.Color = Layout::TextColor;

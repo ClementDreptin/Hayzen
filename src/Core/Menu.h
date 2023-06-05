@@ -24,7 +24,11 @@ private:
 
     Config m_Config;
 
+    mutable float m_CachedOptionGroupHeadersHeight;
+
     void AddCustomizationGroup();
+
+    float GetOptionGroupHeadersHeight() const;
 
     void RenderOptionGroupHeaders();
 

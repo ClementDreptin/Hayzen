@@ -23,7 +23,14 @@ float GetTextWidth(const std::string &text, float fontScale)
     return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont)) * fontScale;
 }
 
-float GetTextHeight(float fontScale)
+float GetTextHeight(const std::string &text, float fontScale)
+{
+    size_t numberOfLines = std::count(text.begin(), text.end(), '\n') + 1;
+
+    return GetFontHeight() * numberOfLines;
+}
+
+float GetFontHeight(float fontScale)
 {
     return static_cast<float>(R_TextHeight(pFont)) * fontScale;
 }

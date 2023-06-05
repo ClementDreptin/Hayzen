@@ -35,7 +35,8 @@ extern float DisplayWidth;
 extern float DisplayHeight;
 
 float GetTextWidth(const std::string &text, float fontScale = 1.0f);
-float GetTextHeight(float fontScale = 1.0f);
+float GetTextHeight(const std::string &text, float fontScale = 1.0f);
+float GetFontHeight(float fontScale = 1.0f);
 
 }
 

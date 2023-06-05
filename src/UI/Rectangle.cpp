@@ -3,8 +3,6 @@
 
 #include "UI/Renderer.h"
 
-using namespace Renderer;
-
 void Rectangle::Render(const Props &props)
 {
     bool hasBorder = props.BorderPosition != Border::Border_None && props.BorderWidth > 0;
@@ -18,7 +16,13 @@ void Rectangle::Render(const Props &props)
     };
 
     // Render the rectangle
-    R_AddCmdDrawStretchPic(props.X, props.Y, props.Width, props.Height, 0.0f, 0.0f, 1.0f, 1.0f, color, MaterialHandle);
+    Renderer::R_AddCmdDrawStretchPic(
+        props.X, props.Y,
+        props.Width, props.Height,
+        0.0f, 0.0f, 1.0f, 1.0f,
+        color,
+        Renderer::MaterialHandle
+    );
 
     // Render the border if needed
     if (hasBorder)

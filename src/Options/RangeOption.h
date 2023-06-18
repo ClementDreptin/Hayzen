@@ -3,7 +3,7 @@
 #include "Options/Option.h"
 #include "UI/Text.h"
 
-template <typename T>
+template<typename T>
 class RangeOption : public Option
 {
 public:

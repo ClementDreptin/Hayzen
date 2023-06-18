@@ -7,7 +7,6 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-
 struct ToggleAmmoOptions
 {
     bool Enabled;

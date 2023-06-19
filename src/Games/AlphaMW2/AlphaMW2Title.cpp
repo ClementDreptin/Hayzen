@@ -5,6 +5,7 @@
 #include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
+#include "Options/RangeOption.h"
 #include "UI/Renderer.h"
 #include "Games/AlphaMW2/MenuFunctions.h"
 #include "Games/AlphaMW2/GameFunctions.h"
@@ -47,6 +48,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, 39, 0, 999, 1));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

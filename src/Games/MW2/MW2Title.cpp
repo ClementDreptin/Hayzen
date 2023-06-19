@@ -56,6 +56,7 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW2::SpawnCarePackage));
         options.emplace_back(MakeOption(ClickOption, "Spawn Blocker", MW2::SpawnBlocker));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", MW2::ChangeJumpHeight, 39, 0, 999, 1));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

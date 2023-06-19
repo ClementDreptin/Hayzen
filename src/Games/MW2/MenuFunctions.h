@@ -17,6 +17,8 @@ bool SpawnBlocker(void *);
 
 bool Knockback(void *pParameters);
 
+bool ChangeJumpHeight(void *pParameters);
+
 bool ToggleSaveLoadBinds(void *pParameters);
 
 bool SavePosition(void *);

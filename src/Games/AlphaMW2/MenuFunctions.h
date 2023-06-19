@@ -11,6 +11,8 @@ bool ToggleAmmo(void *pParameters);
 
 bool SpawnCarePackage(void *);
 
+bool ChangeJumpHeight(void *pParameters);
+
 bool ToggleSaveLoadBinds(void *pParameters);
 
 bool SavePosition(void *);

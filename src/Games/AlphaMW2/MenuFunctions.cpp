@@ -59,6 +59,11 @@ bool AlphaMW2::SpawnCarePackage(void *)
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
+bool AlphaMW2::ChangeJumpHeight(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
 bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);

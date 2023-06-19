@@ -22,6 +22,17 @@ bool ToggleAmmo(const ToggleAmmoOptions &options)
     return true;
 }
 
+bool ChangeJumpHeight(void *pParameters)
+{
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+
+    // Set the new jump height value
+    std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
+    Cbuf_AddText(0, command.c_str());
+
+    return true;
+}
+
 bool SavePosition()
 {
     int clientNum = Context::ClientNum;

@@ -17,17 +17,6 @@ bool ToggleGodModeSP(void *pParameters)
     return true;
 }
 
-bool ChangeJumpHeight(void *pParameters)
-{
-    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
-
-    // Set the new jump height value
-    std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
-    Cbuf_AddText(0, command.c_str());
-
-    return true;
-}
-
 bool ToggleSecondPlayerGodMode(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);

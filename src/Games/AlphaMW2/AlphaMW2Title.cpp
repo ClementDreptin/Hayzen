@@ -10,11 +10,7 @@
 #include "Games/AlphaMW2/MenuFunctions.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
-Detour *AlphaMW2Title::s_pScr_NotifyDetour = nullptr;
-Detour *AlphaMW2Title::s_pSV_ExecuteClientCommandDetour = nullptr;
-
 AlphaMW2Title::AlphaMW2Title()
-    : Title()
 {
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 
@@ -24,20 +20,11 @@ AlphaMW2Title::AlphaMW2Title()
     InitRenderer();
 
     // Set up the function hooks
-    s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
-    s_pSCR_DrawScreenFieldDetour->Install();
+    s_DetourMap["SCR_DrawScreenField"] = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = new Detour(0x822539C0, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
 
-    s_pScr_NotifyDetour = new Detour(0x822539C0, Scr_NotifyHook);
-    s_pScr_NotifyDetour->Install();
-
-    s_pSV_ExecuteClientCommandDetour = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
-    s_pSV_ExecuteClientCommandDetour->Install();
-}
-
-AlphaMW2Title::~AlphaMW2Title()
-{
-    delete s_pScr_NotifyDetour;
-    delete s_pSV_ExecuteClientCommandDetour;
+    InstallHooks();
 }
 
 void AlphaMW2Title::InitMenu()
@@ -86,7 +73,7 @@ void AlphaMW2Title::InitMenu()
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
     // Call the original Scr_Notify function
-    s_pScr_NotifyDetour->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
+    s_DetourMap.at("Scr_Notify")->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.number;
@@ -115,7 +102,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original SV_ExecuteClientCommand function
-    s_pSV_ExecuteClientCommandDetour->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
+    s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
     int clientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;

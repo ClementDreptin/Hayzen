@@ -22,9 +22,11 @@ protected:
 
     static Title *s_CurrentInstance;
 
-    static Detour *s_pSCR_DrawScreenFieldDetour;
+    static std::unordered_map<std::string, Detour *> s_DetourMap;
 
     static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
+
+    void InstallHooks();
 
     virtual void InitRenderer() = 0;
 

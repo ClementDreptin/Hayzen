@@ -4,8 +4,8 @@
 #include "Core/Context.h"
 #include "UI/Renderer.h"
 
-Detour *Title::s_pSCR_DrawScreenFieldDetour = nullptr;
 Title *Title::s_CurrentInstance = nullptr;
+std::unordered_map<std::string, Detour *> Title::s_DetourMap;
 
 Title::Title()
     : m_InMatch(false), m_MenuOpen(false)
@@ -15,7 +15,10 @@ Title::Title()
 
 Title::~Title()
 {
-    delete s_pSCR_DrawScreenFieldDetour;
+    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
+        delete it->second;
+
+    s_DetourMap.clear();
 }
 
 void Title::Update()
@@ -86,7 +89,7 @@ void Title::RenderControlsTexts()
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
     // Call the original SCR_DrawScreenField function
-    s_pSCR_DrawScreenFieldDetour->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
+    s_DetourMap.at("SCR_DrawScreenField")->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
     if (s_CurrentInstance != nullptr && s_CurrentInstance->InMatch())
     {
@@ -94,6 +97,12 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 
         s_CurrentInstance->Render();
     }
+}
+
+void Title::InstallHooks()
+{
+    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
+        it->second->Install();
 }
 
 void Title::InitRenderer()

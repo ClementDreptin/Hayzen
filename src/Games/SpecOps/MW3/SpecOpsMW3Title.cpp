@@ -9,9 +9,6 @@
 #include "UI/Renderer.h"
 #include "Games/SpecOps/MW3/MenuFunctions.h"
 
-Detour *SpecOpsMW3Title::s_pClientCommandDetour = nullptr;
-Detour *SpecOpsMW3Title::s_pPlayerCmd_AllowJumpDetour = nullptr;
-
 SpecOpsMW3Title::SpecOpsMW3Title()
 {
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
@@ -22,20 +19,11 @@ SpecOpsMW3Title::SpecOpsMW3Title()
     InitRenderer();
 
     // Set up the function hooks
-    s_pSCR_DrawScreenFieldDetour = new Detour(0x82127090, SCR_DrawScreenFieldHook);
-    s_pSCR_DrawScreenFieldDetour->Install();
+    s_DetourMap["SCR_DrawScreenField"] = new Detour(0x82127090, SCR_DrawScreenFieldHook);
+    s_DetourMap["ClientCommand"] = new Detour(0x821FEFB0, ClientCommandHook);
+    s_DetourMap["PlayerCmd_AllowJump"] = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
 
-    s_pClientCommandDetour = new Detour(0x821FEFB0, ClientCommandHook);
-    s_pClientCommandDetour->Install();
-
-    s_pPlayerCmd_AllowJumpDetour = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
-    s_pPlayerCmd_AllowJumpDetour->Install();
-}
-
-SpecOpsMW3Title::~SpecOpsMW3Title()
-{
-    delete s_pClientCommandDetour;
-    delete s_pPlayerCmd_AllowJumpDetour;
+    InstallHooks();
 }
 
 void SpecOpsMW3Title::InitMenu()
@@ -83,7 +71,7 @@ static bool hasJumped = false;
 void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 {
     // Call the original ClientCommand function
-    s_pClientCommandDetour->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
+    s_DetourMap.at("ClientCommand")->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 25"))

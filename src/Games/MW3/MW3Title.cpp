@@ -28,8 +28,13 @@ MW3Title::MW3Title()
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8217CF90, SCR_DrawScreenFieldHook);
+    s_pSCR_DrawScreenFieldDetour->Install();
+
     s_pScr_NotifyDetour = new Detour(0x8226AF98, Scr_NotifyHook);
+    s_pScr_NotifyDetour->Install();
+
     s_pSV_ExecuteClientCommandDetour = new Detour(0x822C78A0, SV_ExecuteClientCommandHook);
+    s_pSV_ExecuteClientCommandDetour->Install();
 }
 
 MW3Title::~MW3Title()
@@ -43,7 +48,7 @@ void MW3Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
-    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820F63E4) == 0x7D495378;
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
 
     // Main section
     {

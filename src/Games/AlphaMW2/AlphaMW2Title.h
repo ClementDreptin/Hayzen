@@ -13,9 +13,9 @@ public:
     virtual void InitMenu() override;
 
 private:
-    static Detour *s_pSV_ExecuteClientCommandDetour;
-
     static Detour *s_pScr_NotifyDetour;
+
+    static Detour *s_pSV_ExecuteClientCommandDetour;
 
     static void Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 

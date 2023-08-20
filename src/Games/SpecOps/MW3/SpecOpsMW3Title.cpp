@@ -23,8 +23,13 @@ SpecOpsMW3Title::SpecOpsMW3Title()
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x82127090, SCR_DrawScreenFieldHook);
+    s_pSCR_DrawScreenFieldDetour->Install();
+
     s_pClientCommandDetour = new Detour(0x821FEFB0, ClientCommandHook);
+    s_pClientCommandDetour->Install();
+
     s_pPlayerCmd_AllowJumpDetour = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
+    s_pPlayerCmd_AllowJumpDetour->Install();
 }
 
 SpecOpsMW3Title::~SpecOpsMW3Title()
@@ -37,7 +42,7 @@ void SpecOpsMW3Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x8235BB54) == 0x7D495378;
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x8235BB54) == 0x7D495378;
 
     // Main section
     {

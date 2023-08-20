@@ -25,8 +25,13 @@ AlphaMW2Title::AlphaMW2Title()
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
+    s_pSCR_DrawScreenFieldDetour->Install();
+
     s_pScr_NotifyDetour = new Detour(0x822539C0, Scr_NotifyHook);
+    s_pScr_NotifyDetour->Install();
+
     s_pSV_ExecuteClientCommandDetour = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
+    s_pSV_ExecuteClientCommandDetour->Install();
 }
 
 AlphaMW2Title::~AlphaMW2Title()
@@ -39,7 +44,7 @@ void AlphaMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x82113628) == 0x7D284B78;
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
 
     // Main section
     {

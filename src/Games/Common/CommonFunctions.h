@@ -11,13 +11,13 @@ struct ToggleAmmoOptions
 {
     bool Enabled;
     uintptr_t PatchAddress;
-    POWERPC_INSTRUCTION DefaultValue;
-    POWERPC_INSTRUCTION PatchValue;
+    uint32_t DefaultValue;
+    uint32_t PatchValue;
 };
 
 bool ToggleAmmo(const ToggleAmmoOptions &options)
 {
-    Memory::Write<POWERPC_INSTRUCTION>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
+    Memory::Write<uint32_t>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
 
     return true;
 }

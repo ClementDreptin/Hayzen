@@ -28,8 +28,13 @@ MW2Title::MW2Title()
 
     // Set up the function hooks
     s_pSCR_DrawScreenFieldDetour = new Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
+    s_pSCR_DrawScreenFieldDetour->Install();
+
     s_pScr_NotifyDetour = new Detour(0x82209710, Scr_NotifyHook);
+    s_pScr_NotifyDetour->Install();
+
     s_pSV_ExecuteClientCommandDetour = new Detour(0x82253140, SV_ExecuteClientCommandHook);
+    s_pSV_ExecuteClientCommandDetour->Install();
 }
 
 MW2Title::~MW2Title()
@@ -43,7 +48,7 @@ void MW2Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
-    bool isUnlimitedAmmoEnabled = Memory::Read<POWERPC_INSTRUCTION>(0x820E1724) == 0x7D284B78;
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
 
     // Main section

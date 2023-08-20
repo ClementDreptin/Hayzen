@@ -27,7 +27,7 @@ void Plugin::Start()
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Update), nullptr, 2);
+    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Update), nullptr, EXCREATETHREAD_SYSTEM);
 }
 
 void Plugin::Stop()

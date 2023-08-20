@@ -12,8 +12,6 @@
 
 MW3Title::MW3Title()
 {
-    Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
-
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
@@ -29,6 +27,8 @@ MW3Title::MW3Title()
     s_DetourMap["SV_ExecuteClientCommand"] = new Detour(0x822C78A0, SV_ExecuteClientCommandHook);
 
     InstallHooks();
+
+    Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
 }
 
 void MW3Title::InitMenu()

@@ -11,8 +11,6 @@
 
 SpecOpsMW3Title::SpecOpsMW3Title()
 {
-    Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
-
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
@@ -24,6 +22,8 @@ SpecOpsMW3Title::SpecOpsMW3Title()
     s_DetourMap["PlayerCmd_AllowJump"] = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
 
     InstallHooks();
+
+    Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
 }
 
 void SpecOpsMW3Title::InitMenu()

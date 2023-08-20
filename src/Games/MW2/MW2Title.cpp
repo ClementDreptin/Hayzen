@@ -12,8 +12,6 @@
 
 MW2Title::MW2Title()
 {
-    Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
-
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
@@ -29,6 +27,8 @@ MW2Title::MW2Title()
     s_DetourMap["SV_ExecuteClientCommand"] = new Detour(0x82253140, SV_ExecuteClientCommandHook);
 
     InstallHooks();
+
+    Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
 }
 
 void MW2Title::InitMenu()

@@ -12,8 +12,6 @@
 
 SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
 {
-    Xam::XNotify("Hayzen - MW2 Alpha Spec Ops Detected");
-
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
@@ -24,6 +22,8 @@ SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
     s_DetourMap["ClientCommand"] = new Detour(0x821EA940, ClientCommandHook);
 
     InstallHooks();
+
+    Xam::XNotify("Hayzen - MW2 Alpha Spec Ops Detected");
 }
 
 void SpecOpsAlphaMW2Title::InitMenu()

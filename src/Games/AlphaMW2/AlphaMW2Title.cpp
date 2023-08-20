@@ -12,8 +12,6 @@
 
 AlphaMW2Title::AlphaMW2Title()
 {
-    Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
-
     // Give the system some time to fully load the game in memory
     Sleep(200);
 
@@ -25,6 +23,8 @@ AlphaMW2Title::AlphaMW2Title()
     s_DetourMap["SV_ExecuteClientCommand"] = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
 
     InstallHooks();
+
+    Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 }
 
 void AlphaMW2Title::InitMenu()

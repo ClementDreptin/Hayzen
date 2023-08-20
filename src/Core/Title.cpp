@@ -101,8 +101,33 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 
 void Title::InstallHooks()
 {
+    HRESULT hr = S_OK;
+
     for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
-        it->second->Install();
+    {
+        hr = it->second->Install();
+        if (FAILED(hr))
+            break;
+    }
+
+    if (FAILED(hr))
+    {
+        const wchar_t *buttonLabels[] = { L"Yes", L"No" };
+        uint32_t buttonPressedIndex = 0;
+
+        uint32_t result = Xam::ShowMessageBox(
+            L"Error",
+            L"Initialization failed. Restarting the console could fix the problem.\n\nDo you want to restart?",
+            buttonLabels,
+            ARRAYSIZE(buttonLabels),
+            &buttonPressedIndex,
+            XMB_ERRORICON,
+            1
+        );
+
+        if (result == ERROR_SUCCESS && buttonPressedIndex == 0)
+            Xam::Reboot();
+    }
 }
 
 void Title::InitRenderer()

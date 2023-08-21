@@ -12,8 +12,8 @@
     <ClCompile Include="src\UI\Rectangle.cpp" />
     <ClCompile Include="src\UI\Border.cpp" />
     <ClCompile Include="src\UI\Text.cpp" />
-    <ClCompile Include="src\UI\Layout.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
+    <ClCompile Include="src\Core\Settings.cpp" />
     <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
@@ -53,8 +53,8 @@
     <ClInclude Include="src\UI\Rectangle.h" />
     <ClInclude Include="src\UI\Border.h" />
     <ClInclude Include="src\UI\Text.h" />
-    <ClInclude Include="src\UI\Layout.h" />
     <ClInclude Include="src\Core\Menu.h" />
+    <ClInclude Include="src\Core\Settings.h" />
     <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Options\Option.h" />
     <ClInclude Include="src\Options\ClickOption.h" />

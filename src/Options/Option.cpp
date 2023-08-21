@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Options/Option.h"
 
+#include "Core/Settings.h"
 #include "UI/Renderer.h"
 
 Option::Option()
@@ -19,21 +20,21 @@ void Option::Render(float x, float y, float width)
     if (m_IsSelected)
     {
         Rectangle::Props props = { 0 };
-        props.X = x + Layout::Gap;
-        props.Y = y + Layout::Gap;
-        props.Width = width - Layout::Gap * 2;
-        props.Height = GetMinHeight() - Layout::Gap * 2;
-        props.Color = Layout::Color;
+        props.X = x + Settings::Gap;
+        props.Y = y + Settings::Gap;
+        props.Width = width - Settings::Gap * 2;
+        props.Height = GetMinHeight() - Settings::Gap * 2;
+        props.Color = Settings::Color;
 
         m_Background.Render(props);
     }
 
     // Render the text
     Text::Props props = { 0 };
-    props.X = x + Layout::Padding;
+    props.X = x + Settings::Padding;
     props.Y = y;
     props.Text = m_Name;
-    props.Color = Layout::TextColor;
+    props.Color = Settings::TextColor;
 
     m_Text.Render(props);
 }
@@ -44,7 +45,7 @@ float Option::GetMinWidth() const
     if (m_CachedMinWidth != 0.0f)
         return m_CachedMinWidth;
 
-    m_CachedMinWidth = Renderer::GetTextWidth(m_Name) + Layout::Padding * 2;
+    m_CachedMinWidth = Renderer::GetTextWidth(m_Name) + Settings::Padding * 2;
 
     // Take into account some space between the option name and the potential text on the right (e.g. the number for RangeOption)
     m_CachedMinWidth += 100.0f;
@@ -58,7 +59,7 @@ float Option::GetMinHeight() const
     if (m_CachedMinHeight != 0.0f)
         return m_CachedMinHeight;
 
-    m_CachedMinHeight = Renderer::GetTextHeight(m_Name) + Layout::Padding * 2;
+    m_CachedMinHeight = Renderer::GetTextHeight(m_Name) + Settings::Padding * 2;
 
     return m_CachedMinHeight;
 }

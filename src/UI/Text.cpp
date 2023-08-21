@@ -1,13 +1,14 @@
 #include "pch.h"
 #include "UI/Text.h"
 
+#include "Core/Settings.h"
 #include "UI/Renderer.h"
 
 void Text::Render(const Props &props)
 {
     bool hasBackgroundOrBorder = props.BackgroundColor != 0 || (props.BorderWidth > 0 && props.BorderPosition != Border::Border_None);
     float fontScale = props.FontScale != 0.0f ? props.FontScale : 1.0f;
-    float padding = Layout::Padding * fontScale;
+    float padding = Settings::Padding * fontScale;
 
     float textWidth = Renderer::GetTextWidth(props.Text, fontScale);
     float textHeight = Renderer::GetTextHeight(props.Text, fontScale);

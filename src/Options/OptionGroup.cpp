@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/OptionGroup.h"
 
-#include "UI/Layout.h"
+#include "Core/Settings.h"
 
 OptionGroup::OptionGroup()
     : m_CurrentSelectedOptionIndex(0), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
@@ -99,9 +99,9 @@ void OptionGroup::RenderBackground(float x, float y, float width, float height)
     props.Y = y;
     props.Width = width;
     props.Height = height;
-    props.Color = Layout::BackgroundColor;
-    props.BorderWidth = Layout::BorderWidth;
-    props.BorderColor = Layout::Color;
+    props.Color = Settings::BackgroundColor;
+    props.BorderWidth = Settings::BorderWidth;
+    props.BorderColor = Settings::Color;
     props.BorderPosition = Border::Border_All;
 
     m_Background.Render(props);

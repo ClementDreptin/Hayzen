@@ -1,10 +1,12 @@
 #include "pch.h"
-#include "UI/Layout.h"
+#include "Core/Settings.h"
 
 #include "UI/Renderer.h"
 
-namespace Layout
+namespace Settings
 {
+
+bool DisplayControlsTexts = true;
 
 float Y = 150.0f;
 
@@ -31,9 +33,10 @@ float Height = 0.0f;
 void Reset()
 {
     // Double cast to round to the closest integer value
-    X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Layout::Width - 10.0f));
+    X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Settings::Width - 10.0f));
     Y = 150.0f;
     Color = D3DCOLOR_XRGB(210, 20, 20);
+    DisplayControlsTexts = true;
 }
 
 }

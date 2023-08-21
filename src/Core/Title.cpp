@@ -2,6 +2,7 @@
 #include "Core/Title.h"
 
 #include "Core/Context.h"
+#include "Core/Settings.h"
 #include "UI/Renderer.h"
 
 Title *Title::s_CurrentInstance = nullptr;
@@ -50,7 +51,7 @@ void Title::Render()
     if (m_MenuOpen)
         m_Menu.Render();
 
-    if (Context::DisplayControlsTexts)
+    if (Settings::DisplayControlsTexts)
         RenderControlsTexts();
 }
 
@@ -58,16 +59,16 @@ void Title::RenderControlsTexts()
 {
     float yOffset = 10.0f;
     float fontScale = 0.8f;
-    float padding = Layout::Padding * fontScale;
-    float borderWidth = Layout::BorderWidth * fontScale;
+    float padding = Settings::Padding * fontScale;
+    float borderWidth = Settings::BorderWidth * fontScale;
 
     Text::Props props = { 0 };
     props.X = 10.0f;
     props.FontScale = fontScale;
-    props.Color = Layout::TextColor;
-    props.BackgroundColor = Layout::BackgroundColor;
+    props.Color = Settings::TextColor;
+    props.BackgroundColor = Settings::BackgroundColor;
     props.BorderWidth = borderWidth;
-    props.BorderColor = Layout::Color;
+    props.BorderColor = Settings::Color;
     props.BorderPosition = Border::Border_All;
 
     props.Y = yOffset;

@@ -1,7 +1,9 @@
 #pragma once
 
-namespace Layout
+namespace Settings
 {
+
+extern bool DisplayControlsTexts;
 
 extern float Y;
 

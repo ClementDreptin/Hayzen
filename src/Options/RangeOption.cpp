@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Options/RangeOption.h"
 
+#include "Core/Settings.h"
 #include "UI/Renderer.h"
-#include "UI/Layout.h"
 
 template<typename T>
 RangeOption<T>::RangeOption()
@@ -82,10 +82,10 @@ void RangeOption<T>::Render(float x, float y, float width)
 
     // Render the text with the number
     Text::Props props = { 0 };
-    props.X = x + width - Renderer::GetTextWidth(text) - Layout::Padding;
+    props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
     props.Y = y;
     props.Text = text;
-    props.Color = Layout::TextColor;
+    props.Color = Settings::TextColor;
 
     m_Text.Render(props);
 }

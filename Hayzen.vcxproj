@@ -73,6 +73,7 @@
     <ClInclude Include="src\Core\Config.h" />
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Menu.h" />
+    <ClInclude Include="src\Core\Settings.h" />
     <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
@@ -112,7 +113,6 @@
     <ClInclude Include="src\Options\ToggleOption.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\UI\Border.h" />
-    <ClInclude Include="src\UI\Layout.h" />
     <ClInclude Include="src\UI\Line.h" />
     <ClInclude Include="src\UI\Rectangle.h" />
     <ClInclude Include="src\UI\Renderer.h" />
@@ -122,6 +122,7 @@
     <ClCompile Include="src\Core\Config.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
+    <ClCompile Include="src\Core\Settings.cpp" />
     <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
@@ -155,7 +156,6 @@
       <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\UI\Border.cpp" />
-    <ClCompile Include="src\UI\Layout.cpp" />
     <ClCompile Include="src\UI\Line.cpp" />
     <ClCompile Include="src\UI\Rectangle.cpp" />
     <ClCompile Include="src\UI\Renderer.cpp" />

@@ -19,8 +19,6 @@ extern Option::Callback LoadPositionFn;
 
 extern void *pBotEntity;
 
-extern bool DisplayControlsTexts;
-
 void Reset();
 
 }

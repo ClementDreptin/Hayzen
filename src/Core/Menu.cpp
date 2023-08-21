@@ -170,7 +170,7 @@ void Menu::CreateConfig()
 {
     // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
     // just keep the default config path used in the constructor initializer list
-    std::string pluginPath = Plugin::GetPath();
+    std::string pluginPath = g_pPlugin->GetPath();
     if (pluginPath.empty())
         return;
 

@@ -5,18 +5,22 @@
 class Plugin
 {
 public:
-    static void Start();
+    Plugin();
 
-    static void Stop();
+    ~Plugin();
 
-    static std::string GetPath();
+    std::string GetPath();
 
 private:
-    static bool s_Running;
-    static uint32_t s_CurrentTitleId;
-    static Title *s_pCurrentTitle;
+    bool m_Running;
+    uint32_t m_CurrentTitleId;
+    Title *m_pCurrentTitle;
 
-    static uint32_t Update(void *);
+    void Update();
 
-    static void InitNewTitle(uint32_t newTitleId);
+    void InitNewTitle(uint32_t newTitleId);
+
+    static uint32_t UpdateThread(Plugin *This);
 };
+
+extern Plugin *g_pPlugin;

@@ -9,10 +9,6 @@
 #include "Games/MW3/MW3Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 
-bool Plugin::s_Running = false;
-uint32_t Plugin::s_CurrentTitleId = 0;
-Title *Plugin::s_pCurrentTitle = nullptr;
-
 enum
 {
     TITLE_DASHBOARD = 0xFFFE07D1,
@@ -20,19 +16,18 @@ enum
     TITLE_MW3 = 0x415608CB,
 };
 
-void Plugin::Start()
+Plugin::Plugin()
+    : m_Running(true)
 {
-    s_Running = true;
-
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Update), nullptr, EXCREATETHREAD_SYSTEM);
+    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(UpdateThread), this, EXCREATETHREAD_SYSTEM);
 }
 
-void Plugin::Stop()
+Plugin::~Plugin()
 {
-    s_Running = false;
+    m_Running = false;
 
     // Wait a little bit for the system to clean things up before exiting the function
     Sleep(250);
@@ -81,25 +76,22 @@ std::string Plugin::GetPath()
     return std::string();
 }
 
-uint32_t Plugin::Update(void *)
+void Plugin::Update()
 {
-    while (s_Running)
+    while (m_Running)
     {
         uint32_t newTitleId = Xam::GetCurrentTitleId();
-        if (newTitleId != s_CurrentTitleId)
+        if (newTitleId != m_CurrentTitleId)
             InitNewTitle(newTitleId);
     }
-
-    return 0;
 }
 
 void Plugin::InitNewTitle(uint32_t newTitleId)
 {
-    // Clean up what previous game may have left out and reset the pointer
-    delete s_pCurrentTitle;
-    s_pCurrentTitle = nullptr;
+    // Clean up what previous game may have left out
+    delete m_pCurrentTitle;
 
-    s_CurrentTitleId = newTitleId;
+    m_CurrentTitleId = newTitleId;
 
     // Initialize the new game if it's supported
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
@@ -110,21 +102,29 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
         break;
     case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
-            s_pCurrentTitle = new MW2Title();
+            m_pCurrentTitle = new MW2Title();
         if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
-            s_pCurrentTitle = new SpecOpsMW2Title();
+            m_pCurrentTitle = new SpecOpsMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
-            s_pCurrentTitle = new AlphaMW2Title();
+            m_pCurrentTitle = new AlphaMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
-            s_pCurrentTitle = new SpecOpsAlphaMW2Title();
+            m_pCurrentTitle = new SpecOpsAlphaMW2Title();
         break;
     case TITLE_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
-            s_pCurrentTitle = new MW3Title();
+            m_pCurrentTitle = new MW3Title();
         if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
-            s_pCurrentTitle = new SpecOpsMW3Title();
+            m_pCurrentTitle = new SpecOpsMW3Title();
         break;
     default:
         break;
     }
+}
+
+// This wrapper is just here because CreateThread requires a C-style function pointer
+uint32_t Plugin::UpdateThread(Plugin *This)
+{
+    This->Update();
+
+    return 0;
 }

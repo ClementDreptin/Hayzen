@@ -5,8 +5,6 @@
 #include "UI/Layout.h"
 #include "UI/Renderer.h"
 
-bool Config::s_HddMounted = false;
-
 Config::Config(const std::string &filePath)
     : m_FilePath(filePath), m_ConfigFile(filePath)
 {
@@ -14,7 +12,7 @@ Config::Config(const std::string &filePath)
 
 bool Config::Save()
 {
-    MountHddIfNeeded();
+    Xam::MountHdd();
 
     // Populate the config from the menu settings
     m_Config["controls"]["showcontrols"] = Context::DisplayControlsTexts ? "true" : "false";
@@ -31,7 +29,7 @@ bool Config::Save()
 
 bool Config::Load()
 {
-    MountHddIfNeeded();
+    Xam::MountHdd();
 
     // Load the config from disk
     bool canReadFile = m_ConfigFile.read(m_Config);
@@ -72,10 +70,4 @@ bool Config::Load()
     }
 
     return true;
-}
-
-void Config::MountHddIfNeeded()
-{
-    if (!s_HddMounted)
-        s_HddMounted = SUCCEEDED(Xam::MountHdd());
 }

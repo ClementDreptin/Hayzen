@@ -17,12 +17,12 @@ enum
 };
 
 Plugin::Plugin()
-    : m_Running(true)
+    : m_Running(true), m_Config("hdd:\\Hayzen.ini")
 {
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(UpdateThread), this, EXCREATETHREAD_SYSTEM);
+    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Run), this, EXCREATETHREAD_SYSTEM);
 }
 
 Plugin::~Plugin()
@@ -31,6 +31,89 @@ Plugin::~Plugin()
 
     // Wait a little bit for the system to clean things up before exiting the function
     Sleep(250);
+}
+
+uint32_t Plugin::Run(Plugin *This)
+{
+    // Wait a little bit for the console to be ready, this is especially necessary to
+    // read the config file from disk and when the plugin is loaded by Dashlaunch on boot
+    Sleep(1500);
+
+    This->CreateConfig();
+
+    while (This->m_Running)
+    {
+        uint32_t newTitleId = Xam::GetCurrentTitleId();
+        if (newTitleId != This->m_CurrentTitleId)
+            This->InitNewTitle(newTitleId);
+    }
+
+    return 0;
+}
+
+void Plugin::InitNewTitle(uint32_t newTitleId)
+{
+    // Clean up what previous game may have left out
+    delete m_pCurrentTitle;
+
+    m_CurrentTitleId = newTitleId;
+
+    // Initialize the new game if it's supported
+    // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
+    switch (newTitleId)
+    {
+    case TITLE_DASHBOARD:
+        Dashboard::Init();
+        break;
+    case TITLE_MW2:
+        if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
+            m_pCurrentTitle = new MW2Title();
+        if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
+            m_pCurrentTitle = new SpecOpsMW2Title();
+        else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
+            m_pCurrentTitle = new AlphaMW2Title();
+        else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
+            m_pCurrentTitle = new SpecOpsAlphaMW2Title();
+        break;
+    case TITLE_MW3:
+        if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
+            m_pCurrentTitle = new MW3Title();
+        if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+            m_pCurrentTitle = new SpecOpsMW3Title();
+        break;
+    default:
+        break;
+    }
+}
+
+void Plugin::CreateConfig()
+{
+    // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
+    // just keep the default config path used in the constructor initializer list
+    std::string pluginPath = GetPath();
+    if (pluginPath.empty())
+        return;
+
+    // Extract the directory from the plugin path
+    char pluginDirectory[MAX_PATH] = { 0 };
+    _splitpath_s(
+        pluginPath.c_str(),
+        nullptr, 0,
+        pluginDirectory, sizeof(pluginDirectory),
+        nullptr, 0,
+        nullptr, 0
+    );
+
+    // Rebuild the config file path from the plugin directory
+    std::stringstream configFilePath;
+    configFilePath << "hdd:";
+    configFilePath << pluginDirectory;
+    configFilePath << "Hayzen.ini";
+
+    m_Config = Config(configFilePath.str());
+
+    // Load the settings from the config (doesn't do anything if the config file doesn't exist)
+    m_Config.Load();
 }
 
 std::string Plugin::GetPath()
@@ -74,57 +157,4 @@ std::string Plugin::GetPath()
 
     // If nothing is found, just return an empty string
     return std::string();
-}
-
-void Plugin::Update()
-{
-    while (m_Running)
-    {
-        uint32_t newTitleId = Xam::GetCurrentTitleId();
-        if (newTitleId != m_CurrentTitleId)
-            InitNewTitle(newTitleId);
-    }
-}
-
-void Plugin::InitNewTitle(uint32_t newTitleId)
-{
-    // Clean up what previous game may have left out
-    delete m_pCurrentTitle;
-
-    m_CurrentTitleId = newTitleId;
-
-    // Initialize the new game if it's supported
-    // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
-    switch (newTitleId)
-    {
-    case TITLE_DASHBOARD:
-        Dashboard::Init();
-        break;
-    case TITLE_MW2:
-        if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
-            m_pCurrentTitle = new MW2Title();
-        if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
-            m_pCurrentTitle = new SpecOpsMW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
-            m_pCurrentTitle = new AlphaMW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
-            m_pCurrentTitle = new SpecOpsAlphaMW2Title();
-        break;
-    case TITLE_MW3:
-        if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
-            m_pCurrentTitle = new MW3Title();
-        if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
-            m_pCurrentTitle = new SpecOpsMW3Title();
-        break;
-    default:
-        break;
-    }
-}
-
-// This wrapper is just here because CreateThread requires a C-style function pointer
-uint32_t Plugin::UpdateThread(Plugin *This)
-{
-    This->Update();
-
-    return 0;
 }

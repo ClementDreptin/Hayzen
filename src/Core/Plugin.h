@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Core/Config.h"
 #include "Core/Title.h"
 
 class Plugin
@@ -9,18 +10,21 @@ public:
 
     ~Plugin();
 
-    std::string GetPath();
+    Config &GetConfig() { return m_Config; }
 
 private:
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
+    Config m_Config;
 
-    void Update();
+    static uint32_t Run(Plugin *This);
 
     void InitNewTitle(uint32_t newTitleId);
 
-    static uint32_t UpdateThread(Plugin *This);
+    void CreateConfig();
+
+    std::string GetPath();
 };
 
 extern Plugin *g_pPlugin;

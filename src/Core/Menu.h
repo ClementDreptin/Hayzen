@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Config.h"
 #include "Options/OptionGroup.h"
 #include "UI/Rectangle.h"
 #include "UI/Text.h"
@@ -22,8 +21,6 @@ private:
 
     std::vector<Text> m_OptionGroupHeaders;
 
-    Config m_Config;
-
     mutable float m_CachedOptionGroupHeadersHeight;
 
     void AddCustomizationGroup();
@@ -33,8 +30,6 @@ private:
     void RenderOptionGroupHeaders();
 
     void CalculateMenuDimensions();
-
-    void CreateConfig();
 
     bool SaveSettings(void *);
 

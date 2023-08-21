@@ -12,9 +12,8 @@
 #include "UI/Layout.h"
 
 Menu::Menu()
-    : m_CurrentOptionGroupIndex(0), m_Config("hdd:\\Hayzen.ini"), m_CachedOptionGroupHeadersHeight(0.0f)
+    : m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)
 {
-    CreateConfig();
 }
 
 void Menu::Init(const std::vector<OptionGroup> &optionGroups)
@@ -24,9 +23,6 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
     AddCustomizationGroup();
 
     CalculateMenuDimensions();
-
-    // Load the menu settings from the config (doesn't do anything if the config file doesn't exist)
-    m_Config.Load();
 
     m_OptionGroupHeaders = std::vector<Text>(m_OptionGroups.size(), Text());
 }
@@ -166,36 +162,9 @@ void Menu::CalculateMenuDimensions()
     Layout::X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Layout::Width - 10.0f));
 }
 
-void Menu::CreateConfig()
-{
-    // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
-    // just keep the default config path used in the constructor initializer list
-    std::string pluginPath = g_pPlugin->GetPath();
-    if (pluginPath.empty())
-        return;
-
-    // Extract the directory from the plugin path
-    char pluginDirectory[MAX_PATH] = { 0 };
-    _splitpath_s(
-        pluginPath.c_str(),
-        nullptr, 0,
-        pluginDirectory, sizeof(pluginDirectory),
-        nullptr, 0,
-        nullptr, 0
-    );
-
-    // Rebuild the config file path from the plugin directory
-    std::stringstream configFilePath;
-    configFilePath << "hdd:";
-    configFilePath << pluginDirectory;
-    configFilePath << "Hayzen.ini";
-
-    m_Config = Config(configFilePath.str());
-}
-
 bool Menu::SaveSettings(void *)
 {
-    bool result = m_Config.Save();
+    bool result = g_pPlugin->GetConfig().Save();
 
     Xam::XNotify(
         result ? "Settings Saved" : "Could not save settings",

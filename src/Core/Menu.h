@@ -23,7 +23,7 @@ private:
 
     mutable float m_CachedOptionGroupHeadersHeight;
 
-    void AddCustomizationGroup();
+    void AddSettingsGroup();
 
     float GetOptionGroupHeadersHeight() const;
 

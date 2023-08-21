@@ -20,7 +20,7 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 {
     m_OptionGroups = optionGroups;
 
-    AddCustomizationGroup();
+    AddSettingsGroup();
 
     CalculateMenuDimensions();
 
@@ -52,7 +52,7 @@ void Menu::Render()
     m_OptionGroups[m_CurrentOptionGroupIndex].Render(Layout::X, Layout::Y + optionGroupHeadersHeight, Layout::Width, Layout::Height);
 }
 
-void Menu::AddCustomizationGroup()
+void Menu::AddSettingsGroup()
 {
     std::vector<std::shared_ptr<Option>> options;
 
@@ -66,7 +66,7 @@ void Menu::AddCustomizationGroup()
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &Layout::Color));
     options.emplace_back(MakeOption(ClickOption, "Save Settings", std::bind(&Menu::SaveSettings, this, std::placeholders::_1)));
     options.emplace_back(MakeOption(ClickOption, "Reset Settings", std::bind(&Menu::ResetSettings, this, std::placeholders::_1)));
-    m_OptionGroups.emplace_back(OptionGroup("Customization", options));
+    m_OptionGroups.emplace_back(OptionGroup("Settings", options));
 }
 
 float Menu::GetOptionGroupHeadersHeight() const

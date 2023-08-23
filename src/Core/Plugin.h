@@ -6,13 +6,14 @@
 class Plugin
 {
 public:
-    Plugin();
+    Plugin(HANDLE pluginHandle);
 
     ~Plugin();
 
     Config &GetConfig() { return m_Config; }
 
 private:
+    HANDLE m_Handle;
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
@@ -23,8 +24,6 @@ private:
     void InitNewTitle(uint32_t newTitleId);
 
     void CreateConfig();
-
-    std::string GetPath();
 };
 
 extern Plugin *g_pPlugin;

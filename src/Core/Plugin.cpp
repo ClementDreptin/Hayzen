@@ -16,8 +16,8 @@ enum
     TITLE_MW3 = 0x415608CB,
 };
 
-Plugin::Plugin()
-    : m_Running(true), m_Config("hdd:\\Hayzen.ini")
+Plugin::Plugin(HANDLE pluginHandle)
+    : m_Handle(pluginHandle), m_Running(true), m_Config("hdd:\\Hayzen.ini")
 {
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
@@ -88,73 +88,42 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
 
 void Plugin::CreateConfig()
 {
-    // If the plugin path was not found (this might happen if the plugin is loaded through something else than DashLaunch)
-    // just keep the default config path used in the constructor initializer list
-    std::string pluginPath = GetPath();
-    if (pluginPath.empty())
+    // Get the full name from the handle
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    std::wstring widePath = pDataTable->FullDllName.Buffer;
+
+    // If the plugin is not stored on HDD, just keep the default config path used
+    // in the constructor initializer list
+    std::wstring hddDevicePath = L"\\Device\\Harddisk0\\Partition1\\";
+    size_t pos = widePath.find(hddDevicePath);
+    if (pos == std::wstring::npos)
         return;
 
-    // Extract the directory from the plugin path
+    // Only keep the absolute path on HDD
+    // \Device\Harddisk0\Partition1\foo\bar\file => foo\bar\file
+    widePath.erase(0, pos + hddDevicePath.size());
+
+    std::string path = Formatter::ToNarrow(widePath);
+
+    // Extract the directory from the path
     char pluginDirectory[MAX_PATH] = { 0 };
     _splitpath_s(
-        pluginPath.c_str(),
+        path.c_str(),
         nullptr, 0,
         pluginDirectory, sizeof(pluginDirectory),
         nullptr, 0,
         nullptr, 0
     );
 
-    // Rebuild the config file path from the plugin directory
+    // Rebuild the config file path from the path directory
     std::stringstream configFilePath;
-    configFilePath << "hdd:";
+    configFilePath << "hdd:\\";
     configFilePath << pluginDirectory;
     configFilePath << "Hayzen.ini";
 
+    // This doesn't write the config file to disk, it just creates the in-memory object
     m_Config = Config(configFilePath.str());
 
     // Load the settings from the config (doesn't do anything if the config file doesn't exist)
     m_Config.Load();
-}
-
-std::string Plugin::GetPath()
-{
-    HRESULT hr = DashLaunch::Init();
-    if (FAILED(hr))
-        return std::string();
-
-    // Dashlaunch allows a maximum of 5 plugins
-    const size_t maxNumberOfPlugins = 5;
-
-    for (size_t i = 0; i <= maxNumberOfPlugins; i++)
-    {
-        char *pluginFullPath = nullptr;
-        char pluginKey[8] = { 0 };
-
-        // Create the plugin key, plugin1, plugin2 and so on
-        _snprintf_s(pluginKey, _TRUNCATE, "plugin%d", i);
-
-        // Get the path set for the current plugin key
-        BOOL res = DashLaunch::GetOptionValueByName(pluginKey, reinterpret_cast<uint32_t *>(&pluginFullPath));
-
-        // Some plugin keys might be missing in launch.ini so just continue to the next plugin if the key is not found
-        if (res == FALSE)
-            continue;
-
-        // Extract the file name from the full plugin path
-        char pluginFileName[MAX_PATH] = { 0 };
-        _splitpath_s(
-            pluginFullPath,
-            nullptr, 0,
-            nullptr, 0,
-            pluginFileName, sizeof(pluginFileName),
-            nullptr, 0
-        );
-
-        // If the current plugin file name is "Hayzen", return the current plugin full path
-        if (!strcmp(pluginFileName, "Hayzen"))
-            return pluginFullPath;
-    }
-
-    // If nothing is found, just return an empty string
-    return std::string();
 }

@@ -13,16 +13,18 @@ bool Config::Save()
 {
     Xam::MountHdd();
 
-    // Populate the config from the menu settings
+    m_Config["debugbuilds"]["allowdebugbuilds"] = Settings::AllowDebugBuilds ? "true" : "false";
+
     m_Config["controls"]["showcontrols"] = Settings::DisplayControlsTexts ? "true" : "false";
+
     m_Config["position"]["x"] = std::to_string(static_cast<long double>(Settings::X));
     m_Config["position"]["y"] = std::to_string(static_cast<long double>(Settings::Y));
+
     m_Config["color"]["r"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETRED(Settings::Color)));
     m_Config["color"]["g"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETGREEN(Settings::Color)));
     m_Config["color"]["b"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETBLUE(Settings::Color)));
     m_Config["color"]["a"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETALPHA(Settings::Color)));
 
-    // Generate the config file
     return m_ConfigFile.generate(m_Config);
 }
 
@@ -34,6 +36,13 @@ bool Config::Load()
     bool canReadFile = m_ConfigFile.read(m_Config);
     if (!canReadFile)
         return false;
+
+    // Debug builds
+    if (m_Config.has("debugbuilds"))
+    {
+        if (m_Config["debugbuilds"].has("allowdebugbuilds"))
+            Settings::AllowDebugBuilds = m_Config["debugbuilds"]["allowdebugbuilds"] == "true";
+    }
 
     // Controls
     if (m_Config.has("controls"))

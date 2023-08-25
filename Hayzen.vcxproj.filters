@@ -23,6 +23,8 @@
     <ClCompile Include="src\Options\ToggleOption.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
+    <ClCompile Include="src\DebugEnabler\DebugEnabler.cpp" />
+    <ClCompile Include="src\DebugEnabler\StubExports.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW2\SpecOpsMW2Title.cpp" />
@@ -62,6 +64,7 @@
     <ClInclude Include="src\Options\RangeOption.h" />
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
+    <ClInclude Include="src\DebugEnabler\DebugEnabler.h" />
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
     <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />

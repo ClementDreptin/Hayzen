@@ -57,6 +57,8 @@ void Menu::AddSettingsGroup()
 
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &Settings::DisplayControlsTexts));
 
+    options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", std::bind(&Menu::ToggleDebugBuilds, this, std::placeholders::_1), &Settings::AllowDebugBuilds));
+
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &Settings::X, Settings::BorderWidth, Renderer::DisplayWidth, 10.0f));
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", &Settings::Y, Settings::BorderWidth, Renderer::DisplayHeight, 10.0f));
@@ -159,6 +161,23 @@ void Menu::CalculateMenuDimensions()
 
     // Move the menu to right side of the screen (double cast to round to closest integer value)
     Settings::X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Settings::Width - 10.0f));
+}
+
+bool Menu::ToggleDebugBuilds(void *pParameters)
+{
+    // Setting Settings::AllowDebugBuilds is normally done based of the return value
+    // of this function but we need to save the settings to disk so we have to set
+    // Settings::AllowDebugBuilds before the function ends
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    Settings::AllowDebugBuilds = enabled;
+
+    bool couldSave = SaveSettings(nullptr);
+    if (!couldSave)
+        return false;
+
+    Xam::XNotify("Reboot to apply changes");
+
+    return true;
 }
 
 bool Menu::SaveSettings(void *)

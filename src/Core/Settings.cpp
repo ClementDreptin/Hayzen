@@ -6,6 +6,8 @@
 namespace Settings
 {
 
+bool AllowDebugBuilds = false;
+
 bool DisplayControlsTexts = true;
 
 float Y = 150.0f;

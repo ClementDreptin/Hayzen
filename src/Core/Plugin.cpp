@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Core/Plugin.h"
 
+#include "Core/Settings.h"
+#include "DebugEnabler/DebugEnabler.h"
 #include "Games/Dashboard/Dashboard.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
@@ -19,6 +21,9 @@ enum
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_Config("hdd:\\Hayzen.ini")
 {
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
+
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
@@ -33,13 +38,27 @@ Plugin::~Plugin()
     Sleep(250);
 }
 
+void Plugin::Init()
+{
+    HRESULT hr = S_OK;
+
+    CreateConfig();
+
+    if (Settings::AllowDebugBuilds)
+    {
+        hr = DebugEnabler::Enable();
+        if (FAILED(hr))
+            Xam::XNotify("Couldn't enable debug builds", XNOTIFYUI_TYPE_AVOID_REVIEW);
+    }
+}
+
 uint32_t Plugin::Run(Plugin *This)
 {
     // Wait a little bit for the console to be ready, this is especially necessary to
     // read the config file from disk and when the plugin is loaded by Dashlaunch on boot
     Sleep(1500);
 
-    This->CreateConfig();
+    This->Init();
 
     while (This->m_Running)
     {

@@ -61,6 +61,7 @@
       <ProgramDatabaseFile>$(IntDir)$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
       <SetChecksum>true</SetChecksum>
       <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
+      <ModuleDefinitionFile>src\DebugEnabler\StubExports.def</ModuleDefinitionFile>
     </Link>
     <ImageXex>
       <ConfigurationFile>config.xml</ConfigurationFile>
@@ -77,6 +78,7 @@
     <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
+    <ClInclude Include="src\DebugEnabler\DebugEnabler.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
@@ -126,6 +128,8 @@
     <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
+    <ClCompile Include="src\DebugEnabler\DebugEnabler.cpp" />
+    <ClCompile Include="src\DebugEnabler\StubExports.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />

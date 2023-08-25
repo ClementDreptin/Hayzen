@@ -3,6 +3,8 @@
 namespace Settings
 {
 
+extern bool AllowDebugBuilds;
+
 extern bool DisplayControlsTexts;
 
 extern float Y;

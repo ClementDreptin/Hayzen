@@ -10,14 +10,19 @@ public:
 
     ~Plugin();
 
+    const std::string &GetName() const { return m_Name; }
+
     Config &GetConfig() { return m_Config; }
 
 private:
     HANDLE m_Handle;
+    std::string m_Name;
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
     Config m_Config;
+
+    void Init();
 
     static uint32_t Run(Plugin *This);
 

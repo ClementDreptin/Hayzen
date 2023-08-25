@@ -31,6 +31,8 @@ private:
 
     void CalculateMenuDimensions();
 
+    bool ToggleDebugBuilds(void *);
+
     bool SaveSettings(void *);
 
     bool ResetSettings(void *);

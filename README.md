@@ -23,7 +23,11 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 
 ### Running debug builds
 
-This feature can be enabled from the Settings tab of the mod menu and is persistent accross reboots. It allows you to run XEX files built in debug mode or EXE file that can normally only run on Devkits, so no need for RGLoader anymore. The following EXEs were tested
+This feature can be enabled from the Settings tab of the mod menu and is persistent across reboots. It allows you to run XEX files built in debug mode or EXE files that can normally only run on Devkits, so no need for RGLoader anymore.
+
+**Note**: It is now recommended **NOT** to rename the plugin XEX file. Or if you do, make sure the name is 11-characters long **AT MOST!**, otherwise loading debug build won't work. This is due to technical limitations.
+
+The following EXEs were tested
 
 #### Call of Duty 4 - Pre Alpha 253
 

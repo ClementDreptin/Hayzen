@@ -40,6 +40,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", AlphaMW2::SpawnCarePackage));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Blocker", AlphaMW2::SpawnBlocker));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, 39, 0, 999, 1));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }

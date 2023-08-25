@@ -43,6 +43,11 @@ bool MW3::SpawnCarePackage(void *)
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
+bool MW3::SpawnBlocker(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnBlocker();
+}
+
 bool MW3::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);

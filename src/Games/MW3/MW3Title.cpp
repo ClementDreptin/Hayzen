@@ -45,6 +45,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW3::SpawnCarePackage));
+        options.emplace_back(MakeOption(ClickOption, "Spawn Blocker", MW3::SpawnBlocker));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }

@@ -1,6 +1,6 @@
 ---
 Language: Cpp
-BasedOnStyle:  Microsoft
+BasedOnStyle: Microsoft
 AccessModifierOffset: -4
 AlignAfterOpenBracket: BlockIndent
 AlignEscapedNewlines: DontAlign

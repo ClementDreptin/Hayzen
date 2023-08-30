@@ -9,78 +9,74 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}</ProjectGuid>
     <Keyword>Xbox360Proj</Keyword>
-    <ProjectName>Hayzen</ProjectName>
   </PropertyGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <ItemGroup>
+    <ProjectReference Include="deps\mINI\mINI.vcxproj">
+      <Project>{32e6acfe-ecd5-41e4-afef-675d74786e96}</Project>
+    </ProjectReference>
+    <ProjectReference Include="deps\XexUtils\XexUtils.vcxproj">
+      <Project>{c598d106-4f6d-4505-95de-aa896a0ac7fa}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <WholeProgramOptimization>false</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <BuildLogFile>$(IntDir)$(ProjectName)\BuildLog.txt</BuildLogFile>
     <PlatformToolset>2010-01</PlatformToolset>
+    <BuildLogFile>$(IntDir)$(ProjectName)\BuildLog.txt</BuildLogFile>
   </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
-  <ImportGroup Label="ExtensionSettings">
-  </ImportGroup>
   <ImportGroup Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
-  <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <LinkIncremental>false</LinkIncremental>
     <OutDir>$(SolutionDir)build\bin\</OutDir>
     <IntDir>$(SolutionDir)build\obj\</IntDir>
     <RemoteRoot>hdd:\Plugins</RemoteRoot>
     <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     <ImageXexOutput>$(OutDir)$(ProjectName).xex</ImageXexOutput>
   </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
-      <Optimization>Full</Optimization>
-      <FunctionLevelLinking>true</FunctionLevelLinking>
-      <StringPooling>true</StringPooling>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
-      <ExceptionHandling>false</ExceptionHandling>
-      <BufferSecurityCheck>false</BufferSecurityCheck>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <PreprocessorDefinitions>NDEBUG;_XBOX</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>src;$(SolutionDir)deps\XexUtils\include;$(SolutionDir)deps\mINI</AdditionalIncludeDirectories>
-      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <ObjectFileName>$(IntDir)$(ProjectName)\%(RelativeDir)</ObjectFileName>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WarningLevel>Level4</WarningLevel>
       <TreatWarningAsError>true</TreatWarningAsError>
+      <Optimization>Full</Optimization>
+      <PreprocessorDefinitions>NDEBUG;_XBOX</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)\$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <ObjectFileName>$(IntDir)$(ProjectName)\%(RelativeDir)</ObjectFileName>
       <DisableSpecificWarnings>4481</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
       <ProgramDatabaseFile>$(IntDir)$(ProjectName)\$(ProjectName).pdb</ProgramDatabaseFile>
+      <OptimizeReferences>true</OptimizeReferences>
       <SetChecksum>true</SetChecksum>
       <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
-      <ModuleDefinitionFile>src\DebugEnabler\StubExports.def</ModuleDefinitionFile>
     </Link>
-    <ImageXex>
-      <ConfigurationFile>config.xml</ConfigurationFile>
-    </ImageXex>
     <Deploy>
       <DeploymentType>CopyToHardDrive</DeploymentType>
     </Deploy>
+    <ImageXex>
+      <ConfigurationFile>config.xml</ConfigurationFile>
+    </ImageXex>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Config.h" />
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Menu.h" />
-    <ClInclude Include="src\Core\Settings.h" />
-    <ClInclude Include="src\Options\OptionGroup.h" />
-    <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\Plugin.h" />
+    <ClInclude Include="src\Core\Settings.h" />
+    <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\DebugEnabler\DebugEnabler.h" />
-    <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
+    <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
@@ -88,12 +84,12 @@
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
     <ClInclude Include="src\Games\Dashboard\Dashboard.h" />
     <ClInclude Include="src\Games\MW2\GameFunctions.h" />
-    <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />
+    <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW2\Structs.h" />
     <ClInclude Include="src\Games\MW3\GameFunctions.h" />
-    <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\MW3Title.h" />
+    <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
@@ -110,36 +106,36 @@
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
     <ClInclude Include="src\Options\Option.h" />
+    <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Options\RangeOption.h" />
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
-    <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\UI\Border.h" />
     <ClInclude Include="src\UI\Line.h" />
     <ClInclude Include="src\UI\Rectangle.h" />
     <ClInclude Include="src\UI\Renderer.h" />
     <ClInclude Include="src\UI\Text.h" />
+    <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Core\Config.cpp" />
     <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
-    <ClCompile Include="src\Core\Settings.cpp" />
-    <ClCompile Include="src\Options\OptionGroup.cpp" />
-    <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
+    <ClCompile Include="src\Core\Settings.cpp" />
+    <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\DebugEnabler\DebugEnabler.cpp" />
     <ClCompile Include="src\DebugEnabler\StubExports.cpp" />
-    <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
+    <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\Dashboard\Dashboard.cpp" />
     <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2Title.cpp" />
+    <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MW3Title.cpp" />
+    <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
@@ -149,34 +145,21 @@
     <ClCompile Include="src\Games\SpecOps\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.cpp" />
-    <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />
+    <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Options\RangeOption.cpp" />
     <ClCompile Include="src\Options\SubOptionGroup.cpp" />
     <ClCompile Include="src\Options\ToggleOption.cpp" />
-    <ClCompile Include="src\pch.cpp">
-      <PrecompiledHeader>Create</PrecompiledHeader>
-    </ClCompile>
     <ClCompile Include="src\UI\Border.cpp" />
     <ClCompile Include="src\UI\Line.cpp" />
     <ClCompile Include="src\UI\Rectangle.cpp" />
     <ClCompile Include="src\UI\Renderer.cpp" />
     <ClCompile Include="src\UI\Text.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\pch.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="deps\mINI\mINI.vcxproj">
-      <Project>{32e6acfe-ecd5-41e4-afef-675d74786e96}</Project>
-    </ProjectReference>
-    <ProjectReference Include="deps\XexUtils\XexUtils.vcxproj">
-      <Project>{c598d106-4f6d-4505-95de-aa896a0ac7fa}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".editorconfig" />
-  </ItemGroup>
-  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets">
-  </ImportGroup>
 </Project>

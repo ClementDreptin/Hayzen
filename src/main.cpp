@@ -3,12 +3,12 @@
 
 Plugin *g_pPlugin;
 
-BOOL APIENTRY DllMain(HANDLE hModule, DWORD dwReason, void *pReserved)
+int DllMain(HANDLE hModule, DWORD reason, void *pReserved)
 {
-    if (dwReason == DLL_PROCESS_ATTACH)
+    if (reason == DLL_PROCESS_ATTACH)
         g_pPlugin = new Plugin(hModule);
 
-    if (dwReason == DLL_PROCESS_DETACH)
+    if (reason == DLL_PROCESS_DETACH)
         delete g_pPlugin;
 
     return TRUE;

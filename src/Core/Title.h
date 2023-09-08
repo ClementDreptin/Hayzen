@@ -28,6 +28,8 @@ protected:
 
     void InstallHooks();
 
+    void RemoveHooks();
+
     virtual void InitRenderer() = 0;
 
 private:

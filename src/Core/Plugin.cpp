@@ -37,6 +37,8 @@ Plugin::~Plugin()
     if (Settings::AllowDebugBuilds)
         DebugEnabler::Disable();
 
+    delete m_pCurrentTitle;
+
     // Wait a little bit for the system to clean things up before exiting the function
     Sleep(250);
 }

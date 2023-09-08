@@ -16,10 +16,9 @@ Title::Title()
 
 Title::~Title()
 {
-    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
-        delete it->second;
+    s_CurrentInstance = nullptr;
 
-    s_DetourMap.clear();
+    RemoveHooks();
 }
 
 void Title::Update()
@@ -129,6 +128,14 @@ void Title::InstallHooks()
         if (result == ERROR_SUCCESS && buttonPressedIndex == 0)
             Xam::Reboot();
     }
+}
+
+void Title::RemoveHooks()
+{
+    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
+        delete it->second;
+
+    s_DetourMap.clear();
 }
 
 void Title::InitRenderer()

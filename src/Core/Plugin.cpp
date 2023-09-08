@@ -34,6 +34,9 @@ Plugin::~Plugin()
 {
     m_Running = false;
 
+    if (Settings::AllowDebugBuilds)
+        DebugEnabler::Disable();
+
     // Wait a little bit for the system to clean things up before exiting the function
     Sleep(250);
 }

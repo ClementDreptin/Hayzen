@@ -19,7 +19,7 @@ void Option::Render(float x, float y, float width)
     // Render the background if the option is selected
     if (m_IsSelected)
     {
-        Rectangle::Props props = { 0 };
+        Rectangle::Props props = {};
         props.X = x + Settings::Gap;
         props.Y = y + Settings::Gap;
         props.Width = width - Settings::Gap * 2;
@@ -30,7 +30,7 @@ void Option::Render(float x, float y, float width)
     }
 
     // Render the text
-    Text::Props props = { 0 };
+    Text::Props props = {};
     props.X = x + Settings::Padding;
     props.Y = y;
     props.Text = m_Name;

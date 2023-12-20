@@ -10,7 +10,7 @@ void Border::Render(const Props &props)
     // Render the left border if needed
     if (props.Position & Border_Left)
     {
-        Line::Props lineProps = { 0 };
+        Line::Props lineProps = {};
         lineProps.X = props.X - props.Thickness;
         lineProps.Y = props.Y;
         lineProps.Width = props.Thickness;
@@ -23,7 +23,7 @@ void Border::Render(const Props &props)
     // Render the right border if needed
     if (props.Position & Border_Right)
     {
-        Line::Props lineProps = { 0 };
+        Line::Props lineProps = {};
         lineProps.X = props.X + props.Width;
         lineProps.Y = props.Y - (props.Position & Border_Top ? props.Thickness : 0.0f);
         lineProps.Width = props.Thickness;
@@ -36,7 +36,7 @@ void Border::Render(const Props &props)
     // Render the top border if needed
     if (props.Position & Border_Top)
     {
-        Line::Props lineProps = { 0 };
+        Line::Props lineProps = {};
         lineProps.X = props.X - (props.Position & Border_Left ? props.Thickness : 0.0f);
         lineProps.Y = props.Y - props.Thickness;
         lineProps.Width = props.Width + (props.Position & Border_Left ? props.Thickness : 0.0f);
@@ -49,7 +49,7 @@ void Border::Render(const Props &props)
     // Render the bottom border if needed
     if (props.Position & Border_Bottom)
     {
-        Line::Props lineProps = { 0 };
+        Line::Props lineProps = {};
         lineProps.X = props.X;
         lineProps.Y = props.Y + props.Height;
         lineProps.Width = props.Width + (props.Position & Border_Right ? props.Thickness : 0.0f);

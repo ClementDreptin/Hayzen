@@ -99,7 +99,7 @@ void Menu::RenderOptionGroupHeaders()
         for (size_t j = 0; j < i; j++)
             offset += (Renderer::GetTextWidth(m_OptionGroups[j].GetName()) + Settings::Padding * 2 + Settings::BorderWidth);
 
-        Text::Props props = { 0 };
+        Text::Props props = {};
         props.X = offset;
         props.Y = Settings::Y;
         props.Text = m_OptionGroups[i].GetName();

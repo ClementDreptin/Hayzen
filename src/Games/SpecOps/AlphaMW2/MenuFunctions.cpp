@@ -24,7 +24,7 @@ bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
 {
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = { 0 };
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x82328610;
     options.DefaultValue = 0x7D1D4850;

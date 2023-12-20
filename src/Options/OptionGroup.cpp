@@ -94,7 +94,7 @@ float OptionGroup::GetMinHeight()
 
 void OptionGroup::RenderBackground(float x, float y, float width, float height)
 {
-    Rectangle::Props props = { 0 };
+    Rectangle::Props props = {};
     props.X = x;
     props.Y = y;
     props.Width = width;

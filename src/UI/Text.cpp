@@ -18,7 +18,7 @@ void Text::Render(const Props &props)
     // Render the background if needed
     if (hasBackgroundOrBorder)
     {
-        Rectangle::Props rectProps = { 0 };
+        Rectangle::Props rectProps = {};
         rectProps.X = props.X;
         rectProps.Y = props.Y;
         rectProps.Width = rectWidth;

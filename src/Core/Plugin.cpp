@@ -130,7 +130,7 @@ void Plugin::CreateConfig()
     std::string path = Formatter::ToNarrow(widePath);
 
     // Extract the directory from the path
-    char pluginDirectory[MAX_PATH] = { 0 };
+    char pluginDirectory[MAX_PATH] = {};
     _splitpath_s(
         path.c_str(),
         nullptr, 0,

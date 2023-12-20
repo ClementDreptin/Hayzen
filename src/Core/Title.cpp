@@ -61,7 +61,7 @@ void Title::RenderControlsTexts()
     float padding = Settings::Padding * fontScale;
     float borderWidth = Settings::BorderWidth * fontScale;
 
-    Text::Props props = { 0 };
+    Text::Props props = {};
     props.X = 10.0f;
     props.FontScale = fontScale;
     props.Color = Settings::TextColor;

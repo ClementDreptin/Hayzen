@@ -21,4 +21,3 @@ SpaceBeforeParens: ControlStatements
 SpacesInLineCommentPrefix:
   Minimum: 1
   Maximum: 1
-...

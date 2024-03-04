@@ -28,6 +28,9 @@ private:
     std::string m_Name;
     std::vector<std::shared_ptr<Option>> m_Options;
 
+    size_t m_OptionsToDisplay;
+    size_t m_FirstOptionIndex;
+    size_t m_LastOptionIndex;
     size_t m_CurrentSelectedOptionIndex;
 
     float m_CachedMinWidth;

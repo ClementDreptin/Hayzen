@@ -3,18 +3,38 @@
 
 #include "Core/Settings.h"
 
+#define MAX_OPTIONS_TO_DISPLAY 8
+
 OptionGroup::OptionGroup()
-    : m_CurrentSelectedOptionIndex(0), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
+    : m_OptionsToDisplay(0),
+      m_FirstOptionIndex(0),
+      m_LastOptionIndex(0),
+      m_CurrentSelectedOptionIndex(0),
+      m_CachedMinWidth(0.0f),
+      m_CachedMinHeight(0.0f)
 {
 }
 
 OptionGroup::OptionGroup(const std::vector<std::shared_ptr<Option>> &options)
-    : m_Name(""), m_Options(options), m_CurrentSelectedOptionIndex(0), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
+    : m_Options(options),
+      m_OptionsToDisplay(m_Options.size() < MAX_OPTIONS_TO_DISPLAY ? m_Options.size() : MAX_OPTIONS_TO_DISPLAY),
+      m_FirstOptionIndex(0),
+      m_LastOptionIndex(m_OptionsToDisplay - 1),
+      m_CurrentSelectedOptionIndex(0),
+      m_CachedMinWidth(0.0f),
+      m_CachedMinHeight(0.0f)
 {
 }
 
 OptionGroup::OptionGroup(const std::string &name, const std::vector<std::shared_ptr<Option>> &options)
-    : m_Name(name), m_Options(options), m_CurrentSelectedOptionIndex(0), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
+    : m_Name(name),
+      m_Options(options),
+      m_OptionsToDisplay(m_Options.size() < MAX_OPTIONS_TO_DISPLAY ? m_Options.size() : MAX_OPTIONS_TO_DISPLAY),
+      m_FirstOptionIndex(0),
+      m_LastOptionIndex(m_OptionsToDisplay - 1),
+      m_CurrentSelectedOptionIndex(0),
+      m_CachedMinWidth(0.0f),
+      m_CachedMinHeight(0.0f)
 {
 }
 
@@ -56,7 +76,23 @@ void OptionGroup::Render(float x, float y, float width, float height)
 
     RenderBackground(x, y, widthToUse, heightToUse);
 
-    for (size_t i = 0; i < m_Options.size(); i++)
+    // If the scroller is going down past the last displayed option,
+    // shift the view down
+    if (m_CurrentSelectedOptionIndex > m_LastOptionIndex)
+    {
+        m_FirstOptionIndex = m_CurrentSelectedOptionIndex - m_OptionsToDisplay + 1;
+        m_LastOptionIndex = m_CurrentSelectedOptionIndex;
+    }
+
+    // If the scroller is going up past the first displayed option,
+    // shift the view up
+    if (m_CurrentSelectedOptionIndex < m_FirstOptionIndex)
+    {
+        m_FirstOptionIndex = m_CurrentSelectedOptionIndex;
+        m_LastOptionIndex = m_CurrentSelectedOptionIndex + m_OptionsToDisplay - 1;
+    }
+
+    for (size_t i = m_FirstOptionIndex; i <= m_LastOptionIndex; i++)
     {
         m_Options[i]->Render(x, y, widthToUse);
         y += m_Options[i]->GetMinHeight();
@@ -86,7 +122,7 @@ float OptionGroup::GetMinHeight()
     if (m_CachedMinHeight != 0.0f)
         return m_CachedMinHeight;
 
-    for (size_t i = 0; i < m_Options.size(); i++)
+    for (size_t i = 0; i < m_OptionsToDisplay; i++)
         m_CachedMinHeight += m_Options[i]->GetMinHeight();
 
     return m_CachedMinHeight;

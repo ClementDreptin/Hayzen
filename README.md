@@ -100,4 +100,28 @@ Clone the repository and the submodule:
 git clone --recursive https://github.com/ClementDreptin/Hayzen.git
 ```
 
-Make sure your RGH/Jtag/Devkit is set up in Xbox 360 Neighborhood to be able to deploy the XEX file to your console and build successfully. Or just exclude the deployment to console from the build if you don't want to deploy (`Configuration Properties > Console Deployment > General > Excluded From Build`).
+#### Requirements
+
+-   Having the Xbox 360 Software Development Kit (XDK) installed.
+-   Xbox 360 Neighborhood set up with your RGH/Jtag/Devkit registered as the default console (only necessary if you wan't to deploy to your console automatically).
+
+#### Visual Studio 2019
+
+Open `Hayzen.sln` in Visual Studio and build it.
+
+#### Visual Studio 2022
+
+You can't build with the 64-bit version of MSBuild so you'll need to run the 32-bit version manually. Open a developer PowerShell in Visual Studio (`View > Terminal`) and run the following command:
+
+```PS1
+# Create an alias to the 32-bit version of MSBuild named msbuild
+# The default installation path of VS2022 is C:\Program Files\Microsoft Visual Studio\2022\Community
+Set-Alias msbuild "<path_vs2022>\MSBuild\Current\Bin\MSBuild.exe"
+```
+
+Now run `msbuild` to compile the plugin and deploy it to your console.
+
+#### Notes
+
+If you don't want to deploy to your console automatically, you can exclude the deployment from the build in `Configuration Properties > Console Deployment > General > Excluded From Build`.
+If you still want to deploy but are not satisfied with the deploy location on the console, you can change it in `Configuration Properties > Console Deployment > Copy To Hard Drive > Deployment Root`.

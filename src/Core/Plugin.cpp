@@ -88,6 +88,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     {
     case TITLE_DASHBOARD:
         Dashboard::Init();
+        m_pCurrentTitle = nullptr;
         break;
     case TITLE_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
@@ -106,6 +107,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
             m_pCurrentTitle = new SpecOpsMW3Title();
         break;
     default:
+        m_pCurrentTitle = nullptr;
         break;
     }
 }

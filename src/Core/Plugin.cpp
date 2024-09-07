@@ -19,7 +19,7 @@ enum
 };
 
 Plugin::Plugin(HANDLE pluginHandle)
-    : m_Handle(pluginHandle), m_Running(true), m_Config("hdd:\\Hayzen.ini")
+    : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr), m_Config("hdd:\\Hayzen.ini")
 {
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
     m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);

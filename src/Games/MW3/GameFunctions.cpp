@@ -32,7 +32,7 @@ void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>
 
 void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>(0x822D6D90);
 
-void (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<void (*)(gentity_s *)>(0x822C95C8);
+bool (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<bool (*)(gentity_s *)>(0x822C95C8);
 
 void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x8222FF50);
 

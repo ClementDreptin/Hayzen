@@ -10,12 +10,14 @@
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 #include "Games/MW3/MW3Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Games/NX1/NX1Title.h"
 
 enum
 {
     TITLE_DASHBOARD = 0xFFFE07D1,
     TITLE_MW2 = 0x41560817,
     TITLE_MW3 = 0x415608CB,
+    TITLE_NX1 = 0x4156089E,
 };
 
 Plugin::Plugin(HANDLE pluginHandle)
@@ -45,13 +47,11 @@ Plugin::~Plugin()
 
 void Plugin::Init()
 {
-    HRESULT hr = S_OK;
-
     CreateConfig();
 
     if (Settings::AllowDebugBuilds)
     {
-        hr = DebugEnabler::Enable();
+        HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))
             Xam::XNotify("Couldn't enable debug builds", XNOTIFYUI_TYPE_AVOID_REVIEW);
     }
@@ -105,6 +105,10 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
             m_pCurrentTitle = new MW3Title();
         if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
             m_pCurrentTitle = new SpecOpsMW3Title();
+        break;
+    case TITLE_NX1:
+        if (!strcmp(reinterpret_cast<char *>(0x820023A0), "multiplayer"))
+            m_pCurrentTitle = new NX1Title();
         break;
     default:
         m_pCurrentTitle = nullptr;

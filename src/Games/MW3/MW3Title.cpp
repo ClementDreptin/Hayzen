@@ -96,13 +96,13 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
     }
 }
 
-void MW3Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
+void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    int clientNum = (client - Memory::Read<int>(0x836C6310)) / 0x68B80;
+    int clientNum = client->gentity->state.number;
     if (!MW3::Game::IsHost(clientNum))
         return;
 

@@ -93,7 +93,7 @@ bool AlphaMW2::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8355D5C4;
-    pOptions->ClientsBaseAddress = 0x83577D98;
+    pOptions->ClientsBaseAddress = 0x83574580 + 0x3818;
 
     return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }

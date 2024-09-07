@@ -78,5 +78,14 @@ struct gentity_s
 
 static_assert(sizeof(gentity_s) == 0x280, "size of gentity_s different than 0x280");
 
+struct client_t
+{
+    char padding1[0x2141C];
+    gentity_s *gentity;
+    char padding2[0x47760];
+};
+
+static_assert(sizeof(client_t) == 0x68B80, "size of client_t different than 0x68B80");
+
 }
 }

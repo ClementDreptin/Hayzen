@@ -20,14 +20,15 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 -   Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops
 -   Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
 -   Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
+-   Call of Duty: Future Warfare (NX1)
 
 ### Running debug builds
 
 This feature can be enabled from the Settings tab of the mod menu and is persistent across reboots. It allows you to run XEX files built in debug mode or EXE files that can normally only run on Devkits, so no need for RGLoader anymore.
 
-**Note**: It is now recommended **NOT** to rename the plugin XEX file. Or if you do, make sure the name is 11-characters long **AT MOST!**, otherwise loading debug build won't work. This is due to technical limitations.
+**Note**: It is recommended **NOT** to rename the plugin XEX file. Or if you do, make sure the name is 11-characters long **AT MOST!**, otherwise loading debug builds won't work. This is due to technical limitations.
 
-The following EXEs were tested
+The following games were tested
 
 #### Call of Duty 4 - Pre Alpha 253
 
@@ -82,6 +83,20 @@ The following EXEs were tested
 | 7-iw5sp_demo_replay.exe | :heavy_check_mark: |       |
 | 9-iw5sp_screenshot.exe  | :heavy_check_mark: |       |
 | a-iw5mp_screenshot.exe  | :heavy_check_mark: |       |
+
+#### Call of Duty Future Warfare (NX1)
+
+| File                     | Status             | Notes       |
+| ------------------------ | ------------------ | ----------- |
+| 0-Convoy Test 1_5.mp.xex | :heavy_check_mark: |             |
+| 0-Nightly MP maps.mp.xex | :x:                | Fatal crash |
+| 0-Nightly SP maps.sp.xex | :heavy_check_mark: |             |
+| 1-nx1sp.xex              | :x:                | Fatal crash |
+| 2-nx1mp.xex              | :x:                | Fatal crash |
+| 3-nx1sp_fast_server.xex  | :x:                | Fatal crash |
+| 4-nx1sp_demo.xex         | :x:                | Fatal crash |
+| 5-nx1mp_demo.xex         | :heavy_check_mark: |             |
+| 6-nx1mp_fast_server.xex  | :x:                | Fatal crash |
 
 **Note**: You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.
 

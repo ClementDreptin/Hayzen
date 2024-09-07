@@ -32,7 +32,7 @@ extern void (*SV_LinkEntity)(gentity_s *gEnt);
 
 extern void (*SV_UnlinkEntity)(gentity_s *gEnt);
 
-extern void (*SV_SetBrushModel)(gentity_s *ent);
+extern bool (*SV_SetBrushModel)(gentity_s *ent);
 
 extern void (*SetClientOrigin)(gentity_s *ent, const float *origin);
 

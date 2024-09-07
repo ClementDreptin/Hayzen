@@ -100,13 +100,13 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     }
 }
 
-void AlphaMW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
+void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original SV_ExecuteClientCommand function
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    int clientNum = (client - Memory::Read<int>(0x83577D98)) / 0x97F80;
+    int clientNum = client->gentity->state.number;
     if (!AlphaMW2::Game::IsHost(clientNum))
         return;
 

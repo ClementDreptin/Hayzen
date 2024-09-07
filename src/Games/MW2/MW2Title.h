@@ -13,7 +13,7 @@ public:
 private:
     static void Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
-    static void SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer);
+    static void SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
     virtual void InitRenderer() override;
 };

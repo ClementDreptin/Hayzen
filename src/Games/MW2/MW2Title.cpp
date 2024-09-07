@@ -108,13 +108,13 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     }
 }
 
-void MW2Title::SV_ExecuteClientCommandHook(int client, const char *s, int clientOK, int fromOldServer)
+void MW2Title::SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
     // Call the original Scr_Notify SV_ExecuteClientCommand
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
-    int clientNum = (client - Memory::Read<int>(0x83623B98)) / 0x97F80;
+    int clientNum = client->gentity->state.number;
     if (!MW2::Game::IsHost(clientNum))
         return;
 

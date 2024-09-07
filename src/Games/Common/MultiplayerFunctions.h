@@ -12,7 +12,10 @@ bool ToggleGodModeMP(void *pParameters)
 
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
 
-    pPlayerEntity->flags = enabled ? 0x1001 : 0x1000;
+    if (enabled)
+        pPlayerEntity->flags |= 1;
+    else
+        pPlayerEntity->flags &= ~1;
 
     return true;
 }
@@ -123,18 +126,19 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 11 class0", serverId);
-    #elif defined(GAME_MW2)
+    #elif defined(GAME_MW2) || defined(GAME_NX1)
     std::string chooseTeamCommand = Formatter::Format("mr %i 3 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 10 class0", serverId);
     #endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    uintptr_t botAddr = Memory::Read<uintptr_t>(pOptions->ClientsBaseAddress) + static_cast<gentity_s *>(Context::pBotEntity)->state.number * 0x97F80;
+    int botClientNum = static_cast<gentity_s *>(Context::pBotEntity)->state.number;
+    client_t *botClient = &Memory::Read<client_t *>(pOptions->ClientsBaseAddress)[botClientNum];
 
-    SV_ExecuteClientCommand(botAddr, chooseTeamCommand.c_str(), 1, 0);
+    SV_ExecuteClientCommand(botClient, chooseTeamCommand.c_str(), 1, 0);
     Sleep(150);
 
-    SV_ExecuteClientCommand(botAddr, chooseClassCommand.c_str(), 1, 0);
+    SV_ExecuteClientCommand(botClient, chooseClassCommand.c_str(), 1, 0);
     Sleep(150);
 
     // Set bot-related dvars to make it completely stand still
@@ -193,7 +197,8 @@ bool TeleportBotToMe()
 
     // Teleport the bot in front of the player
     float distance = 100.0f;
-    pBot->client->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
+    vec3 newOrigin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
+    SetClientOrigin(pBot, reinterpret_cast<const float *>(&newOrigin));
 
     return true;
 }

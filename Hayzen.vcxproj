@@ -94,6 +94,10 @@
     <ClInclude Include="src\Games\MW3\MW3Title.h" />
     <ClInclude Include="src\Games\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\MW3\Structs.h" />
+    <ClInclude Include="src\Games\NX1\GameFunctions.h" />
+    <ClInclude Include="src\Games\NX1\NX1Title.h" />
+    <ClInclude Include="src\Games\NX1\MenuFunctions.h" />
+    <ClInclude Include="src\Games\NX1\Structs.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.h" />
@@ -148,6 +152,9 @@
     <ClCompile Include="src\Games\SpecOps\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.cpp" />
+    <ClCompile Include="src\Games\NX1\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
+    <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Games/MW2/Structs.h"
+#include "Games/NX1/Structs.h"
 
-// MW2 TU9 function pointers to functions from the game.
-namespace MW2
+// NX1 function pointers to functions from the game.
+namespace NX1
 {
 namespace Game
 {
@@ -14,11 +14,7 @@ extern void (*SV_GameSendServerCommand)(int clientNum, int type, const char *tex
 
 extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 
-extern bool (*Dvar_GetBool)(const char *dvarName);
-
 extern const char *(*Dvar_GetString)(const char *dvarName);
-
-extern clientState_s *(*GetClientState)(int clientNum);
 
 extern playerState_s *(*GetPlayerState)(int clientNum);
 

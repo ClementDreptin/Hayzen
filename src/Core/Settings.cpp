@@ -6,7 +6,7 @@
 namespace Settings
 {
 
-bool AllowDebugBuilds = false;
+bool AllowDebugBuilds = true;
 
 bool DisplayControlsTexts = true;
 

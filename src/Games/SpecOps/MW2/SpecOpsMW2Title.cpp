@@ -13,7 +13,8 @@
 SpecOpsMW2Title::SpecOpsMW2Title()
 {
     // Give the system some time to fully load the game in memory
-    Sleep(200);
+    // Devkits are a little slower and need more time
+    Sleep(Xam::IsDevkit() ? 2000 : 200);
 
     InitRenderer();
 

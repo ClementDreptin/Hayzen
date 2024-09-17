@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Plugin.h"
 
-Plugin *g_pPlugin;
+Plugin *g_pPlugin = nullptr;
 
 int DllMain(HANDLE hModule, DWORD reason, void *pReserved)
 {

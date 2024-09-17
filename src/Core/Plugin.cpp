@@ -3,7 +3,6 @@
 
 #include "Core/Settings.h"
 #include "DebugEnabler/DebugEnabler.h"
-#include "Games/Dashboard/Dashboard.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
@@ -15,6 +14,7 @@
 enum
 {
     TITLE_DASHBOARD = 0xFFFE07D1,
+    TITLE_XSHELL = 0xFFFE07FF,
     TITLE_MW2 = 0x41560817,
     TITLE_MW3 = 0x415608CB,
     TITLE_NX1 = 0x4156089E,
@@ -36,7 +36,7 @@ Plugin::~Plugin()
 {
     m_Running = false;
 
-    if (Settings::AllowDebugBuilds)
+    if (Settings::AllowDebugBuilds && !Xam::IsDevkit())
         DebugEnabler::Disable();
 
     delete m_pCurrentTitle;
@@ -49,7 +49,7 @@ void Plugin::Init()
 {
     CreateConfig();
 
-    if (Settings::AllowDebugBuilds)
+    if (Settings::AllowDebugBuilds && !Xam::IsDevkit())
     {
         HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))
@@ -87,7 +87,11 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     switch (newTitleId)
     {
     case TITLE_DASHBOARD:
-        Dashboard::Init();
+        Xam::XNotify("Hayzen - Dashboard Detected");
+        m_pCurrentTitle = nullptr;
+        break;
+    case TITLE_XSHELL:
+        Xam::XNotify("Hayzen - XShell Detected");
         m_pCurrentTitle = nullptr;
         break;
     case TITLE_MW2:

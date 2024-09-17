@@ -57,7 +57,8 @@ void Menu::AddSettingsGroup()
 
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &Settings::DisplayControlsTexts));
 
-    options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", std::bind(&Menu::ToggleDebugBuilds, this, std::placeholders::_1), &Settings::AllowDebugBuilds));
+    if (!Xam::IsDevkit())
+        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", std::bind(&Menu::ToggleDebugBuilds, this, std::placeholders::_1), &Settings::AllowDebugBuilds));
 
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &Settings::X, Settings::BorderWidth, Renderer::DisplayWidth, 10.0f));

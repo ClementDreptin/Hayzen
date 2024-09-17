@@ -13,7 +13,8 @@
 MW2Title::MW2Title()
 {
     // Give the system some time to fully load the game in memory
-    Sleep(200);
+    // Devkits are a little slower and need more time
+    Sleep(Xam::IsDevkit() ? 2000 : 200);
 
     // NOP cheat protection
     Memory::Write<int>(0x8216906C, 0x60000000);

@@ -14,11 +14,7 @@ extern void (*SV_GameSendServerCommand)(int clientNum, int type, const char *tex
 
 extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 
-extern bool (*Dvar_GetBool)(const char *dvarName);
-
 extern const char *(*Dvar_GetString)(const char *dvarName);
-
-extern clientState_s *(*GetClientState)(int clientNum);
 
 extern playerState_s *(*GetPlayerState)(int clientNum);
 

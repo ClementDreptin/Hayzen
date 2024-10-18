@@ -27,15 +27,6 @@ struct gclient_s
 
 static_assert(sizeof(gclient_s) == 0x3700, "size of gclient_s different than 0x3700");
 
-struct clientState_s
-{
-    char padding1[0x44];
-    char name[32];
-    char padding2[0x28];
-};
-
-static_assert(sizeof(clientState_s) == 0x8C, "size of clientState_s different than 0x8C");
-
 struct entityState_s
 {
     int number;

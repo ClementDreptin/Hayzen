@@ -8,6 +8,7 @@
 #include "Options/RangeOption.h"
 #include "UI/Renderer.h"
 #include "Games/SpecOps/MW3/MenuFunctions.h"
+#include "Games/SpecOps/MW3/GameFunctions.h"
 
 SpecOpsMW3Title::SpecOpsMW3Title()
 {
@@ -20,7 +21,6 @@ SpecOpsMW3Title::SpecOpsMW3Title()
     // Set up the function hooks
     s_DetourMap["SCR_DrawScreenField"] = new Detour(0x82127090, SCR_DrawScreenFieldHook);
     s_DetourMap["ClientCommand"] = new Detour(0x821FEFB0, ClientCommandHook);
-    s_DetourMap["PlayerCmd_AllowJump"] = new Detour(0x821FA680, PlayerCmd_AllowJumpHook);
 
     InstallHooks();
 
@@ -67,6 +67,17 @@ void SpecOpsMW3Title::InitMenu()
     m_Menu.Init(optionGroups);
 }
 
+static void ForceJumpEnabled()
+{
+    int clientNum = Context::ClientNum;
+
+    SpecOpsMW3::Game::gclient_s *pClient = SpecOpsMW3::Game::GetGClient(clientNum);
+
+    // The 19th bit of pm_flags is set when the player is NOT allowed to jump
+    // so we just clear this bit to allow the player to jump again
+    pClient->ps.pm_flags &= ~(1 << 18);
+}
+
 static bool hasJumped = false;
 
 void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
@@ -91,18 +102,15 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
 
             s_CurrentInstance->InMatch(true);
             s_CurrentInstance->InitMenu();
+
+            // Some maps prevent the player from jumping so we make sure the player is
+            // always allowed to jump
+            ForceJumpEnabled();
         }
 
         // Register that the user released the A button
         hasJumped = false;
     }
-}
-
-void SpecOpsMW3Title::PlayerCmd_AllowJumpHook()
-{
-    // Making the PlayerCmd_AllowJump function not do anything so that you can jump in
-    // missions where you normally can't. This is a bad practice and may have side effects.
-    return;
 }
 
 void SpecOpsMW3Title::InitRenderer()

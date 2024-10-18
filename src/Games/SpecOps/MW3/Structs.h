@@ -8,7 +8,8 @@ namespace Game
 
 struct playerState_s
 {
-    char padding1[0x10];
+    char padding1[0xC];
+    int pm_flags;
     int otherFlags;
     char padding2[0x8];
     vec3 origin;

@@ -12,7 +12,5 @@ public:
 private:
     static void ClientCommandHook(int clientNum, const char *s);
 
-    static void PlayerCmd_AllowJumpHook();
-
     virtual void InitRenderer() override;
 };

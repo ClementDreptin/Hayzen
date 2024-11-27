@@ -17,6 +17,10 @@ bool Config::Save()
 
     m_Config["controls"]["showcontrols"] = Settings::DisplayControlsTexts ? "true" : "false";
 
+    m_Config["carepackage"]["distance"] = std::to_string(static_cast<long double>(Settings::CarePackageDistance));
+    m_Config["carepackage"]["height"] = std::to_string(static_cast<long double>(Settings::CarePackageHeight));
+    m_Config["carepackage"]["angle"] = std::to_string(static_cast<long double>(Settings::CarePackageAngle));
+
     m_Config["position"]["x"] = std::to_string(static_cast<long double>(Settings::X));
     m_Config["position"]["y"] = std::to_string(static_cast<long double>(Settings::Y));
 
@@ -49,6 +53,19 @@ bool Config::Load()
     {
         if (m_Config["controls"].has("showcontrols"))
             Settings::DisplayControlsTexts = m_Config["controls"]["showcontrols"] == "true";
+    }
+
+    // Care package
+    if (m_Config.has("carepackage"))
+    {
+        if (m_Config["carepackage"].has("distance"))
+            Settings::CarePackageDistance = static_cast<float>(atof(m_Config["carepackage"]["distance"].c_str()));
+
+        if (m_Config["carepackage"].has("height"))
+            Settings::CarePackageHeight = static_cast<float>(atof(m_Config["carepackage"]["height"].c_str()));
+
+        if (m_Config["carepackage"].has("angle"))
+            Settings::CarePackageAngle = static_cast<float>(atof(m_Config["carepackage"]["angle"].c_str()));
     }
 
     // Position

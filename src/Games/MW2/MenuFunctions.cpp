@@ -47,16 +47,6 @@ bool MW2::ToggleElevators(void *pParameters)
     return true;
 }
 
-bool MW2::SpawnCarePackage(void *)
-{
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
-}
-
-bool MW2::SpawnBlocker(void *)
-{
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
-}
-
 bool MW2::Knockback(void *pParameters)
 {
     uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
@@ -69,6 +59,26 @@ bool MW2::Knockback(void *pParameters)
 bool MW2::ChangeJumpHeight(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
+bool MW2::SpawnCarePackage(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+}
+
+bool MW2::SpawnBlocker(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnBlocker();
+}
+
+bool MW2::ChangeCarePackagePositionPresets(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+}
+
+bool MW2::ChangeCarePackageOrientation(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
 }
 
 bool MW2::ToggleSaveLoadBinds(void *pParameters)
@@ -91,7 +101,7 @@ bool MW2::ToggleUfo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-bool MW2::SpawnBot(void *pParameters)
+bool MW2::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8360922C;

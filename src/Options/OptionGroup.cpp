@@ -9,7 +9,7 @@ OptionGroup::OptionGroup()
     : m_OptionsToDisplay(0),
       m_FirstOptionIndex(0),
       m_LastOptionIndex(0),
-      m_CurrentSelectedOptionIndex(0),
+      m_CurrentOptionIndex(0),
       m_CachedMinWidth(0.0f),
       m_CachedMinHeight(0.0f)
 {
@@ -17,10 +17,10 @@ OptionGroup::OptionGroup()
 
 OptionGroup::OptionGroup(const std::vector<std::shared_ptr<Option>> &options)
     : m_Options(options),
-      m_OptionsToDisplay(m_Options.size() < MAX_OPTIONS_TO_DISPLAY ? m_Options.size() : MAX_OPTIONS_TO_DISPLAY),
+      m_OptionsToDisplay(std::min<size_t>(m_Options.size(), MAX_OPTIONS_TO_DISPLAY)),
       m_FirstOptionIndex(0),
       m_LastOptionIndex(m_OptionsToDisplay - 1),
-      m_CurrentSelectedOptionIndex(0),
+      m_CurrentOptionIndex(0),
       m_CachedMinWidth(0.0f),
       m_CachedMinHeight(0.0f)
 {
@@ -29,10 +29,10 @@ OptionGroup::OptionGroup(const std::vector<std::shared_ptr<Option>> &options)
 OptionGroup::OptionGroup(const std::string &name, const std::vector<std::shared_ptr<Option>> &options)
     : m_Name(name),
       m_Options(options),
-      m_OptionsToDisplay(m_Options.size() < MAX_OPTIONS_TO_DISPLAY ? m_Options.size() : MAX_OPTIONS_TO_DISPLAY),
+      m_OptionsToDisplay(std::min<size_t>(m_Options.size(), MAX_OPTIONS_TO_DISPLAY)),
       m_FirstOptionIndex(0),
       m_LastOptionIndex(m_OptionsToDisplay - 1),
-      m_CurrentSelectedOptionIndex(0),
+      m_CurrentOptionIndex(0),
       m_CachedMinWidth(0.0f),
       m_CachedMinHeight(0.0f)
 {
@@ -42,7 +42,7 @@ void OptionGroup::Update(Input::Gamepad *pGamepad)
 {
     // Update the currently selected option and return if the option is blocking (meaning it opened a sub option group
     // and wants to prevent its parent option group from updating)
-    bool blocking = m_Options[m_CurrentSelectedOptionIndex]->Update(pGamepad);
+    bool blocking = m_Options[m_CurrentOptionIndex]->Update(pGamepad);
     if (blocking)
         return;
 
@@ -50,23 +50,23 @@ void OptionGroup::Update(Input::Gamepad *pGamepad)
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_UP)
     {
         // If the scroller is already at the top, send it to the bottom
-        if (m_CurrentSelectedOptionIndex == 0)
-            m_CurrentSelectedOptionIndex = m_Options.size() - 1;
+        if (m_CurrentOptionIndex == 0)
+            m_CurrentOptionIndex = m_Options.size() - 1;
         else
-            m_CurrentSelectedOptionIndex--;
+            m_CurrentOptionIndex--;
     }
     else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_DOWN)
     {
         // If the scroller is already at the bottom, send it to the top
-        if (m_CurrentSelectedOptionIndex == m_Options.size() - 1)
-            m_CurrentSelectedOptionIndex = 0;
+        if (m_CurrentOptionIndex == m_Options.size() - 1)
+            m_CurrentOptionIndex = 0;
         else
-            m_CurrentSelectedOptionIndex++;
+            m_CurrentOptionIndex++;
     }
 
     // Change the option states according to the currently selected option
     for (size_t i = 0; i < m_Options.size(); i++)
-        m_Options[i]->Select(i == m_CurrentSelectedOptionIndex);
+        m_Options[i]->Select(i == m_CurrentOptionIndex);
 }
 
 void OptionGroup::Render(float x, float y, float width, float height)
@@ -78,18 +78,18 @@ void OptionGroup::Render(float x, float y, float width, float height)
 
     // If the scroller is going down past the last displayed option,
     // shift the view down
-    if (m_CurrentSelectedOptionIndex > m_LastOptionIndex)
+    if (m_CurrentOptionIndex > m_LastOptionIndex)
     {
-        m_FirstOptionIndex = m_CurrentSelectedOptionIndex - m_OptionsToDisplay + 1;
-        m_LastOptionIndex = m_CurrentSelectedOptionIndex;
+        m_FirstOptionIndex = m_CurrentOptionIndex - m_OptionsToDisplay + 1;
+        m_LastOptionIndex = m_CurrentOptionIndex;
     }
 
     // If the scroller is going up past the first displayed option,
     // shift the view up
-    if (m_CurrentSelectedOptionIndex < m_FirstOptionIndex)
+    if (m_CurrentOptionIndex < m_FirstOptionIndex)
     {
-        m_FirstOptionIndex = m_CurrentSelectedOptionIndex;
-        m_LastOptionIndex = m_CurrentSelectedOptionIndex + m_OptionsToDisplay - 1;
+        m_FirstOptionIndex = m_CurrentOptionIndex;
+        m_LastOptionIndex = m_CurrentOptionIndex + m_OptionsToDisplay - 1;
     }
 
     for (size_t i = m_FirstOptionIndex; i <= m_LastOptionIndex; i++)

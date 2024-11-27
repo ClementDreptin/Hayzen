@@ -22,7 +22,7 @@ public:
 
     virtual void Render(float x, float y, float width) = 0;
 
-    float GetMinWidth() const;
+    virtual float GetMinWidth() const;
 
     float GetMinHeight() const;
 

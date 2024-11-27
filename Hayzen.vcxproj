@@ -114,6 +114,7 @@
     <ClInclude Include="src\Options\Option.h" />
     <ClInclude Include="src\Options\OptionGroup.h" />
     <ClInclude Include="src\Options\RangeOption.h" />
+    <ClInclude Include="src\Options\SelectOption.h" />
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
     <ClInclude Include="src\UI\Border.h" />
@@ -158,6 +159,7 @@
     <ClCompile Include="src\Options\Option.cpp" />
     <ClCompile Include="src\Options\OptionGroup.cpp" />
     <ClCompile Include="src\Options\RangeOption.cpp" />
+    <ClCompile Include="src\Options\SelectOption.cpp" />
     <ClCompile Include="src\Options\SubOptionGroup.cpp" />
     <ClCompile Include="src\Options\ToggleOption.cpp" />
     <ClCompile Include="src\UI\Border.cpp" />

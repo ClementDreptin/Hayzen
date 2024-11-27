@@ -38,6 +38,15 @@ void SubOptionGroup::Render(float x, float y, float width)
     // Call the parent to render the option name
     Option::Render(x, y, width);
 
+    // Render a ">" on the right to indicate that there's a sub menu
+    std::string text = ">";
+    Text::Props props = {};
+    props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
+    props.Y = y - 4.0f; // Try to center the ">" vertically
+    props.Text = text;
+    props.Color = Settings::TextColor;
+    m_Text.Render(props);
+
     // If the option group is not open, don't go further
     if (!m_Open)
         return;

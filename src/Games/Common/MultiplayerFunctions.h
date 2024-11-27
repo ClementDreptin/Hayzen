@@ -2,6 +2,7 @@
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
 #include "Core/Context.h"
+#include "Core/Settings.h"
 
 namespace COMMON_FN_NAMESPACE
 {
@@ -76,14 +77,19 @@ bool SpawnCarePackage()
 
     // Get the player's current position and viewY
     playerState_s *pPlayerSate = GetPlayerState(clientNum);
-    vec3 playerOrigin = pPlayerSate->origin;
+    const vec3 &playerOrigin = pPlayerSate->origin;
     float playerViewY = pPlayerSate->viewAngles.y;
 
-    // Spawn a care package 150 units in front of the player and oriented towards
-    // where they are looking at
-    float distance = 150.0f;
-    vec3 carePackageOrigin = Math::ProjectForward(playerOrigin, Math::Radians(playerViewY), distance);
-    vec3 carePackageAngles = vec3(0.0f, playerViewY, 0.0f);
+    // Spawn a care package Settings::CarePackageDistance units in front of and
+    // Settings::CarePackageHeight above the player
+    vec3 carePackageOrigin = Math::ProjectForward(
+        playerOrigin,
+        Math::Radians(playerViewY),
+        Settings::CarePackageDistance
+    );
+    carePackageOrigin.z += Settings::CarePackageHeight;
+    vec3 carePackageAngles = vec3(0.0f, playerViewY + Settings::CarePackageAngle, 0.0f);
+
     return SpawnCarePackage(carePackageOrigin, carePackageAngles);
 }
 
@@ -93,15 +99,80 @@ bool SpawnBlocker()
 
     // Get the player's current position and viewY
     playerState_s *pPlayerSate = GetPlayerState(clientNum);
-    vec3 playerOrigin = pPlayerSate->origin;
+    const vec3 &playerOrigin = pPlayerSate->origin;
     float playerViewY = pPlayerSate->viewAngles.y;
 
     // Spawn a standing care package 40 units in front of the player
-    float distance = 40.0f;
-    vec3 carePackageOrigin = Math::ProjectForward(playerOrigin, Math::Radians(playerViewY), distance);
+    vec3 carePackageOrigin = Math::ProjectForward(
+        playerOrigin,
+        Math::Radians(playerViewY),
+        40.0f
+    );
     carePackageOrigin.z += 40.0f;
     vec3 carePackageAngles = vec3(90.0f, playerViewY, 0.0f);
+
     return SpawnCarePackage(carePackageOrigin, carePackageAngles);
+}
+
+typedef enum _CarePackagePositionPresets
+{
+    CarePackagePosition_BounceTest,
+    CarePackagePosition_MegaBounce,
+    CarePackagePosition_Floor,
+} CarePackagePositionPresets;
+
+bool ChangeCarePackagePositionPresets(void *pParameters)
+{
+    CarePackagePositionPresets positionPresets = *reinterpret_cast<CarePackagePositionPresets *>(pParameters);
+
+    switch (positionPresets)
+    {
+    case CarePackagePosition_BounceTest:
+        Settings::CarePackageDistance = 150.0f;
+        Settings::CarePackageHeight = 0.0f;
+        break;
+    case CarePackagePosition_MegaBounce:
+        Settings::CarePackageDistance = 860.0f;
+        Settings::CarePackageHeight = 1250.0f;
+        break;
+    case CarePackagePosition_Floor:
+        Settings::CarePackageDistance = 0.0f;
+        Settings::CarePackageHeight = -60.0f;
+        break;
+    default:
+        return false;
+    }
+
+    return true;
+}
+
+typedef enum _CarePackageOrientation
+{
+    CarePackageOrientation_Straight,
+    CarePackageOrientation_LeftStrafe,
+    CarePackageOrientation_RightStrafe,
+} CarePackageOrientation;
+
+bool ChangeCarePackageOrientation(void *pParameters)
+{
+    CarePackageOrientation orientation = *reinterpret_cast<CarePackageOrientation *>(pParameters);
+
+    switch (orientation)
+    {
+    case CarePackageOrientation_Straight:
+        Settings::CarePackageAngle = 0.0f;
+        break;
+    case CarePackageOrientation_LeftStrafe:
+        Settings::CarePackageAngle = -45.0f;
+        break;
+    case CarePackageOrientation_RightStrafe:
+        Settings::CarePackageAngle = 45.0f;
+        break;
+    default:
+        return false;
+    }
+
+    return true;
 }
 
 #ifndef GAME_MW3

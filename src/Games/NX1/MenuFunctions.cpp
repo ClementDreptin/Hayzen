@@ -20,6 +20,26 @@ bool NX1::ToggleGodMode(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
+bool NX1::SpawnCarePackage(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+}
+
+bool NX1::SpawnBlocker(void *)
+{
+    return COMMON_FN_NAMESPACE::SpawnBlocker();
+}
+
+bool NX1::ChangeCarePackagePositionPresets(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+}
+
+bool NX1::ChangeCarePackageOrientation(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+}
+
 bool NX1::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
@@ -38,11 +58,6 @@ bool NX1::LoadPosition(void *)
 bool NX1::ToggleUfo(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
-}
-
-bool NX1::SpawnCarePackage(void *)
-{
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
 }
 
 bool NX1::SpawnBot(void *pParameters)

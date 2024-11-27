@@ -7,6 +7,12 @@ extern bool AllowDebugBuilds;
 
 extern bool DisplayControlsTexts;
 
+extern float CarePackageDistance;
+
+extern float CarePackageHeight;
+
+extern float CarePackageAngle;
+
 extern float Y;
 
 extern D3DCOLOR Color;

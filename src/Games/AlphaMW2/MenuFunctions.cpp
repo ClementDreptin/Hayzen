@@ -54,6 +54,11 @@ bool AlphaMW2::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
+bool AlphaMW2::ChangeJumpHeight(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
 bool AlphaMW2::SpawnCarePackage(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCarePackage();
@@ -64,9 +69,14 @@ bool AlphaMW2::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool AlphaMW2::ChangeJumpHeight(void *pParameters)
+bool AlphaMW2::ChangeCarePackagePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+}
+
+bool AlphaMW2::ChangeCarePackageOrientation(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
 }
 
 bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)

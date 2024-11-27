@@ -10,6 +10,12 @@ bool AllowDebugBuilds = true;
 
 bool DisplayControlsTexts = true;
 
+float CarePackageDistance = 150.0f;
+
+float CarePackageHeight = 0.0f;
+
+float CarePackageAngle = 0.0f;
+
 float Y = 150.0f;
 
 D3DCOLOR Color = D3DCOLOR_XRGB(210, 20, 20);
@@ -39,6 +45,9 @@ void Reset()
     Y = 150.0f;
     Color = D3DCOLOR_XRGB(210, 20, 20);
     DisplayControlsTexts = true;
+    CarePackageDistance = 150.0f;
+    CarePackageHeight = 0.0f;
+    CarePackageAngle = 0.0f;
 }
 
 }

@@ -9,11 +9,15 @@ bool ToggleFallDamage(void *pParameters);
 
 bool ToggleAmmo(void *pParameters);
 
+bool ChangeJumpHeight(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);
 
-bool ChangeJumpHeight(void *pParameters);
+bool ChangeCarePackagePositionPresets(void *pParameters);
+
+bool ChangeCarePackageOrientation(void *pParameters);
 
 bool ToggleSaveLoadBinds(void *pParameters);
 

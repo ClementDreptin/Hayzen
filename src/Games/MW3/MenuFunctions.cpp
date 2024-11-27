@@ -48,6 +48,16 @@ bool MW3::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
+bool MW3::ChangeCarePackagePositionPresets(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+}
+
+bool MW3::ChangeCarePackageOrientation(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+}
+
 bool MW3::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);

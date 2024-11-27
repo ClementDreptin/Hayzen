@@ -11,13 +11,17 @@ bool ToggleAmmo(void *pParameters);
 
 bool ToggleElevators(void *pParameters);
 
+bool Knockback(void *pParameters);
+
+bool ChangeJumpHeight(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);
 
-bool Knockback(void *pParameters);
+bool ChangeCarePackagePositionPresets(void *pParameters);
 
-bool ChangeJumpHeight(void *pParameters);
+bool ChangeCarePackageOrientation(void *pParameters);
 
 bool ToggleSaveLoadBinds(void *pParameters);
 

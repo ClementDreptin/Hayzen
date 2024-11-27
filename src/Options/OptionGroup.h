@@ -31,7 +31,7 @@ private:
     size_t m_OptionsToDisplay;
     size_t m_FirstOptionIndex;
     size_t m_LastOptionIndex;
-    size_t m_CurrentSelectedOptionIndex;
+    size_t m_CurrentOptionIndex;
 
     float m_CachedMinWidth;
     float m_CachedMinHeight;

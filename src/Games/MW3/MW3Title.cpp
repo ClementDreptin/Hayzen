@@ -2,10 +2,13 @@
 #include "Games/MW3/MW3Title.h"
 
 #include "Core/Context.h"
+#include "Core/Settings.h"
 #include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
+#include "Options/SelectOption.h"
+#include "Options/SubOptionGroup.h"
 #include "UI/Renderer.h"
 #include "Games/MW3/MenuFunctions.h"
 #include "Games/MW3/GameFunctions.h"
@@ -45,10 +48,39 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
-        options.emplace_back(MakeOption(ClickOption, "Spawn Care Package", MW3::SpawnCarePackage));
-        options.emplace_back(MakeOption(ClickOption, "Spawn Blocker", MW3::SpawnBlocker));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
         optionGroups.emplace_back(OptionGroup("Main", options));
+    }
+
+    // Spawn section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Care Package", MW3::SpawnCarePackage));
+        options.emplace_back(MakeOption(ClickOption, "Blocker", MW3::SpawnBlocker));
+
+        // Spawn settings
+        {
+            std::vector<std::shared_ptr<Option>> spawnSettings;
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Distance", &Settings::CarePackageDistance, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Height", &Settings::CarePackageHeight, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Angle", &Settings::CarePackageAngle, -90.0f, 90.0f, 1.0f));
+
+            std::vector<std::string> positionPresets(3);
+            positionPresets[0] = "Bounce Test";
+            positionPresets[1] = "Mega Bounce";
+            positionPresets[2] = "Floor";
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Position Presets", positionPresets, MW3::ChangeCarePackagePositionPresets));
+
+            std::vector<std::string> orientations(3);
+            orientations[0] = "Straight";
+            orientations[1] = "Left Strafe";
+            orientations[2] = "Right Strafe";
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientiation", orientations, MW3::ChangeCarePackageOrientation));
+
+            options.emplace_back(MakeOption(SubOptionGroup, "Settings", spawnSettings));
+        }
+
+        optionGroups.emplace_back(OptionGroup("Spawn", options));
     }
 
     // Teleport section

@@ -84,7 +84,10 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         // The 'notify -gostand' event also occurs when the A button is released so, to avoid
         // resetting the menu every time the player jumps, we need to make sure the
         // 'notify +gostand' event didn't occur just before.
-        if (!hasJumped)
+        // We also allow to initialize the menu if it's not already initialized, even if 'n 42'
+        // represents a jump. This is useful when loading the plugin while already in a match,
+        // which avoids having to end the match and start a new one for testing in development
+        if (!hasJumped || !s_CurrentInstance->InMatch())
         {
             Context::Reset();
             Context::ClientNum = 0;

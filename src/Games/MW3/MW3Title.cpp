@@ -115,7 +115,9 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
 
     // "begin" can happen multiple times a game in round-based gamemodes and we don't want
     // to recreate the menu every round so we make sure we are not already in a match
-    if (!strcmp(eventName, "begin") && !s_CurrentInstance->InMatch())
+    // We also allow to initialize the menu on sprint, this is useful when loading the plugin while already in a match,
+    // which avoids having to end the match and start a new one for testing in development
+    if ((!strcmp(eventName, "begin") || !strcmp(eventName, "sprint_begin")) && !s_CurrentInstance->InMatch())
     {
         Context::Reset();
         Context::ClientNum = clientNum;

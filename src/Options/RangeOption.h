@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Options/Option.h"
-#include "UI/Text.h"
 
 template<typename T>
 class RangeOption : public Option
@@ -22,6 +21,4 @@ private:
     T m_Max;
     T m_Step;
     ValueOrPtr<T> m_Current;
-
-    Text m_Text;
 };

@@ -2,6 +2,7 @@
 #include "Options/OptionGroup.h"
 
 #include "Core/Settings.h"
+#include "UI/UI.h"
 
 #define MAX_OPTIONS_TO_DISPLAY 8
 
@@ -99,7 +100,7 @@ void OptionGroup::Render(float x, float y, float width, float height)
     }
 }
 
-float OptionGroup::GetMinWidth()
+float OptionGroup::GetMinWidth() const
 {
     // Return the cached value if the minimum width has already been calculated
     if (m_CachedMinWidth != 0.0f)
@@ -116,7 +117,7 @@ float OptionGroup::GetMinWidth()
     return m_CachedMinWidth;
 }
 
-float OptionGroup::GetMinHeight()
+float OptionGroup::GetMinHeight() const
 {
     // Return the cached value if the minimum height has already been calculated
     if (m_CachedMinHeight != 0.0f)
@@ -130,7 +131,7 @@ float OptionGroup::GetMinHeight()
 
 void OptionGroup::RenderBackground(float x, float y, float width, float height)
 {
-    Rectangle::Props props = {};
+    UI::RectangleProps props = {};
     props.X = x;
     props.Y = y;
     props.Width = width;
@@ -138,7 +139,7 @@ void OptionGroup::RenderBackground(float x, float y, float width, float height)
     props.Color = Settings::BackgroundColor;
     props.BorderWidth = Settings::BorderWidth;
     props.BorderColor = Settings::Color;
-    props.BorderPosition = Border::Border_All;
+    props.BorderPosition = UI::Border_All;
 
-    m_Background.Render(props);
+    UI::DrawRectangle(props);
 }

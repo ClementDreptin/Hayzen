@@ -3,6 +3,7 @@
 
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 ToggleOption::ToggleOption()
     : Option(), m_Active(false)
@@ -48,7 +49,7 @@ void ToggleOption::Render(float x, float y, float width)
     // Render the radio box
     float lineHeight = Renderer::GetFontHeight() + Settings::Padding * 2;
     float radioBoxSize = lineHeight * 0.5f;
-    Rectangle::Props props = {};
+    UI::RectangleProps props = {};
     props.X = x + width - radioBoxSize - Settings::Padding;
     props.Y = y + GetMinHeight() / 2 - radioBoxSize / 2;
     props.Width = radioBoxSize;
@@ -56,7 +57,7 @@ void ToggleOption::Render(float x, float y, float width)
     props.Color = m_Active ? Settings::Color : D3DCOLOR_XRGB(0, 0, 0);
     props.BorderWidth = 1.0f;
     props.BorderColor = D3DCOLOR_XRGB(255, 255, 255);
-    props.BorderPosition = Border::Border_All;
+    props.BorderPosition = UI::Border_All;
 
-    m_RadioBox.Render(props);
+    UI::DrawRectangle(props);
 }

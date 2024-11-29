@@ -3,6 +3,7 @@
 
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 Option::Option()
     : m_Callback(nullptr), m_IsSelected(false), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
@@ -19,24 +20,24 @@ void Option::Render(float x, float y, float width)
     // Render the background if the option is selected
     if (m_IsSelected)
     {
-        Rectangle::Props props = {};
+        UI::RectangleProps props = {};
         props.X = x + Settings::Gap;
         props.Y = y + Settings::Gap;
         props.Width = width - Settings::Gap * 2;
         props.Height = GetMinHeight() - Settings::Gap * 2;
         props.Color = Settings::Color;
 
-        m_Background.Render(props);
+        UI::DrawRectangle(props);
     }
 
     // Render the text
-    Text::Props props = {};
+    UI::TextProps props = {};
     props.X = x + Settings::Padding;
     props.Y = y;
     props.Text = m_Name;
     props.Color = Settings::TextColor;
 
-    m_Text.Render(props);
+    UI::DrawText(props);
 }
 
 float Option::GetMinWidth() const

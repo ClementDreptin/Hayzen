@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Options/Option.h"
-#include "UI/Rectangle.h"
 
 class ToggleOption : public Option
 {
@@ -18,6 +17,4 @@ public:
 
 private:
     ValueOrPtr<bool> m_Active;
-
-    Rectangle m_RadioBox;
 };

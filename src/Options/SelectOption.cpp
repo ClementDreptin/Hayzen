@@ -3,6 +3,7 @@
 
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 SelectOption::SelectOption()
     : Option(), m_CurrentOptionIndex(0)
@@ -71,13 +72,13 @@ void SelectOption::Render(float x, float y, float width)
 
     const std::string &text = m_Options[m_CurrentOptionIndex];
 
-    Text::Props props = {};
+    UI::TextProps props = {};
     props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
     props.Y = y;
     props.Text = text;
     props.Color = Settings::TextColor;
 
-    m_Text.Render(props);
+    UI::DrawText(props);
 }
 
 float SelectOption::GetMinWidth() const

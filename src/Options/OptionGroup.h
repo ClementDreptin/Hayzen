@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Options/Option.h"
-#include "UI/Rectangle.h"
 
 class OptionGroup
 {
@@ -20,9 +19,9 @@ public:
 
     void Render(float x, float y, float width = 0.0f, float height = 0.0f);
 
-    float GetMinWidth();
+    float GetMinWidth() const;
 
-    float GetMinHeight();
+    float GetMinHeight() const;
 
 private:
     std::string m_Name;
@@ -33,10 +32,8 @@ private:
     size_t m_LastOptionIndex;
     size_t m_CurrentOptionIndex;
 
-    float m_CachedMinWidth;
-    float m_CachedMinHeight;
-
-    Rectangle m_Background;
+    mutable float m_CachedMinWidth;
+    mutable float m_CachedMinHeight;
 
     void RenderBackground(float x, float y, float width, float height);
 };

@@ -3,6 +3,7 @@
 
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 SubOptionGroup::SubOptionGroup()
     : Option(), m_Open(false)
@@ -40,12 +41,12 @@ void SubOptionGroup::Render(float x, float y, float width)
 
     // Render a ">" on the right to indicate that there's a sub menu
     std::string text = ">";
-    Text::Props props = {};
+    UI::TextProps props = {};
     props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
     props.Y = y - 4.0f; // Try to center the ">" vertically
     props.Text = text;
     props.Color = Settings::TextColor;
-    m_Text.Render(props);
+    UI::DrawText(props);
 
     // If the option group is not open, don't go further
     if (!m_Open)

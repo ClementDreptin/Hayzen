@@ -9,6 +9,7 @@
 #include "Options/SubOptionGroup.h"
 #include "Options/ColorPickerOption.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 Menu::Menu()
     : m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)
@@ -22,8 +23,6 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
     AddSettingsGroup();
 
     CalculateMenuDimensions();
-
-    m_OptionGroupHeaders = std::vector<Text>(m_OptionGroups.size(), Text());
 }
 
 void Menu::Update(Input::Gamepad *pGamepad)
@@ -78,7 +77,7 @@ float Menu::GetOptionGroupHeadersHeight() const
         return m_CachedOptionGroupHeadersHeight;
 
     float m_CachedOptionGroupHeadersHeight = 0.0f;
-    for (size_t i = 0; i < m_OptionGroupHeaders.size(); i++)
+    for (size_t i = 0; i < m_OptionGroups.size(); i++)
     {
         float currentOptionGroupHeaderHeight = Renderer::GetTextHeight(m_OptionGroups[i].GetName()) + Settings::Padding * 2;
         if (currentOptionGroupHeaderHeight > m_CachedOptionGroupHeadersHeight)
@@ -93,14 +92,14 @@ void Menu::RenderOptionGroupHeaders()
 {
     float optionGroupHeadersHeight = GetOptionGroupHeadersHeight();
 
-    for (size_t i = 0; i < m_OptionGroupHeaders.size(); i++)
+    for (size_t i = 0; i < m_OptionGroups.size(); i++)
     {
         // The X offset is the sum of the previous option group header widths
         float offset = Settings::X;
         for (size_t j = 0; j < i; j++)
             offset += (Renderer::GetTextWidth(m_OptionGroups[j].GetName()) + Settings::Padding * 2 + Settings::BorderWidth);
 
-        Text::Props props = {};
+        UI::TextProps props = {};
         props.X = offset;
         props.Y = Settings::Y;
         props.Text = m_OptionGroups[i].GetName();
@@ -115,17 +114,17 @@ void Menu::RenderOptionGroupHeaders()
 
         // m_OptionGroups[i] is selected
         if (i == m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<Border::Position>(Border::Border_Left | Border::Border_Top | Border::Border_Right);
+            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Top | UI::Border_Right);
 
         // m_OptionGroups[i] is to the left of the selected option group
         else if (i < m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<Border::Position>(Border::Border_Left | Border::Border_Top);
+            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Top);
 
         // m_OptionGroups[i] is to the right of the selected option group
         else if (i > m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<Border::Position>(Border::Border_Right | Border::Border_Top);
+            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Right | UI::Border_Top);
 
-        m_OptionGroupHeaders[i].Render(props);
+        UI::DrawText(props);
     }
 }
 

@@ -1,8 +1,5 @@
 #pragma once
 
-#include "UI/Text.h"
-#include "UI/Rectangle.h"
-
 class Option
 {
 public:
@@ -28,11 +25,8 @@ public:
 
 protected:
     std::string m_Name;
-    Text m_Text;
     Callback m_Callback;
-
     bool m_IsSelected;
-    Rectangle m_Background;
 
     mutable float m_CachedMinWidth;
     mutable float m_CachedMinHeight;

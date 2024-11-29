@@ -1,8 +1,6 @@
 #pragma once
 
 #include "Options/OptionGroup.h"
-#include "UI/Rectangle.h"
-#include "UI/Text.h"
 
 class Menu
 {
@@ -18,8 +16,6 @@ public:
 private:
     std::vector<OptionGroup> m_OptionGroups;
     size_t m_CurrentOptionGroupIndex;
-
-    std::vector<Text> m_OptionGroupHeaders;
 
     mutable float m_CachedOptionGroupHeadersHeight;
 

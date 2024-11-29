@@ -4,6 +4,7 @@
 #include "Core/Context.h"
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 Title *Title::s_CurrentInstance = nullptr;
 std::unordered_map<std::string, Detour *> Title::s_DetourMap;
@@ -61,29 +62,29 @@ void Title::RenderControlsTexts()
     float padding = Settings::Padding * fontScale;
     float borderWidth = Settings::BorderWidth * fontScale;
 
-    Text::Props props = {};
+    UI::TextProps props = {};
     props.X = 10.0f;
     props.FontScale = fontScale;
     props.Color = Settings::TextColor;
     props.BackgroundColor = Settings::BackgroundColor;
     props.BorderWidth = borderWidth;
     props.BorderColor = Settings::Color;
-    props.BorderPosition = Border::Border_All;
+    props.BorderPosition = UI::Border_All;
 
     props.Y = yOffset;
     props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open." : "Close.");
     yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    m_ControlsTexts[0].Render(props);
+    UI::DrawText(props);
 
     props.Y = yOffset;
     props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
     yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    m_ControlsTexts[1].Render(props);
+    UI::DrawText(props);
 
     props.Y = yOffset;
     props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
     yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    m_ControlsTexts[2].Render(props);
+    UI::DrawText(props);
 }
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)

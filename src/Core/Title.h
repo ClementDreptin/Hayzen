@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Core/Menu.h"
-#include "UI/Text.h"
 
 class Title
 {
@@ -34,8 +33,6 @@ protected:
 
 private:
     bool m_InMatch;
-
-    Text m_ControlsTexts[3];
 
     void Update();
 

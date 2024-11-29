@@ -3,6 +3,7 @@
 
 #include "Core/Settings.h"
 #include "UI/Renderer.h"
+#include "UI/UI.h"
 
 template<typename T>
 RangeOption<T>::RangeOption()
@@ -81,13 +82,13 @@ void RangeOption<T>::Render(float x, float y, float width)
     std::string text = std::to_string(static_cast<long double>(m_Current));
 
     // Render the text with the number
-    Text::Props props = {};
+    UI::TextProps props = {};
     props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
     props.Y = y;
     props.Text = text;
     props.Color = Settings::TextColor;
 
-    m_Text.Render(props);
+    UI::DrawText(props);
 }
 
 template class RangeOption<float>;

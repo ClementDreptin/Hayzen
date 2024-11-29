@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Options/Option.h"
-#include "UI/Text.h"
 
 class SelectOption : public Option
 {
@@ -21,6 +20,4 @@ public:
 private:
     std::vector<std::string> m_Options;
     size_t m_CurrentOptionIndex;
-
-    Text m_Text;
 };

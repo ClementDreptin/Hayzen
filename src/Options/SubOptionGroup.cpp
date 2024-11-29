@@ -2,7 +2,7 @@
 #include "Options/SubOptionGroup.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 SubOptionGroup::SubOptionGroup()
     : Option(), m_Open(false)

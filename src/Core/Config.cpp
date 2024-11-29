@@ -2,7 +2,7 @@
 #include "Core/Config.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 Config::Config(const std::string &filePath)
     : m_FilePath(filePath), m_ConfigFile(filePath)

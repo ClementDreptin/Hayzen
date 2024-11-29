@@ -2,7 +2,7 @@
 #include "Options/OptionGroup.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 #define MAX_OPTIONS_TO_DISPLAY 8
 

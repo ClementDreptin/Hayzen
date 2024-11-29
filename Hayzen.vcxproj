@@ -77,6 +77,7 @@
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Core\Settings.h" />
     <ClInclude Include="src\Core\Title.h" />
+    <ClInclude Include="src\Core\UI.h" />
     <ClInclude Include="src\DebugEnabler\DebugEnabler.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
@@ -117,7 +118,6 @@
     <ClInclude Include="src\Options\SelectOption.h" />
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
-    <ClInclude Include="src\UI\UI.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
   <ItemGroup>
@@ -127,6 +127,7 @@
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Core\Settings.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
+    <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\DebugEnabler\DebugEnabler.cpp" />
     <ClCompile Include="src\DebugEnabler\StubExports.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
@@ -158,7 +159,6 @@
     <ClCompile Include="src\Options\SelectOption.cpp" />
     <ClCompile Include="src\Options\SubOptionGroup.cpp" />
     <ClCompile Include="src\Options\ToggleOption.cpp" />
-    <ClCompile Include="src\UI\UI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">
       <PrecompiledHeader>Create</PrecompiledHeader>

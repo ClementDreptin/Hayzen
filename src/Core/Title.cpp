@@ -3,7 +3,7 @@
 
 #include "Core/Context.h"
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 Title *Title::s_CurrentInstance = nullptr;
 std::unordered_map<std::string, Detour *> Title::s_DetourMap;

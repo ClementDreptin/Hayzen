@@ -2,7 +2,7 @@
 #include "Options/SelectOption.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 SelectOption::SelectOption()
     : Option(), m_CurrentOptionIndex(0)

@@ -3,6 +3,7 @@
 
 #include "Core/Context.h"
 #include "Core/Settings.h"
+#include "Core/UI.h"
 #include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
@@ -11,7 +12,6 @@
 #include "Options/SubOptionGroup.h"
 #include "Games/MW2/MenuFunctions.h"
 #include "Games/MW2/GameFunctions.h"
-#include "UI/UI.h"
 
 MW2Title::MW2Title()
 {

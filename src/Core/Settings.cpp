@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Settings.h"
 
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 namespace Settings
 {

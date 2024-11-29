@@ -2,7 +2,7 @@
 #include "Options/ToggleOption.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 ToggleOption::ToggleOption()
     : Option(), m_Active(false)

@@ -2,13 +2,13 @@
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 
 #include "Core/Context.h"
+#include "Core/UI.h"
 #include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
 #include "Games/SpecOps/MW2/MenuFunctions.h"
 #include "Games/SpecOps/MW2/GameFunctions.h"
-#include "UI/UI.h"
 
 SpecOpsMW2Title::SpecOpsMW2Title()
 {

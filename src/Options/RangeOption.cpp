@@ -2,7 +2,7 @@
 #include "Options/RangeOption.h"
 
 #include "Core/Settings.h"
-#include "UI/UI.h"
+#include "Core/UI.h"
 
 template<typename T>
 RangeOption<T>::RangeOption()

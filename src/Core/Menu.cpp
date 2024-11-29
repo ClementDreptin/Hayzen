@@ -3,12 +3,12 @@
 
 #include "Core/Plugin.h"
 #include "Core/Settings.h"
+#include "Core/UI.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
 #include "Options/SubOptionGroup.h"
 #include "Options/ColorPickerOption.h"
-#include "UI/UI.h"
 
 Menu::Menu()
     : m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)

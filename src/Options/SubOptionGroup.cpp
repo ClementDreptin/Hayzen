@@ -2,7 +2,6 @@
 #include "Options/SubOptionGroup.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 SubOptionGroup::SubOptionGroup()
@@ -42,7 +41,7 @@ void SubOptionGroup::Render(float x, float y, float width)
     // Render a ">" on the right to indicate that there's a sub menu
     std::string text = ">";
     UI::TextProps props = {};
-    props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
+    props.X = x + width - UI::GetTextWidth(text) - Settings::Padding;
     props.Y = y - 4.0f; // Try to center the ">" vertically
     props.Text = text;
     props.Color = Settings::TextColor;
@@ -61,7 +60,7 @@ void SubOptionGroup::Render(float x, float y, float width)
     float finalX = rightX;
     if (leftX < 0.0f)
         finalX = rightX;
-    else if (rightX + subOptionGroupWidth > Renderer::DisplayWidth)
+    else if (rightX + subOptionGroupWidth > UI::DisplayWidth)
         finalX = leftX;
 
     m_OptionGroup.Render(finalX, y);

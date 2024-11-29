@@ -2,7 +2,6 @@
 #include "Options/ToggleOption.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 ToggleOption::ToggleOption()
@@ -47,7 +46,7 @@ void ToggleOption::Render(float x, float y, float width)
     Option::Render(x, y, width);
 
     // Render the radio box
-    float lineHeight = Renderer::GetFontHeight() + Settings::Padding * 2;
+    float lineHeight = UI::GetFontHeight() + Settings::Padding * 2;
     float radioBoxSize = lineHeight * 0.5f;
     UI::RectangleProps props = {};
     props.X = x + width - radioBoxSize - Settings::Padding;

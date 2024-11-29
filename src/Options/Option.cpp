@@ -2,7 +2,6 @@
 #include "Options/Option.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 Option::Option()
@@ -46,7 +45,7 @@ float Option::GetMinWidth() const
     if (m_CachedMinWidth != 0.0f)
         return m_CachedMinWidth;
 
-    m_CachedMinWidth = Renderer::GetTextWidth(m_Name) + Settings::Padding * 2;
+    m_CachedMinWidth = UI::GetTextWidth(m_Name) + Settings::Padding * 2;
 
     // Take into account some space between the option name and the potential text on the right (e.g. the number for RangeOption)
     m_CachedMinWidth += 100.0f;
@@ -60,7 +59,7 @@ float Option::GetMinHeight() const
     if (m_CachedMinHeight != 0.0f)
         return m_CachedMinHeight;
 
-    m_CachedMinHeight = Renderer::GetTextHeight(m_Name) + Settings::Padding * 2;
+    m_CachedMinHeight = UI::GetTextHeight(m_Name) + Settings::Padding * 2;
 
     return m_CachedMinHeight;
 }

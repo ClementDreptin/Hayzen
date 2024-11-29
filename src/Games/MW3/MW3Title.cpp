@@ -9,9 +9,9 @@
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "UI/Renderer.h"
 #include "Games/MW3/MenuFunctions.h"
 #include "Games/MW3/GameFunctions.h"
+#include "UI/UI.h"
 
 MW3Title::MW3Title()
 {
@@ -148,14 +148,12 @@ void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const ch
 
 void MW3Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x8241F288);
-    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x8241F9E0);
-    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x82407C78);
-    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x82407C80);
-    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x82407A90);
-    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x82413F48);
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x8241F288);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x8241F9E0);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x82407C78);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x82407C80);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x82407A90);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x82413F48);
 
     Title::InitRenderer();
 }

@@ -3,7 +3,6 @@
 
 #include "Core/Context.h"
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 Title *Title::s_CurrentInstance = nullptr;
@@ -73,17 +72,17 @@ void Title::RenderControlsTexts()
 
     props.Y = yOffset;
     props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open." : "Close.");
-    yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 
     props.Y = yOffset;
     props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
-    yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 
     props.Y = yOffset;
     props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
-    yOffset += Renderer::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 }
 
@@ -141,8 +140,6 @@ void Title::RemoveHooks()
 
 void Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    pFont = R_RegisterFont("fonts/smallFont", 0);
-    MaterialHandle = Material_RegisterHandle("white", 0);
+    UI::pFont = UI::R_RegisterFont("fonts/smallFont", 0);
+    UI::MaterialHandle = UI::Material_RegisterHandle("white", 0);
 }

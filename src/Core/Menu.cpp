@@ -8,7 +8,6 @@
 #include "Options/RangeOption.h"
 #include "Options/SubOptionGroup.h"
 #include "Options/ColorPickerOption.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 Menu::Menu()
@@ -60,8 +59,8 @@ void Menu::AddSettingsGroup()
         options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", std::bind(&Menu::ToggleDebugBuilds, this, std::placeholders::_1), &Settings::AllowDebugBuilds));
 
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
-    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &Settings::X, Settings::BorderWidth, Renderer::DisplayWidth, 10.0f));
-    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", &Settings::Y, Settings::BorderWidth, Renderer::DisplayHeight, 10.0f));
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &Settings::X, Settings::BorderWidth, UI::DisplayWidth, 10.0f));
+    menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", &Settings::Y, Settings::BorderWidth, UI::DisplayHeight, 10.0f));
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &Settings::Color));
@@ -79,7 +78,7 @@ float Menu::GetOptionGroupHeadersHeight() const
     float m_CachedOptionGroupHeadersHeight = 0.0f;
     for (size_t i = 0; i < m_OptionGroups.size(); i++)
     {
-        float currentOptionGroupHeaderHeight = Renderer::GetTextHeight(m_OptionGroups[i].GetName()) + Settings::Padding * 2;
+        float currentOptionGroupHeaderHeight = UI::GetTextHeight(m_OptionGroups[i].GetName()) + Settings::Padding * 2;
         if (currentOptionGroupHeaderHeight > m_CachedOptionGroupHeadersHeight)
             m_CachedOptionGroupHeadersHeight = currentOptionGroupHeaderHeight;
     }
@@ -97,7 +96,7 @@ void Menu::RenderOptionGroupHeaders()
         // The X offset is the sum of the previous option group header widths
         float offset = Settings::X;
         for (size_t j = 0; j < i; j++)
-            offset += (Renderer::GetTextWidth(m_OptionGroups[j].GetName()) + Settings::Padding * 2 + Settings::BorderWidth);
+            offset += (UI::GetTextWidth(m_OptionGroups[j].GetName()) + Settings::Padding * 2 + Settings::BorderWidth);
 
         UI::TextProps props = {};
         props.X = offset;
@@ -137,7 +136,7 @@ void Menu::CalculateMenuDimensions()
     for (size_t i = 0; i < m_OptionGroups.size(); i++)
     {
         // Accumulate all the option group names width
-        allOptionGroupNamesWidth += (Renderer::GetTextWidth(m_OptionGroups[i].GetName()) + Settings::Padding * 2);
+        allOptionGroupNamesWidth += (UI::GetTextWidth(m_OptionGroups[i].GetName()) + Settings::Padding * 2);
 
         // Find the option group with the biggest width
         float optionGroupWidth = m_OptionGroups[i].GetMinWidth();
@@ -160,7 +159,7 @@ void Menu::CalculateMenuDimensions()
     Settings::Height = biggestOptionGroupHeight;
 
     // Move the menu to right side of the screen (double cast to round to closest integer value)
-    Settings::X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Settings::Width - 10.0f));
+    Settings::X = static_cast<float>(static_cast<uint32_t>(UI::DisplayWidth - Settings::Width - 10.0f));
 }
 
 bool Menu::ToggleDebugBuilds(void *pParameters)

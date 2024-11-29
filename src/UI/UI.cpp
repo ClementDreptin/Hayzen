@@ -2,7 +2,6 @@
 #include "UI/UI.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 
 namespace UI
 {
@@ -18,12 +17,12 @@ void DrawLine(const LineProps &props)
     };
 
     // Render the line
-    Renderer::R_AddCmdDrawStretchPic(
+    R_AddCmdDrawStretchPic(
         props.X, props.Y,
         props.Width, props.Height,
         0.0f, 0.0f, 1.0f, 1.0f,
         color,
-        Renderer::MaterialHandle
+        MaterialHandle
     );
 }
 
@@ -99,12 +98,12 @@ void DrawRectangle(const RectangleProps &props)
     };
 
     // Render the rectangle
-    Renderer::R_AddCmdDrawStretchPic(
+    R_AddCmdDrawStretchPic(
         props.X, props.Y,
         props.Width, props.Height,
         0.0f, 0.0f, 1.0f, 1.0f,
         color,
-        Renderer::MaterialHandle
+        MaterialHandle
     );
 
     // Render the border if needed
@@ -129,8 +128,8 @@ void DrawText(const TextProps &props)
     float fontScale = props.FontScale != 0.0f ? props.FontScale : 1.0f;
     float padding = Settings::Padding * fontScale;
 
-    float textWidth = Renderer::GetTextWidth(props.Text, fontScale);
-    float textHeight = Renderer::GetTextHeight(props.Text, fontScale);
+    float textWidth = GetTextWidth(props.Text, fontScale);
+    float textHeight = GetTextHeight(props.Text, fontScale);
     float rectWidth = props.BackgroundWidth != 0.0f ? props.BackgroundWidth : (textWidth + padding * 2);
     float rectHeight = props.BackgroundHeight != 0.0f ? props.BackgroundHeight : (textHeight + padding * 2);
 
@@ -168,16 +167,47 @@ void DrawText(const TextProps &props)
     // Example (the anchor is aligned with the underscores (__)):
     //  __ My very cool
     //     multine text
-    y += Renderer::GetFontHeight(fontScale);
+    y += GetFontHeight(fontScale);
 
-    Renderer::R_AddCmdDrawText(
+    R_AddCmdDrawText(
         props.Text.c_str(), props.Text.size(),
-        Renderer::pFont,
+        pFont,
         x, y,
         fontScale, fontScale, 0.0f,
         color,
         0
     );
+}
+
+R_ADDCMDDRAWSTRETCHPIC R_AddCmdDrawStretchPic = nullptr;
+R_ADDCMDDRAWTEXT R_AddCmdDrawText = nullptr;
+R_TEXTWIDTH R_TextWidth = nullptr;
+R_TEXTHEIGHT R_TextHeight = nullptr;
+R_REGISTERFONT R_RegisterFont = nullptr;
+MATERIAL_REGISTERHANDLE Material_RegisterHandle = nullptr;
+
+Font_s *pFont = nullptr;
+HANDLE MaterialHandle = nullptr;
+
+// The resolution is always 720p, 1080p is created by the hardware scaler
+float DisplayWidth = 1280.0f;
+float DisplayHeight = 720.0f;
+
+float GetTextWidth(const std::string &text, float fontScale)
+{
+    return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont)) * fontScale;
+}
+
+float GetTextHeight(const std::string &text, float fontScale)
+{
+    size_t numberOfLines = std::count(text.begin(), text.end(), '\n') + 1;
+
+    return GetFontHeight() * numberOfLines;
+}
+
+float GetFontHeight(float fontScale)
+{
+    return static_cast<float>(R_TextHeight(pFont)) * fontScale;
 }
 
 }

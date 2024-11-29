@@ -2,7 +2,6 @@
 #include "Options/SelectOption.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 SelectOption::SelectOption()
@@ -73,7 +72,7 @@ void SelectOption::Render(float x, float y, float width)
     const std::string &text = m_Options[m_CurrentOptionIndex];
 
     UI::TextProps props = {};
-    props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
+    props.X = x + width - UI::GetTextWidth(text) - Settings::Padding;
     props.Y = y;
     props.Text = text;
     props.Color = Settings::TextColor;
@@ -91,14 +90,14 @@ float SelectOption::GetMinWidth() const
     float longestTextWidth = 0.0f;
     for (size_t i = 0; i < m_Options.size(); i++)
     {
-        float textWidth = Renderer::GetTextWidth(m_Options[i]);
+        float textWidth = UI::GetTextWidth(m_Options[i]);
         if (longestTextWidth < textWidth)
             longestTextWidth = textWidth;
     }
 
     // The option layout is as follow
     // padding | optionName | padding | padding | text | padding
-    m_CachedMinWidth = Renderer::GetTextWidth(m_Name) + longestTextWidth + Settings::Padding * 4;
+    m_CachedMinWidth = UI::GetTextWidth(m_Name) + longestTextWidth + Settings::Padding * 4;
 
     return m_CachedMinWidth;
 }

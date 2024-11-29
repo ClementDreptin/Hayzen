@@ -9,9 +9,9 @@
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "UI/Renderer.h"
 #include "Games/MW2/MenuFunctions.h"
 #include "Games/MW2/GameFunctions.h"
+#include "UI/UI.h"
 
 MW2Title::MW2Title()
 {
@@ -160,14 +160,12 @@ void MW2Title::SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const ch
 
 void MW2Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x821384D8);
-    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x82350278);
-    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x8234DD20);
-    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x8234DE10);
-    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x8234DCB0);
-    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x8234E510);
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x821384D8);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x82350278);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x8234DD20);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x8234DE10);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x8234DCB0);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x8234E510);
 
     Title::InitRenderer();
 }

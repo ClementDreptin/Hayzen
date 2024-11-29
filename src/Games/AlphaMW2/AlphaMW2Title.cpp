@@ -9,9 +9,9 @@
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "UI/Renderer.h"
 #include "Games/AlphaMW2/MenuFunctions.h"
 #include "Games/AlphaMW2/GameFunctions.h"
+#include "UI/UI.h"
 
 AlphaMW2Title::AlphaMW2Title()
 {
@@ -152,14 +152,12 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client
 
 void AlphaMW2Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x823BAC18);
-    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x823BB4D8);
-    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x823B6DC8);
-    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x823B6EB8);
-    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x823B6D58);
-    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x823B6928);
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x823BAC18);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x823BB4D8);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x823B6DC8);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x823B6EB8);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x823B6D58);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x823B6928);
 
     Title::InitRenderer();
 }

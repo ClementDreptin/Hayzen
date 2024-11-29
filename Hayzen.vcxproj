@@ -117,7 +117,6 @@
     <ClInclude Include="src\Options\SelectOption.h" />
     <ClInclude Include="src\Options\SubOptionGroup.h" />
     <ClInclude Include="src\Options\ToggleOption.h" />
-    <ClInclude Include="src\UI\Renderer.h" />
     <ClInclude Include="src\UI\UI.h" />
     <ClInclude Include="src\pch.h" />
   </ItemGroup>
@@ -159,7 +158,6 @@
     <ClCompile Include="src\Options\SelectOption.cpp" />
     <ClCompile Include="src\Options\SubOptionGroup.cpp" />
     <ClCompile Include="src\Options\ToggleOption.cpp" />
-    <ClCompile Include="src\UI\Renderer.cpp" />
     <ClCompile Include="src\UI\UI.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\pch.cpp">

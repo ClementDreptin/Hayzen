@@ -9,9 +9,9 @@
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "UI/Renderer.h"
 #include "Games/NX1/MenuFunctions.h"
 #include "Games/NX1/GameFunctions.h"
+#include "UI/UI.h"
 
 NX1Title::NX1Title()
 {
@@ -150,14 +150,12 @@ void NX1Title::SV_ExecuteClientCommandHook(NX1::Game::client_t *client, const ch
 
 void NX1Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x824CB298);
-    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x824CBB00);
-    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x824C9230);
-    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x824C93A0);
-    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x824C91C0);
-    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x824C9AF8);
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x824CB298);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x824CBB00);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x824C9230);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x824C93A0);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x824C91C0);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x824C9AF8);
 
     Title::InitRenderer();
 }

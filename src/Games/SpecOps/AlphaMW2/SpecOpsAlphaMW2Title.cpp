@@ -6,9 +6,9 @@
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
-#include "UI/Renderer.h"
 #include "Games/SpecOps/AlphaMW2/MenuFunctions.h"
 #include "Games/SpecOps/AlphaMW2/GameFunctions.h"
+#include "UI/UI.h"
 
 SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
 {
@@ -107,14 +107,12 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 
 void SpecOpsAlphaMW2Title::InitRenderer()
 {
-    using namespace Renderer;
-
-    R_AddCmdDrawStretchPic = reinterpret_cast<R_ADDCMDDRAWSTRETCHPIC>(0x82386590);
-    R_AddCmdDrawText = reinterpret_cast<R_ADDCMDDRAWTEXT>(0x82386E50);
-    R_TextWidth = reinterpret_cast<R_TEXTWIDTH>(0x82380D20);
-    R_TextHeight = reinterpret_cast<R_TEXTHEIGHT>(0x82380E10);
-    R_RegisterFont = reinterpret_cast<R_REGISTERFONT>(0x82380CB0);
-    Material_RegisterHandle = reinterpret_cast<MATERIAL_REGISTERHANDLE>(0x82380880);
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x82386590);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x82386E50);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x82380D20);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x82380E10);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x82380CB0);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x82380880);
 
     Title::InitRenderer();
 }

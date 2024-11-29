@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Settings.h"
 
-#include "UI/Renderer.h"
+#include "UI/UI.h"
 
 namespace Settings
 {
@@ -41,7 +41,7 @@ float Height = 0.0f;
 void Reset()
 {
     // Double cast to round to the closest integer value
-    X = static_cast<float>(static_cast<uint32_t>(Renderer::DisplayWidth - Settings::Width - 10.0f));
+    X = static_cast<float>(static_cast<uint32_t>(UI::DisplayWidth - Settings::Width - 10.0f));
     Y = 150.0f;
     Color = D3DCOLOR_XRGB(210, 20, 20);
     DisplayControlsTexts = true;

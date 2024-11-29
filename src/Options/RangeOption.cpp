@@ -2,7 +2,6 @@
 #include "Options/RangeOption.h"
 
 #include "Core/Settings.h"
-#include "UI/Renderer.h"
 #include "UI/UI.h"
 
 template<typename T>
@@ -83,7 +82,7 @@ void RangeOption<T>::Render(float x, float y, float width)
 
     // Render the text with the number
     UI::TextProps props = {};
-    props.X = x + width - Renderer::GetTextWidth(text) - Settings::Padding;
+    props.X = x + width - UI::GetTextWidth(text) - Settings::Padding;
     props.Y = y;
     props.Text = text;
     props.Color = Settings::TextColor;

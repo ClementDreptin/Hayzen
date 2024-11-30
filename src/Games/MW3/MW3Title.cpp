@@ -110,6 +110,10 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
     if (!MW3::Game::IsHost(clientNum))
         return;
 
+    // Prevent the menu from initializing in public matches
+    if (MW3::Game::Dvar_GetBool("xblive_privatematch") == false && MW3::Game::Dvar_GetBool("onlinegame") == true)
+        return;
+
     // Get the string representing the event
     const char *eventName = MW3::Game::SL_ConvertToString(stringValue);
 

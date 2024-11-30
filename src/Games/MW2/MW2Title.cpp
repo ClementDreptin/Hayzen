@@ -122,6 +122,10 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     if (!MW2::Game::IsHost(clientNum))
         return;
 
+    // Prevent the menu from initializing in public matches
+    if (MW2::Game::Dvar_GetBool("xblive_privatematch") == false && MW2::Game::Dvar_GetBool("onlinegame") == true)
+        return;
+
     // Get the string representing the event
     const char *eventName = MW2::Game::SL_ConvertToString(stringValue);
 

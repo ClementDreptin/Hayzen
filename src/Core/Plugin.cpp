@@ -155,6 +155,9 @@ void Plugin::CreateConfig()
     configFilePath << pluginDirectory;
     configFilePath << "Hayzen.ini";
 
+    // Allow access to HDD
+    Xam::MountHdd();
+
     // This doesn't write the config file to disk, it just creates the in-memory object
     m_Config = Config(configFilePath.str());
 

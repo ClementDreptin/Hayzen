@@ -11,8 +11,6 @@ Config::Config(const std::string &filePath)
 
 bool Config::Save()
 {
-    Xam::MountHdd();
-
     m_Config["debugbuilds"]["allowdebugbuilds"] = Settings::AllowDebugBuilds ? "true" : "false";
 
     m_Config["controls"]["showcontrols"] = Settings::DisplayControlsTexts ? "true" : "false";

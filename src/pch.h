@@ -4,15 +4,15 @@
 #include <xtl.h>
 
 // C++ standard library
-#include <string>
-#include <vector>
-#include <memory>
-#include <queue>
-#include <unordered_map>
 #include <cstdint>
 #include <fstream>
-#include <sstream>
 #include <functional>
+#include <memory>
+#include <queue>
+#include <sstream>
+#include <string>
+#include <unordered_map>
+#include <vector>
 
 // XexUtils
 #include "XexUtils.h"

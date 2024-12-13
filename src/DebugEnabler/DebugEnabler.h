@@ -1,14 +1,10 @@
 #pragma once
 
-class DebugEnabler
+namespace DebugEnabler
 {
-public:
-    static HRESULT Enable();
 
-    static void Disable();
+HRESULT Enable();
 
-private:
-    static Detour *s_pXexpResolveImageImportsDetour;
+void Disable();
 
-    static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags);
-};
+}

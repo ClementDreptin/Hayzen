@@ -9,34 +9,12 @@
 
 #include "Core/Plugin.h"
 
-Detour *DebugEnabler::s_pXexpResolveImageImportsDetour = nullptr;
-
-HRESULT DebugEnabler::Enable()
+namespace DebugEnabler
 {
-    HRESULT hr = S_OK;
 
-    // Don't do anything if debug builds have already been enabled
-    if (s_pXexpResolveImageImportsDetour != nullptr)
-        return hr;
+Detour *s_pXexpResolveImageImportsDetour = nullptr;
 
-    Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x60000000);
-
-    s_pXexpResolveImageImportsDetour = new Detour(0x80079D48, XexpResolveImageImportsHook);
-
-    return s_pXexpResolveImageImportsDetour->Install();
-}
-
-void DebugEnabler::Disable()
-{
-    // Don't do anything if didn't previously enabled debug builds
-    if (s_pXexpResolveImageImportsDetour == nullptr)
-        return;
-
-    s_pXexpResolveImageImportsDetour->Remove();
-    s_pXexpResolveImageImportsDetour = nullptr;
-}
-
-int DebugEnabler::XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
+static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
 {
     // Get a pointer to the first string in the name table. The name table is right after
     // the import descriptor and contains moduleCount strings
@@ -72,4 +50,31 @@ int DebugEnabler::XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPO
     }
 
     return s_pXexpResolveImageImportsDetour->GetOriginal<decltype(&XexpResolveImageImportsHook)>()(pExportBaseAddress, pImportDesc, flags);
+}
+
+HRESULT Enable()
+{
+    HRESULT hr = S_OK;
+
+    // Don't do anything if debug builds have already been enabled
+    if (s_pXexpResolveImageImportsDetour != nullptr)
+        return hr;
+
+    Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x60000000);
+
+    s_pXexpResolveImageImportsDetour = new Detour(0x80079D48, XexpResolveImageImportsHook);
+
+    return s_pXexpResolveImageImportsDetour->Install();
+}
+
+void Disable()
+{
+    // Don't do anything if didn't previously enabled debug builds
+    if (s_pXexpResolveImageImportsDetour == nullptr)
+        return;
+
+    s_pXexpResolveImageImportsDetour->Remove();
+    s_pXexpResolveImageImportsDetour = nullptr;
+}
+
 }

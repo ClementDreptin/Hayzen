@@ -185,7 +185,7 @@ bool Menu::SaveSettings(void *)
 
     Xam::XNotify(
         result ? "Settings Saved" : "Could not save settings",
-        result ? XNOTIFYUI_TYPE_PREFERRED_REVIEW : XNOTIFYUI_TYPE_AVOID_REVIEW
+        result ? Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW : Xam::XNOTIFYUI_TYPE_AVOID_REVIEW
     );
 
     return result;

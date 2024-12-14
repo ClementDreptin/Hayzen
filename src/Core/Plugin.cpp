@@ -11,14 +11,14 @@
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 #include "Games/NX1/NX1Title.h"
 
-enum
+typedef enum _TitleId
 {
-    TITLE_DASHBOARD = 0xFFFE07D1,
-    TITLE_XSHELL = 0xFFFE07FF,
-    TITLE_MW2 = 0x41560817,
-    TITLE_MW3 = 0x415608CB,
-    TITLE_NX1 = 0x4156089E,
-};
+    Title_Dashboard = 0xFFFE07D1,
+    Title_XShell = 0xFFFE07FF,
+    Title_MW2 = 0x41560817,
+    Title_MW3 = 0x415608CB,
+    Title_NX1 = 0x4156089E,
+} TitleId;
 
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr), m_Config("hdd:\\Hayzen.ini")
@@ -53,7 +53,7 @@ void Plugin::Init()
     {
         HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))
-            Xam::XNotify("Couldn't enable debug builds", XNOTIFYUI_TYPE_AVOID_REVIEW);
+            Xam::XNotify("Couldn't enable debug builds", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
     }
 }
 
@@ -86,15 +86,15 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (newTitleId)
     {
-    case TITLE_DASHBOARD:
+    case Title_Dashboard:
         Xam::XNotify("Hayzen - Dashboard Detected");
         m_pCurrentTitle = nullptr;
         break;
-    case TITLE_XSHELL:
+    case Title_XShell:
         Xam::XNotify("Hayzen - XShell Detected");
         m_pCurrentTitle = nullptr;
         break;
-    case TITLE_MW2:
+    case Title_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
             m_pCurrentTitle = new MW2Title();
         if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
@@ -104,13 +104,13 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
         else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
             m_pCurrentTitle = new SpecOpsAlphaMW2Title();
         break;
-    case TITLE_MW3:
+    case Title_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
             m_pCurrentTitle = new MW3Title();
         if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
             m_pCurrentTitle = new SpecOpsMW3Title();
         break;
-    case TITLE_NX1:
+    case Title_NX1:
         if (!strcmp(reinterpret_cast<char *>(0x820023A0), "multiplayer"))
             m_pCurrentTitle = new NX1Title();
         break;

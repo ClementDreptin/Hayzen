@@ -8,9 +8,12 @@ namespace COMMON_FN_NAMESPACE
 
 bool ToggleGodModeSP(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
+    XASSERT(pPlayerState != nullptr);
 
     pPlayerState->otherFlags = enabled ? 1 : 0;
 
@@ -19,14 +22,16 @@ bool ToggleGodModeSP(void *pParameters)
 
 bool ToggleSecondPlayerGodMode(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     // The second client num is always 1
     int secondClientNum = 1;
     int firstClientNum = Context::ClientNum;
 
-    // If the player name of the second client is empty, it means there is no second client
     gclient_s *pSecondClient = GetGClient(secondClientNum);
+    XASSERT(pSecondClient != nullptr);
     if (!pSecondClient->connected)
     {
         iPrintLn(firstClientNum, "^1No other player in the game!");
@@ -34,6 +39,7 @@ bool ToggleSecondPlayerGodMode(void *pParameters)
     }
 
     playerState_s *pSecondPlayerState = GetPlayerState(secondClientNum);
+    XASSERT(pSecondPlayerState != nullptr);
 
     pSecondPlayerState->otherFlags = enabled ? 1 : 0;
 
@@ -47,6 +53,7 @@ bool TeleportSecondPlayerToMe()
     int firstClientNum = Context::ClientNum;
 
     gclient_s *pSecondClient = GetGClient(secondClientNum);
+    XASSERT(pSecondClient != nullptr);
     if (!pSecondClient->connected)
     {
         iPrintLn(firstClientNum, "^1No other player in the game!");
@@ -54,8 +61,10 @@ bool TeleportSecondPlayerToMe()
     }
 
     // Get the first player's current position and viewY
-    vec3 origin = GetPlayerState(firstClientNum)->origin;
-    float viewY = GetPlayerState(firstClientNum)->viewAngles.y;
+    playerState_s *pFirstPlayerState = GetPlayerState(firstClientNum);
+    XASSERT(pFirstPlayerState != nullptr);
+    vec3 origin = pFirstPlayerState->origin;
+    float viewY = pFirstPlayerState->viewAngles.y;
 
     // Teleport the second player in front of the first player
     float distance = 100.0f;

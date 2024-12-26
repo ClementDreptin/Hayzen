@@ -99,6 +99,8 @@ void NX1Title::InitMenu()
 
 void NX1Title::Scr_NotifyHook(NX1::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
+    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+
     // Call the original Scr_Notify function
     s_DetourMap.at("Scr_Notify")->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
@@ -135,6 +137,8 @@ void NX1Title::Scr_NotifyHook(NX1::Game::gentity_s *entity, uint16_t stringValue
 
 void NX1Title::SV_ExecuteClientCommandHook(NX1::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
+    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+
     // Call the original SV_ExecuteClientCommand function
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 

@@ -26,6 +26,8 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 
 void Menu::Update(Input::Gamepad *pGamepad)
 {
+    XASSERT(pGamepad != nullptr);
+
     // Allow the user to change the current option group with LB/RB
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
     {
@@ -164,6 +166,8 @@ void Menu::CalculateMenuDimensions()
 
 bool Menu::ToggleDebugBuilds(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     // Setting Settings::AllowDebugBuilds is normally done based of the return value
     // of this function but we need to save the settings to disk so we have to set
     // Settings::AllowDebugBuilds before the function ends

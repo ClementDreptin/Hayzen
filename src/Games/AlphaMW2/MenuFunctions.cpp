@@ -25,6 +25,8 @@ bool AlphaMW2::ToggleFallDamage(void *pParameters)
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
 
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     if (enabled)
@@ -43,6 +45,8 @@ bool AlphaMW2::ToggleFallDamage(void *pParameters)
 
 bool AlphaMW2::ToggleAmmo(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};

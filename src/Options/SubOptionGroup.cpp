@@ -16,6 +16,8 @@ SubOptionGroup::SubOptionGroup(const std::string &name, const std::vector<std::s
 
 bool SubOptionGroup::Update(Input::Gamepad *pGamepad)
 {
+    XASSERT(pGamepad != nullptr);
+
     // Allow the user to close the sub option group with RS
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
         m_Open = false;

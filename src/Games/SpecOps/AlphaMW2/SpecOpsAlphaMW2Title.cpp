@@ -71,6 +71,8 @@ static bool hasJumped = false;
 
 void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
+    XASSERT(s_DetourMap.find("ClientCommand") != s_DetourMap.end());
+
     // Call the original ClientCommand function
     s_DetourMap.at("ClientCommand")->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 

@@ -22,6 +22,8 @@ bool SpecOpsAlphaMW2::ToggleGodMode(void *pParameters)
 
 bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};

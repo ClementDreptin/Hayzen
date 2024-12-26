@@ -1,8 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32901.215
-MinimumVisualStudioVersion = 10.0.40219.1
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Hayzen", "Hayzen.vcxproj", "{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XexUtils", "deps\XexUtils\XexUtils.vcxproj", "{C598D106-4F6D-4505-95DE-AA896A0AC7FA}"
@@ -11,23 +9,30 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mINI", "deps\mINI\mINI.vcxp
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Xbox 360 = Debug|Xbox 360
 		Release|Xbox 360 = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Debug|Xbox 360.ActiveCfg = Debug|Xbox 360
+		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Debug|Xbox 360.Build.0 = Debug|Xbox 360
+		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Debug|Xbox 360.Deploy.0 = Debug|Xbox 360
 		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
 		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Release|Xbox 360.Build.0 = Release|Xbox 360
 		{A8E8F997-DC8B-4C7D-9E6D-3D2C1158F231}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
+		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Debug|Xbox 360.ActiveCfg = Release|Xbox 360
+		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Debug|Xbox 360.Build.0 = Release|Xbox 360
+		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Debug|Xbox 360.Deploy.0 = Release|Xbox 360
 		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
 		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Release|Xbox 360.Build.0 = Release|Xbox 360
 		{C598D106-4F6D-4505-95DE-AA896A0AC7FA}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
+		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Debug|Xbox 360.ActiveCfg = Release|Xbox 360
+		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Debug|Xbox 360.Build.0 = Release|Xbox 360
+		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Debug|Xbox 360.Deploy.0 = Release|Xbox 360
 		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Release|Xbox 360.ActiveCfg = Release|Xbox 360
 		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Release|Xbox 360.Build.0 = Release|Xbox 360
 		{32E6ACFE-ECD5-41E4-AFEF-675D74786E96}.Release|Xbox 360.Deploy.0 = Release|Xbox 360
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {317E2BAD-3744-4692-86BF-ABBE18F70C38}
 	EndGlobalSection
 EndGlobal

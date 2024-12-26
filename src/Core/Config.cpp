@@ -5,7 +5,7 @@
 #include "Core/UI.h"
 
 Config::Config(const std::string &filePath)
-    : m_FilePath(filePath), m_ConfigFile(filePath)
+    : m_ConfigFile(filePath)
 {
 }
 
@@ -27,17 +27,25 @@ bool Config::Save()
     m_Config["color"]["b"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETBLUE(Settings::Color)));
     m_Config["color"]["a"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETALPHA(Settings::Color)));
 
-    return m_ConfigFile.generate(m_Config);
+    bool success = m_ConfigFile.generate(m_Config);
+
+#ifndef NDEBUG
+    if (!success)
+        DebugPrint("[Hayzen][Config]: Warn: Could not write config to disk.");
+#endif
+
+    return success;
 }
 
 bool Config::Load()
 {
-    Xam::MountHdd();
-
     // Load the config from disk
     bool canReadFile = m_ConfigFile.read(m_Config);
     if (!canReadFile)
+    {
+        DebugPrint("[Hayzen][Config]: Warn: Could not read config from disk.");
         return false;
+    }
 
     // Debug builds
     if (m_Config.has("debugbuilds"))

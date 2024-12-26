@@ -21,6 +21,8 @@ SelectOption::SelectOption(const std::string &name, const std::vector<std::strin
 
 bool SelectOption::Update(Input::Gamepad *pGamepad)
 {
+    XASSERT(pGamepad != nullptr);
+
     // Allow the user to change the option index with DPAD LEFT/DPAD RIGHT
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
     {
@@ -68,6 +70,8 @@ void SelectOption::Render(float x, float y, float width)
 {
     // Call the parent to render the option name
     Option::Render(x, y, width);
+
+    XASSERT(m_CurrentOptionIndex < m_Options.size());
 
     const std::string &text = m_Options[m_CurrentOptionIndex];
 

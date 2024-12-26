@@ -17,6 +17,10 @@ struct ToggleAmmoOptions
 
 bool ToggleAmmo(const ToggleAmmoOptions &options)
 {
+    XASSERT(options.PatchAddress != 0);
+    XASSERT(options.PatchValue != 0);
+    XASSERT(options.DefaultValue != 0);
+
     Memory::Write<uint32_t>(options.PatchAddress, options.Enabled ? options.PatchValue : options.DefaultValue);
 
     return true;
@@ -24,6 +28,8 @@ bool ToggleAmmo(const ToggleAmmoOptions &options)
 
 bool ChangeJumpHeight(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
 
     // Set the new jump height value
@@ -60,6 +66,7 @@ bool LoadPosition()
     }
 
     gentity_s *pPlayerEntity = GetEntity(clientNum);
+    XASSERT(pPlayerEntity != nullptr);
 
     SetClientOrigin(pPlayerEntity, reinterpret_cast<const float *>(&savedPosition));
     SetClientViewAngle(pPlayerEntity, reinterpret_cast<const float *>(&savedAngles));
@@ -69,6 +76,8 @@ bool LoadPosition()
 
 bool ToggleSaveLoadBinds(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     if (enabled)
@@ -84,9 +93,12 @@ bool ToggleSaveLoadBinds(void *pParameters)
 
 bool ToggleUfo(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     gclient_s *pGClient = GetGClient(Context::ClientNum);
+    XASSERT(pGClient != nullptr);
 
     pGClient->mFlags = enabled ? 2 : 0;
 

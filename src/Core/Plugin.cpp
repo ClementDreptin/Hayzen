@@ -122,6 +122,9 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
 
 void Plugin::CreateConfig()
 {
+    // Allow access to HDD
+    Xam::MountHdd();
+
     // Get the full name from the handle
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
     std::wstring widePath = pDataTable->FullDllName.Buffer;
@@ -131,7 +134,14 @@ void Plugin::CreateConfig()
     std::wstring hddDevicePath = L"\\Device\\Harddisk0\\Partition1\\";
     size_t pos = widePath.find(hddDevicePath);
     if (pos == std::wstring::npos)
+    {
+        DebugPrint(
+            L"[Hayzen][Config]: Warn: %s is not stored on HDD so can't store config next to it."
+            L"The config will be written to the default location (root of HDD) when the settings are saved.",
+            pDataTable->BaseDllName.Buffer
+        );
         return;
+    }
 
     // Only keep the absolute path on HDD
     // \Device\Harddisk0\Partition1\foo\bar\file => foo\bar\file
@@ -154,9 +164,6 @@ void Plugin::CreateConfig()
     configFilePath << "hdd:\\";
     configFilePath << pluginDirectory;
     configFilePath << "Hayzen.ini";
-
-    // Allow access to HDD
-    Xam::MountHdd();
 
     // This doesn't write the config file to disk, it just creates the in-memory object
     m_Config = Config(configFilePath.str());

@@ -102,6 +102,8 @@ void MW3Title::InitMenu()
 
 void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
+    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+
     // Call the original Scr_Notify function
     s_DetourMap.at("Scr_Notify")->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
@@ -137,7 +139,9 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
 
 void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
-    // Call the original Scr_Notify SV_ExecuteClientCommand
+    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+
+    // Call the original SV_ExecuteClientCommand function
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further

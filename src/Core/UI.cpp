@@ -8,6 +8,8 @@ namespace UI
 
 void DrawLine(const LineProps &props)
 {
+    XASSERT(R_AddCmdDrawStretchPic != nullptr);
+
     // Turn the color into a float array
     float color[4] = {
         ((props.Color & 0x00ff0000) >> 16) / 255.0f,
@@ -87,6 +89,8 @@ void DrawBorder(const BorderProps &props)
 
 void DrawRectangle(const RectangleProps &props)
 {
+    XASSERT(R_AddCmdDrawStretchPic != nullptr);
+
     bool hasBorder = props.BorderPosition != Border_None && props.BorderWidth > 0;
 
     // Turn the color into a float array
@@ -124,6 +128,8 @@ void DrawRectangle(const RectangleProps &props)
 
 void DrawText(const TextProps &props)
 {
+    XASSERT(R_AddCmdDrawText != nullptr);
+
     bool hasBackgroundOrBorder = props.BackgroundColor != 0 || (props.BorderWidth > 0 && props.BorderPosition != Border_None);
     float fontScale = props.FontScale != 0.0f ? props.FontScale : 1.0f;
     float padding = Settings::Padding * fontScale;
@@ -195,6 +201,8 @@ float DisplayHeight = 720.0f;
 
 float GetTextWidth(const std::string &text, float fontScale)
 {
+    XASSERT(R_TextWidth != nullptr);
+
     return static_cast<float>(R_TextWidth(text.c_str(), text.size(), pFont)) * fontScale;
 }
 
@@ -202,11 +210,13 @@ float GetTextHeight(const std::string &text, float fontScale)
 {
     size_t numberOfLines = std::count(text.begin(), text.end(), '\n') + 1;
 
-    return GetFontHeight() * numberOfLines;
+    return GetFontHeight(fontScale) * numberOfLines;
 }
 
 float GetFontHeight(float fontScale)
 {
+    XASSERT(R_TextHeight != nullptr);
+
     return static_cast<float>(R_TextHeight(pFont)) * fontScale;
 }
 

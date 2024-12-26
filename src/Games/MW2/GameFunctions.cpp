@@ -44,21 +44,27 @@ void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cas
 
 void iPrintLn(int clientNum, const std::string &text)
 {
+    XASSERT(clientNum >= -1 && clientNum <= 17);
+
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("f \"%s\"", text.c_str()).c_str());
 }
 
 gclient_s *GetGClient(int clientNum)
 {
+    XASSERT(clientNum >= 0 && clientNum <= 17);
+
     return reinterpret_cast<gclient_s *>(0x830CBF80 + sizeof(gclient_s) * clientNum);
 }
 
-gentity_s *GetEntity(int entNum)
+gentity_s *GetEntity(uint32_t entNum)
 {
     return reinterpret_cast<gentity_s *>(0x82F03600 + sizeof(gentity_s) * entNum);
 }
 
 void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value)
 {
+    XASSERT(clientNum >= -1 && clientNum <= 17);
+
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("s %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }
 
@@ -108,6 +114,8 @@ gentity_s *GetCurrentMapBrushModel()
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");
+
+    XASSERT(brushModelMap.find(mapName) != brushModelMap.end());
 
     return reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
 }

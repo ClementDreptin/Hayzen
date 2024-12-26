@@ -13,6 +13,8 @@ ClickOption::ClickOption(const std::string &name, Callback callback, void *pPara
 
 bool ClickOption::Update(Input::Gamepad *pGamepad)
 {
+    XASSERT(pGamepad != nullptr);
+
     // Allow the user to click on the option
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_X)
         m_Callback(m_pParameters);

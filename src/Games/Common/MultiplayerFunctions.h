@@ -9,9 +9,12 @@ namespace COMMON_FN_NAMESPACE
 
 bool ToggleGodModeMP(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
+    XASSERT(pPlayerEntity != nullptr);
 
     if (enabled)
         pPlayerEntity->flags |= 1;
@@ -23,6 +26,9 @@ bool ToggleGodModeMP(void *pParameters)
 
 bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
 {
+    XASSERT(pParameters != nullptr);
+    XASSERT(patchAddress != 0);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     Memory::Write<float>(patchAddress, enabled ? 9999.0f : 128.0f);
@@ -45,6 +51,7 @@ static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
 
     // Spawn a care package and place it at origin and facing angles
     gentity_s *pEntity = G_Spawn();
+    XASSERT(pEntity != nullptr);
     pEntity->r.currentOrigin = origin;
     pEntity->r.currentAngles = angles;
 
@@ -76,9 +83,10 @@ bool SpawnCarePackage()
     int clientNum = Context::ClientNum;
 
     // Get the player's current position and viewY
-    playerState_s *pPlayerSate = GetPlayerState(clientNum);
-    const vec3 &playerOrigin = pPlayerSate->origin;
-    float playerViewY = pPlayerSate->viewAngles.y;
+    playerState_s *pPlayerState = GetPlayerState(clientNum);
+    XASSERT(pPlayerState != nullptr);
+    const vec3 &playerOrigin = pPlayerState->origin;
+    float playerViewY = pPlayerState->viewAngles.y;
 
     // Spawn a care package Settings::CarePackageDistance units in front of and
     // Settings::CarePackageHeight above the player
@@ -98,9 +106,10 @@ bool SpawnBlocker()
     int clientNum = Context::ClientNum;
 
     // Get the player's current position and viewY
-    playerState_s *pPlayerSate = GetPlayerState(clientNum);
-    const vec3 &playerOrigin = pPlayerSate->origin;
-    float playerViewY = pPlayerSate->viewAngles.y;
+    playerState_s *pPlayerState = GetPlayerState(clientNum);
+    XASSERT(pPlayerState != nullptr);
+    const vec3 &playerOrigin = pPlayerState->origin;
+    float playerViewY = pPlayerState->viewAngles.y;
 
     // Spawn a standing care package 40 units in front of the player
     vec3 carePackageOrigin = Math::ProjectForward(
@@ -123,6 +132,8 @@ typedef enum _CarePackagePositionPresets
 
 bool ChangeCarePackagePositionPresets(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     CarePackagePositionPresets positionPresets = *reinterpret_cast<CarePackagePositionPresets *>(pParameters);
 
     switch (positionPresets)
@@ -155,6 +166,8 @@ typedef enum _CarePackageOrientation
 
 bool ChangeCarePackageOrientation(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     CarePackageOrientation orientation = *reinterpret_cast<CarePackageOrientation *>(pParameters);
 
     switch (orientation)
@@ -189,6 +202,11 @@ bool TeleportBotToMe();
 
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
+    XASSERT(pOptions != nullptr);
+    XASSERT(pOptions->ServerIdAddress != 0);
+    XASSERT(pOptions->ClientsBaseAddress != 0);
+    XASSERT(Context::pBotEntity != nullptr);
+
     Sleep(150);
 
     int serverId = Memory::Read<int>(pOptions->ServerIdAddress);
@@ -228,6 +246,8 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 
 bool SpawnBot(SpawnBotOptions *pOptions)
 {
+    XASSERT(pOptions != nullptr);
+
     gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
 
     // Prevent the user from spawning multiple bots
@@ -263,6 +283,7 @@ bool TeleportBotToMe()
 
     // Get the player's current position and viewY
     playerState_s *pPlayerState = GetPlayerState(clientNum);
+    XASSERT(pPlayerState != nullptr);
     vec3 origin = pPlayerState->origin;
     float viewY = pPlayerState->viewAngles.y;
 
@@ -276,6 +297,8 @@ bool TeleportBotToMe()
 
 bool ToggleBotMovement(void *pParameters)
 {
+    XASSERT(pParameters != nullptr);
+
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
     int clientNum = Context::ClientNum;

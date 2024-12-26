@@ -106,6 +106,8 @@ void AlphaMW2Title::InitMenu()
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
+    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+
     // Call the original Scr_Notify function
     s_DetourMap.at("Scr_Notify")->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
@@ -137,6 +139,8 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
 
 void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
+    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+
     // Call the original SV_ExecuteClientCommand function
     s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 

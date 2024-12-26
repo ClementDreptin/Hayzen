@@ -25,6 +25,8 @@ void Title::Update()
 {
     Input::Gamepad *pGamepad = Input::GetInput();
 
+    XASSERT(pGamepad != nullptr);
+
     // Toggle the menu by pressing LT and DPAD LEFT
     if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
     {
@@ -88,6 +90,8 @@ void Title::RenderControlsTexts()
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
+    XASSERT(s_DetourMap.find("SCR_DrawScreenField") != s_DetourMap.end());
+
     // Call the original SCR_DrawScreenField function
     s_DetourMap.at("SCR_DrawScreenField")->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
@@ -105,6 +109,8 @@ void Title::InstallHooks()
 
     for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
     {
+        XASSERT(it->second != nullptr);
+
         hr = it->second->Install();
         if (FAILED(hr))
             break;
@@ -140,6 +146,12 @@ void Title::RemoveHooks()
 
 void Title::InitRenderer()
 {
+    XASSERT(UI::R_RegisterFont != nullptr);
+    XASSERT(UI::Material_RegisterHandle != nullptr);
+
     UI::pFont = UI::R_RegisterFont("fonts/smallFont", 0);
     UI::MaterialHandle = UI::Material_RegisterHandle("white", 0);
+
+    XASSERT(UI::pFont != nullptr);
+    XASSERT(UI::MaterialHandle != nullptr);
 }

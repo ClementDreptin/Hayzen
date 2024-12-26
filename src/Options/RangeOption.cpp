@@ -25,6 +25,8 @@ RangeOption<T>::RangeOption(const std::string &name, Callback callback, const Va
 template<typename T>
 bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
 {
+    XASSERT(pGamepad != nullptr);
+
     // Allow the user to change the value with DPAD LEFT/DPAD RIGHT
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT)
     {

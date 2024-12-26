@@ -16,6 +16,8 @@ Detour *s_pXexpResolveImageImportsDetour = nullptr;
 
 static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
 {
+    XASSERT(s_pXexpResolveImageImportsDetour != nullptr);
+
     // Get a pointer to the first string in the name table. The name table is right after
     // the import descriptor and contains moduleCount strings
     char *currentModuleName = reinterpret_cast<char *>(reinterpret_cast<uintptr_t>(pImportDesc) + sizeof(XEX_IMPORT_DESCRIPTOR));
@@ -31,7 +33,16 @@ static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESC
             // Make sure we have enough space
             size_t requiredSpace = g_pPlugin->GetName().size() + 1; // + 1 for the null character
             if (requiredSpace > spaceTakenByCurrentModuleName)
+            {
+                DebugPrint(
+                    "[Hayzen][DebugEnabler]: Error: Not enough space to store the plugin name (%s),"
+                    "required: %d, available: %d.",
+                    g_pPlugin->GetName().c_str(),
+                    requiredSpace,
+                    spaceTakenByCurrentModuleName
+                );
                 break;
+            }
 
             // Replace xbdm.xex with the plugin name
             ZeroMemory(currentModuleName, currentModuleNameSize);
@@ -54,11 +65,7 @@ static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESC
 
 HRESULT Enable()
 {
-    HRESULT hr = S_OK;
-
-    // Don't do anything if debug builds have already been enabled
-    if (s_pXexpResolveImageImportsDetour != nullptr)
-        return hr;
+    XASSERT(s_pXexpResolveImageImportsDetour == nullptr);
 
     Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x60000000);
 
@@ -69,9 +76,7 @@ HRESULT Enable()
 
 void Disable()
 {
-    // Don't do anything if didn't previously enabled debug builds
-    if (s_pXexpResolveImageImportsDetour == nullptr)
-        return;
+    XASSERT(s_pXexpResolveImageImportsDetour != nullptr);
 
     s_pXexpResolveImageImportsDetour->Remove();
     s_pXexpResolveImageImportsDetour = nullptr;

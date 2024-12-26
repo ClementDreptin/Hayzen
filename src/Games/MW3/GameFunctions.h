@@ -42,7 +42,7 @@ void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);
 
-gentity_s *GetEntity(int entNum);
+gentity_s *GetEntity(uint32_t entNum);
 
 void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value);
 

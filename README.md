@@ -24,7 +24,7 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 
 ### Running debug builds
 
-This feature is enabled by default (can be disabled from the Settings tab of the mod menu) and is persistent across reboots. It allows you to run XEX files built in debug mode or EXE files that can normally only run on Devkits, so no need for RGLoader anymore. More info [here](docs/debug-builds.md).
+This feature is enabled by default but can be disabled from the Settings tab of the mod menu. It allows you to run XEX files built in debug mode or EXE files that can normally only run on Devkits, so no need for HvP.xex or RGLoader anymore. More info [here](docs/debug-builds.md).
 
 ## Installation
 

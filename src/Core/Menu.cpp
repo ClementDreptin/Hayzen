@@ -4,6 +4,7 @@
 #include "Core/Plugin.h"
 #include "Core/Settings.h"
 #include "Core/UI.h"
+#include "DebugEnabler/DebugEnabler.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
@@ -168,19 +169,17 @@ bool Menu::ToggleDebugBuilds(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    // Setting Settings::AllowDebugBuilds is normally done based of the return value
-    // of this function but we need to save the settings to disk so we have to set
-    // Settings::AllowDebugBuilds before the function ends
     bool enabled = *reinterpret_cast<bool *>(pParameters);
-    Settings::AllowDebugBuilds = enabled;
 
-    bool couldSave = SaveSettings(nullptr);
-    if (!couldSave)
-        return false;
+    if (!enabled)
+    {
+        DebugEnabler::Disable();
+        return true;
+    }
 
-    Xam::XNotify("Reboot to apply changes");
+    HRESULT hr = DebugEnabler::Enable();
 
-    return true;
+    return SUCCEEDED(hr);
 }
 
 bool Menu::SaveSettings(void *)

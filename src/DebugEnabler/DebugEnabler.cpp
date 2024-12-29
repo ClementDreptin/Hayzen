@@ -12,7 +12,7 @@
 namespace DebugEnabler
 {
 
-Detour *s_pXexpResolveImageImportsDetour = nullptr;
+static Detour *s_pXexpResolveImageImportsDetour = nullptr;
 
 static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
 {
@@ -78,7 +78,9 @@ void Disable()
 {
     XASSERT(s_pXexpResolveImageImportsDetour != nullptr);
 
-    s_pXexpResolveImageImportsDetour->Remove();
+    Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x48000274);
+
+    delete s_pXexpResolveImageImportsDetour;
     s_pXexpResolveImageImportsDetour = nullptr;
 }
 

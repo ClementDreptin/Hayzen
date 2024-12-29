@@ -9,7 +9,7 @@ Config::Config(const std::string &filePath)
 {
 }
 
-bool Config::Save()
+HRESULT Config::Save()
 {
     m_Config["debugbuilds"]["allowdebugbuilds"] = Settings::AllowDebugBuilds ? "true" : "false";
 
@@ -34,17 +34,17 @@ bool Config::Save()
         DebugPrint("[Hayzen][Config]: Warn: Could not write config to disk.");
 #endif
 
-    return success;
+    return success ? S_OK : E_FAIL;
 }
 
-bool Config::Load()
+HRESULT Config::Load()
 {
     // Load the config from disk
     bool canReadFile = m_ConfigFile.read(m_Config);
     if (!canReadFile)
     {
         DebugPrint("[Hayzen][Config]: Warn: Could not read config from disk.");
-        return false;
+        return E_FAIL;
     }
 
     // Debug builds
@@ -100,5 +100,5 @@ bool Config::Load()
             Settings::Color = D3DCOLOR_ALPHA(Settings::Color, atoi(m_Config["color"]["a"].c_str()));
     }
 
-    return true;
+    return S_OK;
 }

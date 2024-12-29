@@ -12,7 +12,7 @@ public:
 
     const std::string &GetName() const { return m_Name; }
 
-    Config &GetConfig() { return m_Config; }
+    HRESULT SaveConfig();
 
 private:
     HANDLE m_Handle;

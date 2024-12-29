@@ -10,9 +10,9 @@ public:
 
     Config(const std::string &filePath);
 
-    bool Save();
+    HRESULT Save();
 
-    bool Load();
+    HRESULT Load();
 
 private:
     IniConfigFile m_ConfigFile;

@@ -185,14 +185,15 @@ bool Menu::ToggleDebugBuilds(void *pParameters)
 
 bool Menu::SaveSettings(void *)
 {
-    bool result = g_pPlugin->GetConfig().Save();
+    HRESULT hr = g_pPlugin->SaveConfig();
+    bool success = SUCCEEDED(hr);
 
     Xam::XNotify(
-        result ? "Settings Saved" : "Could not save settings",
-        result ? Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW : Xam::XNOTIFYUI_TYPE_AVOID_REVIEW
+        success ? "Settings Saved" : "Could not save settings",
+        success ? Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW : Xam::XNOTIFYUI_TYPE_AVOID_REVIEW
     );
 
-    return result;
+    return success;
 }
 
 bool Menu::ResetSettings(void *)

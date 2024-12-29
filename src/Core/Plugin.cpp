@@ -45,6 +45,15 @@ Plugin::~Plugin()
     Sleep(250);
 }
 
+HRESULT Plugin::SaveConfig()
+{
+    // It is necessary mount the HDD again because this function might get called from a game
+    // which my not have the HDD mounted
+    Xam::MountHdd();
+
+    return m_Config.Save();
+}
+
 void Plugin::Init()
 {
     CreateConfig();

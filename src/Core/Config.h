@@ -5,16 +5,33 @@
 class Config
 {
 public:
-    typedef mINI::INIStructure IniConfig;
-    typedef mINI::INIFile IniConfigFile;
-
     Config(const std::string &filePath);
 
-    HRESULT Save();
+    HRESULT SaveToDisk();
 
-    HRESULT Load();
+    HRESULT LoadFromDisk();
+
+    void Reset();
+
+    bool AllowDebugBuilds;
+    bool DisplayControlsTexts;
+    float CarePackageDistance;
+    float CarePackageHeight;
+    float CarePackageAngle;
+    float Y;
+    D3DCOLOR Color;
+    D3DCOLOR BackgroundColor;
+    D3DCOLOR TextColor;
+    float Padding;
+    float Gap;
+    float BorderWidth;
+    float X;
+    float Width;
+    float Height;
 
 private:
-    IniConfigFile m_ConfigFile;
-    IniConfig m_Config;
+    mINI::INIFile m_File;
+    mINI::INIStructure m_Structure;
 };
+
+extern Config g_Config;

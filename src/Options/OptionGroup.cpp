@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/OptionGroup.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "Core/UI.h"
 
 #define MAX_OPTIONS_TO_DISPLAY 8
@@ -138,9 +138,9 @@ void OptionGroup::RenderBackground(float x, float y, float width, float height)
     props.Y = y;
     props.Width = width;
     props.Height = height;
-    props.Color = Settings::BackgroundColor;
-    props.BorderWidth = Settings::BorderWidth;
-    props.BorderColor = Settings::Color;
+    props.Color = g_Config.BackgroundColor;
+    props.BorderWidth = g_Config.BorderWidth;
+    props.BorderColor = g_Config.Color;
     props.BorderPosition = UI::Border_All;
 
     UI::DrawRectangle(props);

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/RangeOption.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "Core/UI.h"
 
 template<typename T>
@@ -84,10 +84,10 @@ void RangeOption<T>::Render(float x, float y, float width)
 
     // Render the text with the number
     UI::TextProps props = {};
-    props.X = x + width - UI::GetTextWidth(text) - Settings::Padding;
+    props.X = x + width - UI::GetTextWidth(text) - g_Config.Padding;
     props.Y = y;
     props.Text = text;
-    props.Color = Settings::TextColor;
+    props.Color = g_Config.TextColor;
 
     UI::DrawText(props);
 }

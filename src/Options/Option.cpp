@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/Option.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "Core/UI.h"
 
 Option::Option()
@@ -20,21 +20,21 @@ void Option::Render(float x, float y, float width)
     if (m_IsSelected)
     {
         UI::RectangleProps props = {};
-        props.X = x + Settings::Gap;
-        props.Y = y + Settings::Gap;
-        props.Width = width - Settings::Gap * 2;
-        props.Height = GetMinHeight() - Settings::Gap * 2;
-        props.Color = Settings::Color;
+        props.X = x + g_Config.Gap;
+        props.Y = y + g_Config.Gap;
+        props.Width = width - g_Config.Gap * 2;
+        props.Height = GetMinHeight() - g_Config.Gap * 2;
+        props.Color = g_Config.Color;
 
         UI::DrawRectangle(props);
     }
 
     // Render the text
     UI::TextProps props = {};
-    props.X = x + Settings::Padding;
+    props.X = x + g_Config.Padding;
     props.Y = y;
     props.Text = m_Name;
-    props.Color = Settings::TextColor;
+    props.Color = g_Config.TextColor;
 
     UI::DrawText(props);
 }
@@ -45,7 +45,7 @@ float Option::GetMinWidth() const
     if (m_CachedMinWidth != 0.0f)
         return m_CachedMinWidth;
 
-    m_CachedMinWidth = UI::GetTextWidth(m_Name) + Settings::Padding * 2;
+    m_CachedMinWidth = UI::GetTextWidth(m_Name) + g_Config.Padding * 2;
 
     // Take into account some space between the option name and the potential text on the right (e.g. the number for RangeOption)
     m_CachedMinWidth += 100.0f;
@@ -59,7 +59,7 @@ float Option::GetMinHeight() const
     if (m_CachedMinHeight != 0.0f)
         return m_CachedMinHeight;
 
-    m_CachedMinHeight = UI::GetTextHeight(m_Name) + Settings::Padding * 2;
+    m_CachedMinHeight = UI::GetTextHeight(m_Name) + g_Config.Padding * 2;
 
     return m_CachedMinHeight;
 }

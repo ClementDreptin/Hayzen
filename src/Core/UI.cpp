@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/UI.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 
 namespace UI
 {
@@ -132,7 +132,7 @@ void DrawText(const TextProps &props)
 
     bool hasBackgroundOrBorder = props.BackgroundColor != 0 || (props.BorderWidth > 0 && props.BorderPosition != Border_None);
     float fontScale = props.FontScale != 0.0f ? props.FontScale : 1.0f;
-    float padding = Settings::Padding * fontScale;
+    float padding = g_Config.Padding * fontScale;
 
     float textWidth = GetTextWidth(props.Text, fontScale);
     float textHeight = GetTextHeight(props.Text, fontScale);

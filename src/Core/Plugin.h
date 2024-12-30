@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Core/Config.h"
 #include "Core/Title.h"
 
 class Plugin
@@ -20,7 +19,6 @@ private:
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
-    Config m_Config;
 
     void Init();
 

@@ -81,7 +81,6 @@
     <ClInclude Include="src\Core\Context.h" />
     <ClInclude Include="src\Core\Menu.h" />
     <ClInclude Include="src\Core\Plugin.h" />
-    <ClInclude Include="src\Core\Settings.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\UI.h" />
     <ClInclude Include="src\DebugEnabler\DebugEnabler.h" />
@@ -131,7 +130,6 @@
     <ClCompile Include="src\Core\Context.cpp" />
     <ClCompile Include="src\Core\Menu.cpp" />
     <ClCompile Include="src\Core\Plugin.cpp" />
-    <ClCompile Include="src\Core\Settings.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
     <ClCompile Include="src\DebugEnabler\DebugEnabler.cpp" />

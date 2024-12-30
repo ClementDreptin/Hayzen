@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/SubOptionGroup.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "Core/UI.h"
 
 SubOptionGroup::SubOptionGroup()
@@ -43,10 +43,10 @@ void SubOptionGroup::Render(float x, float y, float width)
     // Render a ">" on the right to indicate that there's a sub menu
     std::string text = ">";
     UI::TextProps props = {};
-    props.X = x + width - UI::GetTextWidth(text) - Settings::Padding;
+    props.X = x + width - UI::GetTextWidth(text) - g_Config.Padding;
     props.Y = y - 4.0f; // Try to center the ">" vertically
     props.Text = text;
-    props.Color = Settings::TextColor;
+    props.Color = g_Config.TextColor;
     UI::DrawText(props);
 
     // If the option group is not open, don't go further
@@ -54,8 +54,8 @@ void SubOptionGroup::Render(float x, float y, float width)
         return;
 
     // Render the sub option group on the left or the right of the menu, depending on where there's space
-    float subOptionGroupWidth = m_OptionGroup.GetMinWidth() + Settings::BorderWidth * 2;
-    float currentOptionWidth = width + Settings::BorderWidth * 2;
+    float subOptionGroupWidth = m_OptionGroup.GetMinWidth() + g_Config.BorderWidth * 2;
+    float currentOptionWidth = width + g_Config.BorderWidth * 2;
     float leftX = x - subOptionGroupWidth;
     float rightX = x + currentOptionWidth;
 

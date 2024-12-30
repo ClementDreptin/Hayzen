@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Options/ToggleOption.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "Core/UI.h"
 
 ToggleOption::ToggleOption()
@@ -48,14 +48,14 @@ void ToggleOption::Render(float x, float y, float width)
     Option::Render(x, y, width);
 
     // Render the radio box
-    float lineHeight = UI::GetFontHeight() + Settings::Padding * 2;
+    float lineHeight = UI::GetFontHeight() + g_Config.Padding * 2;
     float radioBoxSize = lineHeight * 0.5f;
     UI::RectangleProps props = {};
-    props.X = x + width - radioBoxSize - Settings::Padding;
+    props.X = x + width - radioBoxSize - g_Config.Padding;
     props.Y = y + GetMinHeight() / 2 - radioBoxSize / 2;
     props.Width = radioBoxSize;
     props.Height = radioBoxSize;
-    props.Color = m_Active ? Settings::Color : D3DCOLOR_XRGB(0, 0, 0);
+    props.Color = m_Active ? g_Config.Color : D3DCOLOR_XRGB(0, 0, 0);
     props.BorderWidth = 1.0f;
     props.BorderColor = D3DCOLOR_XRGB(255, 255, 255);
     props.BorderPosition = UI::Border_All;

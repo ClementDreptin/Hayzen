@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Core/Title.h"
 
+#include "Core/Config.h"
 #include "Core/Context.h"
-#include "Core/Settings.h"
 #include "Core/UI.h"
 
 Title *Title::s_CurrentInstance = nullptr;
@@ -52,7 +52,7 @@ void Title::Render()
     if (m_MenuOpen)
         m_Menu.Render();
 
-    if (Settings::DisplayControlsTexts)
+    if (g_Config.DisplayControlsTexts)
         RenderControlsTexts();
 }
 
@@ -60,16 +60,16 @@ void Title::RenderControlsTexts()
 {
     float yOffset = 10.0f;
     float fontScale = 0.8f;
-    float padding = Settings::Padding * fontScale;
-    float borderWidth = Settings::BorderWidth * fontScale;
+    float padding = g_Config.Padding * fontScale;
+    float borderWidth = g_Config.BorderWidth * fontScale;
 
     UI::TextProps props = {};
     props.X = 10.0f;
     props.FontScale = fontScale;
-    props.Color = Settings::TextColor;
-    props.BackgroundColor = Settings::BackgroundColor;
+    props.Color = g_Config.TextColor;
+    props.BackgroundColor = g_Config.BackgroundColor;
     props.BorderWidth = borderWidth;
-    props.BorderColor = Settings::Color;
+    props.BorderColor = g_Config.Color;
     props.BorderPosition = UI::Border_All;
 
     props.Y = yOffset;

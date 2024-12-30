@@ -1,33 +1,51 @@
 #include "pch.h"
 #include "Core/Config.h"
 
-#include "Core/Settings.h"
 #include "Core/UI.h"
 
 Config::Config(const std::string &filePath)
-    : m_ConfigFile(filePath)
+    : AllowDebugBuilds(true),
+      DisplayControlsTexts(true),
+      CarePackageDistance(150.0f),
+      CarePackageHeight(0.0f),
+      CarePackageAngle(0.0f),
+      Y(150.0f),
+      Color(D3DCOLOR_XRGB(210, 20, 20)),
+      BackgroundColor(D3DCOLOR_XRGB(25, 25, 25)),
+      TextColor(D3DCOLOR_XRGB(255, 255, 255)),
+      Padding(5.0f),
+      Gap(2.0f),
+      BorderWidth(2.5f),
+
+      // The following values are calculated dynamically when initializing the menu
+      X(0.0f),
+      Width(0.0f),
+      Height(0.0f),
+
+      // Private member
+      m_File(filePath)
 {
 }
 
-HRESULT Config::Save()
+HRESULT Config::SaveToDisk()
 {
-    m_Config["debugbuilds"]["allowdebugbuilds"] = Settings::AllowDebugBuilds ? "true" : "false";
+    m_Structure["debugbuilds"]["allowdebugbuilds"] = AllowDebugBuilds ? "true" : "false";
 
-    m_Config["controls"]["showcontrols"] = Settings::DisplayControlsTexts ? "true" : "false";
+    m_Structure["controls"]["showcontrols"] = DisplayControlsTexts ? "true" : "false";
 
-    m_Config["carepackage"]["distance"] = std::to_string(static_cast<long double>(Settings::CarePackageDistance));
-    m_Config["carepackage"]["height"] = std::to_string(static_cast<long double>(Settings::CarePackageHeight));
-    m_Config["carepackage"]["angle"] = std::to_string(static_cast<long double>(Settings::CarePackageAngle));
+    m_Structure["carepackage"]["distance"] = std::to_string(static_cast<long double>(CarePackageDistance));
+    m_Structure["carepackage"]["height"] = std::to_string(static_cast<long double>(CarePackageHeight));
+    m_Structure["carepackage"]["angle"] = std::to_string(static_cast<long double>(CarePackageAngle));
 
-    m_Config["position"]["x"] = std::to_string(static_cast<long double>(Settings::X));
-    m_Config["position"]["y"] = std::to_string(static_cast<long double>(Settings::Y));
+    m_Structure["position"]["x"] = std::to_string(static_cast<long double>(X));
+    m_Structure["position"]["y"] = std::to_string(static_cast<long double>(Y));
 
-    m_Config["color"]["r"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETRED(Settings::Color)));
-    m_Config["color"]["g"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETGREEN(Settings::Color)));
-    m_Config["color"]["b"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETBLUE(Settings::Color)));
-    m_Config["color"]["a"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETALPHA(Settings::Color)));
+    m_Structure["color"]["r"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETRED(Color)));
+    m_Structure["color"]["g"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETGREEN(Color)));
+    m_Structure["color"]["b"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETBLUE(Color)));
+    m_Structure["color"]["a"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETALPHA(Color)));
 
-    bool success = m_ConfigFile.generate(m_Config);
+    bool success = m_File.generate(m_Structure);
 
 #ifndef NDEBUG
     if (!success)
@@ -37,10 +55,10 @@ HRESULT Config::Save()
     return success ? S_OK : E_FAIL;
 }
 
-HRESULT Config::Load()
+HRESULT Config::LoadFromDisk()
 {
     // Load the config from disk
-    bool canReadFile = m_ConfigFile.read(m_Config);
+    bool canReadFile = m_File.read(m_Structure);
     if (!canReadFile)
     {
         DebugPrint("[Hayzen][Config]: Warn: Could not read config from disk.");
@@ -48,57 +66,69 @@ HRESULT Config::Load()
     }
 
     // Debug builds
-    if (m_Config.has("debugbuilds"))
+    if (m_Structure.has("debugbuilds"))
     {
-        if (m_Config["debugbuilds"].has("allowdebugbuilds"))
-            Settings::AllowDebugBuilds = m_Config["debugbuilds"]["allowdebugbuilds"] == "true";
+        if (m_Structure["debugbuilds"].has("allowdebugbuilds"))
+            AllowDebugBuilds = m_Structure["debugbuilds"]["allowdebugbuilds"] == "true";
     }
 
     // Controls
-    if (m_Config.has("controls"))
+    if (m_Structure.has("controls"))
     {
-        if (m_Config["controls"].has("showcontrols"))
-            Settings::DisplayControlsTexts = m_Config["controls"]["showcontrols"] == "true";
+        if (m_Structure["controls"].has("showcontrols"))
+            DisplayControlsTexts = m_Structure["controls"]["showcontrols"] == "true";
     }
 
     // Care package
-    if (m_Config.has("carepackage"))
+    if (m_Structure.has("carepackage"))
     {
-        if (m_Config["carepackage"].has("distance"))
-            Settings::CarePackageDistance = static_cast<float>(atof(m_Config["carepackage"]["distance"].c_str()));
+        if (m_Structure["carepackage"].has("distance"))
+            CarePackageDistance = static_cast<float>(atof(m_Structure["carepackage"]["distance"].c_str()));
 
-        if (m_Config["carepackage"].has("height"))
-            Settings::CarePackageHeight = static_cast<float>(atof(m_Config["carepackage"]["height"].c_str()));
+        if (m_Structure["carepackage"].has("height"))
+            CarePackageHeight = static_cast<float>(atof(m_Structure["carepackage"]["height"].c_str()));
 
-        if (m_Config["carepackage"].has("angle"))
-            Settings::CarePackageAngle = static_cast<float>(atof(m_Config["carepackage"]["angle"].c_str()));
+        if (m_Structure["carepackage"].has("angle"))
+            CarePackageAngle = static_cast<float>(atof(m_Structure["carepackage"]["angle"].c_str()));
     }
 
     // Position
-    if (m_Config.has("position"))
+    if (m_Structure.has("position"))
     {
-        if (m_Config["position"].has("x"))
-            Settings::X = static_cast<float>(atof(m_Config["position"]["x"].c_str()));
+        if (m_Structure["position"].has("x"))
+            X = static_cast<float>(atof(m_Structure["position"]["x"].c_str()));
 
-        if (m_Config["position"].has("y"))
-            Settings::Y = static_cast<float>(atof(m_Config["position"]["y"].c_str()));
+        if (m_Structure["position"].has("y"))
+            Y = static_cast<float>(atof(m_Structure["position"]["y"].c_str()));
     }
 
     // Color
-    if (m_Config.has("color"))
+    if (m_Structure.has("color"))
     {
-        if (m_Config["color"].has("r"))
-            Settings::Color = D3DCOLOR_RED(Settings::Color, atoi(m_Config["color"]["r"].c_str()));
+        if (m_Structure["color"].has("r"))
+            Color = D3DCOLOR_RED(Color, atoi(m_Structure["color"]["r"].c_str()));
 
-        if (m_Config["color"].has("g"))
-            Settings::Color = D3DCOLOR_GREEN(Settings::Color, atoi(m_Config["color"]["g"].c_str()));
+        if (m_Structure["color"].has("g"))
+            Color = D3DCOLOR_GREEN(Color, atoi(m_Structure["color"]["g"].c_str()));
 
-        if (m_Config["color"].has("b"))
-            Settings::Color = D3DCOLOR_BLUE(Settings::Color, atoi(m_Config["color"]["b"].c_str()));
+        if (m_Structure["color"].has("b"))
+            Color = D3DCOLOR_BLUE(Color, atoi(m_Structure["color"]["b"].c_str()));
 
-        if (m_Config["color"].has("a"))
-            Settings::Color = D3DCOLOR_ALPHA(Settings::Color, atoi(m_Config["color"]["a"].c_str()));
+        if (m_Structure["color"].has("a"))
+            Color = D3DCOLOR_ALPHA(Color, atoi(m_Structure["color"]["a"].c_str()));
     }
 
     return S_OK;
+}
+
+void Config::Reset()
+{
+    // Double cast to round to the closest integer value
+    X = static_cast<float>(static_cast<uint32_t>(UI::DisplayWidth - Width - 10.0f));
+    Y = 150.0f;
+    Color = D3DCOLOR_XRGB(210, 20, 20);
+    DisplayControlsTexts = true;
+    CarePackageDistance = 150.0f;
+    CarePackageHeight = 0.0f;
+    CarePackageAngle = 0.0f;
 }

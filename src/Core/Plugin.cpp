@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Core/Plugin.h"
 
-#include "Core/Settings.h"
+#include "Core/Config.h"
 #include "DebugEnabler/DebugEnabler.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
@@ -10,6 +10,8 @@
 #include "Games/MW3/MW3Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 #include "Games/NX1/NX1Title.h"
+
+Config g_Config("hdd:\\Hayzen.ini");
 
 typedef enum _TitleId
 {
@@ -21,7 +23,7 @@ typedef enum _TitleId
 } TitleId;
 
 Plugin::Plugin(HANDLE pluginHandle)
-    : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr), m_Config("hdd:\\Hayzen.ini")
+    : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr)
 {
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
     m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
@@ -36,7 +38,7 @@ Plugin::~Plugin()
 {
     m_Running = false;
 
-    if (Settings::AllowDebugBuilds && !Xam::IsDevkit())
+    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
         DebugEnabler::Disable();
 
     delete m_pCurrentTitle;
@@ -51,14 +53,14 @@ HRESULT Plugin::SaveConfig()
     // which my not have the HDD mounted
     Xam::MountHdd();
 
-    return m_Config.Save();
+    return g_Config.SaveToDisk();
 }
 
 void Plugin::Init()
 {
     CreateConfig();
 
-    if (Settings::AllowDebugBuilds && !Xam::IsDevkit())
+    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
     {
         HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))
@@ -175,8 +177,8 @@ void Plugin::CreateConfig()
     configFilePath << "Hayzen.ini";
 
     // This doesn't write the config file to disk, it just creates the in-memory object
-    m_Config = Config(configFilePath.str());
+    g_Config = Config(configFilePath.str());
 
-    // Load the settings from the config (doesn't do anything if the config file doesn't exist)
-    m_Config.Load();
+    // This doesn't do anything if the config file doesn't exist
+    g_Config.LoadFromDisk();
 }

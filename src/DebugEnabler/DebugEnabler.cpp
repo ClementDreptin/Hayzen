@@ -17,6 +17,7 @@ static Detour *s_pXexpResolveImageImportsDetour = nullptr;
 static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
 {
     XASSERT(s_pXexpResolveImageImportsDetour != nullptr);
+    XASSERT(g_pPlugin != nullptr);
 
     // Get a pointer to the first string in the name table. The name table is right after
     // the import descriptor and contains moduleCount strings

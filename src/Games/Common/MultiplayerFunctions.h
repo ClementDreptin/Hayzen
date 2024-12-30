@@ -1,8 +1,8 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
+#include "Core/Config.h"
 #include "Core/Context.h"
-#include "Core/Settings.h"
 
 namespace COMMON_FN_NAMESPACE
 {
@@ -88,15 +88,15 @@ bool SpawnCarePackage()
     const vec3 &playerOrigin = pPlayerState->origin;
     float playerViewY = pPlayerState->viewAngles.y;
 
-    // Spawn a care package Settings::CarePackageDistance units in front of and
-    // Settings::CarePackageHeight above the player
+    // Spawn a care package g_Config.CarePackageDistance units in front of and
+    // g_Config.CarePackageHeight above the player
     vec3 carePackageOrigin = Math::ProjectForward(
         playerOrigin,
         Math::Radians(playerViewY),
-        Settings::CarePackageDistance
+        g_Config.CarePackageDistance
     );
-    carePackageOrigin.z += Settings::CarePackageHeight;
-    vec3 carePackageAngles = vec3(0.0f, playerViewY + Settings::CarePackageAngle, 0.0f);
+    carePackageOrigin.z += g_Config.CarePackageHeight;
+    vec3 carePackageAngles = vec3(0.0f, playerViewY + g_Config.CarePackageAngle, 0.0f);
 
     return SpawnCarePackage(carePackageOrigin, carePackageAngles);
 }
@@ -139,16 +139,16 @@ bool ChangeCarePackagePositionPresets(void *pParameters)
     switch (positionPresets)
     {
     case CarePackagePosition_BounceTest:
-        Settings::CarePackageDistance = 150.0f;
-        Settings::CarePackageHeight = 0.0f;
+        g_Config.CarePackageDistance = 150.0f;
+        g_Config.CarePackageHeight = 0.0f;
         break;
     case CarePackagePosition_MegaBounce:
-        Settings::CarePackageDistance = 860.0f;
-        Settings::CarePackageHeight = 1250.0f;
+        g_Config.CarePackageDistance = 860.0f;
+        g_Config.CarePackageHeight = 1250.0f;
         break;
     case CarePackagePosition_Floor:
-        Settings::CarePackageDistance = 0.0f;
-        Settings::CarePackageHeight = -60.0f;
+        g_Config.CarePackageDistance = 0.0f;
+        g_Config.CarePackageHeight = -60.0f;
         break;
     default:
         return false;
@@ -173,13 +173,13 @@ bool ChangeCarePackageOrientation(void *pParameters)
     switch (orientation)
     {
     case CarePackageOrientation_Straight:
-        Settings::CarePackageAngle = 0.0f;
+        g_Config.CarePackageAngle = 0.0f;
         break;
     case CarePackageOrientation_LeftStrafe:
-        Settings::CarePackageAngle = -45.0f;
+        g_Config.CarePackageAngle = -45.0f;
         break;
     case CarePackageOrientation_RightStrafe:
-        Settings::CarePackageAngle = 45.0f;
+        g_Config.CarePackageAngle = 45.0f;
         break;
     default:
         return false;

@@ -19,8 +19,8 @@ SpecOpsMW2Title::SpecOpsMW2Title()
     InitRenderer();
 
     // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = new Detour(0x821354B0, SCR_DrawScreenFieldHook);
-    s_DetourMap["ClientCommand"] = new Detour(0x821EFFD0, ClientCommandHook);
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821354B0, SCR_DrawScreenFieldHook);
+    s_DetourMap["ClientCommand"] = Detour(0x821EFFD0, ClientCommandHook);
 
     InstallHooks();
 
@@ -75,7 +75,7 @@ void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
     XASSERT(s_DetourMap.find("ClientCommand") != s_DetourMap.end());
 
     // Call the original ClientCommand function
-    s_DetourMap.at("ClientCommand")->GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
+    s_DetourMap.at("ClientCommand").GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 7"))

@@ -6,7 +6,7 @@
 #include "Core/UI.h"
 
 Title *Title::s_CurrentInstance = nullptr;
-std::unordered_map<std::string, Detour *> Title::s_DetourMap;
+std::unordered_map<std::string, Detour> Title::s_DetourMap;
 
 Title::Title()
     : m_InMatch(false), m_MenuOpen(false)
@@ -93,7 +93,7 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
     XASSERT(s_DetourMap.find("SCR_DrawScreenField") != s_DetourMap.end());
 
     // Call the original SCR_DrawScreenField function
-    s_DetourMap.at("SCR_DrawScreenField")->GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
+    s_DetourMap.at("SCR_DrawScreenField").GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
     if (s_CurrentInstance != nullptr && s_CurrentInstance->InMatch())
     {
@@ -109,9 +109,7 @@ void Title::InstallHooks()
 
     for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
     {
-        XASSERT(it->second != nullptr);
-
-        hr = it->second->Install();
+        hr = it->second.Install();
         if (FAILED(hr))
             break;
     }
@@ -138,9 +136,6 @@ void Title::InstallHooks()
 
 void Title::RemoveHooks()
 {
-    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
-        delete it->second;
-
     s_DetourMap.clear();
 }
 

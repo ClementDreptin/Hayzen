@@ -22,9 +22,9 @@ AlphaMW2Title::AlphaMW2Title()
     InitRenderer();
 
     // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = new Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = new Detour(0x822539C0, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = new Detour(0x822B4700, SV_ExecuteClientCommandHook);
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x822539C0, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822B4700, SV_ExecuteClientCommandHook);
 
     InstallHooks();
 
@@ -110,7 +110,7 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
 
     // Call the original Scr_Notify function
-    s_DetourMap.at("Scr_Notify")->GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
+    s_DetourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.number;
@@ -143,7 +143,7 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client
     XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
 
     // Call the original SV_ExecuteClientCommand function
-    s_DetourMap.at("SV_ExecuteClientCommand")->GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
+    s_DetourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
     int clientNum = client->gentity->state.number;

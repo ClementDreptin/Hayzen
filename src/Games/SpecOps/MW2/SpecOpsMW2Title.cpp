@@ -39,6 +39,7 @@ void SpecOpsMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW2::ChangeJumpHeight, 39, 0, 999, 1));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsMW2::GoThroughInvisibleBarriers, false));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

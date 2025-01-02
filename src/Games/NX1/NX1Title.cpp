@@ -37,6 +37,7 @@ void NX1Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", NX1::ToggleGodMode, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, false));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

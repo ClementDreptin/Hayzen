@@ -2,6 +2,7 @@
 #include "Games/SpecOps/MW2/MenuFunctions.h"
 
 #include "Games/SpecOps/MW2/GameFunctions.h"
+#include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 
 using namespace SpecOpsMW2::Game;
 
@@ -9,6 +10,10 @@ using namespace SpecOpsMW2::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE SpecOpsMW2Common
+#ifdef COMMON_TITLE
+    #undef COMMON_TITLE
+#endif
+#define COMMON_TITLE SpecOpsMW2Title
 #include "Games/Common/CommonFunctions.h"
 
 #define GAME_MW2
@@ -38,6 +43,20 @@ bool SpecOpsMW2::ToggleAmmo(void *pParameters)
 bool SpecOpsMW2::ChangeJumpHeight(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
+bool SpecOpsMW2::GoThroughInvisibleBarriers(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
+    options.Enabled = enabled;
+    options.PM_CheckLadderMoveAddress = 0x82329450;
+    options.PmoveSingleAddress = 0x82329C20;
+
+    return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
 bool SpecOpsMW2::ToggleSaveLoadBinds(void *pParameters)

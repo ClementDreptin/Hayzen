@@ -52,6 +52,7 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", MW2::ChangeJumpHeight, 39, 0, 999, 1));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW2::GoThroughInvisibleBarriers, false));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

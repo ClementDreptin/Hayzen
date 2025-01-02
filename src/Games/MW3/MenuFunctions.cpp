@@ -2,6 +2,7 @@
 #include "Games/MW3/MenuFunctions.h"
 
 #include "Games/MW3/GameFunctions.h"
+#include "Games/MW3/MW3Title.h"
 
 using namespace MW3::Game;
 
@@ -9,6 +10,10 @@ using namespace MW3::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW3Common
+#ifdef COMMON_TITLE
+    #undef COMMON_TITLE
+#endif
+#define COMMON_TITLE MW3Title
 #include "Games/Common/CommonFunctions.h"
 
 #define GAME_MW3
@@ -38,6 +43,20 @@ bool MW3::ToggleAmmo(void *pParameters)
     options.PatchValue = 0x7D495378;
 
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
+}
+
+bool MW3::GoThroughInvisibleBarriers(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
+    options.Enabled = enabled;
+    options.PM_CheckLadderMoveAddress = 0x820E94A0;
+    options.PmoveSingleAddress = 0x820E9C68;
+
+    return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
 bool MW3::SpawnCarePackage(void *)

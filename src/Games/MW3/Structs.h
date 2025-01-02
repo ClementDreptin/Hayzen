@@ -8,14 +8,27 @@ namespace Game
 
 struct playerState_s
 {
-    char padding1[0x1C];
+    char padding1[0xC];
+    uint32_t pm_flags;
+    char padding2[0xC];
     vec3 origin;
-    char padding2[0x130];
+    char padding3[0x130];
     vec3 viewAngles;
-    char padding3[0x319C];
+    char padding4[0x319C];
 };
 
 static_assert(sizeof(playerState_s) == 0x3300, "size of playerState_s different than 0x3300");
+
+struct pmove_t
+{
+    playerState_s *ps;
+    char padding1[0x58];
+    uint32_t tracemask;
+    char padding2[0xD8];
+};
+
+static_assert(sizeof(pmove_t) == 0x138, "size of pmove_t different than 0x138");
+static_assert(offsetof(pmove_t, tracemask) == 0x5C, "");
 
 struct gclient_s
 {

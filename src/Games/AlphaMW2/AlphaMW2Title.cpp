@@ -44,6 +44,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, 39, 0, 999, 1));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, false));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

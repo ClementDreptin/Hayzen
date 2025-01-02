@@ -9,6 +9,8 @@ bool ToggleFallDamage(void *pParameters);
 
 bool ToggleAmmo(void *pParameters);
 
+bool GoThroughInvisibleBarriers(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);

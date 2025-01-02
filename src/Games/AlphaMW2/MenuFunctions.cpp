@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Games/AlphaMW2/MenuFunctions.h"
 
+#include "Games/AlphaMW2/AlphaMW2Title.h"
 #include "Games/AlphaMW2/GameFunctions.h"
 
 using namespace AlphaMW2::Game;
@@ -9,6 +10,10 @@ using namespace AlphaMW2::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE AlphaMW2Common
+#ifdef COMMON_TITLE
+    #undef COMMON_TITLE
+#endif
+#define COMMON_TITLE AlphaMW2Title
 #include "Games/Common/CommonFunctions.h"
 
 #define GAME_ALPHAMW2
@@ -61,6 +66,20 @@ bool AlphaMW2::ToggleAmmo(void *pParameters)
 bool AlphaMW2::ChangeJumpHeight(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
+bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
+    options.Enabled = enabled;
+    options.PM_CheckLadderMoveAddress = 0x8210AD80;
+    options.PmoveSingleAddress = 0x8210B540;
+
+    return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
 bool AlphaMW2::SpawnCarePackage(void *)

@@ -2,6 +2,7 @@
 #include "Games/NX1/MenuFunctions.h"
 
 #include "Games/NX1/GameFunctions.h"
+#include "Games/NX1/NX1Title.h"
 
 using namespace NX1::Game;
 
@@ -9,6 +10,10 @@ using namespace NX1::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE NX1Common
+#ifdef COMMON_TITLE
+    #undef COMMON_TITLE
+#endif
+#define COMMON_TITLE NX1Title
 #include "Games/Common/CommonFunctions.h"
 
 #define GAME_NX1
@@ -18,6 +23,20 @@ using namespace NX1::Game;
 bool NX1::ToggleGodMode(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+}
+
+bool NX1::GoThroughInvisibleBarriers(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
+    options.Enabled = enabled;
+    options.PM_CheckLadderMoveAddress = 0x821111E8;
+    options.PmoveSingleAddress = 0x82111970;
+
+    return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
 bool NX1::SpawnCarePackage(void *)
@@ -60,7 +79,7 @@ bool NX1::ToggleUfo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
 }
 
-bool NX1::SpawnBot(void *pParameters)
+bool NX1::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x83A6B78C;

@@ -5,6 +5,8 @@ namespace NX1
 
 bool ToggleGodMode(void *pParameters);
 
+bool GoThroughInvisibleBarriers(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);

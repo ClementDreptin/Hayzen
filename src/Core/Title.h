@@ -13,6 +13,8 @@ public:
 
     inline void InMatch(bool inMatch) { m_InMatch = inMatch; }
 
+    inline static std::unordered_map<std::string, Detour *> &GetDetourMap() { return s_DetourMap; }
+
     virtual void InitMenu() = 0;
 
 protected:

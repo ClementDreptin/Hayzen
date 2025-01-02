@@ -2,6 +2,7 @@
 #include "Games/MW2/MenuFunctions.h"
 
 #include "Games/MW2/GameFunctions.h"
+#include "Games/MW2/MW2Title.h"
 
 using namespace MW2::Game;
 
@@ -9,6 +10,10 @@ using namespace MW2::Game;
     #undef COMMON_FN_NAMESPACE
 #endif
 #define COMMON_FN_NAMESPACE MW2Common
+#ifdef COMMON_TITLE
+    #undef COMMON_TITLE
+#endif
+#define COMMON_TITLE MW2Title
 #include "Games/Common/CommonFunctions.h"
 
 #define GAME_MW2
@@ -65,6 +70,20 @@ bool MW2::Knockback(void *pParameters)
 bool MW2::ChangeJumpHeight(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+}
+
+bool MW2::GoThroughInvisibleBarriers(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
+    options.Enabled = enabled;
+    options.PM_CheckLadderMoveAddress = 0x820D8D38;
+    options.PmoveSingleAddress = 0x820D94F8;
+
+    return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
 bool MW2::SpawnCarePackage(void *)

@@ -39,6 +39,73 @@ bool ChangeJumpHeight(void *pParameters)
     return true;
 }
 
+static void PM_CheckLadderMoveHook(pmove_t *pm, void *pml)
+{
+    auto &detourMap = COMMON_TITLE::GetDetourMap();
+
+    XASSERT(detourMap.find("PM_CheckLadderMove") != detourMap.end());
+
+    pm->tracemask |= 0x10000;
+
+    detourMap.at("PM_CheckLadderMove")->GetOriginal<decltype(&PM_CheckLadderMoveHook)>()(pm, pml);
+
+    if (!(pm->ps->pm_flags & 8))
+        pm->tracemask &= ~0x10000;
+}
+
+static void PmoveSingleHook(pmove_t *pm)
+{
+    auto &detourMap = COMMON_TITLE::GetDetourMap();
+
+    XASSERT(detourMap.find("PmoveSingle") != detourMap.end());
+
+    if (!(pm->ps->pm_flags & 8))
+    {
+        pm->tracemask &= ~0x10000;
+        pm->tracemask |= 0x400;
+    }
+
+    detourMap.at("PmoveSingle")->GetOriginal<decltype(&PmoveSingleHook)>()(pm);
+}
+
+struct GoThroughInvisibleBarriersOptions
+{
+    bool Enabled;
+    uintptr_t PM_CheckLadderMoveAddress;
+    uintptr_t PmoveSingleAddress;
+};
+
+bool GoThroughInvisibleBarriers(const GoThroughInvisibleBarriersOptions &options)
+{
+    XASSERT(options.PM_CheckLadderMoveAddress != 0);
+    XASSERT(options.PmoveSingleAddress != 0);
+
+    auto &detourMap = COMMON_TITLE::GetDetourMap();
+
+    if (options.Enabled)
+    {
+        // Patching pmove_t::tracemask in PmoveSingle prevent the player from climbing ladders so
+        // we need to hook PM_CheckLadderMove to fix pmove_t::tracemask
+        detourMap["PM_CheckLadderMove"] = new Detour(options.PM_CheckLadderMoveAddress, PM_CheckLadderMoveHook);
+        detourMap["PmoveSingle"] = new Detour(options.PmoveSingleAddress, PmoveSingleHook);
+
+        HRESULT hr1 = detourMap["PM_CheckLadderMove"]->Install();
+        HRESULT hr2 = detourMap["PmoveSingle"]->Install();
+
+        return SUCCEEDED(hr1) && SUCCEEDED(hr2);
+    }
+    else
+    {
+        delete detourMap["PM_CheckLadderMove"];
+        delete detourMap["PmoveSingle"];
+
+        detourMap.erase("PM_CheckLadderMove");
+        detourMap.erase("PmoveSingle");
+
+        return true;
+    }
+}
+
 bool SavePosition()
 {
     int clientNum = Context::ClientNum;

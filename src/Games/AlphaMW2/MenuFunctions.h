@@ -11,6 +11,8 @@ bool ToggleAmmo(void *pParameters);
 
 bool ChangeJumpHeight(void *pParameters);
 
+bool GoThroughInvisibleBarriers(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);

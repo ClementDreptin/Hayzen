@@ -68,17 +68,6 @@ void SpecOpsMW3Title::InitMenu()
     m_Menu.Init(optionGroups);
 }
 
-static void ForceJumpEnabled()
-{
-    int clientNum = Context::ClientNum;
-
-    SpecOpsMW3::Game::gclient_s *pClient = SpecOpsMW3::Game::GetGClient(clientNum);
-
-    // The 19th bit of pm_flags is set when the player is NOT allowed to jump
-    // so we just clear this bit to allow the player to jump again
-    pClient->ps.pm_flags &= ~(1 << 18);
-}
-
 static bool hasJumped = false;
 
 void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
@@ -117,6 +106,17 @@ void SpecOpsMW3Title::ClientCommandHook(int clientNum, const char *s)
         // Register that the user released the A button
         hasJumped = false;
     }
+}
+
+void SpecOpsMW3Title::ForceJumpEnabled()
+{
+    int clientNum = Context::ClientNum;
+
+    SpecOpsMW3::Game::gclient_s *pClient = SpecOpsMW3::Game::GetGClient(clientNum);
+
+    // The 19th bit of pm_flags is set when the player is NOT allowed to jump
+    // so we just clear this bit to allow the player to jump again
+    pClient->ps.pm_flags &= ~(1 << 18);
 }
 
 void SpecOpsMW3Title::InitRenderer()

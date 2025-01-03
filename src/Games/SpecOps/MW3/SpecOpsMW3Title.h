@@ -12,5 +12,7 @@ public:
 private:
     static void ClientCommandHook(int clientNum, const char *s);
 
+    static void ForceJumpEnabled();
+
     virtual void InitRenderer() override;
 };

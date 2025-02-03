@@ -59,7 +59,7 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &g_Config.DisplayControlsTexts));
 
     if (!Xam::IsDevkit())
-        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", std::bind(&Menu::ToggleDebugBuilds, this, std::placeholders::_1), &g_Config.AllowDebugBuilds));
+        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *params) { return ToggleDebugBuilds(params); }, &g_Config.AllowDebugBuilds));
 
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &g_Config.X, g_Config.BorderWidth, UI::DisplayWidth, 10.0f));
@@ -67,8 +67,8 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &g_Config.Color));
-    options.emplace_back(MakeOption(ClickOption, "Save Settings", std::bind(&Menu::SaveSettings, this, std::placeholders::_1)));
-    options.emplace_back(MakeOption(ClickOption, "Reset Settings", std::bind(&Menu::ResetSettings, this, std::placeholders::_1)));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *params) { return SaveSettings(params); }));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", [this](void *params) { return ResetSettings(params); }));
     m_OptionGroups.emplace_back(OptionGroup("Settings", options));
 }
 

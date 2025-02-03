@@ -25,8 +25,13 @@ typedef enum _TitleId
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr)
 {
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
+    // Xenia doesn't emulate the data behind plugin handles, and the name is only used
+    // for the debug enabler, which is disabled while running in Xenia
+    if (!Xam::InXenia())
+    {
+        LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+        m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
+    }
 
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
@@ -58,9 +63,13 @@ HRESULT Plugin::SaveConfig()
 
 void Plugin::Init()
 {
-    CreateConfig();
+    bool inXenia = Xam::InXenia();
 
-    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
+    // TODO: try to make the config work in Xenia instead of completely disabling it
+    if (!inXenia)
+        CreateConfig();
+
+    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit() && !inXenia)
     {
         HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))

@@ -70,6 +70,6 @@ If you still want to deploy but are not satisfied with the deploy location on th
 
 #### About the debug configuration
 
-The `Debug` build configuration **does NOT** use the debug runtime nor the default debug libraries, this is due to extra checks being done in the debug version of XAPI (`xapilibd.lib`) that trigger a kernel exception (`stop code 0xf4: CRITICAL_OBJECT_TERMINATION`) when trying to execute code that lives in a non-executable memory page. This happens when hooking a function and trying to jump back to its original code, which lives in the `.data` segment of the plugin while the hook is active.
+The `Debug` build configuration **does NOT** use the debug runtime nor the default debug libraries, this is due to extra checks being done in the debug version of XAPI (`xapilibd.lib`) that trigger a kernel exception (`stop code 0xf4: CRITICAL_OBJECT_TERMINATION`) when using function hooks. This happens when the game is trying to jump back to its original code, which lives in the address space of the plugin and not its own while the hook is active.
 
 Because we are not linking to the default debug libraries, the debug build has to use the release builds of [XexUtils](https://github.com/ClementDreptin/XexUtils) and [mINI](https://github.com/ClementDreptin/Hayzen/tree/master/deps/mINI).

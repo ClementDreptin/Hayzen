@@ -67,11 +67,6 @@ bool MW2::Knockback(void *pParameters)
     return true;
 }
 
-bool MW2::ChangeJumpHeight(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
-}
-
 bool MW2::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);

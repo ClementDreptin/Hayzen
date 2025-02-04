@@ -108,7 +108,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case Title_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
             m_pCurrentTitle = new MW2Title();
-        if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
             m_pCurrentTitle = new SpecOpsMW2Title();
         else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
             m_pCurrentTitle = new AlphaMW2Title();
@@ -118,7 +118,7 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case Title_MW3:
         if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
             m_pCurrentTitle = new MW3Title();
-        if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+        else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
             m_pCurrentTitle = new SpecOpsMW3Title();
         break;
     case Title_NX1:

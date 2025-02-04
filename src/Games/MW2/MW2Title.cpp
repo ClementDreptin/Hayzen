@@ -60,7 +60,7 @@ void MW2Title::InitMenu()
         }
 
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
-        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", MW2::ChangeJumpHeight, 39, 0, 999, 1));
+        options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001A34), 0.0f, 999.0f, 1.0f));
 
         if (!inXenia)
             options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW2::GoThroughInvisibleBarriers, false));

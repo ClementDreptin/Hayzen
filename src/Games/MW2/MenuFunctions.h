@@ -13,8 +13,6 @@ bool ToggleElevators(void *pParameters);
 
 bool Knockback(void *pParameters);
 
-bool ChangeJumpHeight(void *pParameters);
-
 bool GoThroughInvisibleBarriers(void *pParameters);
 
 bool SpawnCarePackage(void *);

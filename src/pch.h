@@ -21,3 +21,5 @@
 using namespace XexUtils;
 using Math::vec2;
 using Math::vec3;
+
+extern "C" void DbgPrint(const char *format, ...);

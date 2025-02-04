@@ -90,6 +90,13 @@ void Title::RenderControlsTexts()
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
+    static bool hooked = false;
+    if (!hooked)
+    {
+        DbgPrint("SCR_DrawScreenField hook placed\n");
+        hooked = true;
+    }
+
     XASSERT(s_DetourMap.find("SCR_DrawScreenField") != s_DetourMap.end());
 
     // Call the original SCR_DrawScreenField function

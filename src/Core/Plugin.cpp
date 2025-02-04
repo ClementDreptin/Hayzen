@@ -82,7 +82,7 @@ uint32_t Plugin::Run(Plugin *This)
 {
     // Wait a little bit for the console to be ready, this is especially necessary to
     // read the config file from disk and when the plugin is loaded by Dashlaunch on boot
-    Sleep(1500);
+    Sleep(1000);
 
     This->Init();
 

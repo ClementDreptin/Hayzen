@@ -13,3 +13,5 @@ ipch/
 *.sdf
 *.suo
 *.user
+
+xenia/

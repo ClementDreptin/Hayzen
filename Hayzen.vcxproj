@@ -75,6 +75,10 @@
     <ImageXex>
       <ConfigurationFile>$(SolutionDir)config.xml</ConfigurationFile>
     </ImageXex>
+    <PostBuildEvent>
+      <Command>copy $(ImageXexOutput) $(SolutionDir)xenia\plugins\41560817</Command>
+      <Message>Copy XEX image into Xenia plugins directory</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\Core\Config.h" />

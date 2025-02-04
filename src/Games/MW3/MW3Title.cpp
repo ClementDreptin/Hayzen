@@ -37,19 +37,29 @@ MW3Title::MW3Title()
 
 void MW3Title::InitMenu()
 {
-    std::vector<OptionGroup> optionGroups;
+    // As of right now, options that require modifying the game code, so what lives in the
+    // .text section can't be implemented in Xenia
 
+    bool inXenia = Xam::InXenia();
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
+
+    std::vector<OptionGroup> optionGroups;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW3::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
+
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, false));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, false));
+
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

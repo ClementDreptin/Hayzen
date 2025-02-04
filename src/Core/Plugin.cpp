@@ -65,7 +65,8 @@ void Plugin::Init()
 {
     bool inXenia = Xam::InXenia();
 
-    // TODO: try to make the config work in Xenia instead of completely disabling it
+    // Xenia doesn't emulate access to the hard drive so can't use the config
+    // in this environment
     if (!inXenia)
         CreateConfig();
 

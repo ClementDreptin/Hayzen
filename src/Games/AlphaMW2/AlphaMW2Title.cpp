@@ -33,18 +33,28 @@ AlphaMW2Title::AlphaMW2Title()
 
 void AlphaMW2Title::InitMenu()
 {
-    std::vector<OptionGroup> optionGroups;
+    // As of right now, options that require modifying the game code, so what lives in the
+    // .text section can't be implemented in Xenia
 
+    bool inXenia = Xam::InXenia();
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
+
+    std::vector<OptionGroup> optionGroups;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaMW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
-        options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, 39, 0, 999, 1));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, false));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, false));
+
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

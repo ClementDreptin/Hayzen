@@ -31,13 +31,21 @@ NX1Title::NX1Title()
 
 void NX1Title::InitMenu()
 {
+    // As of right now, options that require modifying the game code, so what lives in the
+    // .text section can't be implemented in Xenia
+
+    bool inXenia = Xam::InXenia();
+
     std::vector<OptionGroup> optionGroups;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", NX1::ToggleGodMode, false));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, false));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, false));
+
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

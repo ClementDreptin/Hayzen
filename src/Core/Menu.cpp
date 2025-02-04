@@ -54,11 +54,14 @@ void Menu::Render()
 
 void Menu::AddSettingsGroup()
 {
+    bool inXenia = Xam::InXenia();
+    bool isDevkit = Xam::IsDevkit();
+
     std::vector<std::shared_ptr<Option>> options;
 
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &g_Config.DisplayControlsTexts));
 
-    if (!Xam::IsDevkit())
+    if (!isDevkit && !inXenia)
         options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *params) { return ToggleDebugBuilds(params); }, &g_Config.AllowDebugBuilds));
 
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
@@ -67,7 +70,11 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &g_Config.Color));
-    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *params) { return SaveSettings(params); }));
+
+    // Writing to disk isn't possible in Xenia
+    if (!inXenia)
+        options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *params) { return SaveSettings(params); }));
+
     options.emplace_back(MakeOption(ClickOption, "Reset Settings", [this](void *params) { return ResetSettings(params); }));
     m_OptionGroups.emplace_back(OptionGroup("Settings", options));
 }

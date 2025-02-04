@@ -37,22 +37,34 @@ MW2Title::MW2Title()
 
 void MW2Title::InitMenu()
 {
-    std::vector<OptionGroup> optionGroups;
+    // As of right now, options that require modifying the game code, so what lives in the
+    // .text section can't be implemented in Xenia
 
+    bool inXenia = Xam::InXenia();
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
+
+    std::vector<OptionGroup> optionGroups;
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage, isFallDamageEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
+
+        if (!inXenia)
+        {
+            options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
+            options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
+        }
+
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", MW2::ChangeJumpHeight, 39, 0, 999, 1));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW2::GoThroughInvisibleBarriers, false));
+
+        if (!inXenia)
+            options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW2::GoThroughInvisibleBarriers, false));
+
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

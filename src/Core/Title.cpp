@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Core/Title.h"
 
-#include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
 #include "Modules/Binds.h"
@@ -11,7 +10,7 @@ Title *Title::s_CurrentInstance = nullptr;
 std::unordered_map<std::string, Detour> Title::s_DetourMap;
 
 Title::Title()
-    : m_InMatch(false), m_MenuOpen(false)
+    : m_InMatch(false)
 {
     s_CurrentInstance = this;
 
@@ -38,56 +37,21 @@ void Title::Update()
     // Toggle the menu by pressing LT and DPAD LEFT
     if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
     {
-        m_MenuOpen = !m_MenuOpen;
+        bool isOpen = m_Menu.Open();
+        m_Menu.Open(!isOpen);
+
         return;
     }
 
-    if (m_MenuOpen)
-        m_Menu.Update(pGamepad);
+    m_Menu.Update(pGamepad);
 
-    if (!m_MenuOpen)
+    if (!m_Menu.Open())
         Binds::Run(pGamepad);
 }
 
 void Title::Render()
 {
-    if (m_MenuOpen)
-        m_Menu.Render();
-
-    if (g_Config.DisplayControlsTexts)
-        RenderControlsTexts();
-}
-
-void Title::RenderControlsTexts()
-{
-    float yOffset = 10.0f;
-    float fontScale = 0.8f;
-    float padding = g_Config.Padding * fontScale;
-    float borderWidth = g_Config.BorderWidth * fontScale;
-
-    UI::TextProps props = {};
-    props.X = 10.0f;
-    props.FontScale = fontScale;
-    props.Color = g_Config.TextColor;
-    props.BackgroundColor = g_Config.BackgroundColor;
-    props.BorderWidth = borderWidth;
-    props.BorderColor = g_Config.Color;
-    props.BorderPosition = UI::Border_All;
-
-    props.Y = yOffset;
-    props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_MenuOpen ? "Open." : "Close.");
-    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    UI::DrawText(props);
-
-    props.Y = yOffset;
-    props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
-    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    UI::DrawText(props);
-
-    props.Y = yOffset;
-    props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
-    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
-    UI::DrawText(props);
+    m_Menu.Render();
 }
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)

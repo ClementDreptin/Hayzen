@@ -19,7 +19,6 @@ public:
 
 protected:
     Menu m_Menu;
-    bool m_MenuOpen;
 
     static Title *s_CurrentInstance;
 
@@ -39,8 +38,6 @@ private:
     void Update();
 
     void Render();
-
-    void RenderControlsTexts();
 
     void AskToReboot();
 };

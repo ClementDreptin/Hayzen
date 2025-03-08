@@ -12,7 +12,7 @@
 #include "Options/ToggleOption.h"
 
 Menu::Menu()
-    : m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)
+    : m_Open(false), m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)
 {
 }
 
@@ -28,6 +28,10 @@ void Menu::Init(const std::vector<OptionGroup> &optionGroups)
 void Menu::Update(Input::Gamepad *pGamepad)
 {
     XASSERT(pGamepad != nullptr);
+
+    // If the menu is not open, no need to go further
+    if (!m_Open)
+        return;
 
     // Allow the user to change the current option group with LB/RB
     if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
@@ -46,6 +50,13 @@ void Menu::Update(Input::Gamepad *pGamepad)
 
 void Menu::Render()
 {
+    if (g_Config.DisplayControlsTexts)
+        RenderControlsTexts();
+
+    // If the menu is not open, no need to go further
+    if (!m_Open)
+        return;
+
     RenderOptionGroupHeaders();
 
     float optionGroupHeadersHeight = GetOptionGroupHeadersHeight();
@@ -163,6 +174,38 @@ void Menu::CalculateMenuDimensions()
 
     // Move the menu to right side of the screen (double cast to round to closest integer value)
     g_Config.X = static_cast<float>(static_cast<uint32_t>(UI::DisplayWidth - g_Config.Width - 10.0f));
+}
+
+void Menu::RenderControlsTexts()
+{
+    float yOffset = 10.0f;
+    float fontScale = 0.8f;
+    float padding = g_Config.Padding * fontScale;
+    float borderWidth = g_Config.BorderWidth * fontScale;
+
+    UI::TextProps props = {};
+    props.X = 10.0f;
+    props.FontScale = fontScale;
+    props.Color = g_Config.TextColor;
+    props.BackgroundColor = g_Config.BackgroundColor;
+    props.BorderWidth = borderWidth;
+    props.BorderColor = g_Config.Color;
+    props.BorderPosition = UI::Border_All;
+
+    props.Y = yOffset;
+    props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_Open ? "Open." : "Close.");
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    UI::DrawText(props);
+
+    props.Y = yOffset;
+    props.Text = "Use " CHAR_UP CHAR_DOWN " to scroll, " CHAR_X " to select, " CHAR_RS " to go back.";
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    UI::DrawText(props);
+
+    props.Y = yOffset;
+    props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    UI::DrawText(props);
 }
 
 bool Menu::ToggleDebugBuilds(void *pParameters)

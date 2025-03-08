@@ -4,14 +4,15 @@
 #include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
+#include "Games/NX1/MenuFunctions.h"
+#include "Games/NX1/GameFunctions.h"
+#include "Modules/Binds.h"
 #include "Options/OptionGroup.h"
 #include "Options/ClickOption.h"
 #include "Options/ToggleOption.h"
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "Games/NX1/MenuFunctions.h"
-#include "Games/NX1/GameFunctions.h"
 
 NX1Title::NX1Title()
 {
@@ -32,6 +33,8 @@ NX1Title::NX1Title()
 void NX1Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
+
+    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
 
     // Main section
     {
@@ -75,7 +78,7 @@ void NX1Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", NX1::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", NX1::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", NX1::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", NX1::LoadPosition));
         options.emplace_back(MakeOption(ToggleOption, "UFO", NX1::ToggleUfo, false));
@@ -91,9 +94,13 @@ void NX1Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 
-    // Set the save and load functions
-    Context::SavePositionFn = NX1::SavePosition;
-    Context::LoadPositionFn = NX1::LoadPosition;
+    // Input Replay
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Record Input", NX1::RecordInput, false));
+        options.emplace_back(MakeOption(ToggleOption, "Replay Input Bind", NX1::ToggleReplayInputBind, false));
+        optionGroups.emplace_back(OptionGroup("Input", options));
+    }
 
     m_Menu.Init(optionGroups);
 }

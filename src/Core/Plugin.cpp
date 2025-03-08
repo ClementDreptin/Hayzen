@@ -2,14 +2,14 @@
 #include "Core/Plugin.h"
 
 #include "Core/Config.h"
-#include "DebugEnabler/DebugEnabler.h"
-#include "Games/MW2/MW2Title.h"
-#include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
-#include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
+#include "Games/MW2/MW2Title.h"
 #include "Games/MW3/MW3Title.h"
-#include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 #include "Games/NX1/NX1Title.h"
+#include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
+#include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
+#include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Modules/DebugEnabler.h"
 
 Config g_Config("hdd:\\Hayzen.ini");
 

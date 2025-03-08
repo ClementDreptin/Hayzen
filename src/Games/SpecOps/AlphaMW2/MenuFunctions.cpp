@@ -59,6 +59,16 @@ bool SpecOpsAlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
+bool SpecOpsAlphaMW2::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool SpecOpsAlphaMW2::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+}
+
 bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);

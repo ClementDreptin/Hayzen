@@ -3,6 +3,8 @@
 
 #include "Core/Context.h"
 #include "Core/UI.h"
+#include "Modules/Binds.h"
+#include "Modules/InputRecorder.h"
 
 namespace COMMON_FN_NAMESPACE
 {
@@ -103,6 +105,48 @@ bool GoThroughInvisibleBarriers(const GoThroughInvisibleBarriersOptions &options
     }
 }
 
+bool RecordInput(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    int clientNum = Context::ClientNum;
+
+    if (enabled)
+    {
+        InputRecorder::Start();
+        iPrintLn(clientNum, "Recording...");
+    }
+    else
+    {
+        InputRecorder::Stop();
+        iPrintLn(clientNum, "Recording stopped");
+    }
+
+    return true;
+}
+
+bool ToggleReplayInputBind(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
+    {
+        Binds::Add(XINPUT_GAMEPAD_DPAD_DOWN, []() -> bool { InputRecorder::Replay(); return true; });
+
+        // It'd be nice to display the button glyph instead of "Down" but CHAR_DOWN (\x15) isn't in the font
+        // used by iPrintLn and button macros, like "[{+actionslot 2}]", don't work in spec ops
+        iPrintLn(Context::ClientNum, "Press ^2Down^7 to ^2Replay");
+    }
+    else
+        Binds::Remove(XINPUT_GAMEPAD_DPAD_DOWN);
+
+    return true;
+}
+
 bool SavePosition()
 {
     int clientNum = Context::ClientNum;
@@ -147,10 +191,19 @@ bool ToggleSaveLoadBinds(void *pParameters)
     if (enabled)
     {
         Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
+
+        Binds::Add(XINPUT_GAMEPAD_LEFT_SHOULDER, LoadPosition);
+        Binds::Add(XINPUT_GAMEPAD_RIGHT_SHOULDER, SavePosition);
+
         iPrintLn(Context::ClientNum, "Press " CHAR_RB " to ^2Save^7 and " CHAR_LB " to ^2Load");
     }
     else
+    {
         Cbuf_AddText(0, "bind button_lshldr \"+smoke\";bind button_rshldr \"+frag\"");
+
+        Binds::Remove(XINPUT_GAMEPAD_LEFT_SHOULDER);
+        Binds::Remove(XINPUT_GAMEPAD_RIGHT_SHOULDER);
+    }
 
     return true;
 }

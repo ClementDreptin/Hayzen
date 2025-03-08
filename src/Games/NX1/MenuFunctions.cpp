@@ -39,6 +39,16 @@ bool NX1::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
+bool NX1::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool NX1::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+}
+
 bool NX1::SpawnCarePackage(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCarePackage();

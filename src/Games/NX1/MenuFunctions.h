@@ -7,6 +7,10 @@ bool ToggleGodMode(void *pParameters);
 
 bool GoThroughInvisibleBarriers(void *pParameters);
 
+bool RecordInput(void *pParameters);
+
+bool ToggleReplayInputBind(void *pParameters);
+
 bool SpawnCarePackage(void *);
 
 bool SpawnBlocker(void *);

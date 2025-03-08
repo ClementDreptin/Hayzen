@@ -4,14 +4,15 @@
 #include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
-#include "Options/OptionGroup.h"
+#include "Games/MW2/GameFunctions.h"
+#include "Games/MW2/MenuFunctions.h"
+#include "Modules/Binds.h"
 #include "Options/ClickOption.h"
-#include "Options/ToggleOption.h"
+#include "Options/OptionGroup.h"
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "Games/MW2/MenuFunctions.h"
-#include "Games/MW2/GameFunctions.h"
+#include "Options/ToggleOption.h"
 
 MW2Title::MW2Title()
 {
@@ -42,6 +43,7 @@ void MW2Title::InitMenu()
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
+    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
 
     // Main section
     {
@@ -90,7 +92,7 @@ void MW2Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", MW2::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", MW2::LoadPosition));
         options.emplace_back(MakeOption(ToggleOption, "UFO", MW2::ToggleUfo, false));
@@ -106,9 +108,13 @@ void MW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 
-    // Set the save and load functions
-    Context::SavePositionFn = MW2::SavePosition;
-    Context::LoadPositionFn = MW2::LoadPosition;
+    // Input Replay
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Record Input", MW2::RecordInput, false));
+        options.emplace_back(MakeOption(ToggleOption, "Replay Input Bind", MW2::ToggleReplayInputBind, false));
+        optionGroups.emplace_back(OptionGroup("Input", options));
+    }
 
     m_Menu.Init(optionGroups);
 }

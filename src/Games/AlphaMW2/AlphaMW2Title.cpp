@@ -4,14 +4,15 @@
 #include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
-#include "Options/OptionGroup.h"
+#include "Games/AlphaMW2/GameFunctions.h"
+#include "Games/AlphaMW2/MenuFunctions.h"
+#include "Modules/Binds.h"
 #include "Options/ClickOption.h"
-#include "Options/ToggleOption.h"
+#include "Options/OptionGroup.h"
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "Games/AlphaMW2/MenuFunctions.h"
-#include "Games/AlphaMW2/GameFunctions.h"
+#include "Options/ToggleOption.h"
 
 AlphaMW2Title::AlphaMW2Title()
 {
@@ -36,6 +37,7 @@ void AlphaMW2Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
+    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
 
     // Main section
     {
@@ -82,7 +84,7 @@ void AlphaMW2Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", AlphaMW2::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", AlphaMW2::LoadPosition));
         options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo, false));
@@ -98,9 +100,13 @@ void AlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 
-    // Set the save and load functions
-    Context::SavePositionFn = AlphaMW2::SavePosition;
-    Context::LoadPositionFn = AlphaMW2::LoadPosition;
+    // Input Replay
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Record Input", AlphaMW2::RecordInput, false));
+        options.emplace_back(MakeOption(ToggleOption, "Replay Input Bind", AlphaMW2::ToggleReplayInputBind, false));
+        optionGroups.emplace_back(OptionGroup("Input", options));
+    }
 
     m_Menu.Init(optionGroups);
 }

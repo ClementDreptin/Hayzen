@@ -81,6 +81,16 @@ bool MW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
+bool MW2::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool MW2::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+}
+
 bool MW2::SpawnCarePackage(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCarePackage();

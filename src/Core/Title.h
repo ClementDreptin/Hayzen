@@ -41,4 +41,6 @@ private:
     void Render();
 
     void RenderControlsTexts();
+
+    void AskToReboot();
 };

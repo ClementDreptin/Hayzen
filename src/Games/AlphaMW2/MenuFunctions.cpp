@@ -82,6 +82,16 @@ bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
+bool AlphaMW2::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool AlphaMW2::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+}
+
 bool AlphaMW2::SpawnCarePackage(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCarePackage();

@@ -4,14 +4,15 @@
 #include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
-#include "Options/OptionGroup.h"
+#include "Games/MW3/GameFunctions.h"
+#include "Games/MW3/MenuFunctions.h"
+#include "Modules/Binds.h"
 #include "Options/ClickOption.h"
-#include "Options/ToggleOption.h"
+#include "Options/OptionGroup.h"
 #include "Options/RangeOption.h"
 #include "Options/SelectOption.h"
 #include "Options/SubOptionGroup.h"
-#include "Games/MW3/MenuFunctions.h"
-#include "Games/MW3/GameFunctions.h"
+#include "Options/ToggleOption.h"
 
 MW3Title::MW3Title()
 {
@@ -41,6 +42,7 @@ void MW3Title::InitMenu()
 
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
+    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
 
     // Main section
     {
@@ -87,16 +89,20 @@ void MW3Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", MW3::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", MW3::LoadPosition));
         options.emplace_back(MakeOption(ToggleOption, "UFO", MW3::ToggleUfo, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
-    // Set the save and load functions
-    Context::SavePositionFn = MW3::SavePosition;
-    Context::LoadPositionFn = MW3::LoadPosition;
+    // Input Replay
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Record Input", MW3::RecordInput, false));
+        options.emplace_back(MakeOption(ToggleOption, "Replay Input Bind", MW3::ToggleReplayInputBind, false));
+        optionGroups.emplace_back(OptionGroup("Input", options));
+    }
 
     m_Menu.Init(optionGroups);
 }

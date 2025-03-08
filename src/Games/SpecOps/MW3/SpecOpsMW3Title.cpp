@@ -3,12 +3,13 @@
 
 #include "Core/Context.h"
 #include "Core/UI.h"
-#include "Options/OptionGroup.h"
-#include "Options/ClickOption.h"
-#include "Options/ToggleOption.h"
-#include "Options/RangeOption.h"
-#include "Games/SpecOps/MW3/MenuFunctions.h"
 #include "Games/SpecOps/MW3/GameFunctions.h"
+#include "Games/SpecOps/MW3/MenuFunctions.h"
+#include "Modules/Binds.h"
+#include "Options/ClickOption.h"
+#include "Options/OptionGroup.h"
+#include "Options/RangeOption.h"
+#include "Options/ToggleOption.h"
 
 SpecOpsMW3Title::SpecOpsMW3Title()
 {
@@ -32,6 +33,7 @@ void SpecOpsMW3Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x8235BB54) == 0x7D495378;
+    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
 
     // Main section
     {
@@ -46,7 +48,7 @@ void SpecOpsMW3Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW3::ToggleSaveLoadBinds, &Context::BindsEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW3::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
         options.emplace_back(MakeOption(ClickOption, "Save Position", SpecOpsMW3::SavePosition));
         options.emplace_back(MakeOption(ClickOption, "Load Position", SpecOpsMW3::LoadPosition));
         options.emplace_back(MakeOption(ToggleOption, "UFO", SpecOpsMW3::ToggleUfo, false));
@@ -61,9 +63,13 @@ void SpecOpsMW3Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Second Player", options));
     }
 
-    // Set the save and load functions
-    Context::SavePositionFn = SpecOpsMW3::SavePosition;
-    Context::LoadPositionFn = SpecOpsMW3::LoadPosition;
+    // Input Replay
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ToggleOption, "Record Input", SpecOpsMW3::RecordInput, false));
+        options.emplace_back(MakeOption(ToggleOption, "Replay Input Bind", SpecOpsMW3::ToggleReplayInputBind, false));
+        optionGroups.emplace_back(OptionGroup("Input", options));
+    }
 
     m_Menu.Init(optionGroups);
 }

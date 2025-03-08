@@ -4,6 +4,8 @@
 #include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
+#include "Modules/Binds.h"
+#include "Modules/InputRecorder.h"
 
 Title *Title::s_CurrentInstance = nullptr;
 std::unordered_map<std::string, Detour> Title::s_DetourMap;
@@ -12,12 +14,18 @@ Title::Title()
     : m_InMatch(false), m_MenuOpen(false)
 {
     s_CurrentInstance = this;
+
+    HRESULT hr = InputRecorder::Init();
+    if (FAILED(hr))
+        AskToReboot();
 }
 
 Title::~Title()
 {
     s_CurrentInstance = nullptr;
 
+    InputRecorder::Shutdown();
+    Binds::Clear();
     RemoveHooks();
 }
 
@@ -37,14 +45,8 @@ void Title::Update()
     if (m_MenuOpen)
         m_Menu.Update(pGamepad);
 
-    // Save and Load with LB/RB when Save and Load binds are enabled
-    if (Context::BindsEnabled && !m_MenuOpen)
-    {
-        if (pGamepad->PressedButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)
-            Context::LoadPositionFn(nullptr);
-        else if (pGamepad->PressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-            Context::SavePositionFn(nullptr);
-    }
+    if (!m_MenuOpen)
+        Binds::Run(pGamepad);
 }
 
 void Title::Render()
@@ -115,23 +117,7 @@ void Title::InstallHooks()
     }
 
     if (FAILED(hr))
-    {
-        const wchar_t *buttonLabels[] = { L"Yes", L"No" };
-        uint32_t buttonPressedIndex = 0;
-
-        uint32_t result = Xam::ShowMessageBox(
-            L"Error",
-            L"Initialization failed. Restarting the console could fix the problem.\n\nDo you want to restart?",
-            buttonLabels,
-            ARRAYSIZE(buttonLabels),
-            &buttonPressedIndex,
-            XMB_ERRORICON,
-            1
-        );
-
-        if (result == ERROR_SUCCESS && buttonPressedIndex == 0)
-            Xam::Reboot();
-    }
+        AskToReboot();
 }
 
 void Title::RemoveHooks()
@@ -149,4 +135,23 @@ void Title::InitRenderer()
 
     XASSERT(UI::pFont != nullptr);
     XASSERT(UI::MaterialHandle != nullptr);
+}
+
+void Title::AskToReboot()
+{
+    const wchar_t *buttonLabels[] = { L"Yes", L"No" };
+    uint32_t buttonPressedIndex = 0;
+
+    uint32_t result = Xam::ShowMessageBox(
+        L"Error",
+        L"Initialization failed. Restarting the console could fix the problem.\n\nDo you want to restart?",
+        buttonLabels,
+        ARRAYSIZE(buttonLabels),
+        &buttonPressedIndex,
+        XMB_ERRORICON,
+        1
+    );
+
+    if (result == ERROR_SUCCESS && buttonPressedIndex == 0)
+        Xam::Reboot();
 }

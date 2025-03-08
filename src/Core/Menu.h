@@ -34,9 +34,9 @@ private:
 
     void RenderControlsTexts();
 
-    bool ToggleDebugBuilds(void *);
+    bool ToggleDebugBuilds(bool enabled);
 
-    bool SaveSettings(void *);
+    bool SaveSettings();
 
-    bool ResetSettings(void *);
+    bool ResetSettings();
 };

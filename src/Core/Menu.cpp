@@ -70,7 +70,7 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &g_Config.DisplayControlsTexts));
 
     if (!Xam::IsDevkit())
-        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *params) { return ToggleDebugBuilds(params); }, &g_Config.AllowDebugBuilds));
+        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *pParams) { return ToggleDebugBuilds(*reinterpret_cast<bool *>(pParams)); }, &g_Config.AllowDebugBuilds));
 
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &g_Config.X, g_Config.BorderWidth, UI::DisplayWidth, 10.0f));
@@ -78,8 +78,8 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &g_Config.Color));
-    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *params) { return SaveSettings(params); }));
-    options.emplace_back(MakeOption(ClickOption, "Reset Settings", [this](void *params) { return ResetSettings(params); }));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *) { return SaveSettings(); }));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", [this](void *) { return ResetSettings(); }));
     m_OptionGroups.emplace_back(OptionGroup("Settings", options));
 }
 
@@ -208,12 +208,8 @@ void Menu::RenderControlsTexts()
     UI::DrawText(props);
 }
 
-bool Menu::ToggleDebugBuilds(void *pParameters)
+bool Menu::ToggleDebugBuilds(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
-
     if (!enabled)
     {
         DebugEnabler::Disable();
@@ -225,20 +221,20 @@ bool Menu::ToggleDebugBuilds(void *pParameters)
     return SUCCEEDED(hr);
 }
 
-bool Menu::SaveSettings(void *)
+bool Menu::SaveSettings()
 {
     HRESULT hr = g_pPlugin->SaveConfig();
     bool success = SUCCEEDED(hr);
 
-    Xam::XNotify(
-        success ? "Settings Saved" : "Could not save settings",
-        success ? Xam::XNOTIFYUI_TYPE_PREFERRED_REVIEW : Xam::XNOTIFYUI_TYPE_AVOID_REVIEW
-    );
+    if (success)
+        Xam::XNotify("Settings Saved");
+    else
+        Xam::XNotify("Could not save settings", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
 
     return success;
 }
 
-bool Menu::ResetSettings(void *)
+bool Menu::ResetSettings()
 {
     g_Config.Reset();
 

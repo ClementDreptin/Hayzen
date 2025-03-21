@@ -74,4 +74,5 @@ It is recommended **NOT** to rename the plugin XEX file. Or if you do, make sure
 | 5-nx1mp_demo.xex         | :heavy_check_mark: |             |
 | 6-nx1mp_fast_server.xex  | :x:                | Fatal crash |
 
-**Note**: You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.
+> [!NOTE]
+> You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.

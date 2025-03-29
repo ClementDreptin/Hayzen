@@ -15,7 +15,10 @@ bool ToggleGodModeSP(void *pParameters)
     playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
     XASSERT(pPlayerState != nullptr);
 
-    pPlayerState->otherFlags = enabled ? 1 : 0;
+    if (enabled)
+        pPlayerState->otherFlags |= 1;
+    else
+        pPlayerState->otherFlags &= ~1;
 
     return true;
 }
@@ -41,7 +44,10 @@ bool ToggleSecondPlayerGodMode(void *pParameters)
     playerState_s *pSecondPlayerState = GetPlayerState(secondClientNum);
     XASSERT(pSecondPlayerState != nullptr);
 
-    pSecondPlayerState->otherFlags = enabled ? 1 : 0;
+    if (enabled)
+        pSecondPlayerState->otherFlags |= 1;
+    else
+        pSecondPlayerState->otherFlags &= ~1;
 
     return true;
 }

@@ -43,6 +43,7 @@ void MW3Title::InitMenu()
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
     bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
+    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -90,9 +91,7 @@ void MW3Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ClickOption, "Save Position", MW3::SavePosition));
-        options.emplace_back(MakeOption(ClickOption, "Load Position", MW3::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", MW3::ToggleUfo, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", MW3::ToggleUfoBind, ufoBindEnabled));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

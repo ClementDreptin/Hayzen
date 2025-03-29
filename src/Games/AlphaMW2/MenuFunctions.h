@@ -27,11 +27,7 @@ bool ChangeCarePackageOrientation(void *pParameters);
 
 bool ToggleSaveLoadBinds(void *pParameters);
 
-bool SavePosition(void *);
-
-bool LoadPosition(void *);
-
-bool ToggleUfo(void *pParameters);
+bool ToggleUfoBind(void *pParameters);
 
 bool SpawnBot(void *);
 

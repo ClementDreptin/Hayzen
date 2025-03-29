@@ -38,6 +38,7 @@ void AlphaMW2Title::InitMenu()
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
     bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
+    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -85,9 +86,7 @@ void AlphaMW2Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ClickOption, "Save Position", AlphaMW2::SavePosition));
-        options.emplace_back(MakeOption(ClickOption, "Load Position", AlphaMW2::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", AlphaMW2::ToggleUfo, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", AlphaMW2::ToggleUfoBind, ufoBindEnabled));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

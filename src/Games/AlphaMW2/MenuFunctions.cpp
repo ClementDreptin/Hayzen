@@ -117,19 +117,9 @@ bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-bool AlphaMW2::SavePosition(void *)
+bool AlphaMW2::ToggleUfoBind(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::SavePosition();
-}
-
-bool AlphaMW2::LoadPosition(void *)
-{
-    return COMMON_FN_NAMESPACE::LoadPosition();
-}
-
-bool AlphaMW2::ToggleUfo(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }
 
 bool AlphaMW2::SpawnBot(void *)

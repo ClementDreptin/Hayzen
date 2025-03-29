@@ -44,6 +44,7 @@ void MW2Title::InitMenu()
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
     bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
+    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -93,9 +94,7 @@ void MW2Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ClickOption, "Save Position", MW2::SavePosition));
-        options.emplace_back(MakeOption(ClickOption, "Load Position", MW2::LoadPosition));
-        options.emplace_back(MakeOption(ToggleOption, "UFO", MW2::ToggleUfo, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", MW2::ToggleUfoBind, ufoBindEnabled));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 

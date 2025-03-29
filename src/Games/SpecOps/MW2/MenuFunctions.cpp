@@ -74,19 +74,9 @@ bool SpecOpsMW2::ToggleSaveLoadBinds(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-bool SpecOpsMW2::SavePosition(void *)
+bool SpecOpsMW2::ToggleUfoBind(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::SavePosition();
-}
-
-bool SpecOpsMW2::LoadPosition(void *)
-{
-    return COMMON_FN_NAMESPACE::LoadPosition();
-}
-
-bool SpecOpsMW2::ToggleUfo(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }
 
 bool SpecOpsMW2::ToggleSecondPlayerGodMode(void *pParameters)

@@ -139,7 +139,7 @@ bool ToggleReplayInputBind(void *pParameters)
 
         // It'd be nice to display the button glyph instead of "Down" but CHAR_DOWN (\x15) isn't in the font
         // used by iPrintLn and button macros, like "[{+actionslot 2}]", don't work in spec ops
-        iPrintLn(Context::ClientNum, "Press ^2Down^7 to ^2Replay");
+        iPrintLn(Context::ClientNum, "Press ^2DOWN^7 to ^2Replay");
     }
     else
         Binds::Remove(XINPUT_GAMEPAD_DPAD_DOWN);
@@ -208,16 +208,34 @@ bool ToggleSaveLoadBinds(void *pParameters)
     return true;
 }
 
-bool ToggleUfo(void *pParameters)
+bool ToggleUfo()
+{
+    gclient_s *pGClient = GetGClient(Context::ClientNum);
+    XASSERT(pGClient != nullptr);
+
+    pGClient->mFlags ^= 2;
+
+    return true;
+}
+
+bool ToggleUfoBind(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
     bool enabled = *reinterpret_cast<bool *>(pParameters);
 
-    gclient_s *pGClient = GetGClient(Context::ClientNum);
-    XASSERT(pGClient != nullptr);
+    if (enabled)
+    {
+        Cbuf_AddText(0, "unbind dpad_up");
+        Binds::Add(XINPUT_GAMEPAD_DPAD_UP, ToggleUfo);
 
-    pGClient->mFlags = enabled ? 2 : 0;
+        iPrintLn(Context::ClientNum, "Press ^2UP^7 to ^2UFO");
+    }
+    else
+    {
+        Cbuf_AddText(0, "bind dpad_up \"+actionslot 1\"");
+        Binds::Remove(XINPUT_GAMEPAD_DPAD_UP);
+    }
 
     return true;
 }

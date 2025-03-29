@@ -94,17 +94,7 @@ bool MW3::ToggleSaveLoadBinds(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-bool MW3::SavePosition(void *)
+bool MW3::ToggleUfoBind(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::SavePosition();
-}
-
-bool MW3::LoadPosition(void *)
-{
-    return COMMON_FN_NAMESPACE::LoadPosition();
-}
-
-bool MW3::ToggleUfo(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }

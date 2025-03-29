@@ -74,19 +74,9 @@ bool NX1::ToggleSaveLoadBinds(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-bool NX1::SavePosition(void *)
+bool NX1::ToggleUfoBind(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::SavePosition();
-}
-
-bool NX1::LoadPosition(void *)
-{
-    return COMMON_FN_NAMESPACE::LoadPosition();
-}
-
-bool NX1::ToggleUfo(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleUfo(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }
 
 bool NX1::SpawnBot(void *)

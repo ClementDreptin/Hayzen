@@ -74,19 +74,26 @@ bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
 }
 
-bool SpecOpsAlphaMW2::SavePosition(void *)
+bool SpecOpsAlphaMW2::ToggleUfoBind(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::SavePosition();
-}
+    // We have to reimplement the same logic as the common function but change the callback
 
-bool SpecOpsAlphaMW2::LoadPosition(void *)
-{
-    return COMMON_FN_NAMESPACE::LoadPosition();
-}
+    XASSERT(pParameters != nullptr);
 
-bool SpecOpsAlphaMW2::ToggleUfo(void *)
-{
-    Cbuf_AddText(0, "ufo");
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
+    {
+        Cbuf_AddText(0, "unbind dpad_up");
+        Binds::Add(XINPUT_GAMEPAD_DPAD_UP, []() -> bool { Cbuf_AddText(0, "ufo"); return true; });
+
+        iPrintLn(Context::ClientNum, "Press ^2UP^7 to ^2UFO");
+    }
+    else
+    {
+        Cbuf_AddText(0, "bind dpad_up \"+actionslot 1\"");
+        Binds::Remove(XINPUT_GAMEPAD_DPAD_UP);
+    }
 
     return true;
 }

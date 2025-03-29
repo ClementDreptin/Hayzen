@@ -59,7 +59,7 @@ void SpecOpsAlphaMW2Title::InitMenu()
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsAlphaMW2::ToggleSecondPlayerGodMode, false));
         options.emplace_back(MakeOption(ClickOption, "Teleport to Me", SpecOpsAlphaMW2::TeleportSecondPlayerToMe));
-        optionGroups.emplace_back(OptionGroup("Second Player", options));
+        optionGroups.emplace_back(OptionGroup("2nd Player", options));
     }
 
     // Input Replay

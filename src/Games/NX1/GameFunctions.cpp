@@ -40,6 +40,8 @@ void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<
 
 void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x82264770);
 
+bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<bool (*)(int)>(0x8233F188);
+
 void iPrintLn(int clientNum, const std::string &text)
 {
     XASSERT(clientNum >= -1 && clientNum <= 17);

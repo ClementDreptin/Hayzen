@@ -40,6 +40,8 @@ extern void (*SetClientOrigin)(gentity_s *ent, const float *origin);
 
 extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
+extern bool (*UI_AnyMenuActive)(int localClientNum);
+
 void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);

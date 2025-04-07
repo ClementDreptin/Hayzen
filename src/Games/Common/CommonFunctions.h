@@ -213,6 +213,10 @@ bool ToggleUfo()
     gclient_s *pGClient = GetGClient(Context::ClientNum);
     XASSERT(pGClient != nullptr);
 
+    // Avoid activating UFO while using the start or class menu
+    if (UI_AnyMenuActive(0))
+        return false;
+
     pGClient->mFlags ^= 2;
 
     return true;

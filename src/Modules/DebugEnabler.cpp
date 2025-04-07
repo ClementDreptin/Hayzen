@@ -13,6 +13,7 @@ namespace DebugEnabler
 {
 
 static Detour *s_pXexpResolveImageImportsDetour = nullptr;
+static uint32_t s_DefaultValueAtPatchAddress = 0;
 
 static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESCRIPTOR *pImportDesc, uint32_t flags)
 {
@@ -68,7 +69,10 @@ HRESULT Enable()
 {
     XASSERT(s_pXexpResolveImageImportsDetour == nullptr);
 
-    Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x60000000);
+    const uint64_t patchAddress = 0x800001040002AA58;
+
+    s_DefaultValueAtPatchAddress = Hypervisor::Peek<uint32_t>(patchAddress);
+    Hypervisor::Poke<uint32_t>(patchAddress, 0x60000000);
 
     s_pXexpResolveImageImportsDetour = new Detour(0x80079D48, XexpResolveImageImportsHook);
 
@@ -78,8 +82,9 @@ HRESULT Enable()
 void Disable()
 {
     XASSERT(s_pXexpResolveImageImportsDetour != nullptr);
+    XASSERT(s_DefaultValueAtPatchAddress != 0);
 
-    Hypervisor::Poke<uint32_t>(0x800001040002AA58, 0x48000274);
+    Hypervisor::Poke<uint32_t>(0x800001040002AA58, s_DefaultValueAtPatchAddress);
 
     delete s_pXexpResolveImageImportsDetour;
     s_pXexpResolveImageImportsDetour = nullptr;

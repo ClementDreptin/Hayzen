@@ -65,6 +65,7 @@ HRESULT Init()
 void Shutdown()
 {
     s_XamInputGetStateDetour.Remove();
+    s_GamepadStates.clear();
     s_IsRecording = false;
     s_IsReplaying = false;
 }

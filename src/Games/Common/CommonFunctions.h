@@ -105,48 +105,6 @@ bool GoThroughInvisibleBarriers(const GoThroughInvisibleBarriersOptions &options
     }
 }
 
-bool RecordInput(void *pParameters)
-{
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
-
-    int clientNum = Context::ClientNum;
-
-    if (enabled)
-    {
-        InputRecorder::Start();
-        iPrintLn(clientNum, "Recording...");
-    }
-    else
-    {
-        InputRecorder::Stop();
-        iPrintLn(clientNum, "Recording stopped");
-    }
-
-    return true;
-}
-
-bool ToggleReplayInputBind(void *pParameters)
-{
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
-
-    if (enabled)
-    {
-        Binds::Add(XINPUT_GAMEPAD_DPAD_DOWN, []() -> bool { InputRecorder::Replay(); return true; });
-
-        // It'd be nice to display the button glyph instead of "Down" but CHAR_DOWN (\x15) isn't in the font
-        // used by iPrintLn and button macros, like "[{+actionslot 2}]", don't work in spec ops
-        iPrintLn(Context::ClientNum, "Press ^2DOWN^7 to ^2Replay");
-    }
-    else
-        Binds::Remove(XINPUT_GAMEPAD_DPAD_DOWN);
-
-    return true;
-}
-
 bool SavePosition()
 {
     int clientNum = Context::ClientNum;
@@ -240,6 +198,59 @@ bool ToggleUfoBind(void *pParameters)
         Cbuf_AddText(0, "bind dpad_up \"+actionslot 1\"");
         Binds::Remove(XINPUT_GAMEPAD_DPAD_UP);
     }
+
+    return true;
+}
+
+bool RecordInput(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    int clientNum = Context::ClientNum;
+
+    if (enabled)
+    {
+        InputRecorder::Start();
+        iPrintLn(clientNum, "Recording...");
+    }
+    else
+    {
+        InputRecorder::Stop();
+        iPrintLn(clientNum, "Recording stopped");
+    }
+
+    return true;
+}
+
+static bool ReplayInput()
+{
+    // Avoid activating UFO while using the start or class menu
+    if (UI_AnyMenuActive(0))
+        return false;
+
+    InputRecorder::Replay();
+
+    return true;
+}
+
+bool ToggleReplayInputBind(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
+    {
+        Binds::Add(XINPUT_GAMEPAD_DPAD_DOWN, ReplayInput);
+
+        // It'd be nice to display the button glyph instead of "Down" but CHAR_DOWN (\x15) isn't in the font
+        // used by iPrintLn and button macros, like "[{+actionslot 2}]", don't work in spec ops
+        iPrintLn(Context::ClientNum, "Press ^2DOWN^7 to ^2Replay");
+    }
+    else
+        Binds::Remove(XINPUT_GAMEPAD_DPAD_DOWN);
 
     return true;
 }

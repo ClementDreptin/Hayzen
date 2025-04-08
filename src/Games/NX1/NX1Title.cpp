@@ -34,9 +34,6 @@ void NX1Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
-    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
-    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
-
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
@@ -79,8 +76,8 @@ void NX1Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", NX1::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", NX1::ToggleUfoBind, ufoBindEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", NX1::ToggleSaveLoadBinds, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", NX1::ToggleUfoBind, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
@@ -126,6 +123,8 @@ void NX1Title::Scr_NotifyHook(NX1::Game::gentity_s *entity, uint16_t stringValue
     if ((!strcmp(eventName, "begin") || !strcmp(eventName, "sprint_begin")) && !s_CurrentInstance->InMatch())
     {
         Context::Reset();
+        Binds::Clear();
+
         Context::ClientNum = clientNum;
 
         s_CurrentInstance->InMatch(true);

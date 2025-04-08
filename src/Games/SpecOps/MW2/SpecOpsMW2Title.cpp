@@ -33,8 +33,6 @@ void SpecOpsMW2Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82331F48) == 0x7D284B78;
-    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
-    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -49,8 +47,8 @@ void SpecOpsMW2Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", SpecOpsMW2::ToggleUfoBind, ufoBindEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", SpecOpsMW2::ToggleSaveLoadBinds, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", SpecOpsMW2::ToggleUfoBind, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
@@ -98,6 +96,8 @@ void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
         if (!hasJumped || !s_CurrentInstance->InMatch())
         {
             Context::Reset();
+            Binds::Clear();
+
             Context::ClientNum = 0;
 
             s_CurrentInstance->InMatch(true);

@@ -43,8 +43,6 @@ void MW2Title::InitMenu()
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
-    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
-    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -93,8 +91,8 @@ void MW2Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", MW2::ToggleUfoBind, ufoBindEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW2::ToggleSaveLoadBinds, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", MW2::ToggleUfoBind, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
@@ -144,6 +142,8 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
     if ((!strcmp(eventName, "begin") || !strcmp(eventName, "sprint_begin")) && !s_CurrentInstance->InMatch())
     {
         Context::Reset();
+        Binds::Clear();
+
         Context::ClientNum = clientNum;
 
         s_CurrentInstance->InMatch(true);

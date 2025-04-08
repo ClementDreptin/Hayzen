@@ -37,8 +37,6 @@ void AlphaMW2Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
-    bool saveAndLoadBindsEnabled = Binds::Has(XINPUT_GAMEPAD_LEFT_SHOULDER) && Binds::Has(XINPUT_GAMEPAD_RIGHT_SHOULDER);
-    bool ufoBindEnabled = Binds::Has(XINPUT_GAMEPAD_DPAD_UP);
 
     // Main section
     {
@@ -85,8 +83,8 @@ void AlphaMW2Title::InitMenu()
     // Teleport section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, saveAndLoadBindsEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", AlphaMW2::ToggleUfoBind, ufoBindEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", AlphaMW2::ToggleSaveLoadBinds, false));
+        options.emplace_back(MakeOption(ToggleOption, "UFO Bind", AlphaMW2::ToggleUfoBind, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
     }
 
@@ -132,6 +130,8 @@ void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t s
     if ((!strcmp(eventName, "begin") || !strcmp(eventName, "sprint_begin")) && !s_CurrentInstance->InMatch())
     {
         Context::Reset();
+        Binds::Clear();
+
         Context::ClientNum = clientNum;
 
         s_CurrentInstance->InMatch(true);

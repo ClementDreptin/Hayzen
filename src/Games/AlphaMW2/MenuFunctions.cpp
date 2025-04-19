@@ -65,7 +65,16 @@ bool AlphaMW2::ToggleAmmo(void *pParameters)
 
 bool AlphaMW2::ChangeJumpHeight(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+    // For the MW2 Alpha changing the constant dvar value doesn't work
+    // so we went back to the old dvar way
+
+    XASSERT(pParameters != nullptr);
+
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+
+    SetClientDvar(-1, "jump_height", std::to_string(static_cast<uint64_t>(value)));
+
+    return true;
 }
 
 bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)

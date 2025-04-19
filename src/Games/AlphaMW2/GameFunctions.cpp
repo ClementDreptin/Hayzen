@@ -16,6 +16,8 @@ void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<vo
 
 const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x82303CC0);
 
+float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float (*)(const char *)>(0x82303BD0);
+
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x8222C108);
 
 bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x82388338);

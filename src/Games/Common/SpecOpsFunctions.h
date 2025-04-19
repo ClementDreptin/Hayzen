@@ -23,6 +23,19 @@ bool ToggleGodModeSP(void *pParameters)
     return true;
 }
 
+bool ChangeJumpHeight(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+
+    // Set the new jump height value
+    std::string command = Formatter::Format("set jump_height %d", value);
+    Cbuf_AddText(0, command.c_str());
+
+    return true;
+}
+
 bool ToggleSecondPlayerGodMode(void *pParameters)
 {
     XASSERT(pParameters != nullptr);

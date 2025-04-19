@@ -28,19 +28,6 @@ bool ToggleAmmo(const ToggleAmmoOptions &options)
     return true;
 }
 
-bool ChangeJumpHeight(void *pParameters)
-{
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
-
-    // Set the new jump height value
-    std::string command = "set jump_height " + std::to_string(static_cast<uint64_t>(value));
-    Cbuf_AddText(0, command.c_str());
-
-    return true;
-}
-
 static void PM_CheckLadderMoveHook(pmove_t *pm, void *pml)
 {
     auto &detourMap = COMMON_TITLE::GetDetourMap();

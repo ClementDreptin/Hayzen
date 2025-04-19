@@ -16,6 +16,8 @@ extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
+extern float (*Dvar_GetFloat)(const char *dvarName);
+
 extern playerState_s *(*GetPlayerState)(int clientNum);
 
 extern bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum);

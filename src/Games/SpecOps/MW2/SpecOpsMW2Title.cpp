@@ -33,13 +33,14 @@ void SpecOpsMW2Title::InitMenu()
     std::vector<OptionGroup> optionGroups;
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82331F48) == 0x7D284B78;
+    float jumpHeightValue = SpecOpsMW2::Game::Dvar_GetFloat("jump_height");
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
-        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW2::ChangeJumpHeight, 39, 0, 999, 1));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW2::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsMW2::GoThroughInvisibleBarriers, false));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }

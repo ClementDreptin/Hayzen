@@ -10,6 +10,8 @@ void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_
 
 void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x8228E1F8);
 
+float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float (*)(const char *)>(0x823044F0);
+
 playerState_s *(*GetPlayerState)(int num) = reinterpret_cast<playerState_s *(*)(int)>(0x82371650);
 
 void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821F5018);

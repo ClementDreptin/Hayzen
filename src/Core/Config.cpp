@@ -6,9 +6,6 @@
 Config::Config(const std::string &filePath)
     : AllowDebugBuilds(true),
       DisplayControlsTexts(true),
-      CarePackageDistance(150.0f),
-      CarePackageHeight(0.0f),
-      CarePackageAngle(0.0f),
       Y(150.0f),
       Color(D3DCOLOR_XRGB(210, 20, 20)),
       BackgroundColor(D3DCOLOR_XRGB(25, 25, 25)),
@@ -32,10 +29,6 @@ HRESULT Config::SaveToDisk()
     m_Structure["debugbuilds"]["allowdebugbuilds"] = AllowDebugBuilds ? "true" : "false";
 
     m_Structure["controls"]["showcontrols"] = DisplayControlsTexts ? "true" : "false";
-
-    m_Structure["carepackage"]["distance"] = std::to_string(static_cast<long double>(CarePackageDistance));
-    m_Structure["carepackage"]["height"] = std::to_string(static_cast<long double>(CarePackageHeight));
-    m_Structure["carepackage"]["angle"] = std::to_string(static_cast<long double>(CarePackageAngle));
 
     m_Structure["position"]["x"] = std::to_string(static_cast<long double>(X));
     m_Structure["position"]["y"] = std::to_string(static_cast<long double>(Y));
@@ -79,19 +72,6 @@ HRESULT Config::LoadFromDisk()
             DisplayControlsTexts = m_Structure["controls"]["showcontrols"] == "true";
     }
 
-    // Care package
-    if (m_Structure.has("carepackage"))
-    {
-        if (m_Structure["carepackage"].has("distance"))
-            CarePackageDistance = static_cast<float>(atof(m_Structure["carepackage"]["distance"].c_str()));
-
-        if (m_Structure["carepackage"].has("height"))
-            CarePackageHeight = static_cast<float>(atof(m_Structure["carepackage"]["height"].c_str()));
-
-        if (m_Structure["carepackage"].has("angle"))
-            CarePackageAngle = static_cast<float>(atof(m_Structure["carepackage"]["angle"].c_str()));
-    }
-
     // Position
     if (m_Structure.has("position"))
     {
@@ -128,7 +108,4 @@ void Config::Reset()
     Y = 150.0f;
     Color = D3DCOLOR_XRGB(210, 20, 20);
     DisplayControlsTexts = true;
-    CarePackageDistance = 150.0f;
-    CarePackageHeight = 0.0f;
-    CarePackageAngle = 0.0f;
 }

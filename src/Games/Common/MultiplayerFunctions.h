@@ -1,7 +1,6 @@
 // #pragma once is intentionally missing, this file is supposed to be included multiple times
 // and generating different functions every time depending on the COMMON_FN_NAMESPACE macro.
 
-#include "Core/Config.h"
 #include "Core/Context.h"
 
 namespace COMMON_FN_NAMESPACE
@@ -88,15 +87,15 @@ bool SpawnCarePackage()
     const vec3 &playerOrigin = pPlayerState->origin;
     float playerViewY = pPlayerState->viewAngles.y;
 
-    // Spawn a care package g_Config.CarePackageDistance units in front of and
-    // g_Config.CarePackageHeight above the player
+    // Spawn a care package Context::CarePackageDistance units in front of and
+    // Context::CarePackageHeight above the player
     vec3 carePackageOrigin = Math::ProjectForward(
         playerOrigin,
         Math::Radians(playerViewY),
-        g_Config.CarePackageDistance
+        Context::CarePackageDistance
     );
-    carePackageOrigin.z += g_Config.CarePackageHeight;
-    vec3 carePackageAngles = vec3(0.0f, playerViewY + g_Config.CarePackageAngle, 0.0f);
+    carePackageOrigin.z += Context::CarePackageHeight;
+    vec3 carePackageAngles = vec3(0.0f, playerViewY + Context::CarePackageAngle, 0.0f);
 
     return SpawnCarePackage(carePackageOrigin, carePackageAngles);
 }
@@ -123,13 +122,6 @@ bool SpawnBlocker()
     return SpawnCarePackage(carePackageOrigin, carePackageAngles);
 }
 
-typedef enum _CarePackagePositionPresets
-{
-    CarePackagePosition_BounceTest,
-    CarePackagePosition_MegaBounce,
-    CarePackagePosition_Floor,
-} CarePackagePositionPresets;
-
 bool ChangeCarePackagePositionPresets(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
@@ -139,20 +131,22 @@ bool ChangeCarePackagePositionPresets(void *pParameters)
     switch (positionPresets)
     {
     case CarePackagePosition_BounceTest:
-        g_Config.CarePackageDistance = 150.0f;
-        g_Config.CarePackageHeight = 0.0f;
+        Context::CarePackageDistance = 150.0f;
+        Context::CarePackageHeight = 0.0f;
         break;
     case CarePackagePosition_MegaBounce:
-        g_Config.CarePackageDistance = 860.0f;
-        g_Config.CarePackageHeight = 1250.0f;
+        Context::CarePackageDistance = 860.0f;
+        Context::CarePackageHeight = 1250.0f;
         break;
     case CarePackagePosition_Floor:
-        g_Config.CarePackageDistance = 0.0f;
-        g_Config.CarePackageHeight = -60.0f;
+        Context::CarePackageDistance = 0.0f;
+        Context::CarePackageHeight = -60.0f;
         break;
     default:
         return false;
     }
+
+    Context::CarePackagePositionPresets = positionPresets;
 
     return true;
 }
@@ -173,13 +167,13 @@ bool ChangeCarePackageOrientation(void *pParameters)
     switch (orientation)
     {
     case CarePackageOrientation_Straight:
-        g_Config.CarePackageAngle = 0.0f;
+        Context::CarePackageAngle = 0.0f;
         break;
     case CarePackageOrientation_LeftStrafe:
-        g_Config.CarePackageAngle = -45.0f;
+        Context::CarePackageAngle = -45.0f;
         break;
     case CarePackageOrientation_RightStrafe:
-        g_Config.CarePackageAngle = 45.0f;
+        Context::CarePackageAngle = 45.0f;
         break;
     default:
         return false;

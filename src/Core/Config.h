@@ -15,9 +15,6 @@ public:
 
     bool AllowDebugBuilds;
     bool DisplayControlsTexts;
-    float CarePackageDistance;
-    float CarePackageHeight;
-    float CarePackageAngle;
     float Y;
     D3DCOLOR Color;
     D3DCOLOR BackgroundColor;

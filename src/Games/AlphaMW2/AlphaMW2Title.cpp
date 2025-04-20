@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 
-#include "Core/Config.h"
 #include "Core/Context.h"
 #include "Core/UI.h"
 #include "Games/AlphaMW2/GameFunctions.h"
@@ -59,9 +58,9 @@ void AlphaMW2Title::InitMenu()
         // Spawn settings
         {
             std::vector<std::shared_ptr<Option>> spawnSettings;
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Distance", &g_Config.CarePackageDistance, -10000.0f, 10000.0f, 5.0f));
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Height", &g_Config.CarePackageHeight, -10000.0f, 10000.0f, 5.0f));
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Angle", &g_Config.CarePackageAngle, -90.0f, 90.0f, 1.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Distance", &Context::CarePackageDistance, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Height", &Context::CarePackageHeight, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Angle", &Context::CarePackageAngle, -90.0f, 90.0f, 1.0f));
 
             std::vector<std::string> positionPresets(3);
             positionPresets[0] = "Bounce Test";

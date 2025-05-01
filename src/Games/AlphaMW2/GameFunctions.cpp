@@ -44,6 +44,8 @@ void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cas
 
 bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<bool (*)(int)>(0x822D60C0);
 
+uint32_t (*BG_GetPerkCodeIndexForName)(const char *perkName) = reinterpret_cast<uint32_t (*)(const char *)>(0x82103650);
+
 void iPrintLn(int clientNum, const std::string &text)
 {
     XASSERT(clientNum >= -1 && clientNum <= 17);

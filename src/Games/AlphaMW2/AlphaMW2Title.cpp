@@ -31,6 +31,23 @@ AlphaMW2Title::AlphaMW2Title()
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
 }
 
+static bool Debug(void *)
+{
+    int clientNum = Context::ClientNum;
+
+    AlphaMW2::Game::gclient_s *pClient = AlphaMW2::Game::GetGClient(clientNum);
+    uint32_t perkCode = AlphaMW2::Game::BG_GetPerkCodeIndexForName("specialty_fastreload");
+
+    uint32_t perkValue = 1 << (perkCode & 0x1F);
+
+    pClient->ps.perks[0] = perkValue;
+    pClient->sess._cs.perks[0] = perkValue;
+
+    AlphaMW2::Game::iPrintLn(clientNum, "perk set");
+
+    return true;
+}
+
 void AlphaMW2Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
@@ -46,6 +63,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ClickOption, "Debug", Debug));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

@@ -14,7 +14,9 @@ struct playerState_s
     vec3 origin;
     char padding3[0xE4];
     vec3 viewAngles;
-    char padding4[0x3068];
+    char padding4[0x310];
+    uint32_t perks[2];
+    char padding5[0x2D50];
 };
 
 static_assert(sizeof(playerState_s) == 0x3180, "size of playerState_s different than 0x3180");
@@ -29,10 +31,28 @@ struct pmove_t
 
 static_assert(sizeof(pmove_t) == 0x128, "size of pmove_t different than 0x128");
 
+struct clientState_s
+{
+    char padding1[0x70];
+    uint32_t perks[2];
+    char padding2[0x1C];
+};
+
+static_assert(sizeof(clientState_s) == 0x94, "size of clientState_s different than 0x94");
+
+struct clientSession_t
+{
+    char padding1[0xCC];
+    clientState_s _cs;
+    char padding2[0x140];
+};
+
+static_assert(sizeof(clientSession_t) == 0x2A0, "size of clientSession_t different than 0x2A0");
+
 struct gclient_s
 {
     playerState_s ps;
-    char padding1[0x2A0];
+    clientSession_t sess;
     int mFlags;
     char padding2[0x2DC];
 };

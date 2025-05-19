@@ -36,14 +36,10 @@ static bool Debug(void *)
     int clientNum = Context::ClientNum;
 
     AlphaMW2::Game::gclient_s *pClient = AlphaMW2::Game::GetGClient(clientNum);
-    uint32_t perkCode = AlphaMW2::Game::BG_GetPerkCodeIndexForName("specialty_fastreload");
+    uint32_t perkCode = AlphaMW2::Game::BG_GetPerkCodeIndexForName("specialty_explosivebullets");
 
-    uint32_t perkValue = 1 << (perkCode & 0x1F);
-
-    pClient->ps.perks[0] = perkValue;
-    pClient->sess._cs.perks[0] = perkValue;
-
-    AlphaMW2::Game::iPrintLn(clientNum, "perk set");
+    pClient->ps.perks[perkCode >> 5] |= 1 << (perkCode & 0x1F);
+    pClient->sess._cs.perks[perkCode >> 5] |= 1 << (perkCode & 0x1F);
 
     return true;
 }

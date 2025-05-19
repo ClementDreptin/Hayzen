@@ -54,7 +54,7 @@ struct gclient_s
     playerState_s ps;
     clientSession_t sess;
     int mFlags;
-    char padding2[0x2DC];
+    char padding1[0x2DC];
 };
 
 static_assert(sizeof(gclient_s) == 0x3700, "size of gclient_s different than 0x3700");

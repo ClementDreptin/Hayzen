@@ -35,6 +35,19 @@ MW3Title::MW3Title()
     Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
 }
 
+static bool Debug(void *)
+{
+    int clientNum = Context::ClientNum;
+
+    MW3::Game::gclient_s *pClient = MW3::Game::GetGClient(clientNum);
+    uint32_t perkCode = MW3::Game::BG_GetPerkCodeIndexForName("specialty_lightweight");
+    MW3::Game::iPrintLn(clientNum, Formatter::Format("perk index: %d", perkCode));
+    pClient->ps.perks[perkCode >> 5] |= 1 << (perkCode & 0x1F);
+    pClient->sess._cs.perks[perkCode >> 5] |= 1 << (perkCode & 0x1F);
+
+    return true;
+}
+
 void MW3Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
@@ -50,6 +63,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ClickOption, "Debug", Debug));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

@@ -94,6 +94,8 @@ extern R_REGISTERFONT R_RegisterFont;
 extern MATERIAL_REGISTERHANDLE Material_RegisterHandle;
 
 extern Font_s *pFont;
+extern Font_s *pDefaultFont;
+extern Font_s *pConsoleFont;
 extern HANDLE MaterialHandle;
 
 extern float DisplayWidth;

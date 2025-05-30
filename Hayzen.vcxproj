@@ -90,6 +90,7 @@
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
     <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
+    <ClInclude Include="src\Games\Common\Structs.h" />
     <ClInclude Include="src\Games\MW2\GameFunctions.h" />
     <ClInclude Include="src\Games\MW2\MW2Title.h" />
     <ClInclude Include="src\Games\MW2\MenuFunctions.h" />
@@ -115,6 +116,7 @@
     <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
     <ClInclude Include="src\Modules\Binds.h" />
+    <ClInclude Include="src\Modules\Console.h" />
     <ClInclude Include="src\Modules\DebugEnabler.h" />
     <ClInclude Include="src\Modules\InputRecorder.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
@@ -156,6 +158,7 @@
     <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
     <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
     <ClCompile Include="src\Modules\Binds.cpp" />
+    <ClCompile Include="src\Modules\Console.cpp" />
     <ClCompile Include="src\Modules\DebugEnabler.cpp" />
     <ClCompile Include="src\Modules\InputRecorder.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />

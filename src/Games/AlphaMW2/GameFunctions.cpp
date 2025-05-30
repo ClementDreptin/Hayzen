@@ -18,6 +18,8 @@ const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const cha
 
 float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float (*)(const char *)>(0x82303BD0);
 
+void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData) = reinterpret_cast<void (*)(void (*)(const dvar_t *, void *), void *)>(0x82306B80);
+
 playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x8222C108);
 
 bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x82388338);

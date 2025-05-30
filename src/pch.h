@@ -5,10 +5,10 @@
 
 // C++ standard library
 #include <cstdint>
+#include <deque>
 #include <fstream>
 #include <functional>
 #include <memory>
-#include <queue>
 #include <sstream>
 #include <string>
 #include <unordered_map>

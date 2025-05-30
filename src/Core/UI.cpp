@@ -193,6 +193,8 @@ R_REGISTERFONT R_RegisterFont = nullptr;
 MATERIAL_REGISTERHANDLE Material_RegisterHandle = nullptr;
 
 Font_s *pFont = nullptr;
+Font_s *pDefaultFont = nullptr;
+Font_s *pConsoleFont = nullptr;
 HANDLE MaterialHandle = nullptr;
 
 // The resolution is always 720p, 1080p is created by the hardware scaler

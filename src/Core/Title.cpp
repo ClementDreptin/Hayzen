@@ -34,24 +34,28 @@ void Title::Update()
 
     XASSERT(pGamepad != nullptr);
 
-    // Toggle the menu by pressing LT and DPAD LEFT
-    if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+    if (m_InMatch)
     {
-        bool isOpen = m_Menu.Open();
-        m_Menu.Open(!isOpen);
+        // Toggle the menu by pressing LT and DPAD LEFT
+        if (pGamepad->LastLeftTrigger && pGamepad->PressedButtons & XINPUT_GAMEPAD_DPAD_LEFT)
+        {
+            bool isOpen = m_Menu.Open();
+            m_Menu.Open(!isOpen);
 
-        return;
+            return;
+        }
+
+        m_Menu.Update(pGamepad);
+
+        if (!m_Menu.Open())
+            Binds::Run(pGamepad);
     }
-
-    m_Menu.Update(pGamepad);
-
-    if (!m_Menu.Open())
-        Binds::Run(pGamepad);
 }
 
 void Title::Render()
 {
-    m_Menu.Render();
+    if (m_InMatch)
+        m_Menu.Render();
 }
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
@@ -61,7 +65,7 @@ void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
     // Call the original SCR_DrawScreenField function
     s_DetourMap.at("SCR_DrawScreenField").GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
-    if (s_CurrentInstance != nullptr && s_CurrentInstance->InMatch())
+    if (s_CurrentInstance != nullptr)
     {
         s_CurrentInstance->Update();
 
@@ -94,7 +98,9 @@ void Title::InitRenderer()
     XASSERT(UI::R_RegisterFont != nullptr);
     XASSERT(UI::Material_RegisterHandle != nullptr);
 
-    UI::pFont = UI::R_RegisterFont("fonts/smallFont", 0);
+    UI::pDefaultFont = UI::R_RegisterFont("fonts/smallFont", 0);
+    UI::pConsoleFont = UI::R_RegisterFont("fonts/consoleFont", 0);
+    UI::pFont = UI::pDefaultFont;
     UI::MaterialHandle = UI::Material_RegisterHandle("white", 0);
 
     XASSERT(UI::pFont != nullptr);

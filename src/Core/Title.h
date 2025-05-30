@@ -30,14 +30,14 @@ protected:
 
     void RemoveHooks();
 
+    virtual void Update();
+
+    virtual void Render();
+
     virtual void InitRenderer() = 0;
 
 private:
     bool m_InMatch;
-
-    void Update();
-
-    void Render();
 
     void AskToReboot();
 };

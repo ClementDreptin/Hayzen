@@ -14,6 +14,7 @@
 #include "Options/ToggleOption.h"
 
 AlphaMW2Title::AlphaMW2Title()
+    : m_Console(Console::Props(AlphaMW2::Game::Cbuf_AddText, AlphaMW2::Game::Dvar_ForEach))
 {
     // Give the system some time to fully load the game in memory
     // Devkits are a little slower and need more time
@@ -158,6 +159,22 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void AlphaMW2Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void AlphaMW2Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void AlphaMW2Title::InitRenderer()

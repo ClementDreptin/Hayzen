@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Games/AlphaMW2/Structs.h"
+#include "Games/Common/Structs.h"
 
 // MW2 Alpha function pointers to functions from the game.
 namespace AlphaMW2
@@ -17,6 +18,8 @@ extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
 extern float (*Dvar_GetFloat)(const char *dvarName);
+
+extern void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData);
 
 extern playerState_s *(*GetPlayerState)(int clientNum);
 

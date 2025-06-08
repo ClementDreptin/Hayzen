@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Games/AlphaGhosts/MenuFunctions.h"
 
-#include "Games/AlphaGhosts/GameFunctions.h"
 #include "Games/AlphaGhosts/AlphaGhostsTitle.h"
+#include "Games/AlphaGhosts/GameFunctions.h"
 
 using namespace AlphaGhosts::Game;
 

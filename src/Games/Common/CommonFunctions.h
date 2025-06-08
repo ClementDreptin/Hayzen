@@ -73,7 +73,7 @@ bool GoThroughInvisibleBarriers(const GoThroughInvisibleBarriersOptions &options
 
     if (options.Enabled)
     {
-        // Patching pmove_t::tracemask in PmoveSingle prevent the player from climbing ladders so
+        // Patching pmove_t::tracemask in PmoveSingle prevents the player from climbing ladders so
         // we need to hook PM_CheckLadderMove to fix pmove_t::tracemask
         detourMap["PM_CheckLadderMove"] = Detour(options.PM_CheckLadderMoveAddress, PM_CheckLadderMoveHook);
         detourMap["PmoveSingle"] = Detour(options.PmoveSingleAddress, PmoveSingleHook);
@@ -213,7 +213,7 @@ bool RecordInput(void *pParameters)
 
 static bool ReplayInput()
 {
-    // Avoid activating UFO while using the start or class menu
+    // Avoid replaying while using the start or class menu
     if (UI_AnyMenuActive(0))
         return false;
 

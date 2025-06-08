@@ -34,6 +34,9 @@ void SpecOpsAlphaMW2Title::InitMenu()
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82328610) == 0x7D284B78;
     float jumpHeightValue = SpecOpsAlphaMW2::Game::Dvar_GetFloat("jump_height");
+    bool goThroughInvisibleBarriersEnabled =
+        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
+        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
 
     // Main section
     {
@@ -41,7 +44,7 @@ void SpecOpsAlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsAlphaMW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsAlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsAlphaMW2::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsAlphaMW2::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsAlphaMW2::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

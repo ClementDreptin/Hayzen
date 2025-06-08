@@ -41,6 +41,9 @@ void MW3Title::InitMenu()
 
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
+    bool goThroughInvisibleBarriersEnabled =
+        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
+        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
 
     // Main section
     {
@@ -49,7 +52,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW3::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

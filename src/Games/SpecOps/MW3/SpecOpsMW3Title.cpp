@@ -34,6 +34,9 @@ void SpecOpsMW3Title::InitMenu()
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x8235BB54) == 0x7D495378;
     float jumpHeightValue = SpecOpsMW3::Game::Dvar_GetFloat("jump_height");
+    bool goThroughInvisibleBarriersEnabled =
+        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
+        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
 
     // Main section
     {
@@ -41,7 +44,7 @@ void SpecOpsMW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "God Mode", SpecOpsMW3::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", SpecOpsMW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", SpecOpsMW3::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsMW3::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", SpecOpsMW3::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

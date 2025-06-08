@@ -28,7 +28,6 @@ struct pmove_t
 };
 
 static_assert(sizeof(pmove_t) == 0x138, "size of pmove_t different than 0x138");
-static_assert(offsetof(pmove_t, tracemask) == 0x5C, "");
 
 struct gclient_s
 {

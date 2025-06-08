@@ -33,11 +33,15 @@ void NX1Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
+    bool goThroughInvisibleBarriersEnabled =
+        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
+        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", NX1::ToggleGodMode, false));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

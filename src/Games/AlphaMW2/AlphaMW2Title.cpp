@@ -38,6 +38,9 @@ void AlphaMW2Title::InitMenu()
 
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82113628) == 0x7D284B78;
     float jumpHeightValue = AlphaMW2::Game::Dvar_GetFloat("jump_height");
+    bool goThroughInvisibleBarriersEnabled =
+        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
+        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
 
     // Main section
     {
@@ -46,7 +49,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaMW2::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaMW2::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaMW2::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
-        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, false));
+        options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaMW2::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

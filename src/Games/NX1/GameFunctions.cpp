@@ -70,6 +70,9 @@ void SetClientDvar(int clientNum, const std::string &dvar, const std::string &va
 
 bool IsHost(int clientNum)
 {
+    if (clientNum < 0 || clientNum > 17)
+        return false;
+
     return Session_IsHost(0x83F0E758, clientNum);
 }
 

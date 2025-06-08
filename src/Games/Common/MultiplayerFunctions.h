@@ -182,7 +182,7 @@ bool ChangeCarePackageOrientation(void *pParameters)
     return true;
 }
 
-#ifndef GAME_MW3
+#if !defined(GAME_MW3) && !defined(GAME_ALPHAGHOSTS)
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
@@ -209,7 +209,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 11 class0", serverId);
-    #elif defined(GAME_MW2) || defined(GAME_NX1)
+    #else
     std::string chooseTeamCommand = Formatter::Format("mr %i 3 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 10 class0", serverId);
     #endif

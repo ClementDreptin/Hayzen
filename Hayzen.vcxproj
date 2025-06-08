@@ -83,6 +83,10 @@
     <ClInclude Include="src\Core\Plugin.h" />
     <ClInclude Include="src\Core\Title.h" />
     <ClInclude Include="src\Core\UI.h" />
+    <ClInclude Include="src\Games\AlphaGhosts\AlphaGhostsTitle.h" />
+    <ClInclude Include="src\Games\AlphaGhosts\GameFunctions.h" />
+    <ClInclude Include="src\Games\AlphaGhosts\MenuFunctions.h" />
+    <ClInclude Include="src\Games\AlphaGhosts\Structs.h" />
     <ClInclude Include="src\Games\AlphaMW2\AlphaMW2Title.h" />
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
@@ -136,6 +140,9 @@
     <ClCompile Include="src\Core\Plugin.cpp" />
     <ClCompile Include="src\Core\Title.cpp" />
     <ClCompile Include="src\Core\UI.cpp" />
+    <ClCompile Include="src\Games\AlphaGhosts\AlphaGhostsTitle.cpp" />
+    <ClCompile Include="src\Games\AlphaGhosts\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\AlphaGhosts\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />

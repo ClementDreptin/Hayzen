@@ -2,6 +2,7 @@
 #include "Core/Plugin.h"
 
 #include "Core/Config.h"
+#include "Games/AlphaGhosts/AlphaGhostsTitle.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/MW3/MW3Title.h"
@@ -20,6 +21,7 @@ typedef enum _TitleId
     Title_MW2 = 0x41560817,
     Title_MW3 = 0x415608CB,
     Title_NX1 = 0x4156089E,
+    Title_AlphaGhosts = 0x4156088E,
 } TitleId;
 
 Plugin::Plugin(HANDLE pluginHandle)
@@ -104,6 +106,10 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case Title_XShell:
         Xam::XNotify("Hayzen - XShell Detected");
         m_pCurrentTitle = nullptr;
+        break;
+    case Title_AlphaGhosts:
+        if (!strcmp(reinterpret_cast<char *>(0x820029B0), "multiplayer"))
+            m_pCurrentTitle = new AlphaGhostsTitle();
         break;
     case Title_MW2:
         if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))

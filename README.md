@@ -20,6 +20,7 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 -   Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops
 -   Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
 -   Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
+-   Call of Duty: Ghosts - Alpha (May 9th 2013 build)
 -   Call of Duty: Future Warfare (NX1)
 
 ### Running debug builds

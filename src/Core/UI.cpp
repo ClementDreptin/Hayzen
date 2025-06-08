@@ -176,7 +176,8 @@ void DrawText(const TextProps &props)
     y += GetFontHeight(fontScale);
 
     R_AddCmdDrawText(
-        props.Text.c_str(), props.Text.size(),
+        props.Text.c_str(),
+        std::max<size_t>(1, props.Text.size()), // Some games crash when asked to draw a text of 0 characters
         pFont,
         x, y,
         fontScale, fontScale, 0.0f,

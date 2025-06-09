@@ -33,7 +33,7 @@ struct gclient_s
 {
     playerState_s ps;
     char padding1[0x360];
-    uint8_t mFlags;
+    int mFlags;
     char padding2[0x41C];
 };
 

@@ -76,26 +76,7 @@ bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(void *pParameters)
 
 bool SpecOpsAlphaMW2::ToggleUfoBind(void *pParameters)
 {
-    // We have to reimplement the same logic as the common function but change the callback
-
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
-
-    if (enabled)
-    {
-        Cbuf_AddText(0, "unbind dpad_up");
-        Binds::Add(XINPUT_GAMEPAD_DPAD_UP, []() -> bool { Cbuf_AddText(0, "ufo"); return true; });
-
-        iPrintLn(Context::ClientNum, "Press ^2UP^7 to ^2UFO");
-    }
-    else
-    {
-        Cbuf_AddText(0, "bind dpad_up \"+actionslot 1\"");
-        Binds::Remove(XINPUT_GAMEPAD_DPAD_UP);
-    }
-
-    return true;
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }
 
 bool SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(void *pParameters)

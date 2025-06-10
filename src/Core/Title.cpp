@@ -108,16 +108,17 @@ void Title::InitRenderer()
 
 void Title::AskToReboot()
 {
-    const wchar_t *buttonLabels[] = { L"Yes", L"No" };
+    std::vector<std::wstring> buttonLabels(2);
+    buttonLabels[0] = L"Yes";
+    buttonLabels[1] = L"No";
     uint32_t buttonPressedIndex = 0;
 
     uint32_t result = Xam::ShowMessageBox(
         L"Error",
         L"Initialization failed. Restarting the console could fix the problem.\n\nDo you want to restart?",
         buttonLabels,
-        ARRAYSIZE(buttonLabels),
-        &buttonPressedIndex,
         XMB_ERRORICON,
+        &buttonPressedIndex,
         1
     );
 

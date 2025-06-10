@@ -26,11 +26,11 @@ private:
 
     void InitNewTitle(uint32_t newTitleId);
 
-    bool isSingleplayerExecutable(uintptr_t stringAddress);
-
-    bool isMultiplayerExecutable(uintptr_t stringAddress);
-
     void CreateConfig();
+
+    bool IsSingleplayerExecutable(uintptr_t stringAddress);
+
+    bool IsMultiplayerExecutable(uintptr_t stringAddress);
 };
 
 extern Plugin *g_pPlugin;

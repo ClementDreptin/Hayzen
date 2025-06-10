@@ -26,6 +26,10 @@ private:
 
     void InitNewTitle(uint32_t newTitleId);
 
+    bool isSingleplayerExecutable(uintptr_t stringAddress);
+
+    bool isMultiplayerExecutable(uintptr_t stringAddress);
+
     void CreateConfig();
 };
 

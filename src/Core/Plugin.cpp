@@ -107,34 +107,52 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
         Xam::XNotify("Hayzen - XShell Detected");
         m_pCurrentTitle = nullptr;
         break;
-    case Title_AlphaGhosts:
-        if (!strcmp(reinterpret_cast<char *>(0x820029B0), "multiplayer"))
-            m_pCurrentTitle = new AlphaGhostsTitle();
-        break;
     case Title_MW2:
-        if (!strcmp(reinterpret_cast<char *>(0x82001270), "multiplayer"))
+        if (isMultiplayerExecutable(0x82001270))
             m_pCurrentTitle = new MW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200EFE4), "startMultiplayer"))
+        else if (isSingleplayerExecutable(0x8200EFE4))
             m_pCurrentTitle = new SpecOpsMW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x82001D38), "multiplayer"))
+        else if (isMultiplayerExecutable(0x82001D38))
             m_pCurrentTitle = new AlphaMW2Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200EDA4), "startMultiplayer"))
+        else if (isSingleplayerExecutable(0x8200EDA4))
             m_pCurrentTitle = new SpecOpsAlphaMW2Title();
         break;
     case Title_MW3:
-        if (!strcmp(reinterpret_cast<char *>(0x82001458), "multiplayer"))
+        if (isMultiplayerExecutable(0x82001458))
             m_pCurrentTitle = new MW3Title();
-        else if (!strcmp(reinterpret_cast<char *>(0x8200BEA8), "startMultiplayer"))
+        else if (isSingleplayerExecutable(0x8200BEA8))
             m_pCurrentTitle = new SpecOpsMW3Title();
         break;
+    case Title_AlphaGhosts:
+        if (isMultiplayerExecutable(0x820029B0))
+            m_pCurrentTitle = new AlphaGhostsTitle();
+        break;
     case Title_NX1:
-        if (!strcmp(reinterpret_cast<char *>(0x820023A0), "multiplayer"))
+        if (isMultiplayerExecutable(0x820023A0))
             m_pCurrentTitle = new NX1Title();
         break;
     default:
         m_pCurrentTitle = nullptr;
         break;
     }
+}
+
+bool Plugin::isSingleplayerExecutable(uintptr_t stringAddress)
+{
+    // If the string "startMultiplayer" is present at stringAddress, it means we are on the
+    // correct singleplayer executable
+    const char singleplayerStr[] = "startMultiplayer";
+
+    return strncmp(reinterpret_cast<const char *>(stringAddress), singleplayerStr, sizeof(singleplayerStr)) == 0;
+}
+
+bool Plugin::isMultiplayerExecutable(uintptr_t stringAddress)
+{
+    // If the string "multiplayer" is present at stringAddress, it means we are on the
+    // correct multiplayer executable
+    const char multiplayerStr[] = "multiplayer";
+
+    return strncmp(reinterpret_cast<const char *>(stringAddress), multiplayerStr, sizeof(multiplayerStr)) == 0;
 }
 
 void Plugin::CreateConfig()

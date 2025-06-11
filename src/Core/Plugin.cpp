@@ -157,6 +157,9 @@ void Plugin::CreateConfig()
             L"The config will be written to the default location (root of HDD) when the settings are saved.",
             pDataTable->BaseDllName.Buffer
         );
+
+        g_Config.LoadFromDisk();
+
         return;
     }
 
@@ -177,13 +180,10 @@ void Plugin::CreateConfig()
     );
 
     // Rebuild the config file path from the path directory
-    std::stringstream configFilePath;
-    configFilePath << "hdd:\\";
-    configFilePath << pluginDirectory;
-    configFilePath << "Hayzen.ini";
+    std::string configFilePath = Formatter::Format("hdd:\\%sHayzen.ini", pluginDirectory);
 
     // This doesn't write the config file to disk, it just creates the in-memory object
-    g_Config = Config(configFilePath.str());
+    g_Config = Config(configFilePath);
 
     // This doesn't do anything if the config file doesn't exist
     g_Config.LoadFromDisk();

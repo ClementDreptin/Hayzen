@@ -44,6 +44,10 @@ void MW3Title::InitMenu()
     bool goThroughInvisibleBarriersEnabled =
         s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
         s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+    bool doubleTapsEnabled =
+        s_DetourMap.find("PM_IsAdsAllowed") != s_DetourMap.end() &&
+        s_DetourMap.find("PM_Weapon_FireWeapon") != s_DetourMap.end() &&
+        s_DetourMap.find("PM_WeaponProcessHand") != s_DetourMap.end();
 
     // Main section
     {
@@ -53,6 +57,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW3::ToggleAmmo, isUnlimitedAmmoEnabled));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001D6C), 0.0f, 999.0f, 1.0f));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW3::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Double Taps", MW3::ToggleDoubleTaps, doubleTapsEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

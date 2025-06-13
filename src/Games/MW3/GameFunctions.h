@@ -40,6 +40,10 @@ extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
 extern bool (*UI_AnyMenuActive)(int localClientNum);
 
+extern bool (*BG_SegmentedReload)(const int weapon, bool isAlternate);
+
+extern int (*PM_Weapon_AllowReload)(playerState_s *ps, uint32_t hand);
+
 void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);

@@ -11,6 +11,8 @@ bool ToggleAmmo(void *pParameters);
 
 bool GoThroughInvisibleBarriers(void *pParameters);
 
+bool ToggleDoubleTaps(void *pParameters);
+
 bool RecordInput(void *pParameters);
 
 bool ToggleReplayInputBind(void *pParameters);

@@ -40,6 +40,10 @@ void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cas
 
 bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<bool (*)(int)>(0x827CD838);
 
+bool (*BG_SegmentedReload)(const int weapon, bool isAlternate) = reinterpret_cast<bool (*)(const int, bool)>(0x823A6A80);
+
+int (*PM_Weapon_AllowReload)(playerState_s *ps, uint32_t hand) = reinterpret_cast<int (*)(playerState_s *, uint32_t)>(0x82396B38);
+
 void iPrintLn(int clientNum, const std::string &text)
 {
     XASSERT(clientNum >= -1 && clientNum <= 17);

@@ -39,12 +39,17 @@ void AlphaGhostsTitle::InitMenu()
     bool goThroughInvisibleBarriersEnabled =
         s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
         s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+    bool doubleTapsEnabled =
+        s_DetourMap.find("PM_IsAdsAllowed") != s_DetourMap.end() &&
+        s_DetourMap.find("PM_Weapon_FireWeapon") != s_DetourMap.end() &&
+        s_DetourMap.find("PM_WeaponProcessHand") != s_DetourMap.end();
 
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaGhosts::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaGhosts::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
+        options.emplace_back(MakeOption(ToggleOption, "Double Taps", AlphaGhosts::ToggleDoubleTaps, doubleTapsEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
 

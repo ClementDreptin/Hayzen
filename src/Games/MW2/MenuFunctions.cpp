@@ -45,28 +45,6 @@ bool MW2::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool MW2::ToggleElevators(void *pParameters)
-{
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
-
-    Memory::Write<uint16_t>(0x820D8360, enabled ? 0x4800 : 0x419A);
-
-    return true;
-}
-
-bool MW2::Knockback(void *pParameters)
-{
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
-
-    SetClientDvar(-1, "g_knockback", std::to_string(static_cast<uint64_t>(value)));
-
-    return true;
-}
-
 bool MW2::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);

@@ -9,10 +9,6 @@ bool ToggleFallDamage(void *pParameters);
 
 bool ToggleAmmo(void *pParameters);
 
-bool ToggleElevators(void *pParameters);
-
-bool Knockback(void *pParameters);
-
 bool GoThroughInvisibleBarriers(void *pParameters);
 
 bool RecordInput(void *pParameters);

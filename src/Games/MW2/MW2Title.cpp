@@ -52,8 +52,6 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "God Mode", MW2::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", MW2::ToggleFallDamage, isFallDamageEnabled));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", MW2::ToggleAmmo, isUnlimitedAmmoEnabled));
-        options.emplace_back(MakeOption(ToggleOption, "Elevators", MW2::ToggleElevators, areElevatorsEnabled));
-        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Knockback", MW2::Knockback, 1000, 0, 999999, 1000));
         options.emplace_back(MakeOption(RangeOption<float>, "Jump Height", reinterpret_cast<float *>(0x82001A34), 0.0f, 999.0f, 1.0f));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", MW2::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));

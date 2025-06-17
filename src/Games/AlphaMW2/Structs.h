@@ -51,20 +51,14 @@ static_assert(sizeof(entityState_s) == 0xFC, "size of entityState_s different th
 
 struct entityShared_t
 {
-    int clientMask;
-    bool linked;
+    char padding1[0x5];
     char bmodel;
-    char svFlags;
-    bool inuse;
-    vec3 mins;
-    vec3 maxs;
+    char padding2[0x1A];
     int contents;
-    vec3 absmin;
-    vec3 absmax;
+    char padding3[0x18];
     vec3 currentOrigin;
     vec3 currentAngles;
-    int ownerNum;
-    int eventTime;
+    char padding4[0x8];
 };
 
 static_assert(sizeof(entityShared_t) == 0x5C, "size of entityShared_t different than 0x5C");

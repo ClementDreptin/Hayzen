@@ -41,7 +41,6 @@ void MW2Title::InitMenu()
 
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
-    bool areElevatorsEnabled = Memory::Read<uint16_t>(0x820D8360) == 0x4800;
     bool goThroughInvisibleBarriersEnabled =
         s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
         s_DetourMap.find("PmoveSingle") != s_DetourMap.end();

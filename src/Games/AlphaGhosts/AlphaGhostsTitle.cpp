@@ -36,6 +36,8 @@ void AlphaGhostsTitle::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x823A1234) == 0x60000000;
+    float jumpHeightValue = AlphaGhosts::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
         s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
         s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
@@ -44,6 +46,9 @@ void AlphaGhostsTitle::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", AlphaGhosts::ToggleGodMode, false));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", AlphaGhosts::ToggleFallDamage, false));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", AlphaGhosts::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", AlphaGhosts::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", AlphaGhosts::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }
@@ -108,10 +113,6 @@ void AlphaGhostsTitle::Scr_NotifyHook(AlphaGhosts::Game::gentity_s *entity, uint
     // If the client is not host, no need to go further
     int clientNum = entity->state.clientNum;
     if (!AlphaGhosts::Game::IsHost(clientNum))
-        return;
-
-    // Prevent the menu from initializing in public matches
-    if (AlphaGhosts::Game::Dvar_GetBool("xblive_privatematch") == false && AlphaGhosts::Game::Dvar_GetBool("onlinegame") == true)
         return;
 
     // Get the string representing the event

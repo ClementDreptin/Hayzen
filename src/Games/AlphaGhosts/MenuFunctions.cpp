@@ -25,6 +25,58 @@ bool AlphaGhosts::ToggleGodMode(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
+bool AlphaGhosts::ToggleFallDamage(void *pParameters)
+{
+    // For the Ghosts Alpha we can't use the common function because changing the constant value
+    // doesn't work so we went back to the old dvar way
+
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
+    {
+        Cbuf_AddText(0, "set bg_fallDamageMinHeight 9998");
+        Cbuf_AddText(0, "set bg_fallDamageMaxHeight 9999");
+    }
+    else
+    {
+        Cbuf_AddText(0, "set bg_fallDamageMinHeight 128");
+        Cbuf_AddText(0, "set bg_fallDamageMaxHeight 300");
+    }
+
+    return true;
+}
+
+bool AlphaGhosts::ToggleAmmo(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
+    options.Enabled = enabled;
+    options.PatchAddress = 0x823A1234;
+    options.DefaultValue = 0x4BFFFDDD;
+    options.PatchValue = 0x60000000;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
+}
+
+bool AlphaGhosts::ChangeJumpHeight(void *pParameters)
+{
+    // For the Ghosts Alpha changing the constant dvar value doesn't work
+    // so we went back to the old dvar way
+
+    XASSERT(pParameters != nullptr);
+
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+
+    Cbuf_AddText(0, Formatter::Format("set jump_height %d", value).c_str());
+
+    return true;
+}
+
 bool AlphaGhosts::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);

@@ -25,6 +25,58 @@ bool NX1::ToggleGodMode(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
 }
 
+bool NX1::ToggleFallDamage(void *pParameters)
+{
+    // For NX1 we can't use the common function because changing the constant value
+    // doesn't work so we went back to the old dvar way
+
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    if (enabled)
+    {
+        SetClientDvar(-1, "bg_fallDamageMinHeight", "9998");
+        SetClientDvar(-1, "bg_fallDamageMaxHeight", "9999");
+    }
+    else
+    {
+        SetClientDvar(-1, "bg_fallDamageMinHeight", "128");
+        SetClientDvar(-1, "bg_fallDamageMaxHeight", "300");
+    }
+
+    return true;
+}
+
+bool NX1::ToggleAmmo(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
+    options.Enabled = enabled;
+    options.PatchAddress = 0x8211C080;
+    options.DefaultValue = 0x7D1E4850;
+    options.PatchValue = 0x7D284B78;
+
+    return COMMON_FN_NAMESPACE::ToggleAmmo(options);
+}
+
+bool NX1::ChangeJumpHeight(void *pParameters)
+{
+    // For NX1 changing the constant dvar value doesn't work
+    // so we went back to the old dvar way
+
+    XASSERT(pParameters != nullptr);
+
+    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+
+    SetClientDvar(-1, "jump_height", std::to_string(static_cast<uint64_t>(value)));
+
+    return true;
+}
+
 bool NX1::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);

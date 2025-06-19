@@ -33,6 +33,8 @@ void NX1Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
 
+    bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x8211C080) == 0x7D284B78;
+    float jumpHeightValue = NX1::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
         s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
         s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
@@ -41,6 +43,9 @@ void NX1Title::InitMenu()
     {
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ToggleOption, "God Mode", NX1::ToggleGodMode, false));
+        options.emplace_back(MakeOption(ToggleOption, "Fall Damage", NX1::ToggleFallDamage, false));
+        options.emplace_back(MakeOption(ToggleOption, "Ammo", NX1::ToggleAmmo, isUnlimitedAmmoEnabled));
+        options.emplace_back(MakeOption(RangeOption<uint32_t>, "Jump Height", NX1::ChangeJumpHeight, static_cast<uint32_t>(jumpHeightValue), 0, 999, 1));
         options.emplace_back(MakeOption(ToggleOption, "Remove Invisible Barriers", NX1::GoThroughInvisibleBarriers, goThroughInvisibleBarriersEnabled));
         optionGroups.emplace_back(OptionGroup("Main", options));
     }

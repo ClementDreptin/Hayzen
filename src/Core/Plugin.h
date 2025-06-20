@@ -26,7 +26,9 @@ private:
 
     void InitNewTitle(uint32_t newTitleId);
 
-    void CreateConfig();
+    HRESULT CreateConfig();
+
+    HRESULT WaitUntilFilesystemIsReady();
 
     bool IsSingleplayerExecutable(uintptr_t stringAddress);
 

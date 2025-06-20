@@ -92,7 +92,6 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     m_CurrentTitleId = newTitleId;
 
     // Initialize the new game if it's supported
-    // We have to check a string at a specific location to know if we are on the singleplayer or multiplayer XEX
     switch (newTitleId)
     {
     case Title_Dashboard:
@@ -133,12 +132,28 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     }
 }
 
-void Plugin::CreateConfig()
+HRESULT Plugin::CreateConfig()
 {
-    // Allow access to HDD
-    Xam::MountHdd();
+    HRESULT hr = S_OK;
 
-    // Get the full name from the handle
+    // When loading the plugin on boot with Dashlaunch, the filesystem might not be yet ready when
+    // we get here
+    hr = WaitUntilFilesystemIsReady();
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][Config]: Error: Filesystem never became ready: %X.", hr);
+        return hr;
+    }
+
+    // Allow access to HDD
+    hr = Xam::MountHdd();
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][Config]: Error: Couldn't mount HDD: %X.", hr);
+        return hr;
+    }
+
+    // Get the plugin path from the handle
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
     std::wstring widePath = pDataTable->FullDllName.Buffer;
 
@@ -156,7 +171,7 @@ void Plugin::CreateConfig()
 
         g_Config.LoadFromDisk();
 
-        return;
+        return hr;
     }
 
     // Only keep the absolute path on HDD
@@ -181,8 +196,66 @@ void Plugin::CreateConfig()
     // This doesn't write the config file to disk, it just creates the in-memory object
     g_Config = Config(configFilePath);
 
-    // This doesn't do anything if the config file doesn't exist
-    g_Config.LoadFromDisk();
+    // Load the config from disk
+    hr = g_Config.LoadFromDisk();
+    if (FAILED(hr))
+    {
+        DebugPrint(
+            "[Hayzen][Config]: Warn: The config file (%s) couldn't be loaded from disk."
+            "Loading the config isn't necessary to run the plugin.",
+            configFilePath.c_str()
+        );
+
+        // We explicitely return a success code here because it's fine if the user never created a config
+        return S_OK;
+    }
+
+    return hr;
+}
+
+HRESULT Plugin::WaitUntilFilesystemIsReady()
+{
+    // Get the plugin path from the handle
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    std::string path = Formatter::ToNarrow(pDataTable->FullDllName.Buffer);
+
+    // Create the attributes from the path
+    OBJECT_ATTRIBUTES attributes;
+    STRING pathString = {};
+    RtlInitAnsiString(&pathString, path.c_str());
+    InitializeObjectAttributes(&attributes, &pathString, 0, nullptr);
+
+    // Try to use the filesystem multiple times until it works
+    const size_t maxRetries = 10;
+    for (size_t i = 0; i < maxRetries; i++)
+    {
+        // We use the kernel function to open the file because the path is an
+        // NT device path (e.g. \Device\Harddisk0\Partition1\...), which means it
+        // can't be accessed using user-mode APIs, like the standard library
+        HANDLE handle = INVALID_HANDLE_VALUE;
+        IO_STATUS_BLOCK block;
+        NTSTATUS status = NtOpenFile(
+            &handle,
+            FILE_READ_ATTRIBUTES,
+            &attributes,
+            &block,
+            FILE_SHARE_READ,
+            0
+        );
+
+        // If we managed to read the file, stop here
+        if (NT_SUCCESS(status) || handle == INVALID_HANDLE_VALUE)
+        {
+            NtClose(handle);
+
+            return S_OK;
+        }
+
+        // Wait a little bit before trying again
+        Sleep(100);
+    }
+
+    return E_FAIL;
 }
 
 bool Plugin::IsSingleplayerExecutable(uintptr_t stringAddress)

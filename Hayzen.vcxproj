@@ -123,6 +123,7 @@
     <ClInclude Include="src\Modules\Console.h" />
     <ClInclude Include="src\Modules\DebugEnabler.h" />
     <ClInclude Include="src\Modules\InputRecorder.h" />
+    <ClInclude Include="src\Modules\NotificationPatcher.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
     <ClInclude Include="src\Options\Option.h" />
@@ -168,6 +169,7 @@
     <ClCompile Include="src\Modules\Console.cpp" />
     <ClCompile Include="src\Modules\DebugEnabler.cpp" />
     <ClCompile Include="src\Modules\InputRecorder.cpp" />
+    <ClCompile Include="src\Modules\NotificationPatcher.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />

@@ -11,6 +11,7 @@
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
 #include "Modules/DebugEnabler.h"
+#include "Modules/NotificationPatcher.h"
 
 Config g_Config("hdd:\\Hayzen.ini");
 
@@ -43,6 +44,8 @@ Plugin::~Plugin()
     if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
         DebugEnabler::Disable();
 
+    NotificationPatcher::Disable();
+
     delete m_pCurrentTitle;
 
     // Wait a little bit for the system to clean things up before exiting the function
@@ -68,6 +71,8 @@ void Plugin::Init()
         if (FAILED(hr))
             Xam::XNotify("Couldn't enable debug builds", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
     }
+
+    NotificationPatcher::Enable();
 }
 
 uint32_t Plugin::Run(Plugin *This)

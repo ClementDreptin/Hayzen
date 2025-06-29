@@ -103,7 +103,7 @@ bool MW2::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8360922C;
-    pOptions->ClientsBaseAddress = 0x83620380 + 0x3818;
+    pOptions->ClientsBaseAddress = 0x83620380 + 0x3818; // svs + offsetof(serverStatic_t, clients) = 0x83623B98
 
     return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }

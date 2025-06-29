@@ -135,7 +135,7 @@ bool NX1::SpawnBot(void *)
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x83A6B78C;
-    pOptions->ClientsBaseAddress = 0x83A82B00 + 0x381C;
+    pOptions->ClientsBaseAddress = 0x83A82B00 + 0x381C; // svs + offsetof(serverStatic_t, clients) = 0x83A8631C
 
     return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }

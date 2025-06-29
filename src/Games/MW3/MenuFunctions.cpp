@@ -98,3 +98,22 @@ bool MW3::ToggleUfoBind(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
 }
+
+bool MW3::SpawnBot(void *)
+{
+    COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
+    pOptions->ServerIdAddress = 0x8349746C;
+    pOptions->ClientsBaseAddress = 0x834C0480 + 0x205E90; // svs + offsetof(serverStatic_t, clients) = 0x836C6310
+
+    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+}
+
+bool MW3::TeleportBotToMe(void *)
+{
+    return COMMON_FN_NAMESPACE::TeleportBotToMe();
+}
+
+bool MW3::ToggleBotMovement(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+}

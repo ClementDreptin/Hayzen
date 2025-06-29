@@ -15,5 +15,7 @@ private:
 
     static void SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
+    static void SV_DropClientHook(MW3::Game::client_t *client, const char *reason, bool tellThem);
+
     virtual void InitRenderer() override;
 };

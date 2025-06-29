@@ -27,4 +27,10 @@ bool ToggleSaveLoadBinds(void *pParameters);
 
 bool ToggleUfoBind(void *pParameters);
 
+bool SpawnBot(void *);
+
+bool TeleportBotToMe(void *);
+
+bool ToggleBotMovement(void *pParameters);
+
 }

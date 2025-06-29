@@ -40,6 +40,26 @@ extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
 extern bool (*UI_AnyMenuActive)(int localClientNum);
 
+extern uint32_t (*GetProtocolVersion)();
+
+extern uint32_t (*BG_NetDataChecksum)();
+
+extern int (*G_irand)(int min, int max);
+
+extern void (*SV_Cmd_TokenizeString)(const char *text_in);
+
+extern void (*SV_Cmd_EndTokenizedString)();
+
+extern void (*SV_DirectConnect)(netadr_t from);
+
+extern void (*SV_SendClientGameState)(client_t *client);
+
+extern void (*SV_ClientEnterWorld)(client_t *client, usercmd_s *cmd);
+
+extern void (*SV_ExecuteClientCommand)(client_t *cl, const char *s, int clientOK, int fromOldServer);
+
+gentity_s *SV_AddTestClient();
+
 void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);

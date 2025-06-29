@@ -29,6 +29,7 @@ MW3Title::MW3Title()
     s_DetourMap["SCR_DrawScreenField"] = Detour(0x8217CF90, SCR_DrawScreenFieldHook);
     s_DetourMap["Scr_Notify"] = Detour(0x8226AF98, Scr_NotifyHook);
     s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822C78A0, SV_ExecuteClientCommandHook);
+    s_DetourMap["SV_DropClient"] = Detour(0x822C66A8, SV_DropClientHook);
 
     InstallHooks();
 
@@ -93,6 +94,15 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ToggleOption, "Save/Load Binds", MW3::ToggleSaveLoadBinds, false));
         options.emplace_back(MakeOption(ToggleOption, "UFO Bind", MW3::ToggleUfoBind, false));
         optionGroups.emplace_back(OptionGroup("Teleport", options));
+    }
+
+    // Bot section
+    {
+        std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Spawn Bot", MW3::SpawnBot));
+        options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", MW3::TeleportBotToMe));
+        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", MW3::ToggleBotMovement, true));
+        optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 
     // Input Replay
@@ -160,6 +170,18 @@ void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const ch
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void MW3Title::SV_DropClientHook(MW3::Game::client_t *client, const char *reason, bool tellThem)
+{
+    XASSERT(s_DetourMap.find("SV_DropClient") != s_DetourMap.end());
+
+    // Prevent bots from timing out
+    if (client->bIsTestClient == 1)
+        return;
+
+    // Call the original SV_DropClient function
+    s_DetourMap.at("SV_DropClient").GetOriginal<decltype(&SV_DropClientHook)>()(client, reason, tellThem);
 }
 
 void MW3Title::InitRenderer()

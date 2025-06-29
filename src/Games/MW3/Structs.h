@@ -75,14 +75,61 @@ struct gentity_s
 
 static_assert(sizeof(gentity_s) == 0x280, "size of gentity_s different than 0x280");
 
+typedef enum _clientstate_t
+{
+    CS_FREE,
+    CS_ZOMBIE,
+    CS_RECONNECTING,
+    CS_CONNECTED,
+    CS_CLIENTLOADING,
+    CS_ACTIVE,
+} clientstate_t;
+
+typedef enum _netadrtype_t
+{
+    NA_BOT,
+    NA_BAD,
+    NA_LOOPBACK,
+    NA_BROADCAST,
+    NA_IP,
+} netadrtype_t;
+
+struct netadr_t
+{
+    netadrtype_t type;
+    char padding1[0xC];
+};
+
+static_assert(sizeof(netadr_t) == 0x10, "size of netadr_t different than 0x10");
+
+struct clientHeader_t
+{
+    clientstate_t state;
+    char padding1[0x65C];
+};
+
+static_assert(sizeof(clientHeader_t) == 0x660, "size of clientHeader_t different than 0x660");
+
 struct client_t
 {
-    char padding1[0x2141C];
+    clientHeader_t header;
+    char padding1[0x20DBC];
     gentity_s *gentity;
-    char padding2[0x47760];
+    char padding2[0x13EC6];
+    uint16_t scriptId;
+    char padding3[0x2];
+    int bIsTestClient;
+    char padding4[0x33890];
 };
 
 static_assert(sizeof(client_t) == 0x68B80, "size of client_t different than 0x68B80");
+
+struct usercmd_s
+{
+    char padding1[0x2C];
+};
+
+static_assert(sizeof(usercmd_s) == 0x2C, "size of usercmd_s different than 0x10");
 
 }
 }

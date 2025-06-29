@@ -182,7 +182,7 @@ bool ChangeCarePackageOrientation(void *pParameters)
     return true;
 }
 
-#if !defined(GAME_MW3) && !defined(GAME_ALPHAGHOSTS)
+#if !defined(GAME_ALPHAGHOSTS)
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
@@ -225,9 +225,14 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     Sleep(150);
 
     // Set bot-related dvars to make it completely stand still
+    // These dvars are protected on MW3 so they can only be set via a console command
+    #if defined(GAME_MW3)
+    Cbuf_AddText(0, "set testClients_doMove 0;set testClients_doAttack 0;set testClients_watchKillcam 0");
+    #else
     SetClientDvar(-1, "testClients_doMove", "0");
     SetClientDvar(-1, "testClients_doAttack", "0");
     SetClientDvar(-1, "testClients_watchKillcam", "0");
+    #endif
 
     TeleportBotToMe();
 
@@ -304,7 +309,12 @@ bool ToggleBotMovement(void *pParameters)
         return false;
     }
 
+    // This dvar is protected on MW3 so it can only be set via a console command
+    #if defined(GAME_MW3)
+    Cbuf_AddText(0, Formatter::Format("set testClients_doMove %s", enabled ? "0" : "1").c_str());
+    #else
     SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
+    #endif
 
     return true;
 }

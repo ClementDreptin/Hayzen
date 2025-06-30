@@ -76,3 +76,14 @@ It is recommended **NOT** to rename the plugin XEX file. Or if you do, make sure
 
 > [!NOTE]
 > You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.
+
+### Call of Duty Ghosts - Alpha (May 9th build)
+
+| File                    | Status             | Notes |
+| ----------------------- | ------------------ | ----- |
+| 1-iw6sp.exe             | :heavy_check_mark: |       |
+| 2-iw6mp.exe             | :heavy_check_mark: |       |
+| 3-iw6sp_fast_server.exe | :heavy_check_mark: |       |
+| 4-iw6sp_demo.exe        | :heavy_check_mark: |       |
+| 5-iw6mp_demo.exe        | :heavy_check_mark: |       |
+| 6-iw6mp_fast_server.exe | :heavy_check_mark: |       |

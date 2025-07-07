@@ -13,6 +13,8 @@ public:
 
     HRESULT SaveConfig();
 
+    XBOX32VER *GetVersion();
+
 private:
     HANDLE m_Handle;
     std::string m_Name;

@@ -206,6 +206,12 @@ void Menu::RenderControlsTexts()
     props.Text = "Use " CHAR_LB " & " CHAR_RB " to switch menus.";
     yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
+
+    XBOX32VER *pVersion = g_pPlugin->GetVersion();
+    props.Y = yOffset;
+    props.Text = Formatter::Format("v%hhu.%hhu.%hhu", pVersion->Major, pVersion->Minor, pVersion->Qfe);
+    yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
+    UI::DrawText(props);
 }
 
 bool Menu::ToggleDebugBuilds(bool enabled)

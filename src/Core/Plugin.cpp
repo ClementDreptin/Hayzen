@@ -69,6 +69,14 @@ HRESULT Plugin::SaveConfig()
     return g_Config.SaveToDisk();
 }
 
+XBOX32VER *Plugin::GetVersion()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
+
+    return &pExecutionId->Version;
+}
+
 void Plugin::Init()
 {
     // Setup config.

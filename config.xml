@@ -1,23 +1,23 @@
 <?xml version="1.0"?>
 <xex>
-    <baseaddr addr="0x91D00000" />
-    <sysdll />
-    <format>
-        <compressed />
-    </format>
-    <mediatypes>
-        <allpackages />
-    </mediatypes>
-    <gameregion>
-        <all />
-    </gameregion>
-
-    <!--
-    When creating a sysdll that exports functions, ImageXEX outputs:
-      warning IM1034: missing export container for system module
-      warning IM1040: final image may not run properly
-    To fix the problem, you have to declare an "export container" (whatever that is)
-    and give it a name, it seems like you can set anything as the name so I just put a "/"
-    -->
-    <exportcontainer name="/" />
+  <baseaddr addr="0x91D00000" />
+  <sysdll />
+  <format>
+    <compressed />
+  </format>
+  <mediatypes>
+    <allpackages />
+  </mediatypes>
+  <gameregion>
+    <all />
+  </gameregion>
+  <version major="9" minor="1" build="0" qfe="0" />
+  <!--
+  When creating a sysdll that exports functions, ImageXEX outputs:
+    warning IM1034: missing export container for system module
+    warning IM1040: final image may not run properly
+  To fix the problem, you have to declare an "export container" (whatever that is)
+  and give it a name, it seems like you can set anything as the name so I just put a "/"
+  -->
+  <exportcontainer name="/" />
 </xex>

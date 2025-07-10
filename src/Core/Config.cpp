@@ -6,6 +6,7 @@
 Config::Config(const std::string &filePath)
     : AllowDebugBuilds(true),
       DisplayControlsTexts(true),
+      AutoUpdate(true),
       Y(150.0f),
       Color(D3DCOLOR_XRGB(210, 20, 20)),
       BackgroundColor(D3DCOLOR_XRGB(25, 25, 25)),
@@ -29,6 +30,8 @@ HRESULT Config::SaveToDisk()
     m_Structure["debugbuilds"]["allowdebugbuilds"] = AllowDebugBuilds ? "true" : "false";
 
     m_Structure["controls"]["showcontrols"] = DisplayControlsTexts ? "true" : "false";
+
+    m_Structure["update"]["autoupdate"] = AutoUpdate ? "true" : "false";
 
     m_Structure["position"]["x"] = std::to_string(static_cast<long double>(X));
     m_Structure["position"]["y"] = std::to_string(static_cast<long double>(Y));
@@ -70,6 +73,13 @@ HRESULT Config::LoadFromDisk()
     {
         if (m_Structure["controls"].has("showcontrols"))
             DisplayControlsTexts = m_Structure["controls"]["showcontrols"] == "true";
+    }
+
+    // Auto update
+    if (m_Structure.has("update"))
+    {
+        if (m_Structure["update"].has("autoupdate"))
+            AutoUpdate = m_Structure["update"]["autoupdate"] == "true";
     }
 
     // Position

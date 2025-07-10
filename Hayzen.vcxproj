@@ -119,6 +119,7 @@
     <ClInclude Include="src\Games\SpecOps\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
+    <ClInclude Include="src\Modules\AutoUpdater.h" />
     <ClInclude Include="src\Modules\Binds.h" />
     <ClInclude Include="src\Modules\Console.h" />
     <ClInclude Include="src\Modules\DebugEnabler.h" />
@@ -165,6 +166,7 @@
     <ClCompile Include="src\Games\NX1\GameFunctions.cpp" />
     <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
     <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
+    <ClCompile Include="src\Modules\AutoUpdater.cpp" />
     <ClCompile Include="src\Modules\Binds.cpp" />
     <ClCompile Include="src\Modules\Console.cpp" />
     <ClCompile Include="src\Modules\DebugEnabler.cpp" />

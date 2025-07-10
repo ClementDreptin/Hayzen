@@ -10,6 +10,7 @@
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Modules/AutoUpdater.h"
 #include "Modules/DebugEnabler.h"
 #include "Modules/NotificationPatcher.h"
 
@@ -98,6 +99,10 @@ void Plugin::Init()
 
     // Allow notifications to be displayed from system threads
     NotificationPatcher::Enable();
+
+    // Run the auto updater if needed
+    if (g_Config.AutoUpdate)
+        AutoUpdater::Run();
 }
 
 uint32_t Plugin::Run(Plugin *This)

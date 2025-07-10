@@ -15,6 +15,7 @@ public:
 
     bool AllowDebugBuilds;
     bool DisplayControlsTexts;
+    bool AutoUpdate;
     float Y;
     D3DCOLOR Color;
     D3DCOLOR BackgroundColor;

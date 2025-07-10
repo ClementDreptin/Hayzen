@@ -9,15 +9,14 @@ public:
 
     ~Plugin();
 
-    const std::string &GetName() const { return m_Name; }
-
-    HRESULT SaveConfig();
+    std::string GetName();
 
     XBOX32VER *GetVersion();
 
+    HRESULT SaveConfig();
+
 private:
     HANDLE m_Handle;
-    std::string m_Name;
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;

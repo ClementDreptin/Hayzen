@@ -33,13 +33,14 @@ static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESC
         if (!strnicmp(currentModuleName, "xbdm.xex", currentModuleNameSize))
         {
             // Make sure we have enough space
-            size_t requiredSpace = g_pPlugin->GetName().size() + 1; // + 1 for the null character
+            std::string pluginName = g_pPlugin->GetName();
+            size_t requiredSpace = pluginName.size() + 1; // + 1 for the null character
             if (requiredSpace > spaceTakenByCurrentModuleName)
             {
                 DebugPrint(
                     "[Hayzen][DebugEnabler]: Error: Not enough space to store the plugin name (%s),"
                     "required: %d, available: %d.",
-                    g_pPlugin->GetName().c_str(),
+                    pluginName.c_str(),
                     requiredSpace,
                     spaceTakenByCurrentModuleName
                 );
@@ -51,7 +52,7 @@ static int XexpResolveImageImportsHook(void *pExportBaseAddress, XEX_IMPORT_DESC
             strncpy_s(
                 currentModuleName,
                 requiredSpace,
-                g_pPlugin->GetName().c_str(),
+                pluginName.c_str(),
                 _TRUNCATE
             );
 

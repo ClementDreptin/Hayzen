@@ -28,9 +28,6 @@ typedef enum _TitleId
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr)
 {
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
-
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
@@ -55,6 +52,21 @@ Plugin::~Plugin()
     Sleep(250);
 }
 
+std::string Plugin::GetName()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+
+    return Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
+}
+
+XBOX32VER *Plugin::GetVersion()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
+
+    return &pExecutionId->Version;
+}
+
 HRESULT Plugin::SaveConfig()
 {
     // It is necessary mount the HDD again because this function might get called from a game
@@ -67,14 +79,6 @@ HRESULT Plugin::SaveConfig()
     }
 
     return g_Config.SaveToDisk();
-}
-
-XBOX32VER *Plugin::GetVersion()
-{
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
-
-    return &pExecutionId->Version;
 }
 
 void Plugin::Init()

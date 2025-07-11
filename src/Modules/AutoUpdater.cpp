@@ -3,6 +3,7 @@
 
 #include "Core/Plugin.h"
 #include "Modules/Http.h"
+#include "Modules/Json.h"
 
 namespace AutoUpdater
 {
@@ -77,79 +78,6 @@ static const unsigned char s_SectigoRSA_E[] = {
     0x01, 0x00, 0x01
 };
 
-static HRESULT ReadUpToKey(HJSONREADER reader, const std::string &key)
-{
-    HRESULT hr = S_OK;
-
-    char buffer[128] = {};
-    JSONTOKENTYPE tokenType = Json_NotStarted;
-    DWORD unused = 0;
-
-    for (;;)
-    {
-        // Parse the body
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't parse JSON body: %X.", hr);
-            return hr;
-        }
-
-        // End of body reached
-        if (hr == S_FALSE)
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON without finding \"%s\".", key.c_str());
-            return E_FAIL;
-        }
-
-        if (tokenType != Json_FieldName)
-            continue;
-
-        // Get the key name
-        hr = XJSONGetTokenValue(reader, buffer, sizeof(buffer));
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read key from JSON: %X.", hr);
-            return hr;
-        }
-
-        // If the current key is the key we're looking for, stop
-        if (strncmp(buffer, key.c_str(), sizeof(buffer)) == 0)
-            break;
-    }
-
-    return hr;
-}
-
-static HRESULT ReadTokenType(HJSONREADER reader, JSONTOKENTYPE expectedType)
-{
-    HRESULT hr = S_OK;
-
-    JSONTOKENTYPE actualType = Json_NotStarted;
-    DWORD unused = 0;
-
-    // Parse the value at the version key
-    hr = XJSONReadToken(reader, &actualType, &unused, &unused);
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read token from JSON: %X.", hr);
-        return hr;
-    }
-
-    // If the value of the version key is not a string, something is wrong in the response
-    if (actualType != expectedType)
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Unexpected token type found, expected %d and got %d.",
-            expectedType,
-            actualType
-        );
-        return E_FAIL;
-    }
-
-    return hr;
-}
-
 static std::string GetVersionNameFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
@@ -167,12 +95,12 @@ static std::string GetVersionNameFromBody(const std::string &body)
     }
 
     // Read up until the version key is found
-    hr = ReadUpToKey(reader, versionKey);
+    hr = Json::ReadUpToKey(reader, versionKey);
     if (FAILED(hr))
         return value;
 
     // Open the value at the version key
-    hr = ReadTokenType(reader, Json_String);
+    hr = Json::ReadTokenType(reader, Json_String);
     if (FAILED(hr))
         return value;
 
@@ -211,27 +139,27 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     }
 
     // Read up until the assets array key is found
-    hr = ReadUpToKey(reader, assetsArrayKey);
+    hr = Json::ReadUpToKey(reader, assetsArrayKey);
     if (FAILED(hr))
         return value;
 
     // Open the array
-    hr = ReadTokenType(reader, Json_BeginArray);
+    hr = Json::ReadTokenType(reader, Json_BeginArray);
     if (FAILED(hr))
         return value;
 
     // Open the first object
-    hr = ReadTokenType(reader, Json_BeginObject);
+    hr = Json::ReadTokenType(reader, Json_BeginObject);
     if (FAILED(hr))
         return value;
 
     // Read up until the download URL key is found
-    hr = ReadUpToKey(reader, downloadUrlKey);
+    hr = Json::ReadUpToKey(reader, downloadUrlKey);
     if (FAILED(hr))
         return value;
 
     // Open the value at the download URL key
-    hr = ReadTokenType(reader, Json_String);
+    hr = Json::ReadTokenType(reader, Json_String);
     if (FAILED(hr))
         return value;
 

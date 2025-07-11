@@ -2,6 +2,7 @@
 
 // Xbox headers
 #include <xtl.h>
+#include <xhttp.h>
 #include <xjson.h>
 
 // C++ standard library

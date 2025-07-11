@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Modules/AutoUpdater.h"
 
+#include "Core/Plugin.h"
+
 namespace AutoUpdater
 {
 
@@ -116,7 +118,7 @@ static HRESULT ReadTokenType(HJSONREADER reader, JSONTOKENTYPE expectedType)
     return hr;
 }
 
-static std::string GetVersionStringFromBody(const std::string &body)
+static std::string GetVersionNameFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
@@ -218,13 +220,13 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     return value;
 }
 
-struct LatestVersionMetadata
+struct LatestVersion
 {
-    std::string Version;
+    std::string Name;
     std::string DownloadUrl;
 };
 
-static HRESULT GetLatestVersion(LatestVersionMetadata &metadata)
+static HRESULT GetLatestVersion(LatestVersion &latestVersion)
 {
     HRESULT hr = S_OK;
 
@@ -288,20 +290,17 @@ static HRESULT GetLatestVersion(LatestVersionMetadata &metadata)
         return E_FAIL;
 
     // Get the version from the body
-    std::string versionString = GetVersionStringFromBody(body);
-    if (versionString.empty())
+    std::string versionName = GetVersionNameFromBody(body);
+    if (versionName.empty())
         return E_FAIL;
-
-    metadata.Version = versionString;
-    DebugPrint("version: %s", versionString.c_str());
 
     // Get the URL of the latest binary
     std::string downloadUrl = GetDownloadUrlFromBody(body);
     if (downloadUrl.empty())
         return E_FAIL;
 
-    metadata.DownloadUrl = downloadUrl;
-    DebugPrint("asset URL: %s", downloadUrl.c_str());
+    latestVersion.Name = versionName;
+    latestVersion.DownloadUrl = downloadUrl;
 
     return hr;
 }
@@ -310,10 +309,39 @@ HRESULT Run()
 {
     HRESULT hr = S_OK;
 
-    LatestVersionMetadata metadata = {};
-    hr = GetLatestVersion(metadata);
+    // Get information about the latest version available on GitHub
+    LatestVersion latestVersion = {};
+    hr = GetLatestVersion(latestVersion);
     if (FAILED(hr))
         return hr;
+
+    // Create the current version name
+    XBOX32VER *pVersion = g_pPlugin->GetVersion();
+    std::string currentVersionName = Formatter::Format("v%hhu.%hhu.%hhu", pVersion->Major, pVersion->Minor, pVersion->Qfe);
+
+    // We're up to date, stop here
+    if (currentVersionName == latestVersion.Name)
+        return hr;
+
+    // Ask the user if they want to download the latest version
+    std::vector<std::wstring> buttonLabels(2);
+    buttonLabels[0] = L"Yes";
+    buttonLabels[1] = L"No";
+    uint32_t buttonPressedIndex = 0;
+    uint32_t result = Xam::ShowMessageBox(
+        L"Update",
+        L"A new version is available, would you like to download it?",
+        buttonLabels,
+        XMB_ALERTICON,
+        &buttonPressedIndex,
+        1
+    );
+
+    // If the user cancelled the message box or clicked on "No", stop here
+    if (result != ERROR_SUCCESS || buttonPressedIndex != 0)
+        return hr;
+
+    Log::Print("download latest version");
 
     return hr;
 }

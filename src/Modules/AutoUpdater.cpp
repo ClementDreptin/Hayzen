@@ -8,7 +8,7 @@
 namespace AutoUpdater
 {
 
-static const unsigned char s_SectigoECC_DN[] = {
+static const uint8_t s_SectigoECC_DN[] = {
     0x30, 0x81, 0x8F, 0x31, 0x0B, 0x30, 0x09, 0x06, 0x03, 0x55, 0x04, 0x06,
     0x13, 0x02, 0x47, 0x42, 0x31, 0x1B, 0x30, 0x19, 0x06, 0x03, 0x55, 0x04,
     0x08, 0x13, 0x12, 0x47, 0x72, 0x65, 0x61, 0x74, 0x65, 0x72, 0x20, 0x4D,
@@ -24,7 +24,7 @@ static const unsigned char s_SectigoECC_DN[] = {
     0x43, 0x41
 };
 
-static const unsigned char s_SectigoECC_Q[] = {
+static const uint8_t s_SectigoECC_Q[] = {
     0x04, 0x79, 0x18, 0x93, 0xCA, 0x9F, 0x6D, 0x9E, 0x6C, 0x57, 0x00, 0x23,
     0x05, 0x37, 0x0B, 0x5F, 0x0F, 0x58, 0x5A, 0xC4, 0xDE, 0x7F, 0x55, 0xA3,
     0xE9, 0x1E, 0xD6, 0xD9, 0x25, 0x0A, 0x88, 0xA0, 0x20, 0x4A, 0x1D, 0x7A,
@@ -33,7 +33,7 @@ static const unsigned char s_SectigoECC_Q[] = {
     0x68, 0xA6, 0xFB, 0xD4, 0x48
 };
 
-static const unsigned char s_SectigoRSA_DN[] = {
+static const uint8_t s_SectigoRSA_DN[] = {
     0x30, 0x81, 0x8F, 0x31, 0x0B, 0x30, 0x09, 0x06, 0x03, 0x55, 0x04, 0x06,
     0x13, 0x02, 0x47, 0x42, 0x31, 0x1B, 0x30, 0x19, 0x06, 0x03, 0x55, 0x04,
     0x08, 0x13, 0x12, 0x47, 0x72, 0x65, 0x61, 0x74, 0x65, 0x72, 0x20, 0x4D,
@@ -49,7 +49,7 @@ static const unsigned char s_SectigoRSA_DN[] = {
     0x43, 0x41
 };
 
-static const unsigned char s_SectigoRSA_N[] = {
+static const uint8_t s_SectigoRSA_N[] = {
     0xD6, 0x73, 0x33, 0xD6, 0xD7, 0x3C, 0x20, 0xD0, 0x00, 0xD2, 0x17, 0x45,
     0xB8, 0xD6, 0x3E, 0x07, 0xA2, 0x3F, 0xC7, 0x41, 0xEE, 0x32, 0x30, 0xC9,
     0xB0, 0x6C, 0xFD, 0xF4, 0x9F, 0xCB, 0x12, 0x98, 0x0F, 0x2D, 0x3F, 0x8D,
@@ -74,7 +74,7 @@ static const unsigned char s_SectigoRSA_N[] = {
     0xCA, 0x0C, 0x5F, 0x15
 };
 
-static const unsigned char s_SectigoRSA_E[] = {
+static const uint8_t s_SectigoRSA_E[] = {
     0x01, 0x00, 0x01
 };
 
@@ -180,24 +180,23 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     return value;
 }
 
-struct LatestVersion
-{
-    std::string Name;
-    std::string DownloadUrl;
-};
-
-static HRESULT GetLatestVersion(LatestVersion &latestVersion)
+static HRESULT ConnectToGitHub(Socket &socket)
 {
     HRESULT hr = S_OK;
 
-    std::string domain = "api.github.com";
-    Socket socket(domain, 443);
-
-    // Register the GitHub certificate
+    // Register GitHub's EC trust anchor
     hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), TlsSession::Curve_secp256r1);
     if (FAILED(hr))
     {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add GitHub trust anchor.");
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add EC trust anchor.");
+        return hr;
+    }
+
+    // Register GitHub's RSA trust anchor
+    hr = socket.AddRsaTrustAnchor(s_SectigoRSA_DN, sizeof(s_SectigoRSA_DN), s_SectigoRSA_N, sizeof(s_SectigoRSA_N), s_SectigoRSA_E, sizeof(s_SectigoRSA_E));
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add RSA trust anchor.");
         return hr;
     }
 
@@ -208,6 +207,26 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't connect to GitHub.");
         return hr;
     }
+
+    return hr;
+}
+
+struct LatestVersion
+{
+    std::string Name;
+    std::string DownloadUrl;
+};
+
+static HRESULT GetLatestVersion(LatestVersion &latestVersion)
+{
+    HRESULT hr = S_OK;
+
+    // Connect to GitHub
+    std::string domain = "api.github.com";
+    Socket socket(domain, 443);
+    hr = ConnectToGitHub(socket);
+    if (FAILED(hr))
+        return hr;
 
     // Send the request
     std::string request = XexUtils::Formatter::Format(
@@ -310,24 +329,11 @@ static std::string GetFinalDownloadUrl(const std::string &url)
         return "";
     }
 
-    // Create the socket
-    Socket socket(hostname, components.nPort, components.nScheme == INTERNET_SCHEME_HTTPS);
-
-    // Register the GitHub certificate
-    hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), TlsSession::Curve_secp256r1);
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add GitHub trust anchor.");
-        return "";
-    }
-
     // Connect to GitHub
-    hr = socket.Connect();
+    Socket socket(hostname, components.nPort, components.nScheme == INTERNET_SCHEME_HTTPS);
+    hr = ConnectToGitHub(socket);
     if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't connect to GitHub.");
         return "";
-    }
 
     // Send the request
     std::string request = XexUtils::Formatter::Format(
@@ -399,24 +405,11 @@ static HRESULT Download(const std::string &url)
         return E_FAIL;
     }
 
-    // Create the socket
-    Socket socket(hostname, components.nPort, components.nScheme == INTERNET_SCHEME_HTTPS);
-
-    // Register the GitHub certificate
-    hr = socket.AddRsaTrustAnchor(s_SectigoRSA_DN, sizeof(s_SectigoRSA_DN), s_SectigoRSA_N, sizeof(s_SectigoRSA_N), s_SectigoRSA_E, sizeof(s_SectigoRSA_E));
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add GitHub trust anchor.");
-        return hr;
-    }
-
     // Connect to GitHub
-    hr = socket.Connect();
+    Socket socket(hostname, components.nPort, components.nScheme == INTERNET_SCHEME_HTTPS);
+    hr = ConnectToGitHub(socket);
     if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't connect to GitHub.");
         return hr;
-    }
 
     // Send the request
     std::string request = XexUtils::Formatter::Format(

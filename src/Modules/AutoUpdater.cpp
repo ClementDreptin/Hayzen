@@ -64,7 +64,7 @@ static HRESULT ReadUpToKey(HJSONREADER reader, const std::string &key)
         // End of body reached
         if (hr == S_FALSE)
         {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON without finding \"\".", key.c_str());
+            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON without finding \"%s\".", key.c_str());
             return E_FAIL;
         }
 
@@ -79,9 +79,38 @@ static HRESULT ReadUpToKey(HJSONREADER reader, const std::string &key)
             return hr;
         }
 
-        // If the current key is the key wer're looking for, stop
+        // If the current key is the key we're looking for, stop
         if (strncmp(buffer, key.c_str(), sizeof(buffer)) == 0)
             break;
+    }
+
+    return hr;
+}
+
+static HRESULT ReadTokenType(HJSONREADER reader, JSONTOKENTYPE expectedType)
+{
+    HRESULT hr = S_OK;
+
+    JSONTOKENTYPE actualType = Json_NotStarted;
+    DWORD unused = 0;
+
+    // Parse the value at the version key
+    hr = XJSONReadToken(reader, &actualType, &unused, &unused);
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read token from JSON: %X.", hr);
+        return hr;
+    }
+
+    // If the value of the version key is not a string, something is wrong in the response
+    if (actualType != expectedType)
+    {
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Unexpected token type found, expected %d and got %d.",
+            expectedType,
+            actualType
+        );
+        return E_FAIL;
     }
 
     return hr;
@@ -92,10 +121,7 @@ static std::string GetVersionStringFromBody(const std::string &body)
     HRESULT hr = S_OK;
 
     const std::string versionKey = "tag_name";
-
     char value[128] = {};
-    JSONTOKENTYPE tokenType = Json_NotStarted;
-    DWORD unused = 0;
 
     // Setup XJSON
     HJSONREADER reader = XJSONCreateReader();
@@ -111,29 +137,10 @@ static std::string GetVersionStringFromBody(const std::string &body)
     if (FAILED(hr))
         return value;
 
-    // Parse the value at the version key
-    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    // Open the value at the version key
+    hr = ReadTokenType(reader, Json_String);
     if (FAILED(hr))
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-            versionKey.c_str(),
-            hr
-        );
         return value;
-    }
-
-    // If the value of the version key is not a string, something is wrong in the response
-    if (tokenType != Json_String)
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-            versionKey.c_str(),
-            Json_String,
-            tokenType
-        );
-        return value;
-    }
 
     // Read the value at the version key
     hr = XJSONGetTokenValue(reader, value, sizeof(value));
@@ -158,10 +165,7 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
 
     const std::string assetsArrayKey = "assets";
     const std::string downloadUrlKey = "browser_download_url";
-
     char value[128] = {};
-    JSONTOKENTYPE tokenType = Json_NotStarted;
-    DWORD unused = 0;
 
     // Setup XJSON
     HJSONREADER reader = XJSONCreateReader();
@@ -177,82 +181,25 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     if (FAILED(hr))
         return value;
 
-    // Parse the value at the assets array key
-    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    // Open the array
+    hr = ReadTokenType(reader, Json_BeginArray);
     if (FAILED(hr))
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-            assetsArrayKey.c_str(),
-            hr
-        );
         return value;
-    }
 
-    // If the value of the assets array key is not an array, something is wrong in the response
-    if (tokenType != Json_BeginArray)
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-            assetsArrayKey.c_str(),
-            Json_BeginArray,
-            tokenType
-        );
-        return value;
-    }
-
-    // Parse the content of the array
-    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    // Open the first object
+    hr = ReadTokenType(reader, Json_BeginObject);
     if (FAILED(hr))
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s[0]\" value from JSON: %X.",
-            assetsArrayKey.c_str(),
-            hr
-        );
         return value;
-    }
-
-    // If the first value of the assets array is not an object, something is wrong in the response
-    if (tokenType != Json_BeginObject)
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s[0]\", expected %d and got %d.",
-            assetsArrayKey.c_str(),
-            Json_BeginArray,
-            tokenType
-        );
-        return value;
-    }
 
     // Read up until the download URL key is found
     hr = ReadUpToKey(reader, downloadUrlKey);
     if (FAILED(hr))
         return value;
 
-    // Parse the value at the download URL key
-    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    // Open the value at the download URL key
+    hr = ReadTokenType(reader, Json_String);
     if (FAILED(hr))
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-            downloadUrlKey.c_str(),
-            hr
-        );
         return value;
-    }
-
-    // If the value of the download URL key is not a string, something is wrong in the response
-    if (tokenType != Json_String)
-    {
-        DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-            downloadUrlKey.c_str(),
-            Json_String,
-            tokenType
-        );
-        return value;
-    }
 
     // Read the value at the download URL key
     hr = XJSONGetTokenValue(reader, value, sizeof(value));

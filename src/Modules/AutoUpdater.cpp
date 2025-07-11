@@ -305,6 +305,26 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
     return hr;
 }
 
+static bool AskToDownload()
+{
+    std::vector<std::wstring> buttonLabels(2);
+    buttonLabels[0] = L"Yes";
+    buttonLabels[1] = L"No";
+    uint32_t buttonPressedIndex = 0;
+
+    uint32_t result = Xam::ShowMessageBox(
+        L"Update",
+        L"A new version is available, would you like to download it?",
+        buttonLabels,
+        XMB_ALERTICON,
+        &buttonPressedIndex,
+        1
+    );
+
+    // Return true if the user closed the message box by clicking on "Yes"
+    return result == ERROR_SUCCESS && buttonPressedIndex == 0;
+}
+
 HRESULT Run()
 {
     HRESULT hr = S_OK;
@@ -324,21 +344,8 @@ HRESULT Run()
         return hr;
 
     // Ask the user if they want to download the latest version
-    std::vector<std::wstring> buttonLabels(2);
-    buttonLabels[0] = L"Yes";
-    buttonLabels[1] = L"No";
-    uint32_t buttonPressedIndex = 0;
-    uint32_t result = Xam::ShowMessageBox(
-        L"Update",
-        L"A new version is available, would you like to download it?",
-        buttonLabels,
-        XMB_ALERTICON,
-        &buttonPressedIndex,
-        1
-    );
-
-    // If the user cancelled the message box or clicked on "No", stop here
-    if (result != ERROR_SUCCESS || buttonPressedIndex != 0)
+    bool wantsToDownload = AskToDownload();
+    if (!wantsToDownload)
         return hr;
 
     Log::Print("download latest version");

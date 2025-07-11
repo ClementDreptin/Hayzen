@@ -335,11 +335,8 @@ HRESULT Run()
     if (FAILED(hr))
         return hr;
 
-    // Create the current version name
-    XBOX32VER *pVersion = g_pPlugin->GetVersion();
-    std::string currentVersionName = Formatter::Format("v%hhu.%hhu.%hhu", pVersion->Major, pVersion->Minor, pVersion->Qfe);
-
     // We're up to date, stop here
+    std::string currentVersionName = g_pPlugin->GetVersion();
     if (currentVersionName == latestVersion.Name)
         return hr;
 

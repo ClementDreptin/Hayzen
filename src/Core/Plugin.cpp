@@ -60,12 +60,17 @@ std::string Plugin::GetName()
     return Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
 }
 
-XBOX32VER *Plugin::GetVersion()
+std::string Plugin::GetVersion()
 {
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
     XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
 
-    return &pExecutionId->Version;
+    return Formatter::Format(
+        "v%hhu.%hhu.%hhu",
+        pExecutionId->Version.Major,
+        pExecutionId->Version.Minor,
+        pExecutionId->Version.Qfe
+    );
 }
 
 HRESULT Plugin::SaveConfig()

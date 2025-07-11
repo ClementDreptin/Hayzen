@@ -209,9 +209,8 @@ void Menu::RenderControlsTexts()
     yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 
-    XBOX32VER *pVersion = g_pPlugin->GetVersion();
     props.Y = yOffset;
-    props.Text = Formatter::Format("v%hhu.%hhu.%hhu", pVersion->Major, pVersion->Minor, pVersion->Qfe);
+    props.Text = g_pPlugin->GetVersion();
     yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 }

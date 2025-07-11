@@ -11,7 +11,7 @@ public:
 
     std::string GetName();
 
-    XBOX32VER *GetVersion();
+    std::string GetVersion();
 
     HRESULT SaveConfig();
 

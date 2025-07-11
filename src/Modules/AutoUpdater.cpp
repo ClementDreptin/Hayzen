@@ -576,23 +576,16 @@ static HRESULT Download(const std::string &url)
 
     // Get the response
     char buffer[2048] = {};
-    int total = 0;
     for (;;)
     {
         int bytesRead = socket.Receive(buffer, sizeof(buffer));
         if (bytesRead <= 0)
             break;
 
-        total += bytesRead;
-        DebugPrint("received: %d, total: %d", bytesRead, total);
         file.write(buffer, bytesRead);
-
-        if (!file.good())
-            DebugPrint("Warn: file became not good");
     }
 
-    file.flush();
-    file.close();
+    DebugPrint("done");
 
     return hr;
 }

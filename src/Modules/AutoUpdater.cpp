@@ -43,13 +43,56 @@ static std::string GetHttpResponseBody(const std::string &response)
     return response.substr(headersEndPos + headersEnd.size());
 }
 
+static HRESULT ReadUpToKey(HJSONREADER reader, const std::string &key)
+{
+    HRESULT hr = S_OK;
+
+    char buffer[128] = {};
+    JSONTOKENTYPE tokenType = Json_NotStarted;
+    DWORD unused = 0;
+
+    for (;;)
+    {
+        // Parse the body
+        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+        if (FAILED(hr))
+        {
+            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't parse JSON body: %X.", hr);
+            return hr;
+        }
+
+        // End of body reached
+        if (hr == S_FALSE)
+        {
+            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON without finding \"\".", key.c_str());
+            return E_FAIL;
+        }
+
+        if (tokenType != Json_FieldName)
+            continue;
+
+        // Get the key name
+        hr = XJSONGetTokenValue(reader, buffer, sizeof(buffer));
+        if (FAILED(hr))
+        {
+            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read key from JSON: %X.", hr);
+            return hr;
+        }
+
+        // If the current key is the key wer're looking for, stop
+        if (strncmp(buffer, key.c_str(), sizeof(buffer)) == 0)
+            break;
+    }
+
+    return hr;
+}
+
 static std::string GetVersionStringFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
     const std::string versionKey = "tag_name";
 
-    char key[128] = {};
     char value[128] = {};
     JSONTOKENTYPE tokenType = Json_NotStarted;
     DWORD unused = 0;
@@ -63,75 +106,45 @@ static std::string GetVersionStringFromBody(const std::string &body)
         return value;
     }
 
-    for (;;)
+    // Read up until the version key is found
+    hr = ReadUpToKey(reader, versionKey);
+    if (FAILED(hr))
+        return value;
+
+    // Parse the value at the version key
+    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    if (FAILED(hr))
     {
-        // Parse the body
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't parse JSON body: %X.", hr);
-            break;
-        }
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
+            versionKey.c_str(),
+            hr
+        );
+        return value;
+    }
 
-        // End of body reached
-        if (hr == S_FALSE)
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON body without finding the version.");
-            break;
-        }
+    // If the value of the version key is not a string, something is wrong in the response
+    if (tokenType != Json_String)
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
+            versionKey.c_str(),
+            Json_String,
+            tokenType
+        );
+        return value;
+    }
 
-        if (tokenType != Json_FieldName)
-            continue;
-
-        // Get the key name
-        hr = XJSONGetTokenValue(reader, key, sizeof(key));
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read key from JSON: %X.", hr);
-            break;
-        }
-
-        // If the current key is not the version key, skip
-        if (strncmp(key, versionKey.c_str(), sizeof(key)))
-            continue;
-
-        // Parse the value at the version key
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-                key,
-                hr
-            );
-            break;
-        }
-
-        // If the value of the version key is not a string, something is wrong in the response
-        if (tokenType != Json_String)
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-                key,
-                Json_String,
-                tokenType
-            );
-            break;
-        }
-
-        // Read the value at the version key
-        hr = XJSONGetTokenValue(reader, value, sizeof(value));
-        if (FAILED(hr))
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
-                key,
-                hr
-            );
-            break;
-        }
-
-        break;
+    // Read the value at the version key
+    hr = XJSONGetTokenValue(reader, value, sizeof(value));
+    if (FAILED(hr))
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
+            versionKey.c_str(),
+            hr
+        );
+        return value;
     }
 
     XJSONCloseReader(reader);
@@ -139,15 +152,14 @@ static std::string GetVersionStringFromBody(const std::string &body)
     return value;
 }
 
-static std::string GetAssetUrlFromBody(const std::string &body)
+static std::string GetDownloadUrlFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
     const std::string assetsArrayKey = "assets";
-    const std::string assetUrlKey = "url";
+    const std::string downloadUrlKey = "browser_download_url";
 
-    char key[128] = {};
-    char value[2048] = {};
+    char value[128] = {};
     JSONTOKENTYPE tokenType = Json_NotStarted;
     DWORD unused = 0;
 
@@ -160,85 +172,98 @@ static std::string GetAssetUrlFromBody(const std::string &body)
         return value;
     }
 
-    for (;;)
+    // Read up until the assets array key is found
+    hr = ReadUpToKey(reader, assetsArrayKey);
+    if (FAILED(hr))
+        return value;
+
+    // Parse the value at the assets array key
+    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    if (FAILED(hr))
     {
-        // Parse the body
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't parse JSON body: %X.", hr);
-            break;
-        }
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
+            assetsArrayKey.c_str(),
+            hr
+        );
+        return value;
+    }
 
-        // End of body reached
-        if (hr == S_FALSE)
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Reached end of JSON body without finding the asset URL.");
-            break;
-        }
+    // If the value of the assets array key is not an array, something is wrong in the response
+    if (tokenType != Json_BeginArray)
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
+            assetsArrayKey.c_str(),
+            Json_BeginArray,
+            tokenType
+        );
+        return value;
+    }
 
-        if (tokenType != Json_FieldName)
-            continue;
+    // Parse the content of the array
+    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    if (FAILED(hr))
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s[0]\" value from JSON: %X.",
+            assetsArrayKey.c_str(),
+            hr
+        );
+        return value;
+    }
 
-        // Get the key name
-        hr = XJSONGetTokenValue(reader, key, sizeof(key));
-        if (FAILED(hr))
-        {
-            DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't read key from JSON: %X.", hr);
-            break;
-        }
+    // If the first value of the assets array is not an object, something is wrong in the response
+    if (tokenType != Json_BeginObject)
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s[0]\", expected %d and got %d.",
+            assetsArrayKey.c_str(),
+            Json_BeginArray,
+            tokenType
+        );
+        return value;
+    }
 
-        // If the current key is assets array key, skip
-        if (strncmp(key, assetsArrayKey.c_str(), sizeof(key)))
-            continue;
+    // Read up until the download URL key is found
+    hr = ReadUpToKey(reader, downloadUrlKey);
+    if (FAILED(hr))
+        return value;
 
-        // Parse the value at the assets array key
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-                key,
-                hr
-            );
-            break;
-        }
+    // Parse the value at the download URL key
+    hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
+    if (FAILED(hr))
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
+            downloadUrlKey.c_str(),
+            hr
+        );
+        return value;
+    }
 
-        // If the value of the assets array key is not an array, something is wrong in the response
-        if (tokenType != Json_BeginArray)
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-                key,
-                Json_BeginArray,
-                tokenType
-            );
-            break;
-        }
+    // If the value of the download URL key is not a string, something is wrong in the response
+    if (tokenType != Json_String)
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
+            downloadUrlKey.c_str(),
+            Json_String,
+            tokenType
+        );
+        return value;
+    }
 
-        // Parse the content of the array
-        hr = XJSONReadToken(reader, &tokenType, &unused, &unused);
-        if (FAILED(hr))
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\" value from JSON: %X.",
-                key,
-                hr
-            );
-            break;
-        }
-
-        // If the first value of the assets array is not an object, something is wrong in the response
-        if (tokenType != Json_BeginObject)
-        {
-            DebugPrint(
-                L"[Hayzen][AutoUpdater]: Error: Incorrect type found for \"%s\", expected %d and got %d.",
-                key,
-                Json_BeginArray,
-                tokenType
-            );
-            break;
-        }
+    // Read the value at the download URL key
+    hr = XJSONGetTokenValue(reader, value, sizeof(value));
+    if (FAILED(hr))
+    {
+        DebugPrint(
+            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
+            downloadUrlKey.c_str(),
+            hr
+        );
+        return value;
     }
 
     XJSONCloseReader(reader);
@@ -249,7 +274,7 @@ static std::string GetAssetUrlFromBody(const std::string &body)
 struct LatestVersionMetadata
 {
     std::string Version;
-    std::string AssetUrl;
+    std::string DownloadUrl;
 };
 
 static HRESULT GetLatestVersion(LatestVersionMetadata &metadata)
@@ -324,12 +349,12 @@ static HRESULT GetLatestVersion(LatestVersionMetadata &metadata)
     DebugPrint("version: %s", versionString.c_str());
 
     // Get the URL of the latest binary
-    std::string assetUrl = GetAssetUrlFromBody(body);
-    if (assetUrl.empty())
+    std::string downloadUrl = GetDownloadUrlFromBody(body);
+    if (downloadUrl.empty())
         return E_FAIL;
 
-    metadata.AssetUrl = assetUrl;
-    DebugPrint("asset URL: %s", assetUrl.c_str());
+    metadata.DownloadUrl = downloadUrl;
+    DebugPrint("asset URL: %s", downloadUrl.c_str());
 
     return hr;
 }

@@ -211,6 +211,32 @@ static HRESULT ConnectToGitHub(Socket &socket)
     return hr;
 }
 
+static HRESULT SendRequest(Socket &socket, const std::string &domain, const std::string &path)
+{
+    std::string request = XexUtils::Formatter::Format(
+        "GET %s HTTP/1.1\r\n"
+        "Host: %s\r\n"
+        "User-Agent: Hayzen AutoUpdater\r\n"
+        "Connection: close\r\n\r\n",
+        path.c_str(),
+        domain.c_str()
+    );
+
+    int bytesSent = socket.Send(request.c_str(), request.size());
+    if (bytesSent < static_cast<int>(request.size()))
+    {
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
+            "expected to send %d but only sent %d.",
+            request.size(),
+            bytesSent
+        );
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
 struct LatestVersion
 {
     std::string Name;
@@ -229,25 +255,9 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
         return hr;
 
     // Send the request
-    std::string request = XexUtils::Formatter::Format(
-        "GET /repos/ClementDreptin/Hayzen/releases/latest HTTP/1.1\r\n"
-        "Host: %s\r\n"
-        "User-Agent: Hayzen AutoUpdater\r\n"
-        "Accept: application/json\r\n"
-        "Connection: close\r\n\r\n",
-        domain.c_str()
-    );
-    int bytesSent = socket.Send(request.c_str(), request.size());
-    if (bytesSent < static_cast<int>(request.size()))
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
-            "expected to send %d but only sent %d.",
-            request.size(),
-            bytesSent
-        );
-        return E_FAIL;
-    }
+    hr = SendRequest(socket, domain, "/repos/ClementDreptin/Hayzen/releases/latest");
+    if (FAILED(hr))
+        return hr;
 
     // Get the response
     std::stringstream responseStream;
@@ -336,25 +346,9 @@ static std::string GetFinalDownloadUrl(const std::string &url)
         return "";
 
     // Send the request
-    std::string request = XexUtils::Formatter::Format(
-        "GET %s HTTP/1.1\r\n"
-        "Host: %s\r\n"
-        "User-Agent: Hayzen AutoUpdater\r\n"
-        "Connection: close\r\n\r\n",
-        path,
-        hostname
-    );
-    int bytesSent = socket.Send(request.c_str(), request.size());
-    if (bytesSent < static_cast<int>(request.size()))
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
-            "expected to send %d but only sent %d.",
-            request.size(),
-            bytesSent
-        );
+    hr = SendRequest(socket, hostname, path);
+    if (FAILED(hr))
         return "";
-    }
 
     // Get the response
     std::stringstream responseStream;
@@ -412,26 +406,9 @@ static HRESULT Download(const std::string &url)
         return hr;
 
     // Send the request
-    std::string request = XexUtils::Formatter::Format(
-        "GET %s HTTP/1.1\r\n"
-        "Host: %s\r\n"
-        "User-Agent: Hayzen AutoUpdater\r\n"
-        "Accept: application/octet-stream\r\n"
-        "Connection: close\r\n\r\n",
-        path,
-        hostname
-    );
-    int bytesSent = socket.Send(request.c_str(), request.size());
-    if (bytesSent < static_cast<int>(request.size()))
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
-            "expected to send %d but only sent %d.",
-            request.size(),
-            bytesSent
-        );
-        return E_FAIL;
-    }
+    hr = SendRequest(socket, hostname, path);
+    if (FAILED(hr))
+        return hr;
 
     std::ofstream file("hdd:\\data.bin", std::ios::out | std::ios::binary);
     if (!file.is_open())
@@ -466,7 +443,7 @@ HRESULT Run()
     if (FAILED(hr))
         return hr;
 
-    // We're up to date, stop here
+    // If we're up to date, stop here
     std::string currentVersionName = g_pPlugin->GetVersion();
     if (currentVersionName == latestVersion.Name)
         return hr;

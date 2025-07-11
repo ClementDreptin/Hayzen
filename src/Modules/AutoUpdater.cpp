@@ -47,7 +47,7 @@ static const unsigned char s_SectigoRSA_DN[] = {
     0x43, 0x41
 };
 
-static const unsigned char S_SectigoRSA_N[] = {
+static const unsigned char s_SectigoRSA_N[] = {
     0xD6, 0x73, 0x33, 0xD6, 0xD7, 0x3C, 0x20, 0xD0, 0x00, 0xD2, 0x17, 0x45,
     0xB8, 0xD6, 0x3E, 0x07, 0xA2, 0x3F, 0xC7, 0x41, 0xEE, 0x32, 0x30, 0xC9,
     0xB0, 0x6C, 0xFD, 0xF4, 0x9F, 0xCB, 0x12, 0x98, 0x0F, 0x2D, 0x3F, 0x8D,
@@ -75,6 +75,48 @@ static const unsigned char S_SectigoRSA_N[] = {
 static const unsigned char s_SectigoRSA_E[] = {
     0x01, 0x00, 0x01
 };
+
+static std::string GetHttpResponseHeader(const std::string &response, const std::string &headerName)
+{
+    std::unordered_map<std::string, std::string> headers;
+    size_t endOfHeaders = response.find("\r\n\r\n");
+
+    if (endOfHeaders == std::string::npos)
+    {
+        // Handle error: No headers found
+        return "";
+    }
+
+    std::string headersSection = response.substr(0, endOfHeaders);
+    size_t start = 0;
+    size_t end = headersSection.find("\r\n");
+
+    // Skip the status line
+    start = end + 2;
+    end = headersSection.find("\r\n", start);
+
+    while (end != std::string::npos)
+    {
+        std::string headerLine = headersSection.substr(start, end - start);
+        size_t colonPos = headerLine.find(":");
+
+        if (colonPos != std::string::npos)
+        {
+            std::string name = headerLine.substr(0, colonPos);
+            std::string value = headerLine.substr(colonPos + 2); // Skip ": "
+            headers[name] = value;
+        }
+
+        start = end + 2;
+        end = headersSection.find("\r\n", start);
+    }
+
+    auto it = headers.find(headerName);
+    if (it != headers.end())
+        return it->second;
+    else
+        return "";
+}
 
 static std::string GetHttpResponseBody(const std::string &response)
 {
@@ -370,7 +412,7 @@ static bool AskToDownload()
     return result == ERROR_SUCCESS && buttonPressedIndex == 0;
 }
 
-static HRESULT Download(const std::string &url)
+static std::string GetFinalDownloadUrl(const std::string &url)
 {
     HRESULT hr = S_OK;
 
@@ -384,11 +426,15 @@ static HRESULT Download(const std::string &url)
     components.lpszUrlPath = path;
     components.dwUrlPathLength = sizeof(path);
 
-    BOOL couldParseUrl = XHttpCrackUrl(url.c_str(), url.size(), 0, &components);
+    BOOL couldParseUrl = XHttpCrackUrl(url.c_str(), url.size(), ICU_DECODE, &components);
     if (!couldParseUrl)
     {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't parse the download URL: %X.", GetLastError());
-        return E_FAIL;
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\": %X.",
+            url.c_str(),
+            GetLastError()
+        );
+        return "";
     }
 
     // Create the socket
@@ -396,6 +442,95 @@ static HRESULT Download(const std::string &url)
 
     // Register the GitHub certificate
     hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), TlsSession::Curve_secp256r1);
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add GitHub trust anchor.");
+        return "";
+    }
+
+    // Connect to GitHub
+    hr = socket.Connect();
+    if (FAILED(hr))
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't connect to GitHub.");
+        return "";
+    }
+
+    // Send the request
+    std::string request = XexUtils::Formatter::Format(
+        "GET %s HTTP/1.1\r\n"
+        "Host: %s\r\n"
+        "User-Agent: Hayzen AutoUpdater\r\n"
+        "Connection: close\r\n\r\n",
+        path,
+        hostname
+    );
+    int bytesSent = socket.Send(request.c_str(), request.size());
+    if (bytesSent < static_cast<int>(request.size()))
+    {
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
+            "expected to send %d but only sent %d.",
+            request.size(),
+            bytesSent
+        );
+        return "";
+    }
+
+    // Get the response
+    std::stringstream responseStream;
+    char buffer[2048] = {};
+    for (;;)
+    {
+        int bytesRead = socket.Receive(buffer, sizeof(buffer) - 1);
+        if (bytesRead <= 0)
+            break;
+
+        buffer[bytesRead] = '\0';
+        responseStream << buffer;
+    }
+
+    std::string response = responseStream.str();
+    std::string location = GetHttpResponseHeader(response, "Location");
+    if (location.empty())
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't find \"Location\" header in HTTP response.");
+        return "";
+    }
+
+    return location;
+}
+
+static HRESULT Download(const std::string &url)
+{
+    HRESULT hr = S_OK;
+
+    char hostname[1024] = {};
+    char path[1024] = {};
+
+    URL_COMPONENTS components = {};
+    components.dwStructSize = sizeof(components);
+    components.lpszHostName = hostname;
+    components.dwHostNameLength = sizeof(hostname);
+    components.lpszUrlPath = path;
+    components.dwUrlPathLength = sizeof(path);
+
+    BOOL couldParseUrl = XHttpCrackUrl(url.c_str(), url.size(), 0, &components);
+    if (!couldParseUrl)
+    {
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Couldn't parse \"%s\": %X.",
+            url.c_str(),
+            GetLastError()
+        );
+        return E_FAIL;
+    }
+
+    // Create the socket
+    Socket socket(hostname, components.nPort, components.nScheme == INTERNET_SCHEME_HTTPS);
+
+    // Register the GitHub certificate
+    hr = socket.AddRsaTrustAnchor(s_SectigoRSA_DN, sizeof(s_SectigoRSA_DN), s_SectigoRSA_N, sizeof(s_SectigoRSA_N), s_SectigoRSA_E, sizeof(s_SectigoRSA_E));
     if (FAILED(hr))
     {
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add GitHub trust anchor.");
@@ -432,16 +567,32 @@ static HRESULT Download(const std::string &url)
         return E_FAIL;
     }
 
+    std::ofstream file("hdd:\\data.bin", std::ios::out | std::ios::binary);
+    if (!file.is_open())
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't open file.");
+        return E_FAIL;
+    }
+
     // Get the response
     char buffer[2048] = {};
+    int total = 0;
     for (;;)
     {
-        int bytesRead = socket.Receive(buffer, sizeof(buffer) - 1);
+        int bytesRead = socket.Receive(buffer, sizeof(buffer));
         if (bytesRead <= 0)
             break;
 
-        std::cout << buffer;
+        total += bytesRead;
+        DebugPrint("received: %d, total: %d", bytesRead, total);
+        file.write(buffer, bytesRead);
+
+        if (!file.good())
+            DebugPrint("Warn: file became not good");
     }
+
+    file.flush();
+    file.close();
 
     return hr;
 }
@@ -466,8 +617,12 @@ HRESULT Run()
     if (!wantsToDownload)
         return hr;
 
-    // Download the latest binary
-    hr = Download(latestVersion.DownloadUrl);
+    // The download URL returned by the API will return a redirect, so we need to follow it
+    std::string finalDownloadUrl = GetFinalDownloadUrl(latestVersion.DownloadUrl);
+    if (finalDownloadUrl.empty())
+        return hr;
+
+    hr = Download(finalDownloadUrl);
     if (FAILED(hr))
         return hr;
 

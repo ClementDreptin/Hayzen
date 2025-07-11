@@ -2,6 +2,7 @@
 #include "Modules/AutoUpdater.h"
 
 #include "Core/Plugin.h"
+#include "Modules/Http.h"
 
 namespace AutoUpdater
 {
@@ -75,62 +76,6 @@ static const unsigned char s_SectigoRSA_N[] = {
 static const unsigned char s_SectigoRSA_E[] = {
     0x01, 0x00, 0x01
 };
-
-static std::string GetHttpResponseHeader(const std::string &response, const std::string &headerName)
-{
-    std::unordered_map<std::string, std::string> headers;
-    size_t endOfHeaders = response.find("\r\n\r\n");
-
-    if (endOfHeaders == std::string::npos)
-    {
-        // Handle error: No headers found
-        return "";
-    }
-
-    std::string headersSection = response.substr(0, endOfHeaders);
-    size_t start = 0;
-    size_t end = headersSection.find("\r\n");
-
-    // Skip the status line
-    start = end + 2;
-    end = headersSection.find("\r\n", start);
-
-    while (end != std::string::npos)
-    {
-        std::string headerLine = headersSection.substr(start, end - start);
-        size_t colonPos = headerLine.find(":");
-
-        if (colonPos != std::string::npos)
-        {
-            std::string name = headerLine.substr(0, colonPos);
-            std::string value = headerLine.substr(colonPos + 2); // Skip ": "
-            headers[name] = value;
-        }
-
-        start = end + 2;
-        end = headersSection.find("\r\n", start);
-    }
-
-    auto it = headers.find(headerName);
-    if (it != headers.end())
-        return it->second;
-    else
-        return "";
-}
-
-static std::string GetHttpResponseBody(const std::string &response)
-{
-    const std::string headersEnd = "\r\n\r\n";
-
-    size_t headersEndPos = response.find(headersEnd);
-    if (headersEndPos == std::string::npos)
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't separate headers from body of HTTP response.");
-        return "";
-    }
-
-    return response.substr(headersEndPos + headersEnd.size());
-}
 
 static HRESULT ReadUpToKey(HJSONREADER reader, const std::string &key)
 {
@@ -372,7 +317,7 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
 
     // Extract the body from the response
     std::string response = responseStream.str();
-    std::string body = GetHttpResponseBody(response);
+    std::string body = Http::GetResponseBody(response);
     if (body.empty())
         return E_FAIL;
 
@@ -491,14 +436,14 @@ static std::string GetFinalDownloadUrl(const std::string &url)
     }
 
     std::string response = responseStream.str();
-    std::string location = GetHttpResponseHeader(response, "Location");
-    if (location.empty())
+    auto headers = Http::GetResponseHeaders(response);
+    if (headers.find("Location") == headers.end())
     {
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't find \"Location\" header in HTTP response.");
         return "";
     }
 
-    return location;
+    return headers.at("Location");
 }
 
 static HRESULT Download(const std::string &url)

@@ -211,32 +211,6 @@ static HRESULT ConnectToGitHub(Socket &socket)
     return hr;
 }
 
-static HRESULT SendRequest(Socket &socket, const std::string &domain, const std::string &path)
-{
-    std::string request = XexUtils::Formatter::Format(
-        "GET %s HTTP/1.1\r\n"
-        "Host: %s\r\n"
-        "User-Agent: Hayzen AutoUpdater\r\n"
-        "Connection: close\r\n\r\n",
-        path.c_str(),
-        domain.c_str()
-    );
-
-    int bytesSent = socket.Send(request.c_str(), request.size());
-    if (bytesSent < static_cast<int>(request.size()))
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
-            "expected to send %d but only sent %d.",
-            request.size(),
-            bytesSent
-        );
-        return E_FAIL;
-    }
-
-    return S_OK;
-}
-
 struct LatestVersion
 {
     std::string Name;
@@ -255,25 +229,16 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
         return hr;
 
     // Send the request
-    hr = SendRequest(socket, domain, "/repos/ClementDreptin/Hayzen/releases/latest");
+    hr = Http::SendRequest(socket, domain, "/repos/ClementDreptin/Hayzen/releases/latest");
     if (FAILED(hr))
         return hr;
 
     // Get the response
-    std::stringstream responseStream;
-    char buffer[2048] = {};
-    for (;;)
-    {
-        int bytesRead = socket.Receive(buffer, sizeof(buffer) - 1);
-        if (bytesRead <= 0)
-            break;
-
-        buffer[bytesRead] = '\0';
-        responseStream << buffer;
-    }
+    std::string response = Http::GetResponse(socket);
+    if (response.empty())
+        return E_FAIL;
 
     // Extract the body from the response
-    std::string response = responseStream.str();
     std::string body = Http::GetResponseBody(response);
     if (body.empty())
         return E_FAIL;
@@ -346,24 +311,16 @@ static std::string GetFinalDownloadUrl(const std::string &url)
         return "";
 
     // Send the request
-    hr = SendRequest(socket, hostname, path);
+    hr = Http::SendRequest(socket, hostname, path);
     if (FAILED(hr))
         return "";
 
     // Get the response
-    std::stringstream responseStream;
-    char buffer[2048] = {};
-    for (;;)
-    {
-        int bytesRead = socket.Receive(buffer, sizeof(buffer) - 1);
-        if (bytesRead <= 0)
-            break;
+    std::string response = Http::GetResponse(socket);
+    if (response.empty())
+        return "";
 
-        buffer[bytesRead] = '\0';
-        responseStream << buffer;
-    }
-
-    std::string response = responseStream.str();
+    // The final download URL is in the "Location" header
     auto headers = Http::GetResponseHeaders(response);
     if (headers.find("Location") == headers.end())
     {
@@ -406,7 +363,7 @@ static HRESULT Download(const std::string &url)
         return hr;
 
     // Send the request
-    hr = SendRequest(socket, hostname, path);
+    hr = Http::SendRequest(socket, hostname, path);
     if (FAILED(hr))
         return hr;
 

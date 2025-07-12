@@ -4,6 +4,50 @@
 namespace Http
 {
 
+HRESULT SendRequest(Socket &socket, const std::string &domain, const std::string &path)
+{
+    std::string request = XexUtils::Formatter::Format(
+        "GET %s HTTP/1.1\r\n"
+        "Host: %s\r\n"
+        "User-Agent: Hayzen AutoUpdater\r\n"
+        "Connection: close\r\n\r\n",
+        path.c_str(),
+        domain.c_str()
+    );
+
+    int bytesSent = socket.Send(request.c_str(), request.size());
+    if (bytesSent < static_cast<int>(request.size()))
+    {
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Not all bytes could be sent, "
+            "expected to send %d but only sent %d.",
+            request.size(),
+            bytesSent
+        );
+        return E_FAIL;
+    }
+
+    return S_OK;
+}
+
+std::string GetResponse(Socket &socket)
+{
+    std::stringstream responseStream;
+    char buffer[2048] = {};
+
+    for (;;)
+    {
+        int bytesRead = socket.Receive(buffer, sizeof(buffer) - 1);
+        if (bytesRead <= 0)
+            break;
+
+        buffer[bytesRead] = '\0';
+        responseStream << buffer;
+    }
+
+    return responseStream.str();
+}
+
 std::unordered_map<std::string, std::string> GetResponseHeaders(const std::string &response)
 {
     std::unordered_map<std::string, std::string> headers;

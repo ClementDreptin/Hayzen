@@ -25,7 +25,7 @@ switch ($ComponentToIncrement) {
     }
     "minor" {
         $Minor += 1
-        $Xml.xex.version.major = [string]$Minor
+        $Xml.xex.version.minor = [string]$Minor
     }
     "patch" {
         $Patch += 1

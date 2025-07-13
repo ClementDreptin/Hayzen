@@ -10,6 +10,7 @@
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Modules/AutoUpdater.h"
 #include "Modules/DebugEnabler.h"
 #include "Modules/NotificationPatcher.h"
 
@@ -28,9 +29,6 @@ typedef enum _TitleId
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr)
 {
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    m_Name = Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
-
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
@@ -55,6 +53,33 @@ Plugin::~Plugin()
     Sleep(250);
 }
 
+std::string Plugin::GetName()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+
+    return Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
+}
+
+std::string Plugin::GetFullPath()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+
+    return Formatter::ToNarrow(pDataTable->FullDllName.Buffer);
+}
+
+std::string Plugin::GetVersion()
+{
+    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
+    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
+
+    return Formatter::Format(
+        "v%hhu.%hhu.%hhu",
+        pExecutionId->Version.Major,
+        pExecutionId->Version.Minor,
+        pExecutionId->Version.Qfe
+    );
+}
+
 HRESULT Plugin::SaveConfig()
 {
     // It is necessary mount the HDD again because this function might get called from a game
@@ -67,14 +92,6 @@ HRESULT Plugin::SaveConfig()
     }
 
     return g_Config.SaveToDisk();
-}
-
-XBOX32VER *Plugin::GetVersion()
-{
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
-
-    return &pExecutionId->Version;
 }
 
 void Plugin::Init()
@@ -94,6 +111,10 @@ void Plugin::Init()
 
     // Allow notifications to be displayed from system threads
     NotificationPatcher::Enable();
+
+    // Run the auto updater if needed
+    if (g_Config.AutoUpdate)
+        AutoUpdater::Run();
 }
 
 uint32_t Plugin::Run(Plugin *This)
@@ -243,12 +264,10 @@ HRESULT Plugin::CreateConfig()
 
 HRESULT Plugin::WaitUntilFilesystemIsReady()
 {
-    // Get the plugin path from the handle
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    std::string path = Formatter::ToNarrow(pDataTable->FullDllName.Buffer);
+    std::string path = GetFullPath();
 
     // Create the attributes from the path
-    OBJECT_ATTRIBUTES attributes;
+    OBJECT_ATTRIBUTES attributes = {};
     STRING pathString = {};
     RtlInitAnsiString(&pathString, path.c_str());
     InitializeObjectAttributes(&attributes, &pathString, 0, nullptr);
@@ -261,7 +280,7 @@ HRESULT Plugin::WaitUntilFilesystemIsReady()
         // NT device path (e.g. \Device\Harddisk0\Partition1\...), which means it
         // can't be accessed using user-mode APIs, like the standard library
         HANDLE handle = INVALID_HANDLE_VALUE;
-        IO_STATUS_BLOCK block;
+        IO_STATUS_BLOCK block = {};
         NTSTATUS status = NtOpenFile(
             &handle,
             FILE_READ_ATTRIBUTES,
@@ -272,7 +291,7 @@ HRESULT Plugin::WaitUntilFilesystemIsReady()
         );
 
         // If we managed to read the file, stop here
-        if (NT_SUCCESS(status) || handle == INVALID_HANDLE_VALUE)
+        if (NT_SUCCESS(status) || handle != INVALID_HANDLE_VALUE)
         {
             NtClose(handle);
 

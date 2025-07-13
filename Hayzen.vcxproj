@@ -63,6 +63,7 @@
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">NDEBUG;_XBOX</PreprocessorDefinitions>
     </ClCompile>
     <Link>
+      <AdditionalDependencies>xjson.lib</AdditionalDependencies>
       <GenerateDebugInformation Condition="'$(Configuration)'=='Debug'">true</GenerateDebugInformation>
       <ProgramDatabaseFile Condition="'$(Configuration)'=='Debug'">$(OutDir)$(ProjectName).pdb</ProgramDatabaseFile>
       <OptimizeReferences Condition="'$(Configuration)'=='Release'">true</OptimizeReferences>
@@ -119,10 +120,13 @@
     <ClInclude Include="src\Games\SpecOps\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
+    <ClInclude Include="src\Modules\AutoUpdater.h" />
     <ClInclude Include="src\Modules\Binds.h" />
     <ClInclude Include="src\Modules\Console.h" />
     <ClInclude Include="src\Modules\DebugEnabler.h" />
+    <ClInclude Include="src\Modules\Http.h" />
     <ClInclude Include="src\Modules\InputRecorder.h" />
+    <ClInclude Include="src\Modules\Json.h" />
     <ClInclude Include="src\Modules\NotificationPatcher.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
@@ -165,10 +169,13 @@
     <ClCompile Include="src\Games\NX1\GameFunctions.cpp" />
     <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
     <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
+    <ClCompile Include="src\Modules\AutoUpdater.cpp" />
     <ClCompile Include="src\Modules\Binds.cpp" />
     <ClCompile Include="src\Modules\Console.cpp" />
     <ClCompile Include="src\Modules\DebugEnabler.cpp" />
+    <ClCompile Include="src\Modules\Http.cpp" />
     <ClCompile Include="src\Modules\InputRecorder.cpp" />
+    <ClCompile Include="src\Modules\Json.cpp" />
     <ClCompile Include="src\Modules\NotificationPatcher.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />

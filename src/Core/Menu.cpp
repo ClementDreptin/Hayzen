@@ -72,6 +72,8 @@ void Menu::AddSettingsGroup()
     if (!Xam::IsDevkit())
         options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *pParams) { return ToggleDebugBuilds(*reinterpret_cast<bool *>(pParams)); }, &g_Config.AllowDebugBuilds));
 
+    options.emplace_back(MakeOption(ToggleOption, "Auto Update", &g_Config.AutoUpdate));
+
     std::vector<std::shared_ptr<Option>> menuPositionOptions;
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "X", &g_Config.X, g_Config.BorderWidth, UI::DisplayWidth, 10.0f));
     menuPositionOptions.emplace_back(MakeOption(RangeOption<float>, "Y", &g_Config.Y, g_Config.BorderWidth, UI::DisplayHeight, 10.0f));
@@ -207,9 +209,8 @@ void Menu::RenderControlsTexts()
     yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 
-    XBOX32VER *pVersion = g_pPlugin->GetVersion();
     props.Y = yOffset;
-    props.Text = Formatter::Format("v%hhu.%hhu.%hhu", pVersion->Major, pVersion->Minor, pVersion->Qfe);
+    props.Text = g_pPlugin->GetVersion();
     yOffset += UI::GetTextHeight(props.Text, fontScale) + padding * 3 + borderWidth * 2;
     UI::DrawText(props);
 }

@@ -12,6 +12,7 @@
 #include "Options/ToggleOption.h"
 
 SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
+    : m_Console(Console::Props(SpecOpsAlphaMW2::Game::Cbuf_AddText, SpecOpsAlphaMW2::Game::Dvar_ForEach))
 {
     // Give the system some time to fully load the game in memory
     // Devkits are a little slower and need more time
@@ -115,6 +116,22 @@ void SpecOpsAlphaMW2Title::ClientCommandHook(int clientNum, const char *s)
         // Register that the user released the A button
         hasJumped = false;
     }
+}
+
+void SpecOpsAlphaMW2Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void SpecOpsAlphaMW2Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void SpecOpsAlphaMW2Title::InitRenderer()

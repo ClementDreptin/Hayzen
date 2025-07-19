@@ -12,6 +12,8 @@ void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<vo
 
 float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<float (*)(const char *)>(0x822D79D0);
 
+void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData) = reinterpret_cast<void (*)(void (*)(const dvar_t *, void *), void *)>(0x822DA920);
+
 playerState_s *(*GetPlayerState)(int num) = reinterpret_cast<playerState_s *(*)(int)>(0x823329B8);
 
 void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x821E1660);

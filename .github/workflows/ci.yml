@@ -3,10 +3,10 @@ name: Check code formatting
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
 
 jobs:
   check-code-formatting:

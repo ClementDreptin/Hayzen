@@ -18,6 +18,10 @@ private:
 
     static void SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
+    static void GScr_LoadGameTypeScriptHook();
+
+    static void Scr_LoadGameTypeHook();
+
     virtual void Update() override;
 
     virtual void Render() override;

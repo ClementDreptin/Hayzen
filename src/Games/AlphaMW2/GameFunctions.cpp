@@ -46,6 +46,14 @@ void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cas
 
 bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<bool (*)(int)>(0x822D60C0);
 
+uint32_t (*Scr_LoadScript)(const char *filename) = reinterpret_cast<uint32_t (*)(const char *)>(0x822967A8);
+
+int (*Scr_GetFunctionHandle)(const char *filename, const char *name) = reinterpret_cast<int (*)(const char *, const char *)>(0x82296220);
+
+uint16_t (*Scr_ExecThread)(int handle, uint32_t paramcount) = reinterpret_cast<uint16_t (*)(int, uint32_t)>(0x822AACA0);
+
+void (*Scr_FreeThread)(uint16_t handle) = reinterpret_cast<void (*)(uint16_t)>(0x822A5B60);
+
 void iPrintLn(int clientNum, const std::string &text)
 {
     XASSERT(clientNum >= -1 && clientNum <= 17);

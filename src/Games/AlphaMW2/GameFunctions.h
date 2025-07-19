@@ -47,6 +47,14 @@ extern void (*SetClientViewAngle)(gentity_s *ent, const float *angle);
 
 extern bool (*UI_AnyMenuActive)(int localClientNum);
 
+extern uint32_t (*Scr_LoadScript)(const char *filename);
+
+extern int (*Scr_GetFunctionHandle)(const char *filename, const char *name);
+
+extern uint16_t (*Scr_ExecThread)(int handle, uint32_t paramcount);
+
+extern void (*Scr_FreeThread)(uint16_t handle);
+
 void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);

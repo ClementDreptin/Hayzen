@@ -26,6 +26,8 @@ AlphaMW2Title::AlphaMW2Title()
     s_DetourMap["SCR_DrawScreenField"] = Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
     s_DetourMap["Scr_Notify"] = Detour(0x822539C0, Scr_NotifyHook);
     s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822B4700, SV_ExecuteClientCommandHook);
+    s_DetourMap["GScr_LoadGameTypeScript"] = Detour(0x82248640, GScr_LoadGameTypeScriptHook);
+    s_DetourMap["Scr_LoadGameType"] = Detour(0x8224EED8, Scr_LoadGameTypeHook);
 
     InstallHooks();
 
@@ -162,6 +164,50 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+static int s_ScriptMainHandle = 0;
+
+void AlphaMW2Title::GScr_LoadGameTypeScriptHook()
+{
+    XASSERT(s_DetourMap.find("GScr_LoadGameTypeScript") != s_DetourMap.end());
+
+    // Call the original GScr_LoadGameTypeScript function
+    s_DetourMap.at("GScr_LoadGameTypeScript").GetOriginal<decltype(&GScr_LoadGameTypeScriptHook)>()();
+
+    const char path[] = "customScripts\\test";
+    Log::Print("Loading script %s...", path);
+
+    if (!AlphaMW2::Game::Scr_LoadScript(path))
+    {
+        Log::Print("Script %s encountered an error while loading. A compilation error is the most likely cause", path);
+        return;
+    }
+
+    Log::Print("Script %s.gsc loaded successfully.", path);
+
+    int mainHandle = AlphaMW2::Game::Scr_GetFunctionHandle(path, "main");
+    if (mainHandle == 0)
+        return;
+
+    Log::Print("Loaded '%s::main'", path);
+    s_ScriptMainHandle = mainHandle;
+}
+
+void AlphaMW2Title::Scr_LoadGameTypeHook()
+{
+    XASSERT(s_DetourMap.find("Scr_LoadGameType") != s_DetourMap.end());
+
+    // Call the original Scr_LoadGameType function
+    s_DetourMap.at("Scr_LoadGameType").GetOriginal<decltype(&Scr_LoadGameTypeHook)>()();
+
+    if (s_ScriptMainHandle == 0)
+        return;
+
+    Log::Print("Executing 'test::main'");
+
+    uint16_t id = AlphaMW2::Game::Scr_ExecThread(s_ScriptMainHandle, 0);
+    AlphaMW2::Game::Scr_FreeThread(id);
 }
 
 void AlphaMW2Title::Update()

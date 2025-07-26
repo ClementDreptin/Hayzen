@@ -185,7 +185,7 @@ static HRESULT ConnectToGitHub(Socket &socket)
     HRESULT hr = S_OK;
 
     // Register GitHub's EC trust anchor
-    hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), TlsSession::Curve_secp256r1);
+    hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), Socket::Curve_secp256r1);
     if (FAILED(hr))
     {
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add EC trust anchor.");

@@ -149,3 +149,8 @@ bool AlphaMW2::ToggleBotMovement(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
 }
+
+bool AlphaMW2::ToggleBotAttack(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}

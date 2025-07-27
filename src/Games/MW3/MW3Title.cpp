@@ -102,6 +102,7 @@ void MW3Title::InitMenu()
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", MW3::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", MW3::TeleportBotToMe));
         options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", MW3::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Attack", MW3::ToggleBotAttack, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 

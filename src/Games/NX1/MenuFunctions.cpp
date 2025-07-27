@@ -149,3 +149,8 @@ bool NX1::ToggleBotMovement(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
 }
+
+bool NX1::ToggleBotAttack(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}

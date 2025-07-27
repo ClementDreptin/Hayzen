@@ -101,6 +101,7 @@ void MW2Title::InitMenu()
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", MW2::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", MW2::TeleportBotToMe));
         options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", MW2::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Attack", MW2::ToggleBotAttack, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 

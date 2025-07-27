@@ -318,6 +318,31 @@ bool ToggleBotMovement(void *pParameters)
 
     return true;
 }
+
+bool ToggleBotAttack(void *pParameters)
+{
+    XASSERT(pParameters != nullptr);
+
+    bool enabled = *reinterpret_cast<bool *>(pParameters);
+
+    int clientNum = Context::ClientNum;
+
+    // Make sure there is a bot in the game
+    if (Context::pBotEntity == nullptr)
+    {
+        iPrintLn(clientNum, "^1There is no bot in the game!");
+        return false;
+    }
+
+    // This dvar is protected on MW3 so it can only be set via a console command
+    #if defined(GAME_MW3)
+    Cbuf_AddText(0, Formatter::Format("set testClients_doAttack %s", enabled ? "1" : "0").c_str());
+    #else
+    SetClientDvar(-1, "testClients_doAttack", enabled ? "1" : "0");
+    #endif
+
+    return true;
+}
 #endif
 
 }

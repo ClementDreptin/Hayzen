@@ -117,3 +117,8 @@ bool MW3::ToggleBotMovement(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
 }
+
+bool MW3::ToggleBotAttack(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}

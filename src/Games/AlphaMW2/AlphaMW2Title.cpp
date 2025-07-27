@@ -98,6 +98,7 @@ void AlphaMW2Title::InitMenu()
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", AlphaMW2::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", AlphaMW2::TeleportBotToMe));
         options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", AlphaMW2::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Attack", AlphaMW2::ToggleBotAttack, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 

@@ -35,4 +35,6 @@ bool TeleportBotToMe(void *);
 
 bool ToggleBotMovement(void *pParameters);
 
+bool ToggleBotAttack(void *pParameters);
+
 }

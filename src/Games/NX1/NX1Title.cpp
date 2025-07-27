@@ -95,6 +95,7 @@ void NX1Title::InitMenu()
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", NX1::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", NX1::TeleportBotToMe));
         options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", NX1::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Attack", NX1::ToggleBotAttack, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 

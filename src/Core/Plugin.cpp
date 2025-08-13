@@ -55,6 +55,7 @@ Plugin::~Plugin()
 
     // Wait for the run thread to finish
     WaitForSingleObject(m_RunThreadHandle, INFINITE);
+    CloseHandle(m_RunThreadHandle);
 }
 
 std::string Plugin::GetName()

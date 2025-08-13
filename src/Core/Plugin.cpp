@@ -32,7 +32,11 @@ Plugin::Plugin(HANDLE pluginHandle)
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    Memory::ThreadEx(reinterpret_cast<PTHREAD_START_ROUTINE>(Run), this, EXCREATETHREAD_SYSTEM);
+    m_RunThreadHandle = Memory::ThreadEx(
+        reinterpret_cast<PTHREAD_START_ROUTINE>(Run),
+        this,
+        EXCREATETHREAD_SYSTEM
+    );
 }
 
 Plugin::~Plugin()
@@ -49,8 +53,8 @@ Plugin::~Plugin()
     // Cleanup the currently running title
     delete m_pCurrentTitle;
 
-    // Wait a little bit for the system to clean things up before exiting the function
-    Sleep(250);
+    // Wait for the run thread to finish
+    WaitForSingleObject(m_RunThreadHandle, INFINITE);
 }
 
 std::string Plugin::GetName()

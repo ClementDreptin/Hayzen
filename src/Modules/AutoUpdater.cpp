@@ -369,7 +369,7 @@ static HRESULT ReadBodyToFile(Socket &socket)
         0,
         FILE_SHARE_READ,
         TRUNCATE_EXISTING,
-        0x20 // FILE_SYNCHRONOUS_IO_NONALERT
+        FILE_SYNCHRONOUS_IO_NONALERT
     );
     if (status != 0 || handle == INVALID_HANDLE_VALUE)
     {

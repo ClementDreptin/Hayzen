@@ -129,15 +129,15 @@ void Menu::RenderOptionGroupHeaders()
 
         // m_OptionGroups[i] is selected
         if (i == m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Top | UI::Border_Right);
+            props.BorderPosition = UI::BorderPosition_Left | UI::BorderPosition_Top | UI::BorderPosition_Right;
 
         // m_OptionGroups[i] is to the left of the selected option group
         else if (i < m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Top);
+            props.BorderPosition = UI::BorderPosition_Left | UI::BorderPosition_Top;
 
         // m_OptionGroups[i] is to the right of the selected option group
         else if (i > m_CurrentOptionGroupIndex)
-            props.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Right | UI::Border_Top);
+            props.BorderPosition = UI::BorderPosition_Right | UI::BorderPosition_Top;
 
         UI::DrawText(props);
     }
@@ -192,7 +192,7 @@ void Menu::RenderControlsTexts()
     props.BackgroundColor = g_Config.BackgroundColor;
     props.BorderWidth = borderWidth;
     props.BorderColor = g_Config.Color;
-    props.BorderPosition = UI::Border_All;
+    props.BorderPosition = UI::BorderPosition_All;
 
     props.Y = yOffset;
     props.Text = "Hold " CHAR_LT " & press " CHAR_LEFT " to " + std::string(!m_Open ? "Open." : "Close.");

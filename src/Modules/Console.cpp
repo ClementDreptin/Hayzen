@@ -197,7 +197,7 @@ void Console::Render()
         props.BackgroundWidth = s_SafeAreaWidth;
         props.BorderWidth = 1.0f;
         props.BorderColor = g_Config.Color;
-        props.BorderPosition = UI::Border_All;
+        props.BorderPosition = UI::BorderPosition_All;
         UI::DrawText(props);
     }
 
@@ -374,7 +374,7 @@ void Console::DrawAutocompleteMatches()
     commonText.BackgroundColor = g_Config.BackgroundColor;
     commonText.BorderColor = g_Config.Color;
     commonText.BorderWidth = 1.0f;
-    commonText.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Top);
+    commonText.BorderPosition = UI::BorderPosition_Left | UI::BorderPosition_Top;
 
     // Draw name header
     UI::TextProps nameHeader = commonText;
@@ -395,7 +395,7 @@ void Console::DrawAutocompleteMatches()
     descriptionHeader.X = valueHeader.X + valueHeader.BackgroundWidth;
     descriptionHeader.Text = "Description";
     descriptionHeader.BackgroundWidth = columnWidth * 10;
-    descriptionHeader.BorderPosition = UI::Border_All;
+    descriptionHeader.BorderPosition = UI::BorderPosition_All;
     UI::DrawText(descriptionHeader);
 
     // Draw the info of each dvar
@@ -404,12 +404,12 @@ void Console::DrawAutocompleteMatches()
         const dvar_t &dvar = *m_AutocompleteMatches[i];
 
         commonText.Y = nameHeader.Y + headerHeight + (UI::GetFontHeight() + g_Config.Padding) * i;
-        commonText.BorderPosition = static_cast<UI::BorderPosition>(UI::Border_Left | UI::Border_Right);
+        commonText.BorderPosition = UI::BorderPosition_Left | UI::BorderPosition_Right;
 
         if (i == 0)
-            commonText.BorderPosition = static_cast<UI::BorderPosition>(commonText.BorderPosition | UI::Border_Top);
+            commonText.BorderPosition = commonText.BorderPosition | UI::BorderPosition_Top;
         if (i == m_AutocompleteMatches.size() - 1)
-            commonText.BorderPosition = static_cast<UI::BorderPosition>(commonText.BorderPosition | UI::Border_Bottom);
+            commonText.BorderPosition = commonText.BorderPosition | UI::BorderPosition_Bottom;
 
         // Draw name
         UI::TextProps name = commonText;
@@ -454,7 +454,7 @@ void Console::DrawExactMatchExtendedDetails()
     props.BackgroundWidth = s_SafeAreaWidth;
     props.BorderColor = g_Config.Color;
     props.BorderWidth = 1.0f;
-    props.BorderPosition = UI::Border_All;
+    props.BorderPosition = UI::BorderPosition_All;
     UI::DrawText(props);
 }
 

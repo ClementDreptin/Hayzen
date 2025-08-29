@@ -345,7 +345,7 @@ static std::string GetFinalDownloadUrl(const std::string &url)
 
 static HRESULT ReadBodyToFile(Socket &socket)
 {
-    NTSTATUS status = 0;
+    NTSTATUS status = STATUS_SUCESS;
 
     // This is an NT device path, which means we need to use the kernel functions to
     // open and write to the file

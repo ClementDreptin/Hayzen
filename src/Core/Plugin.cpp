@@ -35,7 +35,7 @@ Plugin::Plugin(HANDLE pluginHandle)
     m_RunThreadHandle = Memory::ThreadEx(
         reinterpret_cast<PTHREAD_START_ROUTINE>(Run),
         this,
-        EXCREATETHREAD_SYSTEM
+        EXCREATETHREAD_FLAG_SYSTEM
     );
 }
 

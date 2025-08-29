@@ -14,15 +14,21 @@ struct LineProps
 
 void DrawLine(const LineProps &props);
 
-typedef enum _BorderPosition
+typedef uint32_t BorderPosition;
+
+enum BorderPosition_
 {
-    Border_None = 0,
-    Border_Left = 1 << 0,
-    Border_Right = 1 << 1,
-    Border_Top = 1 << 2,
-    Border_Bottom = 1 << 3,
-    Border_All = Border_Left | Border_Right | Border_Top | Border_Bottom,
-} BorderPosition;
+    BorderPosition_None = 0,
+    BorderPosition_Left = 1 << 0,
+    BorderPosition_Right = 1 << 1,
+    BorderPosition_Top = 1 << 2,
+    BorderPosition_Bottom = 1 << 3,
+    BorderPosition_All =
+        BorderPosition_Left |
+        BorderPosition_Right |
+        BorderPosition_Top |
+        BorderPosition_Bottom,
+};
 
 struct BorderProps
 {

@@ -31,42 +31,42 @@ void DrawLine(const LineProps &props)
 void DrawBorder(const BorderProps &props)
 {
     // Return early if no borders need to be rendered
-    if (props.Position == Border_None || props.Thickness == 0)
+    if (props.Position == BorderPosition_None || props.Thickness == 0)
         return;
 
     // Render the left border if needed
-    if (props.Position & Border_Left)
+    if (props.Position & BorderPosition_Left)
     {
         LineProps lineProps = {};
         lineProps.X = props.X - props.Thickness;
         lineProps.Y = props.Y;
         lineProps.Width = props.Thickness;
-        lineProps.Height = props.Height + (props.Position & Border_Bottom ? props.Thickness : 0.0f);
+        lineProps.Height = props.Height + (props.Position & BorderPosition_Bottom ? props.Thickness : 0.0f);
         lineProps.Color = props.Color;
 
         DrawLine(lineProps);
     }
 
     // Render the right border if needed
-    if (props.Position & Border_Right)
+    if (props.Position & BorderPosition_Right)
     {
         LineProps lineProps = {};
         lineProps.X = props.X + props.Width;
-        lineProps.Y = props.Y - (props.Position & Border_Top ? props.Thickness : 0.0f);
+        lineProps.Y = props.Y - (props.Position & BorderPosition_Top ? props.Thickness : 0.0f);
         lineProps.Width = props.Thickness;
-        lineProps.Height = props.Height + (props.Position & Border_Top ? props.Thickness : 0.0f);
+        lineProps.Height = props.Height + (props.Position & BorderPosition_Top ? props.Thickness : 0.0f);
         lineProps.Color = props.Color;
 
         DrawLine(lineProps);
     }
 
     // Render the top border if needed
-    if (props.Position & Border_Top)
+    if (props.Position & BorderPosition_Top)
     {
         LineProps lineProps = {};
-        lineProps.X = props.X - (props.Position & Border_Left ? props.Thickness : 0.0f);
+        lineProps.X = props.X - (props.Position & BorderPosition_Left ? props.Thickness : 0.0f);
         lineProps.Y = props.Y - props.Thickness;
-        lineProps.Width = props.Width + (props.Position & Border_Left ? props.Thickness : 0.0f);
+        lineProps.Width = props.Width + (props.Position & BorderPosition_Left ? props.Thickness : 0.0f);
         lineProps.Height = props.Thickness;
         lineProps.Color = props.Color;
 
@@ -74,12 +74,12 @@ void DrawBorder(const BorderProps &props)
     }
 
     // Render the bottom border if needed
-    if (props.Position & Border_Bottom)
+    if (props.Position & BorderPosition_Bottom)
     {
         LineProps lineProps = {};
         lineProps.X = props.X;
         lineProps.Y = props.Y + props.Height;
-        lineProps.Width = props.Width + (props.Position & Border_Right ? props.Thickness : 0.0f);
+        lineProps.Width = props.Width + (props.Position & BorderPosition_Right ? props.Thickness : 0.0f);
         lineProps.Height = props.Thickness;
         lineProps.Color = props.Color;
 
@@ -91,7 +91,7 @@ void DrawRectangle(const RectangleProps &props)
 {
     XASSERT(R_AddCmdDrawStretchPic != nullptr);
 
-    bool hasBorder = props.BorderPosition != Border_None && props.BorderWidth > 0;
+    bool hasBorder = props.BorderPosition != BorderPosition_None && props.BorderWidth > 0;
 
     // Turn the color into a float array
     float color[4] = {
@@ -130,7 +130,7 @@ void DrawText(const TextProps &props)
 {
     XASSERT(R_AddCmdDrawText != nullptr);
 
-    bool hasBackgroundOrBorder = props.BackgroundColor != 0 || (props.BorderWidth > 0 && props.BorderPosition != Border_None);
+    bool hasBackgroundOrBorder = props.BackgroundColor != 0 || (props.BorderWidth > 0 && props.BorderPosition != BorderPosition_None);
     float fontScale = props.FontScale != 0.0f ? props.FontScale : 1.0f;
     float padding = g_Config.Padding * fontScale;
 

@@ -141,7 +141,7 @@ void OptionGroup::RenderBackground(float x, float y, float width, float height)
     props.Color = g_Config.BackgroundColor;
     props.BorderWidth = g_Config.BorderWidth;
     props.BorderColor = g_Config.Color;
-    props.BorderPosition = UI::Border_All;
+    props.BorderPosition = UI::BorderPosition_All;
 
     UI::DrawRectangle(props);
 }

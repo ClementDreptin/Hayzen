@@ -58,7 +58,7 @@ void ToggleOption::Render(float x, float y, float width)
     props.Color = m_Active ? g_Config.Color : D3DCOLOR_XRGB(0, 0, 0);
     props.BorderWidth = 1.0f;
     props.BorderColor = D3DCOLOR_XRGB(255, 255, 255);
-    props.BorderPosition = UI::Border_All;
+    props.BorderPosition = UI::BorderPosition_All;
 
     UI::DrawRectangle(props);
 }

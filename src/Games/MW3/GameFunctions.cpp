@@ -10,55 +10,55 @@ namespace Game
 
 static std::unordered_map<std::string, uintptr_t> brushModelMap;
 
-const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<const char *(*)(uint32_t)>(0x822B5120);
+const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<decltype(SL_ConvertToString)>(0x822B5120);
 
-void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<void (*)(int, int, const char *)>(0x822C9340);
+void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x822C9340);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<void (*)(int, const char *)>(0x82287F68);
+void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<decltype(Cbuf_AddText)>(0x82287F68);
 
-bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<bool (*)(const char *)>(0x8232E2C8);
+bool (*Dvar_GetBool)(const char *dvarName) = reinterpret_cast<decltype(Dvar_GetBool)>(0x8232E2C8);
 
-const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<const char *(*)(const char *)>(0x8232E488);
+const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<decltype(Dvar_GetString)>(0x8232E488);
 
-playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<playerState_s *(*)(int)>(0x82244148);
+playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<decltype(GetPlayerState)>(0x82244148);
 
-bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<bool (*)(uintptr_t, int)>(0x823BFE78);
+bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<decltype(Session_IsHost)>(0x823BFE78);
 
-void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<void (*)(gentity_s *)>(0x82268138);
+void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<decltype(SP_script_model)>(0x82268138);
 
-gentity_s *(*G_Spawn)() = reinterpret_cast<gentity_s *(*)()>(0x8226F378);
+gentity_s *(*G_Spawn)() = reinterpret_cast<decltype(G_Spawn)>(0x8226F378);
 
-void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<void (*)(gentity_s *, const char *)>(0x8226EAA0);
+void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<decltype(G_SetModel)>(0x8226EAA0);
 
-void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>(0x822D6E78);
+void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<decltype(SV_LinkEntity)>(0x822D6E78);
 
-void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<void (*)(gentity_s *)>(0x822D6D90);
+void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<decltype(SV_UnlinkEntity)>(0x822D6D90);
 
-bool (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<bool (*)(gentity_s *)>(0x822C95C8);
+bool (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<decltype(SV_SetBrushModel)>(0x822C95C8);
 
-void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x8222FF50);
+void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<decltype(SetClientOrigin)>(0x8222FF50);
 
-void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<void (*)(gentity_s *, const float *)>(0x8222FD10);
+void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<decltype(SetClientViewAngle)>(0x8222FD10);
 
-bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<bool (*)(int)>(0x822F1680);
+bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<decltype(UI_AnyMenuActive)>(0x822F1680);
 
-uint32_t (*GetProtocolVersion)() = reinterpret_cast<uint32_t (*)()>(0x8232A320);
+uint32_t (*GetProtocolVersion)() = reinterpret_cast<decltype(GetProtocolVersion)>(0x8232A320);
 
-uint32_t (*BG_NetDataChecksum)() = reinterpret_cast<uint32_t (*)()>(0x820E0B50);
+uint32_t (*BG_NetDataChecksum)() = reinterpret_cast<decltype(BG_NetDataChecksum)>(0x820E0B50);
 
-int (*G_irand)(int min, int max) = reinterpret_cast<int (*)(int, int)>(0x8226FC80);
+int (*G_irand)(int min, int max) = reinterpret_cast<decltype(G_irand)>(0x8226FC80);
 
-void (*SV_Cmd_TokenizeString)(const char *text_in) = reinterpret_cast<void (*)(const char *)>(0x822889F0);
+void (*SV_Cmd_TokenizeString)(const char *text_in) = reinterpret_cast<decltype(SV_Cmd_TokenizeString)>(0x822889F0);
 
-void (*SV_Cmd_EndTokenizedString)() = reinterpret_cast<void (*)()>(0x82288A10);
+void (*SV_Cmd_EndTokenizedString)() = reinterpret_cast<decltype(SV_Cmd_EndTokenizedString)>(0x82288A10);
 
-void (*SV_DirectConnect)(netadr_t from) = reinterpret_cast<void (*)(netadr_t)>(0x822C8AB0);
+void (*SV_DirectConnect)(netadr_t from) = reinterpret_cast<decltype(SV_DirectConnect)>(0x822C8AB0);
 
-void (*SV_SendClientGameState)(client_t *client) = reinterpret_cast<void (*)(client_t *)>(0x822C6DD0);
+void (*SV_SendClientGameState)(client_t *client) = reinterpret_cast<decltype(SV_SendClientGameState)>(0x822C6DD0);
 
-void (*SV_ClientEnterWorld)(client_t *client, usercmd_s *cmd) = reinterpret_cast<void (*)(client_t *, usercmd_s *)>(0x822C6F50);
+void (*SV_ClientEnterWorld)(client_t *client, usercmd_s *cmd) = reinterpret_cast<decltype(SV_ClientEnterWorld)>(0x822C6F50);
 
-void (*SV_ExecuteClientCommand)(client_t *cl, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<void (*)(client_t *, const char *, int, int)>(0x822C78A0);
+void (*SV_ExecuteClientCommand)(client_t *cl, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<decltype(SV_ExecuteClientCommand)>(0x822C78A0);
 
 // SV_AddTestClient is empty on MW3 so it needs to be reimplemented from scratch
 gentity_s *SV_AddTestClient()

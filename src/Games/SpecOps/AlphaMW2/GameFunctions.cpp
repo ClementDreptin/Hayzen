@@ -6,21 +6,21 @@ namespace SpecOpsAlphaMW2
 namespace Game
 {
 
-void (*SV_GameSendServerCommand)(int clientNum, const char *text) = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x823329E8);
+decltype(SV_GameSendServerCommand) SV_GameSendServerCommand = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x823329E8);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<decltype(Cbuf_AddText)>(0x82275CE8);
+decltype(Cbuf_AddText) Cbuf_AddText = reinterpret_cast<decltype(Cbuf_AddText)>(0x82275CE8);
 
-float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<decltype(Dvar_GetFloat)>(0x822D79D0);
+decltype(Dvar_GetFloat) Dvar_GetFloat = reinterpret_cast<decltype(Dvar_GetFloat)>(0x822D79D0);
 
-void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData) = reinterpret_cast<decltype(Dvar_ForEach)>(0x822DA920);
+decltype(Dvar_ForEach) Dvar_ForEach = reinterpret_cast<decltype(Dvar_ForEach)>(0x822DA920);
 
-playerState_s *(*GetPlayerState)(int num) = reinterpret_cast<decltype(GetPlayerState)>(0x823329B8);
+decltype(GetPlayerState) GetPlayerState = reinterpret_cast<decltype(GetPlayerState)>(0x823329B8);
 
-void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<decltype(SetClientOrigin)>(0x821E1660);
+decltype(SetClientOrigin) SetClientOrigin = reinterpret_cast<decltype(SetClientOrigin)>(0x821E1660);
 
-void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<decltype(SetClientViewAngle)>(0x821E1798);
+decltype(SetClientViewAngle) SetClientViewAngle = reinterpret_cast<decltype(SetClientViewAngle)>(0x821E1798);
 
-bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<decltype(UI_AnyMenuActive)>(0x822BBF38);
+decltype(UI_AnyMenuActive) UI_AnyMenuActive = reinterpret_cast<decltype(UI_AnyMenuActive)>(0x822BBF38);
 
 void iPrintLn(int clientNum, const std::string &text)
 {

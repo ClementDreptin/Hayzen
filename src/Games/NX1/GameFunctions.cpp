@@ -8,41 +8,41 @@ namespace Game
 
 static std::unordered_map<std::string, uintptr_t> brushModelMap;
 
-const char *(*SL_ConvertToString)(uint32_t stringValue) = reinterpret_cast<decltype(SL_ConvertToString)>(0x823024E8);
+decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x823024E8);
 
-void (*SV_GameSendServerCommand)(int clientNum, int type, const char *text) = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x8231D1D8);
+decltype(SV_GameSendServerCommand) SV_GameSendServerCommand = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x8231D1D8);
 
-void (*Cbuf_AddText)(int localClientNum, const char *text) = reinterpret_cast<decltype(Cbuf_AddText)>(0x822C8C20);
+decltype(Cbuf_AddText) Cbuf_AddText = reinterpret_cast<decltype(Cbuf_AddText)>(0x822C8C20);
 
-const char *(*Dvar_GetString)(const char *dvarName) = reinterpret_cast<decltype(Dvar_GetString)>(0x82374AA0);
+decltype(Dvar_GetString) Dvar_GetString = reinterpret_cast<decltype(Dvar_GetString)>(0x82374AA0);
 
-float (*Dvar_GetFloat)(const char *dvarName) = reinterpret_cast<decltype(Dvar_GetFloat)>(0x823749B0);
+decltype(Dvar_GetFloat) Dvar_GetFloat = reinterpret_cast<decltype(Dvar_GetFloat)>(0x823749B0);
 
-playerState_s *(*GetPlayerState)(int clientNum) = reinterpret_cast<decltype(GetPlayerState)>(0x8227E2A0);
+decltype(GetPlayerState) GetPlayerState = reinterpret_cast<decltype(GetPlayerState)>(0x8227E2A0);
 
-bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum) = reinterpret_cast<decltype(Session_IsHost)>(0x82401628);
+decltype(Session_IsHost) Session_IsHost = reinterpret_cast<decltype(Session_IsHost)>(0x82401628);
 
-void (*SP_script_model)(gentity_s *mSelf) = reinterpret_cast<decltype(SP_script_model)>(0x822A7500);
+decltype(SP_script_model) SP_script_model = reinterpret_cast<decltype(SP_script_model)>(0x822A7500);
 
-gentity_s *(*G_Spawn)() = reinterpret_cast<decltype(G_Spawn)>(0x822AF990);
+decltype(G_Spawn) G_Spawn = reinterpret_cast<decltype(G_Spawn)>(0x822AF990);
 
-void (*G_SetModel)(gentity_s *ent, const char *modelName) = reinterpret_cast<decltype(G_SetModel)>(0x822AEFB0);
+decltype(G_SetModel) G_SetModel = reinterpret_cast<decltype(G_SetModel)>(0x822AEFB0);
 
-void (*SV_LinkEntity)(gentity_s *gEnt) = reinterpret_cast<decltype(SV_LinkEntity)>(0x82329918);
+decltype(SV_LinkEntity) SV_LinkEntity = reinterpret_cast<decltype(SV_LinkEntity)>(0x82329918);
 
-void (*SV_UnlinkEntity)(gentity_s *gEnt) = reinterpret_cast<decltype(SV_UnlinkEntity)>(0x82329850);
+decltype(SV_UnlinkEntity) SV_UnlinkEntity = reinterpret_cast<decltype(SV_UnlinkEntity)>(0x82329850);
 
-bool (*SV_SetBrushModel)(gentity_s *ent) = reinterpret_cast<decltype(SV_SetBrushModel)>(0x8231D460);
+decltype(SV_SetBrushModel) SV_SetBrushModel = reinterpret_cast<decltype(SV_SetBrushModel)>(0x8231D460);
 
-gentity_s *(*SV_AddTestClient)() = reinterpret_cast<decltype(SV_AddTestClient)>(0x8231CF18);
+decltype(SV_AddTestClient) SV_AddTestClient = reinterpret_cast<decltype(SV_AddTestClient)>(0x8231CF18);
 
-void (*SV_ExecuteClientCommand)(client_t *client, const char *s, int clientOK, int fromOldServer) = reinterpret_cast<decltype(SV_ExecuteClientCommand)>(0x8231B8E8);
+decltype(SV_ExecuteClientCommand) SV_ExecuteClientCommand = reinterpret_cast<decltype(SV_ExecuteClientCommand)>(0x8231B8E8);
 
-void (*SetClientOrigin)(gentity_s *ent, const float *origin) = reinterpret_cast<decltype(SetClientOrigin)>(0x82264A20);
+decltype(SetClientOrigin) SetClientOrigin = reinterpret_cast<decltype(SetClientOrigin)>(0x82264A20);
 
-void (*SetClientViewAngle)(gentity_s *ent, const float *angle) = reinterpret_cast<decltype(SetClientViewAngle)>(0x82264770);
+decltype(SetClientViewAngle) SetClientViewAngle = reinterpret_cast<decltype(SetClientViewAngle)>(0x82264770);
 
-bool (*UI_AnyMenuActive)(int localClientNum) = reinterpret_cast<decltype(UI_AnyMenuActive)>(0x8233F188);
+decltype(UI_AnyMenuActive) UI_AnyMenuActive = reinterpret_cast<decltype(UI_AnyMenuActive)>(0x8233F188);
 
 void iPrintLn(int clientNum, const std::string &text)
 {

@@ -123,5 +123,5 @@ void Title::AskToReboot()
     );
 
     if (result == ERROR_SUCCESS && buttonPressedIndex == 0)
-        Xam::Reboot();
+        Reboot();
 }

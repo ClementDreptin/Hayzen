@@ -262,7 +262,7 @@ bool SpawnBot(SpawnBotOptions *pOptions)
     // The rest of the code needs to execute on a separate thread because we need to
     // wait between certain operations. If this wasn't done on a separate thread, it
     // would block the game's thread and make it crash.
-    Memory::Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
+    Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
 
     return true;
 }

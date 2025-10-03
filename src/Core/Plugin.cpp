@@ -32,7 +32,7 @@ Plugin::Plugin(HANDLE pluginHandle)
     // Start the main loop in a separate thread.
     // We use the extended version of Thread to create a thread that won't get stopped
     // when another game is launched.
-    m_RunThreadHandle = Memory::ThreadEx(
+    m_RunThreadHandle = ThreadEx(
         reinterpret_cast<PTHREAD_START_ROUTINE>(Run),
         this,
         EXCREATETHREAD_FLAG_SYSTEM
@@ -44,7 +44,7 @@ Plugin::~Plugin()
     m_Running = false;
 
     // Disable debug builds if needed
-    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
+    if (g_Config.AllowDebugBuilds && !IsDevkit())
         DebugEnabler::Disable();
 
     // Unload the notification patch
@@ -89,7 +89,7 @@ HRESULT Plugin::SaveConfig()
 {
     // It is necessary mount the HDD again because this function might get called from a game
     // which my not have the HDD mounted
-    HRESULT hr = Xam::MountHdd();
+    HRESULT hr = Fs::MountHdd();
     if (FAILED(hr) && hr != STATUS_OBJECT_NAME_COLLISION)
     {
         DebugPrint("[Hayzen][Config]: Error: Couldn't mount HDD: %X.", hr);
@@ -107,7 +107,7 @@ void Plugin::Init()
     CreateConfig();
 
     // Enable debug builds if needed
-    if (g_Config.AllowDebugBuilds && !Xam::IsDevkit())
+    if (g_Config.AllowDebugBuilds && !IsDevkit())
     {
         HRESULT hr = DebugEnabler::Enable();
         if (FAILED(hr))
@@ -128,7 +128,7 @@ uint32_t Plugin::Run(Plugin *This)
 
     while (This->m_Running)
     {
-        uint32_t newTitleId = Xam::GetCurrentTitleId();
+        uint32_t newTitleId = XamGetCurrentTitleId();
         if (newTitleId != This->m_CurrentTitleId)
             This->InitNewTitle(newTitleId);
     }
@@ -201,7 +201,7 @@ HRESULT Plugin::CreateConfig()
     // Collisions are expected because, when running on a console with Dashlaunch, there is
     // already a system symlink named "hdd:". Collisions can also happen when loading the plugin
     // multiple times because system symlinks continue to live after the process terminates.
-    hr = Xam::MountHdd();
+    hr = Fs::MountHdd();
     if (FAILED(hr) && hr != STATUS_OBJECT_NAME_COLLISION)
     {
         DebugPrint("[Hayzen][Config]: Error: Couldn't mount HDD: %X.", hr);

@@ -15,7 +15,7 @@ SpecOpsMW3Title::SpecOpsMW3Title()
 {
     // Give the system some time to fully load the game in memory
     // Devkits are a little slower and need more time
-    Sleep(Xam::IsDevkit() ? 2000 : 200);
+    Sleep(IsDevkit() ? 2000 : 200);
 
     InitRenderer();
 

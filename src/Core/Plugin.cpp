@@ -99,12 +99,20 @@ HRESULT Plugin::SaveConfig()
     return g_Config.SaveToDisk();
 }
 
-void Plugin::Init()
+HRESULT Plugin::Init()
 {
+    // Check if we're running in a supported environment
+    bool onSupportedKernel = CheckKernelVersion();
+    if (!onSupportedKernel)
+        return E_FAIL;
+
     // Setup config.
     // We explicit discard potential errors because the config isn't absolutely necessary
     // to use the plugin
     CreateConfig();
+
+    // Allow notifications to be displayed from system threads
+    NotificationPatcher::Enable();
 
     // Enable debug builds if needed
     if (g_Config.AllowDebugBuilds && !IsDevkit())
@@ -114,17 +122,18 @@ void Plugin::Init()
             Xam::XNotify("Couldn't enable debug builds", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
     }
 
-    // Allow notifications to be displayed from system threads
-    NotificationPatcher::Enable();
-
     // Run the auto updater if needed
     if (g_Config.AutoUpdate)
         AutoUpdater::Run();
+
+    return S_OK;
 }
 
 uint32_t Plugin::Run(Plugin *This)
 {
-    This->Init();
+    HRESULT hr = This->Init();
+    if (FAILED(hr))
+        return 1;
 
     while (This->m_Running)
     {
@@ -326,4 +335,42 @@ bool Plugin::IsMultiplayerExecutable(uintptr_t stringAddress)
     const char multiplayerStr[] = "multiplayer";
 
     return strncmp(reinterpret_cast<const char *>(stringAddress), multiplayerStr, sizeof(multiplayerStr)) == 0;
+}
+
+bool Plugin::CheckKernelVersion()
+{
+    bool onSupportedKernel = false;
+
+    // When using the newer versions of RGLoader, XboxKrnlVersion->Build is spoofed to
+    // return 17559 even though the system binaries (xboxkrnld.exe, xam.xex, etc.) are
+    // the 17489 versions
+    if (IsDevkit())
+        onSupportedKernel = XboxKrnlVersion->Build == 17489 || XboxKrnlVersion->Build == 17559;
+    else
+        onSupportedKernel = XboxKrnlVersion->Build == 17559;
+
+    // Display an error if the current kernel version is not supported
+    if (!onSupportedKernel)
+    {
+        std::vector<std::wstring> buttonLabels(1);
+        buttonLabels[0] = L"OK";
+
+        std::wstring errorMessage = Formatter::Format(
+            L"Your dashboard version is not supported.\n\n"
+            L"Supported versions:\n"
+            L"  Retail: 17559\n"
+            L"  Devkit: 17489 (or 17559 RGLoader spoof)\n\n"
+            L"Your version: %d",
+            XboxKrnlVersion->Build
+        );
+
+        Xam::ShowMessageBox(
+            L"Unsupported dashboard",
+            errorMessage,
+            buttonLabels,
+            XMB_ERRORICON
+        );
+    }
+
+    return onSupportedKernel;
 }

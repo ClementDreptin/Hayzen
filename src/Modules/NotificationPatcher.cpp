@@ -20,7 +20,9 @@ void Enable()
 
 void Disable()
 {
-    XASSERT(s_DefaultInstruction != 0);
+    // Do nothing if notifications were never patched
+    if (s_DefaultInstruction == 0)
+        return;
 
     Memory::Write<uint32_t>(s_PatchAddress, s_DefaultInstruction);
 }

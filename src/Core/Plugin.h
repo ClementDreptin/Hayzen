@@ -24,7 +24,7 @@ private:
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
 
-    void Init();
+    HRESULT Init();
 
     static uint32_t Run(Plugin *This);
 
@@ -37,6 +37,8 @@ private:
     bool IsSingleplayerExecutable(uintptr_t stringAddress);
 
     bool IsMultiplayerExecutable(uintptr_t stringAddress);
+
+    bool CheckKernelVersion();
 };
 
 extern Plugin *g_pPlugin;

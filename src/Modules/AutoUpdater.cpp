@@ -349,7 +349,7 @@ static HRESULT ReadBodyToFile(Socket &socket)
 
     // This is an NT device path, which means we need to use the kernel functions to
     // open and write to the file
-    std::string pluginPath = g_pPlugin->GetFullPath();
+    Fs::Path pluginPath = g_pPlugin->GetFullPath();
 
     // Create the attributes from the path
     OBJECT_ATTRIBUTES attributes = {};

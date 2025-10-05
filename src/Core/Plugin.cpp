@@ -65,7 +65,7 @@ std::string Plugin::GetName()
     return Formatter::ToNarrow(pDataTable->BaseDllName.Buffer);
 }
 
-std::string Plugin::GetFullPath()
+Fs::Path Plugin::GetFullPath()
 {
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
 
@@ -217,20 +217,19 @@ HRESULT Plugin::CreateConfig()
         return hr;
     }
 
-    // Get the plugin path from the handle
-    LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    std::wstring widePath = pDataTable->FullDllName.Buffer;
+    // Get the plugin NT device path from the handle
+    Fs::Path pluginDevicePath = GetFullPath();
 
     // If the plugin is not stored on HDD, just keep the default config path used
     // in the constructor initializer list
-    std::wstring hddDevicePath = L"\\Device\\Harddisk0\\Partition1\\";
-    size_t pos = widePath.find(hddDevicePath);
-    if (pos == std::wstring::npos)
+    std::string hddDevicePath = "\\Device\\Harddisk0\\Partition1\\";
+    size_t pos = pluginDevicePath.String().find(hddDevicePath);
+    if (pos != 0)
     {
         DebugPrint(
-            L"[Hayzen][Config]: Warn: %s is not stored on HDD so can't store config next to it."
-            L"The config will be written to the default location (root of HDD) when the settings are saved.",
-            pDataTable->BaseDllName.Buffer
+            "[Hayzen][Config]: Warn: %s is not stored on HDD so can't store config next to it."
+            "The config will be written to the default location (root of HDD) when the settings are saved.",
+            pluginDevicePath.c_str()
         );
 
         g_Config.LoadFromDisk();
@@ -238,24 +237,12 @@ HRESULT Plugin::CreateConfig()
         return hr;
     }
 
-    // Only keep the absolute path on HDD
+    // Only keep the path relative to the HDD root
     // \Device\Harddisk0\Partition1\foo\bar\file => foo\bar\file
-    widePath.erase(0, pos + hddDevicePath.size());
-
-    std::string path = Formatter::ToNarrow(widePath);
-
-    // Extract the directory from the path
-    char pluginDirectory[MAX_PATH] = {};
-    _splitpath_s(
-        path.c_str(),
-        nullptr, 0,
-        pluginDirectory, sizeof(pluginDirectory),
-        nullptr, 0,
-        nullptr, 0
-    );
+    Fs::Path pluginPathRelativeToHddRoot = pluginDevicePath.String().substr(hddDevicePath.size());
 
     // Rebuild the config file path from the path directory
-    std::string configFilePath = Formatter::Format("hdd:\\%sHayzen.ini", pluginDirectory);
+    Fs::Path configFilePath = "hdd:" / pluginPathRelativeToHddRoot.Parent() / "Hayzen.ini";
 
     // This doesn't write the config file to disk, it just creates the in-memory object
     g_Config = Config(configFilePath);
@@ -278,7 +265,7 @@ HRESULT Plugin::CreateConfig()
 
 HRESULT Plugin::WaitUntilFilesystemIsReady()
 {
-    std::string path = GetFullPath();
+    Fs::Path path = GetFullPath();
 
     // Create the attributes from the path
     OBJECT_ATTRIBUTES attributes = {};

@@ -5,7 +5,7 @@
 class Config
 {
 public:
-    Config(const std::string &filePath);
+    Config(const Fs::Path &filePath);
 
     HRESULT SaveToDisk();
 

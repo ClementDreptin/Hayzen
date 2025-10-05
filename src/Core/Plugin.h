@@ -11,7 +11,7 @@ public:
 
     std::string GetName();
 
-    std::string GetFullPath();
+    Fs::Path GetFullPath();
 
     std::string GetVersion();
 

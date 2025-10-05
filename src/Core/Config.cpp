@@ -3,7 +3,7 @@
 
 #include "Core/UI.h"
 
-Config::Config(const std::string &filePath)
+Config::Config(const Fs::Path &filePath)
     : AllowDebugBuilds(true),
       DisplayControlsTexts(true),
       AutoUpdate(true),
@@ -21,7 +21,7 @@ Config::Config(const std::string &filePath)
       Height(0.0f),
 
       // Private member
-      m_File(filePath)
+      m_File(filePath.String())
 {
 }
 

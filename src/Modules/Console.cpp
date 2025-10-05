@@ -228,8 +228,15 @@ void Console::Submit()
 {
     XASSERT(m_Props.Cbuf_AddText != nullptr);
 
+    // It is common to prepend commands with a slash when using the official consoles
+    // but this leading slash is removed before calling Cbuf_AddText
+    const std::string &commandWithoutLeadingSlash =
+        !m_Command.empty() && m_Command[0] == '/'
+            ? m_Command.substr(1)
+            : m_Command;
+
     // Execute the command
-    m_Props.Cbuf_AddText(0, m_Command.c_str());
+    m_Props.Cbuf_AddText(0, commandWithoutLeadingSlash.c_str());
 
     AppendToHistory();
 

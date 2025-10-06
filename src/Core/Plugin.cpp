@@ -75,7 +75,9 @@ Fs::Path Plugin::GetFullPath()
 std::string Plugin::GetVersion()
 {
     LDR_DATA_TABLE_ENTRY *pDataTable = static_cast<LDR_DATA_TABLE_ENTRY *>(m_Handle);
-    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_EXECUTION_ID));
+    XEX_EXECUTION_ID *pExecutionId = static_cast<XEX_EXECUTION_ID *>(
+        RtlImageXexHeaderField(pDataTable->XexHeaderBase, XEX_HEADER_FIELD_EXECUTION_ID)
+    );
 
     return Formatter::Format(
         "v%hhu.%hhu.%hhu",

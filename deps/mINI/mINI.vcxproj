@@ -27,7 +27,8 @@
   <PropertyGroup>
     <OutDir>$(SolutionDir)build\$(Configuration)\bin\</OutDir>
     <IntDir>$(SolutionDir)build\$(Configuration)\obj\</IntDir>
-    <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    <OutputFile Condition="'$(Configuration)'=='Debug'">$(OutDir)$(TargetName)d$(TargetExt)</OutputFile>
+    <OutputFile Condition="'$(Configuration)'=='Release'">$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ItemDefinitionGroup>

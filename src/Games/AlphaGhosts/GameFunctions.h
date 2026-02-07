@@ -48,7 +48,7 @@ gentity_s *GetEntity(uint32_t entNum);
 
 bool IsHost(int clientNum);
 
-gentity_s *GetCurrentMapBrushModel();
+gentity_s *GetCurrentMapCrateBrushModel();
 
 }
 }

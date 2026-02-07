@@ -128,7 +128,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_nx_testmap"] = reinterpret_cast<uintptr_t>(nullptr);      // missing zone
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

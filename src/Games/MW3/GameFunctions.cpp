@@ -168,7 +168,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_terminal_cls"] = 0x82DF9C80;
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

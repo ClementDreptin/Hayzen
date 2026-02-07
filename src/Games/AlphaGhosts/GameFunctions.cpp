@@ -85,7 +85,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_zebra"] = 0x83918780;
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

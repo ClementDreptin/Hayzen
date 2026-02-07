@@ -99,7 +99,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_underpass"] = 0x82D52000;
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

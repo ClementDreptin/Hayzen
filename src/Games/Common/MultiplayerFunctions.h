@@ -39,10 +39,10 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
 {
     int clientNum = Context::ClientNum;
 
-    gentity_s *pCurrentMapBrushModel = GetCurrentMapBrushModel();
+    gentity_s *pCurrentMapCrateBrushModel = GetCurrentMapCrateBrushModel();
 
     // Return early if the map is not supported
-    if (!pCurrentMapBrushModel)
+    if (!pCurrentMapCrateBrushModel)
     {
         iPrintLn(clientNum, "^1You cannot spawn a Crate on this map!");
         return false;
@@ -75,11 +75,11 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     // For example, if the default angles are (0, 90, 0) and the desired angles are (0, 150, 0),
     // currentAngles needs to be (0, 150, 0) - (0, 90, 0) = (0, 60, 0).
     pCollisionEntity->r.currentOrigin.z += 14.0f;
-    pCollisionEntity->r.currentAngles.y -= pCurrentMapBrushModel->r.currentAngles.y;
+    pCollisionEntity->r.currentAngles.y -= pCurrentMapCrateBrushModel->r.currentAngles.y;
 
     SP_script_model(pCollisionEntity);
     pCollisionEntity->r.bmodel = 4;
-    pCollisionEntity->state.index = pCurrentMapBrushModel->state.index;
+    pCollisionEntity->state.index = pCurrentMapCrateBrushModel->state.index;
     int contents = pCollisionEntity->r.contents;
     SV_SetBrushModel(pCollisionEntity);
     contents |= pCollisionEntity->r.contents;
@@ -88,7 +88,7 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     SV_LinkEntity(pCollisionEntity);
 #else
     pEntity->r.bmodel = 4;
-    pEntity->state.index = pCurrentMapBrushModel->state.index;
+    pEntity->state.index = pCurrentMapCrateBrushModel->state.index;
     int contents = pEntity->r.contents;
     SV_SetBrushModel(pEntity);
     contents |= pEntity->r.contents;

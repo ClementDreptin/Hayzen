@@ -108,7 +108,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_vacant"] = 0x82F55900;
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

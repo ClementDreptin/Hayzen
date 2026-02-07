@@ -189,7 +189,7 @@ static void InitBrushModelMap()
     s_CrateBrushModelMap["mp_creek"]->r.currentAngles = vec3(0.0f, 250.1f, 0.0f);
 }
 
-gentity_s *GetCurrentMapBrushModel()
+gentity_s *GetCurrentMapCrateBrushModel()
 {
     static bool isBrushModelMapInitialized = false;
 

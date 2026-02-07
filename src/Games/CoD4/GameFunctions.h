@@ -65,7 +65,7 @@ void SetClientDvar(int clientNum, const std::string &dvar, const std::string &va
 
 bool IsHost(int clientNum);
 
-gentity_s *GetCurrentMapBrushModel();
+gentity_s *GetCurrentMapCrateBrushModel();
 
 }
 }

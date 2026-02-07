@@ -27,6 +27,9 @@ bool CoD4::ToggleGodMode(void *pParameters)
 
 bool CoD4::ToggleFallDamage(void *pParameters)
 {
+    // For CoD4 we can't use the common function because changing the constant value
+    // doesn't work so we went back to the old dvar way
+
     XASSERT(pParameters != nullptr);
 
     bool enabled = *reinterpret_cast<bool *>(pParameters);

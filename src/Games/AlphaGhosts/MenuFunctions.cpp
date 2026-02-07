@@ -101,9 +101,9 @@ bool AlphaGhosts::ToggleReplayInputBind(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }
 
-bool AlphaGhosts::SpawnCarePackage(void *)
+bool AlphaGhosts::SpawnCrate(void *)
 {
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
 bool AlphaGhosts::SpawnBlocker(void *)
@@ -111,14 +111,14 @@ bool AlphaGhosts::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool AlphaGhosts::ChangeCarePackagePositionPresets(void *pParameters)
+bool AlphaGhosts::ChangeCratePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
 }
 
-bool AlphaGhosts::ChangeCarePackageOrientation(void *pParameters)
+bool AlphaGhosts::ChangeCrateOrientation(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
 }
 
 bool AlphaGhosts::ToggleSaveLoadBinds(void *pParameters)

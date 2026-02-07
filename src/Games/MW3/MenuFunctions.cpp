@@ -69,9 +69,9 @@ bool MW3::ToggleReplayInputBind(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }
 
-bool MW3::SpawnCarePackage(void *)
+bool MW3::SpawnCrate(void *)
 {
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
 bool MW3::SpawnBlocker(void *)
@@ -79,14 +79,14 @@ bool MW3::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool MW3::ChangeCarePackagePositionPresets(void *pParameters)
+bool MW3::ChangeCratePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
 }
 
-bool MW3::ChangeCarePackageOrientation(void *pParameters)
+bool MW3::ChangeCrateOrientation(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
 }
 
 bool MW3::ToggleSaveLoadBinds(void *pParameters)

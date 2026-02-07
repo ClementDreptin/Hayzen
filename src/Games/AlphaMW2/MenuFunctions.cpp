@@ -101,9 +101,9 @@ bool AlphaMW2::ToggleReplayInputBind(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }
 
-bool AlphaMW2::SpawnCarePackage(void *)
+bool AlphaMW2::SpawnCrate(void *)
 {
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
 bool AlphaMW2::SpawnBlocker(void *)
@@ -111,14 +111,14 @@ bool AlphaMW2::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool AlphaMW2::ChangeCarePackagePositionPresets(void *pParameters)
+bool AlphaMW2::ChangeCratePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
 }
 
-bool AlphaMW2::ChangeCarePackageOrientation(void *pParameters)
+bool AlphaMW2::ChangeCrateOrientation(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
 }
 
 bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)

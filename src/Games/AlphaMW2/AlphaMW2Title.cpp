@@ -56,27 +56,27 @@ void AlphaMW2Title::InitMenu()
     // Spawn section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ClickOption, "Care Package", AlphaMW2::SpawnCarePackage));
+        options.emplace_back(MakeOption(ClickOption, "Crate", AlphaMW2::SpawnCrate));
         options.emplace_back(MakeOption(ClickOption, "Blocker", AlphaMW2::SpawnBlocker));
 
         // Spawn settings
         {
             std::vector<std::shared_ptr<Option>> spawnSettings;
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Distance", &Context::CarePackageDistance, -10000.0f, 10000.0f, 5.0f));
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Height", &Context::CarePackageHeight, -10000.0f, 10000.0f, 5.0f));
-            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Angle", &Context::CarePackageAngle, -90.0f, 90.0f, 1.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Distance", &Context::CrateDistance, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Height", &Context::CrateHeight, -10000.0f, 10000.0f, 5.0f));
+            spawnSettings.emplace_back(MakeOption(RangeOption<float>, "Angle", &Context::CrateAngle, -90.0f, 90.0f, 1.0f));
 
             std::vector<std::string> positionPresets(3);
             positionPresets[0] = "Bounce Test";
             positionPresets[1] = "Mega Bounce";
             positionPresets[2] = "Floor";
-            spawnSettings.emplace_back(MakeOption(SelectOption, "Position Presets", positionPresets, AlphaMW2::ChangeCarePackagePositionPresets));
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Position Presets", positionPresets, AlphaMW2::ChangeCratePositionPresets));
 
             std::vector<std::string> orientations(3);
             orientations[0] = "Straight";
             orientations[1] = "Left Strafe";
             orientations[2] = "Right Strafe";
-            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientation", orientations, AlphaMW2::ChangeCarePackageOrientation));
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientation", orientations, AlphaMW2::ChangeCrateOrientation));
 
             options.emplace_back(MakeOption(SubOptionGroup, "Settings", spawnSettings));
         }

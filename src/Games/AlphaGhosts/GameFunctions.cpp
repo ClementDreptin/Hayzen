@@ -6,7 +6,7 @@ namespace AlphaGhosts
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> brushModelMap;
+static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x826F90B8);
 
@@ -72,17 +72,17 @@ static void InitBrushModelMap()
 {
     // The maps set to nullptr don't work and there's a comment with the error
 
-    brushModelMap["mp_dome"] = 0x8391CB00;
-    brushModelMap["mp_plaza2"] = 0x83918000;
-    brushModelMap["mp_paris"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    brushModelMap["mp_lonestar"] = 0x83927280;
-    brushModelMap["mp_frag"] = 0x8391A800;
-    brushModelMap["mp_snow"] = 0x83919180;
-    brushModelMap["mp_fahrenheit"] = 0x83924800;
-    brushModelMap["mp_hasima"] = reinterpret_cast<uintptr_t>(nullptr); // disc unreadable
-    brushModelMap["mp_warhawk"] = 0x83917D80;
-    brushModelMap["mp_sovereign"] = 0x83919400;
-    brushModelMap["mp_zebra"] = 0x83918780;
+    s_CrateBrushModelMap["mp_dome"] = 0x8391CB00;
+    s_CrateBrushModelMap["mp_plaza2"] = 0x83918000;
+    s_CrateBrushModelMap["mp_paris"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
+    s_CrateBrushModelMap["mp_lonestar"] = 0x83927280;
+    s_CrateBrushModelMap["mp_frag"] = 0x8391A800;
+    s_CrateBrushModelMap["mp_snow"] = 0x83919180;
+    s_CrateBrushModelMap["mp_fahrenheit"] = 0x83924800;
+    s_CrateBrushModelMap["mp_hasima"] = reinterpret_cast<uintptr_t>(nullptr); // disc unreadable
+    s_CrateBrushModelMap["mp_warhawk"] = 0x83917D80;
+    s_CrateBrushModelMap["mp_sovereign"] = 0x83919400;
+    s_CrateBrushModelMap["mp_zebra"] = 0x83918780;
 }
 
 gentity_s *GetCurrentMapBrushModel()
@@ -97,7 +97,7 @@ gentity_s *GetCurrentMapBrushModel()
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
+    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
     if (!pBrushModel)
         pBrushModel = reinterpret_cast<gentity_s *>(0x83917B00);
 

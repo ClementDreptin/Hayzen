@@ -98,9 +98,9 @@ bool CoD4::ToggleReplayInputBind(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }
 
-bool CoD4::SpawnCarePackage(void *)
+bool CoD4::SpawnCrate(void *)
 {
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
 bool CoD4::SpawnBlocker(void *)
@@ -110,14 +110,14 @@ bool CoD4::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool CoD4::ChangeCarePackagePositionPresets(void *pParameters)
+bool CoD4::ChangeCratePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
 }
 
-bool CoD4::ChangeCarePackageOrientation(void *pParameters)
+bool CoD4::ChangeCrateOrientation(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
 }
 
 bool CoD4::ToggleSaveLoadBinds(void *pParameters)

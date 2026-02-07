@@ -8,7 +8,7 @@ namespace MW3
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> brushModelMap;
+static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x822B5120);
 
@@ -161,11 +161,11 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    brushModelMap["mp_seatown"] = 0x82DD1280;
-    brushModelMap["mp_mogadishu"] = 0x82E08A00;
-    brushModelMap["mp_exchange"] = 0x82E14580;
-    brushModelMap["mp_radar"] = 0x82DD3A80;
-    brushModelMap["mp_terminal_cls"] = 0x82DF9C80;
+    s_CrateBrushModelMap["mp_seatown"] = 0x82DD1280;
+    s_CrateBrushModelMap["mp_mogadishu"] = 0x82E08A00;
+    s_CrateBrushModelMap["mp_exchange"] = 0x82E14580;
+    s_CrateBrushModelMap["mp_radar"] = 0x82DD3A80;
+    s_CrateBrushModelMap["mp_terminal_cls"] = 0x82DF9C80;
 }
 
 gentity_s *GetCurrentMapBrushModel()
@@ -180,7 +180,7 @@ gentity_s *GetCurrentMapBrushModel()
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
+    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
     if (!pBrushModel)
         pBrushModel = reinterpret_cast<gentity_s *>(0x82DD1500);
 

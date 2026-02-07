@@ -69,9 +69,9 @@ bool MW2::ToggleReplayInputBind(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }
 
-bool MW2::SpawnCarePackage(void *)
+bool MW2::SpawnCrate(void *)
 {
-    return COMMON_FN_NAMESPACE::SpawnCarePackage();
+    return COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
 bool MW2::SpawnBlocker(void *)
@@ -79,14 +79,14 @@ bool MW2::SpawnBlocker(void *)
     return COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool MW2::ChangeCarePackagePositionPresets(void *pParameters)
+bool MW2::ChangeCratePositionPresets(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackagePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
 }
 
-bool MW2::ChangeCarePackageOrientation(void *pParameters)
+bool MW2::ChangeCrateOrientation(void *pParameters)
 {
-    return COMMON_FN_NAMESPACE::ChangeCarePackageOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
 }
 
 bool MW2::ToggleSaveLoadBinds(void *pParameters)

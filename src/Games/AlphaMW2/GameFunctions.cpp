@@ -6,7 +6,7 @@ namespace AlphaMW2
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> brushModelMap;
+static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x8229A730);
 
@@ -82,21 +82,21 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    brushModelMap["mp_afghan"] = 0x82D60880;
-    brushModelMap["mp_checkpoint"] = 0x82D76B80;
-    brushModelMap["mp_derail"] = 0x82D95800;
-    brushModelMap["mp_estate"] = 0x82D5B600;
-    brushModelMap["mp_favela"] = 0x82D9A300;
-    brushModelMap["mp_highrise"] = 0x82DC4380;
-    brushModelMap["mp_invasion"] = 0x82D7E100;
-    brushModelMap["mp_quarry"] = 0x82D70F00;
-    brushModelMap["mp_rundown"] = 0x82D93780;
-    brushModelMap["mp_rust"] = 0x82D5A980;
-    brushModelMap["mp_boneyard"] = 0x82D64E80;
-    brushModelMap["mp_nightshift"] = 0x82D58180;
-    brushModelMap["mp_subbase"] = 0x82D7CF80;
-    brushModelMap["mp_terminal"] = 0x82D61A00;
-    brushModelMap["mp_underpass"] = 0x82D52000;
+    s_CrateBrushModelMap["mp_afghan"] = 0x82D60880;
+    s_CrateBrushModelMap["mp_checkpoint"] = 0x82D76B80;
+    s_CrateBrushModelMap["mp_derail"] = 0x82D95800;
+    s_CrateBrushModelMap["mp_estate"] = 0x82D5B600;
+    s_CrateBrushModelMap["mp_favela"] = 0x82D9A300;
+    s_CrateBrushModelMap["mp_highrise"] = 0x82DC4380;
+    s_CrateBrushModelMap["mp_invasion"] = 0x82D7E100;
+    s_CrateBrushModelMap["mp_quarry"] = 0x82D70F00;
+    s_CrateBrushModelMap["mp_rundown"] = 0x82D93780;
+    s_CrateBrushModelMap["mp_rust"] = 0x82D5A980;
+    s_CrateBrushModelMap["mp_boneyard"] = 0x82D64E80;
+    s_CrateBrushModelMap["mp_nightshift"] = 0x82D58180;
+    s_CrateBrushModelMap["mp_subbase"] = 0x82D7CF80;
+    s_CrateBrushModelMap["mp_terminal"] = 0x82D61A00;
+    s_CrateBrushModelMap["mp_underpass"] = 0x82D52000;
 }
 
 gentity_s *GetCurrentMapBrushModel()
@@ -111,9 +111,9 @@ gentity_s *GetCurrentMapBrushModel()
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    XASSERT(brushModelMap.find(mapName) != brushModelMap.end());
+    XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
-    return reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
+    return reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
 }
 
 }

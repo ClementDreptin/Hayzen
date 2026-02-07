@@ -10,13 +10,13 @@ vec3 SavedPosition;
 
 vec3 SavedAngles;
 
-float CarePackageDistance = 150.0f;
+float CrateDistance = 150.0f;
 
-float CarePackageHeight = 0.0f;
+float CrateHeight = 0.0f;
 
-float CarePackageAngle = 0.0f;
+float CrateAngle = 0.0f;
 
-_CarePackagePositionPresets CarePackagePositionPresets = CarePackagePosition_BounceTest;
+_CratePositionPresets CratePositionPresets = CratePosition_BounceTest;
 
 void *pBotEntity = nullptr;
 
@@ -26,10 +26,10 @@ void Reset()
     SavedPosition = vec3();
     SavedAngles = vec3();
     pBotEntity = nullptr;
-    CarePackageDistance = 150.0f;
-    CarePackageHeight = 0.0f;
-    CarePackageAngle = 0.0f;
-    CarePackagePositionPresets = CarePackagePosition_BounceTest;
+    CrateDistance = 150.0f;
+    CrateHeight = 0.0f;
+    CrateAngle = 0.0f;
+    CratePositionPresets = CratePosition_BounceTest;
 }
 
 }

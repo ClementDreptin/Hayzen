@@ -6,7 +6,7 @@ namespace MW2
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> brushModelMap;
+static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x82241898);
 
@@ -80,32 +80,32 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    brushModelMap["mp_afghan"] = 0x82F7E800;
-    brushModelMap["mp_derail"] = 0x82F5F680;
-    brushModelMap["mp_estate"] = 0x82F4AF00;
-    brushModelMap["mp_favela"] = 0x82F70C00;
-    brushModelMap["mp_highrise"] = 0x82F76380;
-    brushModelMap["mp_invasion"] = 0x82F73180;
-    brushModelMap["mp_checkpoint"] = 0x82F6D280;
-    brushModelMap["mp_quarry"] = 0x82F99600;
-    brushModelMap["mp_rundown"] = 0x82F65800;
-    brushModelMap["mp_rust"] = 0x82F3C900;
-    brushModelMap["mp_boneyard"] = 0x82F0B300;
-    brushModelMap["mp_nightshift"] = 0x82F3A880;
-    brushModelMap["mp_subbase"] = 0x82F59780;
-    brushModelMap["mp_terminal"] = 0x82F0DD80;
-    brushModelMap["mp_underpass"] = 0x82F66C00;
-    brushModelMap["mp_brecourt"] = 0x82F15580;
-    brushModelMap["mp_complex"] = 0x82F09F00;
-    brushModelMap["mp_crash"] = 0x82F18280;
-    brushModelMap["mp_overgrown"] = 0x82F34980;
-    brushModelMap["mp_compact"] = 0x82F14180;
-    brushModelMap["mp_storm"] = 0x82F5DB00;
-    brushModelMap["mp_abandon"] = 0x82F48980;
-    brushModelMap["mp_fuel2"] = 0x82F65300;
-    brushModelMap["mp_strike"] = 0x82F4D980;
-    brushModelMap["mp_trailerpark"] = 0x82F17380;
-    brushModelMap["mp_vacant"] = 0x82F55900;
+    s_CrateBrushModelMap["mp_afghan"] = 0x82F7E800;
+    s_CrateBrushModelMap["mp_derail"] = 0x82F5F680;
+    s_CrateBrushModelMap["mp_estate"] = 0x82F4AF00;
+    s_CrateBrushModelMap["mp_favela"] = 0x82F70C00;
+    s_CrateBrushModelMap["mp_highrise"] = 0x82F76380;
+    s_CrateBrushModelMap["mp_invasion"] = 0x82F73180;
+    s_CrateBrushModelMap["mp_checkpoint"] = 0x82F6D280;
+    s_CrateBrushModelMap["mp_quarry"] = 0x82F99600;
+    s_CrateBrushModelMap["mp_rundown"] = 0x82F65800;
+    s_CrateBrushModelMap["mp_rust"] = 0x82F3C900;
+    s_CrateBrushModelMap["mp_boneyard"] = 0x82F0B300;
+    s_CrateBrushModelMap["mp_nightshift"] = 0x82F3A880;
+    s_CrateBrushModelMap["mp_subbase"] = 0x82F59780;
+    s_CrateBrushModelMap["mp_terminal"] = 0x82F0DD80;
+    s_CrateBrushModelMap["mp_underpass"] = 0x82F66C00;
+    s_CrateBrushModelMap["mp_brecourt"] = 0x82F15580;
+    s_CrateBrushModelMap["mp_complex"] = 0x82F09F00;
+    s_CrateBrushModelMap["mp_crash"] = 0x82F18280;
+    s_CrateBrushModelMap["mp_overgrown"] = 0x82F34980;
+    s_CrateBrushModelMap["mp_compact"] = 0x82F14180;
+    s_CrateBrushModelMap["mp_storm"] = 0x82F5DB00;
+    s_CrateBrushModelMap["mp_abandon"] = 0x82F48980;
+    s_CrateBrushModelMap["mp_fuel2"] = 0x82F65300;
+    s_CrateBrushModelMap["mp_strike"] = 0x82F4D980;
+    s_CrateBrushModelMap["mp_trailerpark"] = 0x82F17380;
+    s_CrateBrushModelMap["mp_vacant"] = 0x82F55900;
 }
 
 gentity_s *GetCurrentMapBrushModel()
@@ -120,9 +120,9 @@ gentity_s *GetCurrentMapBrushModel()
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    XASSERT(brushModelMap.find(mapName) != brushModelMap.end());
+    XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
-    return reinterpret_cast<gentity_s *>(brushModelMap[mapName]);
+    return reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
 }
 
 }

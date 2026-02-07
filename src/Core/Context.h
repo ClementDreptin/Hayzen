@@ -1,11 +1,11 @@
 #pragma once
 
-typedef enum _CarePackagePositionPresets
+typedef enum _CratePositionPresets
 {
-    CarePackagePosition_BounceTest,
-    CarePackagePosition_MegaBounce,
-    CarePackagePosition_Floor,
-} CarePackagePositionPresets;
+    CratePosition_BounceTest,
+    CratePosition_MegaBounce,
+    CratePosition_Floor,
+} CratePositionPresets;
 
 namespace Context
 {
@@ -16,13 +16,13 @@ extern vec3 SavedPosition;
 
 extern vec3 SavedAngles;
 
-extern float CarePackageDistance;
+extern float CrateDistance;
 
-extern float CarePackageHeight;
+extern float CrateHeight;
 
-extern float CarePackageAngle;
+extern float CrateAngle;
 
-extern _CarePackagePositionPresets CarePackagePositionPresets;
+extern _CratePositionPresets CratePositionPresets;
 
 extern void *pBotEntity;
 

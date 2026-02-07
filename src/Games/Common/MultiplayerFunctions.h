@@ -35,7 +35,7 @@ bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
     return true;
 }
 
-static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
+static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
 {
     int clientNum = Context::ClientNum;
 
@@ -44,11 +44,11 @@ static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
     // Return early if the map is not supported
     if (!pCurrentMapBrushModel)
     {
-        iPrintLn(clientNum, "^1You cannot spawn a Care Package on this map!");
+        iPrintLn(clientNum, "^1You cannot spawn a Crate on this map!");
         return false;
     }
 
-    // Spawn a care package and place it at origin and facing angles
+    // Spawn a crate and place it at origin and facing angles
     gentity_s *pEntity = G_Spawn();
     XASSERT(pEntity != nullptr);
     pEntity->r.currentOrigin = origin;
@@ -62,7 +62,7 @@ static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
 #endif
     SP_script_model(pEntity);
 
-    // Make the care package solid
+    // Make the crate solid
     // CoD4 requires a separate entity for the collision
 #ifdef GAME_COD4
     gentity_s *pCollisionEntity = G_Spawn();
@@ -99,7 +99,7 @@ static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
     return true;
 }
 
-bool SpawnCarePackage()
+bool SpawnCrate()
 {
     int clientNum = Context::ClientNum;
 
@@ -109,17 +109,17 @@ bool SpawnCarePackage()
     const vec3 &playerOrigin = pPlayerState->origin;
     float playerViewY = pPlayerState->viewAngles.y;
 
-    // Spawn a care package Context::CarePackageDistance units in front of and
-    // Context::CarePackageHeight above the player
-    vec3 carePackageOrigin = Math::ProjectForward(
+    // Spawn a crate Context::CrateDistance units in front of and
+    // Context::CrateHeight above the player
+    vec3 crateOrigin = Math::ProjectForward(
         playerOrigin,
         Math::Radians(playerViewY),
-        Context::CarePackageDistance
+        Context::CrateDistance
     );
-    carePackageOrigin.z += Context::CarePackageHeight;
-    vec3 carePackageAngles = vec3(0.0f, playerViewY + Context::CarePackageAngle, 0.0f);
+    crateOrigin.z += Context::CrateHeight;
+    vec3 crateAngles = vec3(0.0f, playerViewY + Context::CrateAngle, 0.0f);
 
-    return SpawnCarePackage(carePackageOrigin, carePackageAngles);
+    return SpawnCrate(crateOrigin, crateAngles);
 }
 
 bool SpawnBlocker()
@@ -132,70 +132,70 @@ bool SpawnBlocker()
     const vec3 &playerOrigin = pPlayerState->origin;
     float playerViewY = pPlayerState->viewAngles.y;
 
-    // Spawn a standing care package 40 units in front of the player
-    vec3 carePackageOrigin = Math::ProjectForward(
+    // Spawn a standing crate 40 units in front of the player
+    vec3 crateOrigin = Math::ProjectForward(
         playerOrigin,
         Math::Radians(playerViewY),
         40.0f
     );
-    carePackageOrigin.z += 40.0f;
-    vec3 carePackageAngles = vec3(90.0f, playerViewY, 0.0f);
+    crateOrigin.z += 40.0f;
+    vec3 crateAngles = vec3(90.0f, playerViewY, 0.0f);
 
-    return SpawnCarePackage(carePackageOrigin, carePackageAngles);
+    return SpawnCrate(crateOrigin, crateAngles);
 }
 
-bool ChangeCarePackagePositionPresets(void *pParameters)
+bool ChangeCratePositionPresets(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    CarePackagePositionPresets positionPresets = *reinterpret_cast<CarePackagePositionPresets *>(pParameters);
+    CratePositionPresets positionPresets = *reinterpret_cast<CratePositionPresets *>(pParameters);
 
     switch (positionPresets)
     {
-    case CarePackagePosition_BounceTest:
-        Context::CarePackageDistance = 150.0f;
-        Context::CarePackageHeight = 0.0f;
+    case CratePosition_BounceTest:
+        Context::CrateDistance = 150.0f;
+        Context::CrateHeight = 0.0f;
         break;
-    case CarePackagePosition_MegaBounce:
-        Context::CarePackageDistance = 860.0f;
-        Context::CarePackageHeight = 1250.0f;
+    case CratePosition_MegaBounce:
+        Context::CrateDistance = 860.0f;
+        Context::CrateHeight = 1250.0f;
         break;
-    case CarePackagePosition_Floor:
-        Context::CarePackageDistance = 0.0f;
-        Context::CarePackageHeight = -60.0f;
+    case CratePosition_Floor:
+        Context::CrateDistance = 0.0f;
+        Context::CrateHeight = -60.0f;
         break;
     default:
         return false;
     }
 
-    Context::CarePackagePositionPresets = positionPresets;
+    Context::CratePositionPresets = positionPresets;
 
     return true;
 }
 
-typedef enum _CarePackageOrientation
+typedef enum _CrateOrientation
 {
-    CarePackageOrientation_Straight,
-    CarePackageOrientation_LeftStrafe,
-    CarePackageOrientation_RightStrafe,
-} CarePackageOrientation;
+    CrateOrientation_Straight,
+    CrateOrientation_LeftStrafe,
+    CrateOrientation_RightStrafe,
+} CrateOrientation;
 
-bool ChangeCarePackageOrientation(void *pParameters)
+bool ChangeCrateOrientation(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    CarePackageOrientation orientation = *reinterpret_cast<CarePackageOrientation *>(pParameters);
+    CrateOrientation orientation = *reinterpret_cast<CrateOrientation *>(pParameters);
 
     switch (orientation)
     {
-    case CarePackageOrientation_Straight:
-        Context::CarePackageAngle = 0.0f;
+    case CrateOrientation_Straight:
+        Context::CrateAngle = 0.0f;
         break;
-    case CarePackageOrientation_LeftStrafe:
-        Context::CarePackageAngle = -45.0f;
+    case CrateOrientation_LeftStrafe:
+        Context::CrateAngle = -45.0f;
         break;
-    case CarePackageOrientation_RightStrafe:
-        Context::CarePackageAngle = 45.0f;
+    case CrateOrientation_RightStrafe:
+        Context::CrateAngle = 45.0f;
         break;
     default:
         return false;

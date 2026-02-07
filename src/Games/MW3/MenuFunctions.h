@@ -15,13 +15,13 @@ bool RecordInput(void *pParameters);
 
 bool ToggleReplayInputBind(void *pParameters);
 
-bool SpawnCarePackage(void *);
+bool SpawnCrate(void *);
 
 bool SpawnBlocker(void *);
 
-bool ChangeCarePackagePositionPresets(void *pParameters);
+bool ChangeCratePositionPresets(void *pParameters);
 
-bool ChangeCarePackageOrientation(void *pParameters);
+bool ChangeCrateOrientation(void *pParameters);
 
 bool ToggleSaveLoadBinds(void *pParameters);
 

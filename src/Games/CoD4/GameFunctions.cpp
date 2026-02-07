@@ -6,7 +6,7 @@ namespace CoD4
 namespace Game
 {
 
-static std::unordered_map<std::string, gentity_s *> brushModelMap;
+static std::unordered_map<std::string, gentity_s *> s_CrateBrushModelMap;
 
 decltype(SV_GameSendServerCommand) SV_GameSendServerCommand = reinterpret_cast<decltype(SV_GameSendServerCommand)>(0x82204BB8);
 
@@ -128,65 +128,65 @@ bool IsHost(int clientNum)
 
 static void InitBrushModelMap()
 {
-    brushModelMap["mp_convoy"] = GetEntity(44);
-    brushModelMap["mp_convoy"]->r.currentAngles = vec3(360.0f, 50.0f, 10.0f);
+    s_CrateBrushModelMap["mp_convoy"] = GetEntity(44);
+    s_CrateBrushModelMap["mp_convoy"]->r.currentAngles = vec3(360.0f, 50.0f, 10.0f);
 
-    brushModelMap["mp_backlot"] = GetEntity(37);
-    brushModelMap["mp_backlot"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
+    s_CrateBrushModelMap["mp_backlot"] = GetEntity(37);
+    s_CrateBrushModelMap["mp_backlot"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
 
-    brushModelMap["mp_bloc"] = GetEntity(375);
-    brushModelMap["mp_bloc"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
+    s_CrateBrushModelMap["mp_bloc"] = GetEntity(375);
+    s_CrateBrushModelMap["mp_bloc"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
 
-    brushModelMap["mp_bog"] = GetEntity(292);
-    brushModelMap["mp_bog"]->r.currentAngles = vec3(3.2984f, 225.108f, 1.16511f);
+    s_CrateBrushModelMap["mp_bog"] = GetEntity(292);
+    s_CrateBrushModelMap["mp_bog"]->r.currentAngles = vec3(3.2984f, 225.108f, 1.16511f);
 
-    brushModelMap["mp_countdown"] = GetEntity(291);
-    brushModelMap["mp_countdown"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
+    s_CrateBrushModelMap["mp_countdown"] = GetEntity(291);
+    s_CrateBrushModelMap["mp_countdown"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
 
-    brushModelMap["mp_crash"] = GetEntity(287);
-    brushModelMap["mp_crash"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
+    s_CrateBrushModelMap["mp_crash"] = GetEntity(287);
+    s_CrateBrushModelMap["mp_crash"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
 
-    brushModelMap["mp_crossfire"] = GetEntity(369);
-    brushModelMap["mp_crossfire"]->r.currentAngles = vec3(0.0f, 325.0f, 0.0f);
+    s_CrateBrushModelMap["mp_crossfire"] = GetEntity(369);
+    s_CrateBrushModelMap["mp_crossfire"]->r.currentAngles = vec3(0.0f, 325.0f, 0.0f);
 
-    brushModelMap["mp_citystreets"] = GetEntity(69);
-    brushModelMap["mp_citystreets"]->r.currentAngles = vec3(0.0f, 268.0f, 0.0f);
+    s_CrateBrushModelMap["mp_citystreets"] = GetEntity(69);
+    s_CrateBrushModelMap["mp_citystreets"]->r.currentAngles = vec3(0.0f, 268.0f, 0.0f);
 
-    brushModelMap["mp_farm"] = GetEntity(385);
-    brushModelMap["mp_farm"]->r.currentAngles = vec3(3.84859f, 0.0140285f, 0.208819f);
+    s_CrateBrushModelMap["mp_farm"] = GetEntity(385);
+    s_CrateBrushModelMap["mp_farm"]->r.currentAngles = vec3(3.84859f, 0.0140285f, 0.208819f);
 
-    brushModelMap["mp_overgrown"] = GetEntity(35);
-    brushModelMap["mp_overgrown"]->r.currentAngles = vec3(1.0f, 95.9f, 0.0f);
+    s_CrateBrushModelMap["mp_overgrown"] = GetEntity(35);
+    s_CrateBrushModelMap["mp_overgrown"]->r.currentAngles = vec3(1.0f, 95.9f, 0.0f);
 
-    brushModelMap["mp_pipeline"] = GetEntity(45);
-    brushModelMap["mp_pipeline"]->r.currentAngles = vec3(0.0f, 180.0f, 0.0f);
+    s_CrateBrushModelMap["mp_pipeline"] = GetEntity(45);
+    s_CrateBrushModelMap["mp_pipeline"]->r.currentAngles = vec3(0.0f, 180.0f, 0.0f);
 
-    brushModelMap["mp_shipment"] = GetEntity(209);
-    brushModelMap["mp_shipment"]->r.currentAngles = vec3(0.0f, 270.0f, 0.0f);
+    s_CrateBrushModelMap["mp_shipment"] = GetEntity(209);
+    s_CrateBrushModelMap["mp_shipment"]->r.currentAngles = vec3(0.0f, 270.0f, 0.0f);
 
-    brushModelMap["mp_showdown"] = GetEntity(287);
-    brushModelMap["mp_showdown"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
+    s_CrateBrushModelMap["mp_showdown"] = GetEntity(287);
+    s_CrateBrushModelMap["mp_showdown"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
 
-    brushModelMap["mp_strike"] = GetEntity(245);
-    brushModelMap["mp_strike"]->r.currentAngles = vec3(0.0f, 180.0f, 0.0f);
+    s_CrateBrushModelMap["mp_strike"] = GetEntity(245);
+    s_CrateBrushModelMap["mp_strike"]->r.currentAngles = vec3(0.0f, 180.0f, 0.0f);
 
-    brushModelMap["mp_vacant"] = GetEntity(364);
-    brushModelMap["mp_vacant"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
+    s_CrateBrushModelMap["mp_vacant"] = GetEntity(364);
+    s_CrateBrushModelMap["mp_vacant"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
 
-    brushModelMap["mp_cargoship"] = GetEntity(460);
-    brushModelMap["mp_cargoship"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
+    s_CrateBrushModelMap["mp_cargoship"] = GetEntity(460);
+    s_CrateBrushModelMap["mp_cargoship"]->r.currentAngles = vec3(0.0f, 90.0f, 0.0f);
 
-    brushModelMap["mp_broadcast"] = GetEntity(35);
-    brushModelMap["mp_broadcast"]->r.currentAngles = vec3(0.0f, 359.0f, 0.0f);
+    s_CrateBrushModelMap["mp_broadcast"] = GetEntity(35);
+    s_CrateBrushModelMap["mp_broadcast"]->r.currentAngles = vec3(0.0f, 359.0f, 0.0f);
 
-    brushModelMap["mp_carentan"] = GetEntity(233);
-    brushModelMap["mp_carentan"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
+    s_CrateBrushModelMap["mp_carentan"] = GetEntity(233);
+    s_CrateBrushModelMap["mp_carentan"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
 
-    brushModelMap["mp_killhouse"] = GetEntity(67);
-    brushModelMap["mp_killhouse"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
+    s_CrateBrushModelMap["mp_killhouse"] = GetEntity(67);
+    s_CrateBrushModelMap["mp_killhouse"]->r.currentAngles = vec3(0.0f, 0.0f, 0.0f);
 
-    brushModelMap["mp_creek"] = GetEntity(36);
-    brushModelMap["mp_creek"]->r.currentAngles = vec3(0.0f, 250.1f, 0.0f);
+    s_CrateBrushModelMap["mp_creek"] = GetEntity(36);
+    s_CrateBrushModelMap["mp_creek"]->r.currentAngles = vec3(0.0f, 250.1f, 0.0f);
 }
 
 gentity_s *GetCurrentMapBrushModel()
@@ -201,9 +201,9 @@ gentity_s *GetCurrentMapBrushModel()
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    XASSERT(brushModelMap.find(mapName) != brushModelMap.end());
+    XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
-    return brushModelMap[mapName];
+    return s_CrateBrushModelMap[mapName];
 }
 
 }

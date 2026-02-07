@@ -4,6 +4,7 @@
 #include "Core/Config.h"
 #include "Games/AlphaGhosts/AlphaGhostsTitle.h"
 #include "Games/AlphaMW2/AlphaMW2Title.h"
+#include "Games/CoD4/CoD4Title.h"
 #include "Games/MW2/MW2Title.h"
 #include "Games/MW3/MW3Title.h"
 #include "Games/NX1/NX1Title.h"
@@ -20,6 +21,7 @@ typedef enum _TitleId
 {
     Title_Dashboard = 0xFFFE07D1,
     Title_XShell = 0xFFFE07FF,
+    Title_CoD4 = 0x415607E6,
     Title_MW2 = 0x41560817,
     Title_MW3 = 0x415608CB,
     Title_NX1 = 0x4156089E,
@@ -164,6 +166,10 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case Title_XShell:
         Xam::XNotify("Hayzen - XShell Detected");
         m_pCurrentTitle = nullptr;
+        break;
+    case Title_CoD4:
+        if (IsMultiplayerExecutable(0x82032AC4))
+            m_pCurrentTitle = new CoD4Title();
         break;
     case Title_MW2:
         if (IsMultiplayerExecutable(0x82001270))

@@ -90,6 +90,10 @@
     <ClInclude Include="src\Games\AlphaMW2\GameFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\MenuFunctions.h" />
     <ClInclude Include="src\Games\AlphaMW2\Structs.h" />
+    <ClInclude Include="src\Games\CoD4\CoD4Title.h" />
+    <ClInclude Include="src\Games\CoD4\GameFunctions.h" />
+    <ClInclude Include="src\Games\CoD4\MenuFunctions.h" />
+    <ClInclude Include="src\Games\CoD4\Structs.h" />
     <ClInclude Include="src\Games\Common\CommonFunctions.h" />
     <ClInclude Include="src\Games\Common\MultiplayerFunctions.h" />
     <ClInclude Include="src\Games\Common\SpecOpsFunctions.h" />
@@ -149,6 +153,9 @@
     <ClCompile Include="src\Games\AlphaMW2\AlphaMW2Title.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\AlphaMW2\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\CoD4\CoD4Title.cpp" />
+    <ClCompile Include="src\Games\CoD4\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\CoD4\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW2\MW2Title.cpp" />
     <ClCompile Include="src\Games\MW2\MenuFunctions.cpp" />

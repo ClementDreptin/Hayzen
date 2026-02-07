@@ -92,7 +92,7 @@ bool GoThroughInvisibleBarriers(const GoThroughInvisibleBarriersOptions &options
     }
 }
 
-bool SavePosition()
+static bool SavePosition()
 {
     int clientNum = Context::ClientNum;
 
@@ -104,7 +104,7 @@ bool SavePosition()
     return true;
 }
 
-bool LoadPosition()
+static bool LoadPosition()
 {
     int clientNum = Context::ClientNum;
 
@@ -153,7 +153,7 @@ bool ToggleSaveLoadBinds(void *pParameters)
     return true;
 }
 
-bool ToggleUfo()
+static bool ToggleUfo()
 {
     gclient_s *pGClient = GetGClient(Context::ClientNum);
     XASSERT(pGClient != nullptr);

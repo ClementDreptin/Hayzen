@@ -14,14 +14,15 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 
 #### Supported games
 
--   Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
--   Call of Duty: Modern Warfare 2 - TU9 Special Ops (latest version)
--   Call of Duty: Modern Warfare 2 - Pre Alpha 482 Multiplayer
--   Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops
--   Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
--   Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
--   Call of Duty: Ghosts - Alpha (May 9th 2013 build)
--   Call of Duty: Future Warfare (NX1)
+- Call of Duty 4: Modern Warfare - TU4 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 2 - TU9 Special Ops (latest version)
+- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Multiplayer
+- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops
+- Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
+- Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
+- Call of Duty: Ghosts - Alpha (May 9th 2013 build)
+- Call of Duty: Future Warfare (NX1)
 
 ### Running debug builds
 
@@ -31,8 +32,8 @@ This feature is enabled by default but can be disabled from the Settings tab of 
 
 ### Normal use
 
--   Download the latest binary from the [releases](https://github.com/ClementDreptin/Hayzen/releases).
--   Load the module either by setting it as a Dashlaunch plugin or by using an external tool to load modules, such as [ModuleLoader](https://github.com/ClementDreptin/ModuleLoader) :wink:.
+- Download the latest binary from the [releases](https://github.com/ClementDreptin/Hayzen/releases).
+- Load the module either by setting it as a Dashlaunch plugin or by using an external tool to load modules, such as [ModuleLoader](https://github.com/ClementDreptin/ModuleLoader) :wink:.
 
 ### Development
 
@@ -44,8 +45,8 @@ git clone --recursive https://github.com/ClementDreptin/Hayzen.git
 
 #### Requirements
 
--   Having the Xbox 360 Software Development Kit (XDK) installed.
--   Xbox 360 Neighborhood set up with your RGH/Jtag/Devkit registered as the default console (only necessary if you wan't to deploy to your console automatically).
+- Having the Xbox 360 Software Development Kit (XDK) installed.
+- Xbox 360 Neighborhood set up with your RGH/Jtag/Devkit registered as the default console (only necessary if you wan't to deploy to your console automatically).
 
 #### Visual Studio 2010
 

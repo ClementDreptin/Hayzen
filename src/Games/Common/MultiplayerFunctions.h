@@ -53,26 +53,48 @@ static bool SpawnCarePackage(const vec3 &origin, const vec3 &angles)
     XASSERT(pEntity != nullptr);
     pEntity->r.currentOrigin = origin;
     pEntity->r.currentAngles = angles;
-
-    // Apply the care package mesh to the entity
-#ifdef GAME_MW3
+#if defined(GAME_MW3)
     G_SetModel(pEntity, "com_plasticcase_trap_friendly");
+#elif defined(GAME_COD4)
+    G_SetModel(pEntity, "com_plasticcase_beige_big");
 #else
     G_SetModel(pEntity, "com_plasticcase_friendly");
 #endif
     SP_script_model(pEntity);
-    SV_UnlinkEntity(pEntity);
-    pEntity->r.bmodel = 4;
-    pEntity->state.index = pCurrentMapBrushModel->state.index;
 
     // Make the care package solid
+    // CoD4 requires a separate entity for the collision
+#ifdef GAME_COD4
+    gentity_s *pCollisionEntity = G_Spawn();
+    XASSERT(pCollisionEntity != nullptr);
+    pCollisionEntity->r.currentOrigin = origin;
+    pCollisionEntity->r.currentAngles = angles;
+
+    // An offset is needed because the base object (HQ) has default angles,
+    // and when setting the current angles, they need to be relative to these default angles.
+    // For example, if the default angles are (0, 90, 0) and the desired angles are (0, 150, 0),
+    // currentAngles needs to be (0, 150, 0) - (0, 90, 0) = (0, 60, 0).
+    pCollisionEntity->r.currentOrigin.z += 14.0f;
+    pCollisionEntity->r.currentAngles.y -= pCurrentMapBrushModel->r.currentAngles.y;
+
+    SP_script_model(pCollisionEntity);
+    pCollisionEntity->r.bmodel = 4;
+    pCollisionEntity->state.index = pCurrentMapBrushModel->state.index;
+    int contents = pCollisionEntity->r.contents;
+    SV_SetBrushModel(pCollisionEntity);
+    contents |= pCollisionEntity->r.contents;
+    pCollisionEntity->r.contents = contents;
+    SV_LinkEntity(pEntity);
+    SV_LinkEntity(pCollisionEntity);
+#else
+    pEntity->r.bmodel = 4;
+    pEntity->state.index = pCurrentMapBrushModel->state.index;
     int contents = pEntity->r.contents;
     SV_SetBrushModel(pEntity);
     contents |= pEntity->r.contents;
     pEntity->r.contents = contents;
-
-    // Register the entity for the scene
     SV_LinkEntity(pEntity);
+#endif
 
     return true;
 }
@@ -182,7 +204,7 @@ bool ChangeCarePackageOrientation(void *pParameters)
     return true;
 }
 
-#if !defined(GAME_ALPHAGHOSTS)
+#ifndef GAME_ALPHAGHOSTS
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
@@ -209,25 +231,40 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 11 class0", serverId);
+    #elif defined(GAME_COD4)
+    std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
+    // TODO: make the class name dynamic based on the match type (offline or online)
+    std::string chooseClassCommand = Formatter::Format("mr %i 13 offline_class1_mp,0", serverId);
     #else
     std::string chooseTeamCommand = Formatter::Format("mr %i 3 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 10 class0", serverId);
     #endif
 
     // Get the address of the bot to pass to SV_ExecuteClientCommand
-    int botClientNum = static_cast<gentity_s *>(Context::pBotEntity)->state.number;
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
+    int botClientNum = pBot->state.number;
     client_t *botClient = &Memory::Read<client_t *>(pOptions->ClientsBaseAddress)[botClientNum];
 
+    #ifdef GAME_COD4
+    SV_ExecuteClientCommand(botClient, chooseTeamCommand.c_str(), 1);
+    #else
     SV_ExecuteClientCommand(botClient, chooseTeamCommand.c_str(), 1, 0);
+    #endif
     Sleep(150);
 
+    #ifdef GAME_COD4
+    SV_ExecuteClientCommand(botClient, chooseClassCommand.c_str(), 1);
+    #else
     SV_ExecuteClientCommand(botClient, chooseClassCommand.c_str(), 1, 0);
+    #endif
     Sleep(150);
 
     // Set bot-related dvars to make it completely stand still
     // These dvars are protected on MW3 so they can only be set via a console command
     #if defined(GAME_MW3)
     Cbuf_AddText(0, "set testClients_doMove 0;set testClients_doAttack 0;set testClients_watchKillcam 0");
+    #elif defined(GAME_COD4)
+    pBot->client->bFrozen = true;
     #else
     SetClientDvar(-1, "testClients_doMove", "0");
     SetClientDvar(-1, "testClients_doAttack", "0");
@@ -302,8 +339,10 @@ bool ToggleBotMovement(void *pParameters)
 
     int clientNum = Context::ClientNum;
 
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
+
     // Make sure there is a bot in the game
-    if (Context::pBotEntity == nullptr)
+    if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
         return false;
@@ -312,6 +351,8 @@ bool ToggleBotMovement(void *pParameters)
     // This dvar is protected on MW3 so it can only be set via a console command
     #if defined(GAME_MW3)
     Cbuf_AddText(0, Formatter::Format("set testClients_doMove %s", enabled ? "0" : "1").c_str());
+    #elif defined(GAME_COD4)
+    pBot->client->bFrozen = enabled;
     #else
     SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
     #endif
@@ -327,8 +368,10 @@ bool ToggleBotAttack(void *pParameters)
 
     int clientNum = Context::ClientNum;
 
+    gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
+
     // Make sure there is a bot in the game
-    if (Context::pBotEntity == nullptr)
+    if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
         return false;

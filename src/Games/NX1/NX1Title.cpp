@@ -73,7 +73,7 @@ void NX1Title::InitMenu()
             orientations[0] = "Straight";
             orientations[1] = "Left Strafe";
             orientations[2] = "Right Strafe";
-            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientiation", orientations, NX1::ChangeCarePackageOrientation));
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientation", orientations, NX1::ChangeCarePackageOrientation));
 
             options.emplace_back(MakeOption(SubOptionGroup, "Settings", spawnSettings));
         }

@@ -79,7 +79,7 @@ void MW2Title::InitMenu()
             orientations[0] = "Straight";
             orientations[1] = "Left Strafe";
             orientations[2] = "Right Strafe";
-            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientiation", orientations, MW2::ChangeCarePackageOrientation));
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientation", orientations, MW2::ChangeCarePackageOrientation));
 
             options.emplace_back(MakeOption(SubOptionGroup, "Settings", spawnSettings));
         }

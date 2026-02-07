@@ -76,7 +76,7 @@ void AlphaMW2Title::InitMenu()
             orientations[0] = "Straight";
             orientations[1] = "Left Strafe";
             orientations[2] = "Right Strafe";
-            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientiation", orientations, AlphaMW2::ChangeCarePackageOrientation));
+            spawnSettings.emplace_back(MakeOption(SelectOption, "Orientation", orientations, AlphaMW2::ChangeCarePackageOrientation));
 
             options.emplace_back(MakeOption(SubOptionGroup, "Settings", spawnSettings));
         }

@@ -65,7 +65,7 @@ gentity_s *GetEntity(uint32_t entNum)
 
 void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value)
 {
-    XASSERT(clientNum >= 0 && clientNum <= 17);
+    XASSERT(clientNum >= -1 && clientNum <= 17);
 
     SV_GameSendServerCommand(clientNum, 0, Formatter::Format("v %s \"%s\"", dvar.c_str(), value.c_str()).c_str());
 }

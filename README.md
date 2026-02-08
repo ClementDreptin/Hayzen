@@ -17,12 +17,12 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 - Call of Duty 4: Modern Warfare - TU4 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 2 - TU9 Special Ops (latest version)
-- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Multiplayer
-- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops
+- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Multiplayer (`default_mp.xex`)
+- Call of Duty: Modern Warfare 2 - Pre Alpha 482 Special Ops (`default.xex`)
 - Call of Duty: Modern Warfare 3 - TU24 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 3 - TU24 Special Ops (latest version)
-- Call of Duty: Ghosts - Alpha (May 9th 2013 build)
-- Call of Duty: Future Warfare (NX1)
+- Call of Duty: Ghosts - Alpha (May 9th 2013 build, `2-iw6mp.exe`)
+- Call of Duty: Future Warfare (NX1, `5-nx1mp_demo.xex`)
 
 ### Running debug builds
 

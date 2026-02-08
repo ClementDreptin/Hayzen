@@ -6,7 +6,7 @@ namespace NX1
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
+static std::unordered_map<std::string, gentity_s *> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x823024E8);
 
@@ -78,71 +78,71 @@ bool IsHost(int clientNum)
     return Session_IsHost(0x83F0E758, clientNum);
 }
 
-static void InitBrushModelMap()
+static void InitCrateBrushModelMap()
 {
     // The maps set to nullptr don't work and there's a comment with the error
 
-    s_CrateBrushModelMap["mp_nx_pitstop"] = 0x83168E00;
-    s_CrateBrushModelMap["mp_nx_galleria"] = 0x83169100;
-    s_CrateBrushModelMap["mp_nx_stasis"] = 0x83160A00;
-    s_CrateBrushModelMap["mp_nx_fallout"] = 0x83155900;
-    s_CrateBrushModelMap["mp_nx_meteor"] = 0x83156500;
-    s_CrateBrushModelMap["mp_nx_border"] = 0x83160A00;
-    s_CrateBrushModelMap["mp_nx_lockdown_v2"] = 0x83155900;
-    s_CrateBrushModelMap["mp_nx_contact"] = 0x83166100;
-    s_CrateBrushModelMap["mp_nx_ugvcontact"] = 0x8315D100;
-    s_CrateBrushModelMap["mp_nx_ugvhh"] = 0x83175400;
-    s_CrateBrushModelMap["mp_nx_asylum"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_asylum_2"] = 0x83155F00;
-    s_CrateBrushModelMap["mp_nx_bom"] = 0x83163A00;
-    s_CrateBrushModelMap["mp_nx_deadzone"] = 0x8315AA00;
-    s_CrateBrushModelMap["mp_nx_dust"] = reinterpret_cast<uintptr_t>(nullptr);      // missing zone
-    s_CrateBrushModelMap["mp_nx_frontline"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_import"] = 0x83156500;
-    s_CrateBrushModelMap["mp_nx_lunar"] = reinterpret_cast<uintptr_t>(nullptr);    // missing zone
-    s_CrateBrushModelMap["mp_nx_memorial"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_monorail"] = 0x8319BE00;
-    s_CrateBrushModelMap["mp_nx_sandstorm"] = 0x8315FB00;
-    s_CrateBrushModelMap["mp_nx_seaport"] = 0x83150B00;
-    s_CrateBrushModelMap["mp_nx_skylab"] = 0x83155600;
-    s_CrateBrushModelMap["mp_nx_skylight"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_streets"] = 0x83159E00;
-    s_CrateBrushModelMap["mp_nx_subyard"] = 0x8314E400;
-    s_CrateBrushModelMap["mp_nx_ugvsand"] = 0x83179600;
-    s_CrateBrushModelMap["mp_nx_whiteout"] = 0x83185F00;
-    s_CrateBrushModelMap["mp_nx_leg_afghan"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_leg_crash"] = 0x83161600;
-    s_CrateBrushModelMap["mp_nx_leg_outpost"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_leg_over"] = 0x83182900;
-    s_CrateBrushModelMap["mp_nx_leg_term"] = 0x83154100;
-    s_CrateBrushModelMap["mp_nx_apt"] = reinterpret_cast<uintptr_t>(nullptr);          // missing zone
-    s_CrateBrushModelMap["mp_nx_binscrib"] = reinterpret_cast<uintptr_t>(nullptr);     // missing zone
-    s_CrateBrushModelMap["mp_nx_g_assault"] = reinterpret_cast<uintptr_t>(nullptr);    // missing zone
-    s_CrateBrushModelMap["mp_nx_merc_over"] = reinterpret_cast<uintptr_t>(nullptr);    // missing zone
-    s_CrateBrushModelMap["mp_nx_mercmode"] = reinterpret_cast<uintptr_t>(nullptr);     // missing zone
-    s_CrateBrushModelMap["mp_nx_test_benk_04"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_nx_blanktest"] = reinterpret_cast<uintptr_t>(nullptr);    // disc unreadable
-    s_CrateBrushModelMap["mp_nx_jku"] = reinterpret_cast<uintptr_t>(nullptr);          // missing zone
-    s_CrateBrushModelMap["mp_nx_jpldock"] = reinterpret_cast<uintptr_t>(nullptr);      // missing zone
-    s_CrateBrushModelMap["mp_nx_milota1"] = reinterpret_cast<uintptr_t>(nullptr);      // missing zone
-    s_CrateBrushModelMap["mp_nx_testmap"] = reinterpret_cast<uintptr_t>(nullptr);      // missing zone
+    s_CrateBrushModelMap["mp_nx_pitstop"] = GetEntity(178);
+    s_CrateBrushModelMap["mp_nx_galleria"] = GetEntity(179);
+    s_CrateBrushModelMap["mp_nx_stasis"] = GetEntity(134);
+    s_CrateBrushModelMap["mp_nx_fallout"] = GetEntity(75);
+    s_CrateBrushModelMap["mp_nx_meteor"] = GetEntity(79);
+    s_CrateBrushModelMap["mp_nx_border"] = GetEntity(134);
+    s_CrateBrushModelMap["mp_nx_lockdown_v2"] = GetEntity(75);
+    s_CrateBrushModelMap["mp_nx_contact"] = GetEntity(163);
+    s_CrateBrushModelMap["mp_nx_ugvcontact"] = GetEntity(115);
+    s_CrateBrushModelMap["mp_nx_ugvhh"] = GetEntity(244);
+    s_CrateBrushModelMap["mp_nx_asylum"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_asylum_2"] = GetEntity(77);
+    s_CrateBrushModelMap["mp_nx_bom"] = GetEntity(150);
+    s_CrateBrushModelMap["mp_nx_deadzone"] = GetEntity(102);
+    s_CrateBrushModelMap["mp_nx_dust"] = nullptr;      // missing zone
+    s_CrateBrushModelMap["mp_nx_frontline"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_import"] = GetEntity(79);
+    s_CrateBrushModelMap["mp_nx_lunar"] = nullptr;    // missing zone
+    s_CrateBrushModelMap["mp_nx_memorial"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_monorail"] = GetEntity(450);
+    s_CrateBrushModelMap["mp_nx_sandstorm"] = GetEntity(129);
+    s_CrateBrushModelMap["mp_nx_seaport"] = GetEntity(49);
+    s_CrateBrushModelMap["mp_nx_skylab"] = GetEntity(74);
+    s_CrateBrushModelMap["mp_nx_skylight"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_streets"] = GetEntity(98);
+    s_CrateBrushModelMap["mp_nx_subyard"] = GetEntity(36);
+    s_CrateBrushModelMap["mp_nx_ugvsand"] = GetEntity(266);
+    s_CrateBrushModelMap["mp_nx_whiteout"] = GetEntity(333);
+    s_CrateBrushModelMap["mp_nx_leg_afghan"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_leg_crash"] = GetEntity(138);
+    s_CrateBrushModelMap["mp_nx_leg_outpost"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_leg_over"] = GetEntity(315);
+    s_CrateBrushModelMap["mp_nx_leg_term"] = GetEntity(67);
+    s_CrateBrushModelMap["mp_nx_apt"] = nullptr;          // missing zone
+    s_CrateBrushModelMap["mp_nx_binscrib"] = nullptr;     // missing zone
+    s_CrateBrushModelMap["mp_nx_g_assault"] = nullptr;    // missing zone
+    s_CrateBrushModelMap["mp_nx_merc_over"] = nullptr;    // missing zone
+    s_CrateBrushModelMap["mp_nx_mercmode"] = nullptr;     // missing zone
+    s_CrateBrushModelMap["mp_nx_test_benk_04"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_nx_blanktest"] = nullptr;    // disc unreadable
+    s_CrateBrushModelMap["mp_nx_jku"] = nullptr;          // missing zone
+    s_CrateBrushModelMap["mp_nx_jpldock"] = nullptr;      // missing zone
+    s_CrateBrushModelMap["mp_nx_milota1"] = nullptr;      // missing zone
+    s_CrateBrushModelMap["mp_nx_testmap"] = nullptr;      // missing zone
 }
 
 gentity_s *GetCurrentMapCrateBrushModel()
 {
-    static bool isBrushModelMapInitialized = false;
+    static bool isCrateBrushModelMapInitialized = false;
 
-    if (!isBrushModelMapInitialized)
+    if (!isCrateBrushModelMapInitialized)
     {
-        InitBrushModelMap();
-        isBrushModelMapInitialized = true;
+        InitCrateBrushModelMap();
+        isCrateBrushModelMapInitialized = true;
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
     XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
-    return reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
+    return s_CrateBrushModelMap[mapName];
 }
 
 }

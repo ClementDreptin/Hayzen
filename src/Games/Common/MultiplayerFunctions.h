@@ -87,6 +87,7 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     SV_LinkEntity(pEntity);
     SV_LinkEntity(pCollisionEntity);
 #else
+    SV_UnlinkEntity(pEntity);
     pEntity->r.bmodel = 4;
     pEntity->state.index = pCurrentMapCrateBrushModel->state.index;
     int contents = pEntity->r.contents;

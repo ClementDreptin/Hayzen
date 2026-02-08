@@ -6,7 +6,7 @@ namespace AlphaMW2
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
+static std::unordered_map<std::string, gentity_s *> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x8229A730);
 
@@ -80,40 +80,41 @@ bool IsHost(int clientNum)
     return Session_IsHost(0x83A06F28, clientNum);
 }
 
-static void InitBrushModelMap()
+static void InitCrateBrushModelMap()
 {
-    s_CrateBrushModelMap["mp_afghan"] = 0x82D60880;
-    s_CrateBrushModelMap["mp_checkpoint"] = 0x82D76B80;
-    s_CrateBrushModelMap["mp_derail"] = 0x82D95800;
-    s_CrateBrushModelMap["mp_estate"] = 0x82D5B600;
-    s_CrateBrushModelMap["mp_favela"] = 0x82D9A300;
-    s_CrateBrushModelMap["mp_highrise"] = 0x82DC4380;
-    s_CrateBrushModelMap["mp_invasion"] = 0x82D7E100;
-    s_CrateBrushModelMap["mp_quarry"] = 0x82D70F00;
-    s_CrateBrushModelMap["mp_rundown"] = 0x82D93780;
-    s_CrateBrushModelMap["mp_rust"] = 0x82D5A980;
-    s_CrateBrushModelMap["mp_boneyard"] = 0x82D64E80;
-    s_CrateBrushModelMap["mp_nightshift"] = 0x82D58180;
-    s_CrateBrushModelMap["mp_subbase"] = 0x82D7CF80;
-    s_CrateBrushModelMap["mp_terminal"] = 0x82D61A00;
-    s_CrateBrushModelMap["mp_underpass"] = 0x82D52000;
+    s_CrateBrushModelMap["mp_afghan"] = GetEntity(158);
+    s_CrateBrushModelMap["mp_checkpoint"] = GetEntity(300);
+    s_CrateBrushModelMap["mp_derail"] = GetEntity(497);
+    s_CrateBrushModelMap["mp_estate"] = GetEntity(125);
+    s_CrateBrushModelMap["mp_favela"] = GetEntity(527);
+    s_CrateBrushModelMap["mp_highrise"] = GetEntity(796);
+    s_CrateBrushModelMap["mp_invasion"] = GetEntity(347);
+    s_CrateBrushModelMap["mp_quarry"] = GetEntity(263);
+    s_CrateBrushModelMap["mp_rundown"] = GetEntity(484);
+    s_CrateBrushModelMap["mp_rust"] = GetEntity(120);
+    s_CrateBrushModelMap["mp_boneyard"] = GetEntity(186);
+    s_CrateBrushModelMap["mp_nightshift"] = GetEntity(104);
+    s_CrateBrushModelMap["mp_subbase"] = GetEntity(340);
+    s_CrateBrushModelMap["mp_terminal"] = GetEntity(165);
+    s_CrateBrushModelMap["mp_underpass"] = GetEntity(65);
+    s_CrateBrushModelMap["mp_brecourt"] = nullptr; // script compile error
 }
 
 gentity_s *GetCurrentMapCrateBrushModel()
 {
-    static bool isBrushModelMapInitialized = false;
+    static bool isCrateBrushModelMapInitialized = false;
 
-    if (!isBrushModelMapInitialized)
+    if (!isCrateBrushModelMapInitialized)
     {
-        InitBrushModelMap();
-        isBrushModelMapInitialized = true;
+        InitCrateBrushModelMap();
+        isCrateBrushModelMapInitialized = true;
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
     XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
-    return reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
+    return s_CrateBrushModelMap[mapName];
 }
 
 }

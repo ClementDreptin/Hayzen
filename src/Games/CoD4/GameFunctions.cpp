@@ -126,7 +126,7 @@ bool IsHost(int clientNum)
     return clientNum == 0;
 }
 
-static void InitBrushModelMap()
+static void InitCrateBrushModelMap()
 {
     s_CrateBrushModelMap["mp_convoy"] = GetEntity(44);
     s_CrateBrushModelMap["mp_convoy"]->r.currentAngles = vec3(360.0f, 50.0f, 10.0f);
@@ -191,12 +191,12 @@ static void InitBrushModelMap()
 
 gentity_s *GetCurrentMapCrateBrushModel()
 {
-    static bool isBrushModelMapInitialized = false;
+    static bool isCrateBrushModelMapInitialized = false;
 
-    if (!isBrushModelMapInitialized)
+    if (!isCrateBrushModelMapInitialized)
     {
-        InitBrushModelMap();
-        isBrushModelMapInitialized = true;
+        InitCrateBrushModelMap();
+        isCrateBrushModelMapInitialized = true;
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");

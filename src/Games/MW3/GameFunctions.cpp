@@ -8,7 +8,7 @@ namespace MW3
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
+static std::unordered_map<std::string, gentity_s *> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x822B5120);
 
@@ -159,32 +159,32 @@ bool IsHost(int clientNum)
     return Session_IsHost(0x83BC0148, clientNum);
 }
 
-static void InitBrushModelMap()
+static void InitCrateBrushModelMap()
 {
-    s_CrateBrushModelMap["mp_seatown"] = 0x82DD1280;
-    s_CrateBrushModelMap["mp_mogadishu"] = 0x82E08A00;
-    s_CrateBrushModelMap["mp_exchange"] = 0x82E14580;
-    s_CrateBrushModelMap["mp_radar"] = 0x82DD3A80;
-    s_CrateBrushModelMap["mp_terminal_cls"] = 0x82DF9C80;
+    s_CrateBrushModelMap["mp_seatown"] = GetEntity(28);
+    s_CrateBrushModelMap["mp_mogadishu"] = GetEntity(383);
+    s_CrateBrushModelMap["mp_exchange"] = GetEntity(458);
+    s_CrateBrushModelMap["mp_radar"] = GetEntity(44);
+    s_CrateBrushModelMap["mp_terminal_cls"] = GetEntity(288);
 }
 
 gentity_s *GetCurrentMapCrateBrushModel()
 {
-    static bool isBrushModelMapInitialized = false;
+    static bool isCrateBrushModelMapInitialized = false;
 
-    if (!isBrushModelMapInitialized)
+    if (!isCrateBrushModelMapInitialized)
     {
-        InitBrushModelMap();
-        isBrushModelMapInitialized = true;
+        InitCrateBrushModelMap();
+        isCrateBrushModelMapInitialized = true;
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
-    if (!pBrushModel)
-        pBrushModel = reinterpret_cast<gentity_s *>(0x82DD1500);
+    gentity_s *pCrateBrushModel = s_CrateBrushModelMap[mapName];
+    if (!pCrateBrushModel)
+        pCrateBrushModel = GetEntity(29);
 
-    return pBrushModel;
+    return pCrateBrushModel;
 }
 
 }

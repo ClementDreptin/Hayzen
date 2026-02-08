@@ -6,7 +6,7 @@ namespace AlphaGhosts
 namespace Game
 {
 
-static std::unordered_map<std::string, uintptr_t> s_CrateBrushModelMap;
+static std::unordered_map<std::string, gentity_s *> s_CrateBrushModelMap;
 
 decltype(SL_ConvertToString) SL_ConvertToString = reinterpret_cast<decltype(SL_ConvertToString)>(0x826F90B8);
 
@@ -68,40 +68,40 @@ bool IsHost(int clientNum)
     return Session_IsHost(0x84A8B458, clientNum);
 }
 
-static void InitBrushModelMap()
+static void InitCrateBrushModelMap()
 {
     // The maps set to nullptr don't work and there's a comment with the error
 
-    s_CrateBrushModelMap["mp_dome"] = 0x8391CB00;
-    s_CrateBrushModelMap["mp_plaza2"] = 0x83918000;
-    s_CrateBrushModelMap["mp_paris"] = reinterpret_cast<uintptr_t>(nullptr); // missing zone
-    s_CrateBrushModelMap["mp_lonestar"] = 0x83927280;
-    s_CrateBrushModelMap["mp_frag"] = 0x8391A800;
-    s_CrateBrushModelMap["mp_snow"] = 0x83919180;
-    s_CrateBrushModelMap["mp_fahrenheit"] = 0x83924800;
-    s_CrateBrushModelMap["mp_hasima"] = reinterpret_cast<uintptr_t>(nullptr); // disc unreadable
-    s_CrateBrushModelMap["mp_warhawk"] = 0x83917D80;
-    s_CrateBrushModelMap["mp_sovereign"] = 0x83919400;
-    s_CrateBrushModelMap["mp_zebra"] = 0x83918780;
+    s_CrateBrushModelMap["mp_dome"] = GetEntity(94);
+    s_CrateBrushModelMap["mp_plaza2"] = GetEntity(64);
+    s_CrateBrushModelMap["mp_paris"] = nullptr; // missing zone
+    s_CrateBrushModelMap["mp_lonestar"] = GetEntity(161);
+    s_CrateBrushModelMap["mp_frag"] = GetEntity(80);
+    s_CrateBrushModelMap["mp_snow"] = GetEntity(71);
+    s_CrateBrushModelMap["mp_fahrenheit"] = GetEntity(144);
+    s_CrateBrushModelMap["mp_hasima"] = nullptr; // disc unreadable
+    s_CrateBrushModelMap["mp_warhawk"] = GetEntity(63);
+    s_CrateBrushModelMap["mp_sovereign"] = GetEntity(72);
+    s_CrateBrushModelMap["mp_zebra"] = GetEntity(67);
 }
 
 gentity_s *GetCurrentMapCrateBrushModel()
 {
-    static bool isBrushModelMapInitialized = false;
+    static bool isCrateBrushModelMapInitialized = false;
 
-    if (!isBrushModelMapInitialized)
+    if (!isCrateBrushModelMapInitialized)
     {
-        InitBrushModelMap();
-        isBrushModelMapInitialized = true;
+        InitCrateBrushModelMap();
+        isCrateBrushModelMapInitialized = true;
     }
 
     std::string mapName = Dvar_GetString("ui_mapname");
 
-    gentity_s *pBrushModel = reinterpret_cast<gentity_s *>(s_CrateBrushModelMap[mapName]);
-    if (!pBrushModel)
-        pBrushModel = reinterpret_cast<gentity_s *>(0x83917B00);
+    gentity_s *pCrateBrushModel = s_CrateBrushModelMap[mapName];
+    if (!pCrateBrushModel)
+        pCrateBrushModel = GetEntity(62);
 
-    return pBrushModel;
+    return pCrateBrushModel;
 }
 
 }

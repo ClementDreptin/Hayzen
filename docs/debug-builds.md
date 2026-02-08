@@ -60,6 +60,9 @@ It is recommended **NOT** to rename the plugin XEX file. Or if you do, make sure
 | 9-iw5sp_screenshot.exe  | :heavy_check_mark: |       |
 | a-iw5mp_screenshot.exe  | :heavy_check_mark: |       |
 
+> [!NOTE]
+> You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.
+
 ### Call of Duty Future Warfare (NX1)
 
 | File                     | Status             | Notes       |
@@ -73,9 +76,6 @@ It is recommended **NOT** to rename the plugin XEX file. Or if you do, make sure
 | 4-nx1sp_demo.xex         | :x:                | Fatal crash |
 | 5-nx1mp_demo.xex         | :heavy_check_mark: |             |
 | 6-nx1mp_fast_server.xex  | :x:                | Fatal crash |
-
-> [!NOTE]
-> You must **NOT** be signed into a profile to start the MW3 EXEs, otherwise it will display an error or crash because you have DLC content (at least Erosion, Aground and Terminal) installed for a different version of the game. Just start the EXE and then connect to a profile after.
 
 ### Call of Duty Ghosts - Alpha (May 9th build)
 

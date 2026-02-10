@@ -11,7 +11,7 @@
   <gameregion>
     <all />
   </gameregion>
-  <version major="9" minor="4" build="0" qfe="1" />
+  <version major="9" minor="5" build="0" qfe="0" />
   <!--
   When creating a sysdll that exports functions, ImageXEX outputs:
     warning IM1034: missing export container for system module

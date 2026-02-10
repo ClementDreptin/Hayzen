@@ -21,17 +21,21 @@ Write-Output "Current version: v$Major.$Minor.$Patch"
 switch ($ComponentToIncrement) {
     "major" {
         $Major += 1
-        $Xml.xex.version.major = [string]$Major
+        $Minor = 0
+        $Patch = 0
     }
     "minor" {
         $Minor += 1
-        $Xml.xex.version.minor = [string]$Minor
+        $Patch = 0
     }
     "patch" {
         $Patch += 1
-        $Xml.xex.version.qfe = [string]$Patch
     }
 }
+
+$Xml.xex.version.major = [string]$Major
+$Xml.xex.version.minor = [string]$Minor
+$Xml.xex.version.qfe = [string]$Patch
 
 $NewVersionString = "v$Major.$Minor.$Patch"
 Write-Output "New version: $NewVersionString"

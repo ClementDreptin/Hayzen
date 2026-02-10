@@ -130,7 +130,7 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     hr = XJSONSetBuffer(reader, body.c_str(), body.size(), TRUE);
     if (FAILED(hr))
     {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't set the JSON buffers: %X.", hr);
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't set the JSON buffers (%X).", hr);
         return value;
     }
 
@@ -164,7 +164,7 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     if (FAILED(hr))
     {
         DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
+            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON (%X).",
             downloadUrlKey.c_str(),
             hr
         );
@@ -371,7 +371,11 @@ static HRESULT ReadBodyToFile(Socket &socket)
     );
     if (status != 0 || handle == INVALID_HANDLE_VALUE)
     {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't open \"%s\".", pluginPath.c_str());
+        DebugPrint(
+            "[Hayzen][AutoUpdater]: Error: Couldn't open \"%s\" (%X).",
+            pluginPath.c_str(),
+            status
+        );
         return status;
     }
 
@@ -419,7 +423,7 @@ static HRESULT ReadBodyToFile(Socket &socket)
         if (status != 0)
         {
             DebugPrint(
-                "[Hayzen][AutoUpdater]: Error: Couldn't write to \"%s\" (%X)",
+                "[Hayzen][AutoUpdater]: Error: Couldn't write to \"%s\" (%X).",
                 pluginPath.c_str(),
                 status
             );

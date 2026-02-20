@@ -102,16 +102,6 @@ bool WaW::ToggleUncappedBounces(void *pParameters)
     return true;
 }
 
-bool WaW::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool WaW::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 #define GAME_WAW
 
 static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
@@ -241,4 +231,14 @@ bool WaW::ToggleBotMovement(void *pParameters)
 bool WaW::ToggleBotAttack(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}
+
+bool WaW::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool WaW::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

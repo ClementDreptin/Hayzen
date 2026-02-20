@@ -91,16 +91,6 @@ bool AlphaGhosts::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool AlphaGhosts::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool AlphaGhosts::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 bool AlphaGhosts::SpawnCrate(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCrate();
@@ -129,4 +119,14 @@ bool AlphaGhosts::ToggleSaveLoadBinds(void *pParameters)
 bool AlphaGhosts::ToggleUfoBind(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+}
+
+bool AlphaGhosts::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool AlphaGhosts::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

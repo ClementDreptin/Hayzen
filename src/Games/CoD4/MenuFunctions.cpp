@@ -91,16 +91,6 @@ bool CoD4::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool CoD4::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool CoD4::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 bool CoD4::SpawnCrate(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCrate();
@@ -150,4 +140,14 @@ bool CoD4::TeleportBotToMe(void *)
 bool CoD4::ToggleBotMovement(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+}
+
+bool CoD4::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool CoD4::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

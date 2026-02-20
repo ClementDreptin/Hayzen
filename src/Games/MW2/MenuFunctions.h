@@ -11,10 +11,6 @@ bool ToggleAmmo(void *pParameters);
 
 bool GoThroughInvisibleBarriers(void *pParameters);
 
-bool RecordInput(void *pParameters);
-
-bool ToggleReplayInputBind(void *pParameters);
-
 bool SpawnCrate(void *);
 
 bool SpawnBlocker(void *);
@@ -34,5 +30,9 @@ bool TeleportBotToMe(void *);
 bool ToggleBotMovement(void *pParameters);
 
 bool ToggleBotAttack(void *pParameters);
+
+bool RecordInput(void *pParameters);
+
+bool ToggleReplayInputBind(void *pParameters);
 
 }

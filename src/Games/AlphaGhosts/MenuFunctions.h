@@ -13,10 +13,6 @@ bool ChangeJumpHeight(void *pParameters);
 
 bool GoThroughInvisibleBarriers(void *pParameters);
 
-bool RecordInput(void *pParameters);
-
-bool ToggleReplayInputBind(void *pParameters);
-
 bool SpawnCrate(void *);
 
 bool SpawnBlocker(void *);
@@ -28,5 +24,9 @@ bool ChangeCrateOrientation(void *pParameters);
 bool ToggleSaveLoadBinds(void *pParameters);
 
 bool ToggleUfoBind(void *pParameters);
+
+bool RecordInput(void *pParameters);
+
+bool ToggleReplayInputBind(void *pParameters);
 
 }

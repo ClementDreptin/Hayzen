@@ -11,10 +11,6 @@ bool ChangeJumpHeight(void *pParameters);
 
 bool GoThroughInvisibleBarriers(void *pParameters);
 
-bool RecordInput(void *pParameters);
-
-bool ToggleReplayInputBind(void *pParameters);
-
 bool ToggleSaveLoadBinds(void *pParameters);
 
 bool ToggleUfoBind(void *pParameters);
@@ -22,5 +18,9 @@ bool ToggleUfoBind(void *pParameters);
 bool ToggleSecondPlayerGodMode(void *pParameters);
 
 bool TeleportSecondPlayerToMe(void *);
+
+bool RecordInput(void *pParameters);
+
+bool ToggleReplayInputBind(void *pParameters);
 
 }

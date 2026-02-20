@@ -91,16 +91,6 @@ bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool AlphaMW2::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool AlphaMW2::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 bool AlphaMW2::SpawnCrate(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCrate();
@@ -153,4 +143,14 @@ bool AlphaMW2::ToggleBotMovement(void *pParameters)
 bool AlphaMW2::ToggleBotAttack(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}
+
+bool AlphaMW2::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool AlphaMW2::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

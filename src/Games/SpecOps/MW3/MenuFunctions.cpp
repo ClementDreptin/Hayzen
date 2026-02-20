@@ -59,16 +59,6 @@ bool SpecOpsMW3::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool SpecOpsMW3::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool SpecOpsMW3::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 bool SpecOpsMW3::ToggleSaveLoadBinds(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
@@ -87,4 +77,14 @@ bool SpecOpsMW3::ToggleSecondPlayerGodMode(void *pParameters)
 bool SpecOpsMW3::TeleportSecondPlayerToMe(void *)
 {
     return COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
+}
+
+bool SpecOpsMW3::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool SpecOpsMW3::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

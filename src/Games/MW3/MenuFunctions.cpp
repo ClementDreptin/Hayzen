@@ -59,16 +59,6 @@ bool MW3::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool MW3::RecordInput(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
-}
-
-bool MW3::ToggleReplayInputBind(void *pParameters)
-{
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
-}
-
 bool MW3::SpawnCrate(void *)
 {
     return COMMON_FN_NAMESPACE::SpawnCrate();
@@ -121,4 +111,14 @@ bool MW3::ToggleBotMovement(void *pParameters)
 bool MW3::ToggleBotAttack(void *pParameters)
 {
     return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+}
+
+bool MW3::RecordInput(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+}
+
+bool MW3::ToggleReplayInputBind(void *pParameters)
+{
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
 }

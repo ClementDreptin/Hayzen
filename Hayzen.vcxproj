@@ -122,6 +122,10 @@
     <ClInclude Include="src\Games\SpecOps\MW3\MenuFunctions.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.h" />
     <ClInclude Include="src\Games\SpecOps\MW3\Structs.h" />
+    <ClInclude Include="src\Games\WaW\WaWTitle.h" />
+    <ClInclude Include="src\Games\WaW\GameFunctions.h" />
+    <ClInclude Include="src\Games\WaW\MenuFunctions.h" />
+    <ClInclude Include="src\Games\WaW\Structs.h" />
     <ClInclude Include="src\Modules\AutoUpdater.h" />
     <ClInclude Include="src\Modules\Binds.h" />
     <ClInclude Include="src\Modules\Console.h" />
@@ -162,6 +166,9 @@
     <ClCompile Include="src\Games\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\MW3\MW3Title.cpp" />
     <ClCompile Include="src\Games\MW3\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\NX1\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
+    <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\AlphaMW2\SpecOpsAlphaMW2Title.cpp" />
@@ -171,9 +178,9 @@
     <ClCompile Include="src\Games\SpecOps\MW3\GameFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\MenuFunctions.cpp" />
     <ClCompile Include="src\Games\SpecOps\MW3\SpecOpsMW3Title.cpp" />
-    <ClCompile Include="src\Games\NX1\GameFunctions.cpp" />
-    <ClCompile Include="src\Games\NX1\NX1Title.cpp" />
-    <ClCompile Include="src\Games\NX1\MenuFunctions.cpp" />
+    <ClCompile Include="src\Games\WaW\WaWTitle.cpp" />
+    <ClCompile Include="src\Games\WaW\GameFunctions.cpp" />
+    <ClCompile Include="src\Games\WaW\MenuFunctions.cpp" />
     <ClCompile Include="src\Modules\AutoUpdater.cpp" />
     <ClCompile Include="src\Modules\Binds.cpp" />
     <ClCompile Include="src\Modules\Console.cpp" />

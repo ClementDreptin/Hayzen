@@ -11,6 +11,7 @@
 #include "Games/SpecOps/AlphaMW2/SpecOpsAlphaMW2Title.h"
 #include "Games/SpecOps/MW2/SpecOpsMW2Title.h"
 #include "Games/SpecOps/MW3/SpecOpsMW3Title.h"
+#include "Games/WaW/WaWTitle.h"
 #include "Modules/AutoUpdater.h"
 #include "Modules/DebugEnabler.h"
 #include "Modules/NotificationPatcher.h"
@@ -22,6 +23,7 @@ typedef enum _TitleId
     Title_Dashboard = 0xFFFE07D1,
     Title_XShell = 0xFFFE07FF,
     Title_CoD4 = 0x415607E6,
+    Title_WaW = 0x4156081C,
     Title_MW2 = 0x41560817,
     Title_MW3 = 0x415608CB,
     Title_NX1 = 0x4156089E,
@@ -170,6 +172,10 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     case Title_CoD4:
         if (IsMultiplayerExecutable(0x82032AC4))
             m_pCurrentTitle = new CoD4Title();
+        break;
+    case Title_WaW:
+        if (IsMultiplayerExecutable(0x820024CC))
+            m_pCurrentTitle = new WaWTitle();
         break;
     case Title_MW2:
         if (IsMultiplayerExecutable(0x82001270))

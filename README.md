@@ -15,6 +15,7 @@ Hayzen is a dynamic library (DLL) for RGH/Jtag/Devkit Xbox 360s that contains mo
 #### Supported games
 
 - Call of Duty 4: Modern Warfare - TU4 Multiplayer (latest version)
+- Call of Duty: World at War - TU7 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 2 - TU9 Multiplayer (latest version)
 - Call of Duty: Modern Warfare 2 - TU9 Special Ops (latest version)
 - Call of Duty: Modern Warfare 2 - Pre Alpha 482 Multiplayer (`default_mp.xex`)

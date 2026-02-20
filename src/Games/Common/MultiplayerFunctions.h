@@ -57,14 +57,16 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     G_SetModel(pEntity, "com_plasticcase_trap_friendly");
 #elif defined(GAME_COD4)
     G_SetModel(pEntity, "com_plasticcase_beige_big");
+#elif defined(GAME_WAW)
+    G_SetModel(pEntity, "war_hq_obj");
 #else
     G_SetModel(pEntity, "com_plasticcase_friendly");
 #endif
     SP_script_model(pEntity);
 
     // Make the crate solid
-    // CoD4 requires a separate entity for the collision
-#ifdef GAME_COD4
+    // CoD4 and WaW require a separate entity for the collision
+#if defined(GAME_COD4) || defined(GAME_WAW)
     gentity_s *pCollisionEntity = G_Spawn();
     XASSERT(pCollisionEntity != nullptr);
     pCollisionEntity->r.currentOrigin = origin;
@@ -74,8 +76,12 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     // and when setting the current angles, they need to be relative to these default angles.
     // For example, if the default angles are (0, 90, 0) and the desired angles are (0, 150, 0),
     // currentAngles needs to be (0, 150, 0) - (0, 90, 0) = (0, 60, 0).
-    pCollisionEntity->r.currentOrigin.z += 14.0f;
     pCollisionEntity->r.currentAngles.y -= pCurrentMapCrateBrushModel->r.currentAngles.y;
+
+    // On CoD4, the crate collision is 15 units too low so we have to spawn it higher
+    #ifdef GAME_COD4
+    pCollisionEntity->r.currentOrigin.z += 15.0f;
+    #endif
 
     SP_script_model(pCollisionEntity);
     pCollisionEntity->r.bmodel = 4;
@@ -232,7 +238,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #if defined(GAME_ALPHAMW2)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     std::string chooseClassCommand = Formatter::Format("mr %i 11 class0", serverId);
-    #elif defined(GAME_COD4)
+    #elif defined(GAME_COD4) || defined(GAME_WAW)
     std::string chooseTeamCommand = Formatter::Format("mr %i 4 autoassign", serverId);
     // TODO: make the class name dynamic based on the match type (offline or online)
     std::string chooseClassCommand = Formatter::Format("mr %i 13 offline_class1_mp,0", serverId);
@@ -246,14 +252,14 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     int botClientNum = pBot->state.number;
     client_t *botClient = &Memory::Read<client_t *>(pOptions->ClientsBaseAddress)[botClientNum];
 
-    #ifdef GAME_COD4
+    #if defined(GAME_COD4) || defined(GAME_WAW)
     SV_ExecuteClientCommand(botClient, chooseTeamCommand.c_str(), 1);
     #else
     SV_ExecuteClientCommand(botClient, chooseTeamCommand.c_str(), 1, 0);
     #endif
     Sleep(150);
 
-    #ifdef GAME_COD4
+    #if defined(GAME_COD4) || defined(GAME_WAW)
     SV_ExecuteClientCommand(botClient, chooseClassCommand.c_str(), 1);
     #else
     SV_ExecuteClientCommand(botClient, chooseClassCommand.c_str(), 1, 0);
@@ -266,6 +272,9 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     Cbuf_AddText(0, "set testClients_doMove 0;set testClients_doAttack 0;set testClients_watchKillcam 0");
     #elif defined(GAME_COD4)
     pBot->client->bFrozen = true;
+    #elif defined(GAME_WAW)
+    SetClientDvar(-1, "sv_botsRandomInput", "0");
+    SetClientDvar(-1, "sv_botsPressAttackBtn", "0");
     #else
     SetClientDvar(-1, "testClients_doMove", "0");
     SetClientDvar(-1, "testClients_doAttack", "0");
@@ -354,6 +363,8 @@ bool ToggleBotMovement(void *pParameters)
     Cbuf_AddText(0, Formatter::Format("set testClients_doMove %s", enabled ? "0" : "1").c_str());
     #elif defined(GAME_COD4)
     pBot->client->bFrozen = enabled;
+    #elif defined(GAME_WAW)
+    SetClientDvar(-1, "sv_botsRandomInput", enabled ? "0" : "1");
     #else
     SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
     #endif
@@ -381,6 +392,8 @@ bool ToggleBotAttack(void *pParameters)
     // This dvar is protected on MW3 so it can only be set via a console command
     #if defined(GAME_MW3)
     Cbuf_AddText(0, Formatter::Format("set testClients_doAttack %s", enabled ? "1" : "0").c_str());
+    #elif defined(GAME_WAW)
+    SetClientDvar(-1, "sv_botsPressAttackBtn", enabled ? "1" : "0");
     #else
     SetClientDvar(-1, "testClients_doAttack", enabled ? "1" : "0");
     #endif

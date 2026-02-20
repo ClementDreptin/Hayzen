@@ -122,7 +122,7 @@ void CoD4Title::Scr_NotifyNumHook(int entNum, uint32_t classNum, uint32_t string
 {
     XASSERT(s_DetourMap.find("Scr_NotifyNum") != s_DetourMap.end());
 
-    // Call the original Scr_Notify function
+    // Call the original Scr_NotifyNum function
     s_DetourMap.at("Scr_NotifyNum").GetOriginal<decltype(&Scr_NotifyNumHook)>()(entNum, classNum, stringValue, paramCount);
 
     // If the client is not host, no need to go further
@@ -159,7 +159,9 @@ void CoD4Title::Scr_NotifyNumHook(int entNum, uint32_t classNum, uint32_t string
 
 void CoD4Title::G_ShutdownGameHook(bool freeScripts)
 {
-    // Call the original Scr_ShutdownSystem function
+    XASSERT(s_DetourMap.find("G_ShutdownGame") != s_DetourMap.end());
+
+    // Call the original G_ShutdownGame function
     s_DetourMap.at("G_ShutdownGame").GetOriginal<decltype(&G_ShutdownGameHook)>()(freeScripts);
 
     // Stop the menu when the game ends
@@ -191,59 +193,32 @@ void CoD4Title::ApplyPatches()
 
     // We need to patch a GSC script to make the HQ crates spawn in every gamemode
     s_PatchedGameObjectsGscMainFunction =
-        "#include maps\\mp\\_utility;"
-        "#include maps\\mp\\gametypes\\_hud_util;"
-        ""
-        "main(allowed)"
-        "{"
-        "	entitytypes = getentarray();"
-        "	for(i = 0; i < entitytypes.size; i++)"
-        "	{"
-        "		if(isdefined(entitytypes[i].script_gameobjectname))"
-        "		{"
-        "			dodelete = true;"
-        ""
-        "			// allow a space-separated list of gameobjectnames\n"
-        "			gameobjectnames = strtok(entitytypes[i].script_gameobjectname, \" \");"
-        ""
-        "			for(j = 0; j < allowed.size; j++)"
-        "			{"
-        "				for (k = 0; k < gameobjectnames.size; k++)"
-        "				{"
-        "					// PATCH: we also allow HQ crates to spawn no matter what\n"
-        "					if(gameobjectnames[k] == allowed[j] || gameobjectnames[k] == \"hq\")"
-        "					{"
-        "						dodelete = false;"
-        "						break;"
-        "					}"
-        "				}"
-        "				if (!dodelete)"
-        "					break;"
-        "			}"
-        ""
-        "			if(dodelete)"
-        "			{"
-        "				//println(\"DELETED: \", entitytypes[i].classname);\n"
-        "				entitytypes[i] delete();"
-        "			}"
-        "		}"
-        "	}"
-        "}";
+        "#include maps\\mp\\_utility;\n"
+        "#include maps\\mp\\gametypes\\_hud_util;\n"
+        "\n"
+        "main(allowed)\n"
+        "{\n"
+        "	// PATCH: By appending 'hq' to the list of allowed gamemodes, we always allow HQ crates to spawn\n"
+        "	allowed[allowed.size] = \"hq\";\n";
 
     s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x822212C0, Scr_AddSourceBufferHook);
 }
 
 char *CoD4Title::Scr_AddSourceBufferHook(const char *filename, const char *extFilename, const char *codePos, bool archive)
 {
+    XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
+
+    // Call the original Scr_AddSourceBuffer function
     char *result = s_DetourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(filename, extFilename, codePos, archive);
 
+    // Modify _gameobjects.gsc
     if (!strcmp(extFilename, "maps/mp/gametypes/_gameobjects.gsc"))
     {
-        const size_t originalMainFunctionEndOffset = 0x2F2;
-        XASSERT(strlen(result) > originalMainFunctionEndOffset);
+        const size_t originalMainFunctionStartOffset = 0x55;
+        XASSERT(strlen(result) > originalMainFunctionStartOffset);
 
-        // Replace the beginning of the script (its main function) with our patched version
-        s_PatchedGameObjectsGscMainFunction += &result[originalMainFunctionEndOffset];
+        // Replace the beginning of the script (the start of its main function) with our patched version
+        s_PatchedGameObjectsGscMainFunction += &result[originalMainFunctionStartOffset];
 
         return const_cast<char *>(s_PatchedGameObjectsGscMainFunction.c_str());
     }

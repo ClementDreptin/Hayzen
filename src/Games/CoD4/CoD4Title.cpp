@@ -103,7 +103,7 @@ void CoD4Title::InitMenu()
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", CoD4::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", CoD4::TeleportBotToMe));
-        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", CoD4::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Move", CoD4::ToggleBotMovement, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }
 

@@ -107,7 +107,7 @@ void WaWTitle::InitMenu()
         std::vector<std::shared_ptr<Option>> options;
         options.emplace_back(MakeOption(ClickOption, "Spawn Bot", WaW::SpawnBot));
         options.emplace_back(MakeOption(ClickOption, "Teleport Bot to Me", WaW::TeleportBotToMe));
-        options.emplace_back(MakeOption(ToggleOption, "Freeze Bot", WaW::ToggleBotMovement, true));
+        options.emplace_back(MakeOption(ToggleOption, "Bot Move", WaW::ToggleBotMovement, false));
         options.emplace_back(MakeOption(ToggleOption, "Bot Attack", WaW::ToggleBotAttack, false));
         optionGroups.emplace_back(OptionGroup("Bot", options));
     }

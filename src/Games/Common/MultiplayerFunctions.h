@@ -212,6 +212,34 @@ bool ChangeCrateOrientation(void *pParameters)
 }
 
 #ifndef GAME_ALPHAGHOSTS
+static void SetBotMovement(bool enabled)
+{
+    XASSERT(Context::pBotEntity != nullptr);
+
+    // This dvar is protected on MW3 so it can only be set via a console command
+    #if defined(GAME_MW3)
+    Cbuf_AddText(0, Formatter::Format("set testClients_doMove %s", enabled ? "1" : "0").c_str());
+    #elif defined(GAME_COD4)
+    static_cast<gentity_s *>(Context::pBotEntity)->client->bFrozen = !enabled;
+    #elif defined(GAME_WAW)
+    SetClientDvar(-1, "sv_botsRandomInput", enabled ? "1" : "0");
+    #else
+    SetClientDvar(-1, "testClients_doMove", enabled ? "1" : "0");
+    #endif
+}
+
+static void SetBotAttack(bool enabled)
+{
+    // This dvar is protected on MW3 so it can only be set via a console command
+    #if defined(GAME_MW3)
+    Cbuf_AddText(0, Formatter::Format("set testClients_doAttack %s", enabled ? "1" : "0").c_str());
+    #elif defined(GAME_WAW)
+    SetClientDvar(-1, "sv_botsPressAttackBtn", enabled ? "1" : "0");
+    #else
+    SetClientDvar(-1, "testClients_doAttack", enabled ? "1" : "0");
+    #endif
+}
+
 // Options passed to the SpawnBot function. This structure needs to be heap allocated because it will be
 // used in another thread which will execute after the scope where the structure is created ends. The threaded
 // function deletes the structure after using it.
@@ -266,20 +294,9 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     #endif
     Sleep(150);
 
-    // Set bot-related dvars to make it completely stand still
-    // These dvars are protected on MW3 so they can only be set via a console command
-    #if defined(GAME_MW3)
-    Cbuf_AddText(0, "set testClients_doMove 0;set testClients_doAttack 0;set testClients_watchKillcam 0");
-    #elif defined(GAME_COD4)
-    pBot->client->bFrozen = true;
-    #elif defined(GAME_WAW)
-    SetClientDvar(-1, "sv_botsRandomInput", "0");
-    SetClientDvar(-1, "sv_botsPressAttackBtn", "0");
-    #else
-    SetClientDvar(-1, "testClients_doMove", "0");
-    SetClientDvar(-1, "testClients_doAttack", "0");
-    SetClientDvar(-1, "testClients_watchKillcam", "0");
-    #endif
+    // Make the bot stand completely still
+    SetBotMovement(false);
+    SetBotAttack(false);
 
     TeleportBotToMe();
 
@@ -358,16 +375,7 @@ bool ToggleBotMovement(void *pParameters)
         return false;
     }
 
-    // This dvar is protected on MW3 so it can only be set via a console command
-    #if defined(GAME_MW3)
-    Cbuf_AddText(0, Formatter::Format("set testClients_doMove %s", enabled ? "0" : "1").c_str());
-    #elif defined(GAME_COD4)
-    pBot->client->bFrozen = enabled;
-    #elif defined(GAME_WAW)
-    SetClientDvar(-1, "sv_botsRandomInput", enabled ? "0" : "1");
-    #else
-    SetClientDvar(-1, "testClients_doMove", enabled ? "0" : "1");
-    #endif
+    SetBotMovement(enabled);
 
     return true;
 }
@@ -389,14 +397,7 @@ bool ToggleBotAttack(void *pParameters)
         return false;
     }
 
-    // This dvar is protected on MW3 so it can only be set via a console command
-    #if defined(GAME_MW3)
-    Cbuf_AddText(0, Formatter::Format("set testClients_doAttack %s", enabled ? "1" : "0").c_str());
-    #elif defined(GAME_WAW)
-    SetClientDvar(-1, "sv_botsPressAttackBtn", enabled ? "1" : "0");
-    #else
-    SetClientDvar(-1, "testClients_doAttack", enabled ? "1" : "0");
-    #endif
+    SetBotAttack(enabled);
 
     return true;
 }

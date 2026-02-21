@@ -86,7 +86,12 @@ gclient_s *GetGClient(int clientNum)
 {
     XASSERT(clientNum >= 0 && clientNum <= 17);
 
-    return reinterpret_cast<gclient_s *>(0x829BCD70 + sizeof(gclient_s) * clientNum);
+    return &reinterpret_cast<gclient_s *>(0x829BCD70)[clientNum];
+}
+
+gentity_s *GetEntity(uint32_t entNum)
+{
+    return &reinterpret_cast<gentity_s *>(0x8287CD08)[entNum];
 }
 
 playerState_s *GetPlayerState(int clientNum)
@@ -94,11 +99,6 @@ playerState_s *GetPlayerState(int clientNum)
     // This function is inlined in CoD4 so it had to be reimplemented
 
     return &GetGClient(clientNum)->ps;
-}
-
-gentity_s *GetEntity(uint32_t entNum)
-{
-    return reinterpret_cast<gentity_s *>(0x8287CD08 + sizeof(gentity_s) * entNum);
 }
 
 void SetClientOrigin(gentity_s *ent, const float *origin)

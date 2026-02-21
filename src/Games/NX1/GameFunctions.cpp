@@ -55,12 +55,12 @@ gclient_s *GetGClient(int clientNum)
 {
     XASSERT(clientNum >= 0 && clientNum <= 17);
 
-    return reinterpret_cast<gclient_s *>(0x83362C80 + sizeof(gclient_s) * clientNum);
+    return &reinterpret_cast<gclient_s *>(0x83362C80)[clientNum];
 }
 
 gentity_s *GetEntity(uint32_t entNum)
 {
-    return reinterpret_cast<gentity_s *>(0x83147800 + sizeof(gentity_s) * entNum);
+    return &reinterpret_cast<gentity_s *>(0x83147800)[entNum];
 }
 
 void SetClientDvar(int clientNum, const std::string &dvar, const std::string &value)

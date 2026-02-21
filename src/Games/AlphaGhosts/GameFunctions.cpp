@@ -52,12 +52,12 @@ gclient_s *GetGClient(int clientNum)
 {
     XASSERT(clientNum >= 0 && clientNum <= 17);
 
-    return reinterpret_cast<gclient_s *>(0x8385E700 + sizeof(gclient_s) * clientNum);
+    return &reinterpret_cast<gclient_s *>(0x8385E700)[clientNum];
 }
 
 gentity_s *GetEntity(uint32_t entNum)
 {
-    return reinterpret_cast<gentity_s *>(0x8390E000 + sizeof(gentity_s) * entNum);
+    return &reinterpret_cast<gentity_s *>(0x8390E000)[entNum];
 }
 
 bool IsHost(int clientNum)

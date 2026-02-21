@@ -33,12 +33,12 @@ gclient_s *GetGClient(int clientNum)
 {
     XASSERT(clientNum >= 0 && clientNum <= 17);
 
-    return reinterpret_cast<gclient_s *>(0x82E4BA20 + sizeof(gclient_s) * clientNum);
+    return &reinterpret_cast<gclient_s *>(0x82E4BA20)[clientNum];
 }
 
 gentity_s *GetEntity(uint32_t entNum)
 {
-    return reinterpret_cast<gentity_s *>(0x82C74E28 + sizeof(gentity_s) * entNum);
+    return &reinterpret_cast<gentity_s *>(0x82C74E28)[entNum];
 }
 
 }

@@ -19,10 +19,6 @@ MW2Title::MW2Title()
     // Devkits are a little slower and need more time
     Sleep(IsDevkit() ? 2000 : 200);
 
-    // NOP cheat protection
-    Memory::Write<int>(0x8216906C, 0x60000000);
-    Memory::Write<int>(0x821690E4, 0x60000000);
-
     InitRenderer();
 
     // Set up the function hooks

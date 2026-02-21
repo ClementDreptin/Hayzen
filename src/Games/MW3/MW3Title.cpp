@@ -19,10 +19,6 @@ MW3Title::MW3Title()
     // Devkits are a little slower and need more time
     Sleep(IsDevkit() ? 4000 : 200);
 
-    // NOP cheat protection
-    Memory::Write<int>(0x821ABA24, 0x60000000);
-    Memory::Write<int>(0x821ABA9C, 0x60000000);
-
     InitRenderer();
 
     // Set up the function hooks

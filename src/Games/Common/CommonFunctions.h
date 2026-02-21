@@ -131,7 +131,7 @@ bool ToggleSaveLoadBinds(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -171,7 +171,7 @@ bool ToggleUfoBind(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -193,7 +193,7 @@ bool RecordInput(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     int clientNum = Context::ClientNum;
 
@@ -226,7 +226,7 @@ bool ToggleReplayInputBind(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {

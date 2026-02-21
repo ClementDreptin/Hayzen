@@ -29,7 +29,7 @@ bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
@@ -49,7 +49,7 @@ bool SpecOpsAlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;

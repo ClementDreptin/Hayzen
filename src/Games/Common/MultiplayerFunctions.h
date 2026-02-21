@@ -10,7 +10,7 @@ bool ToggleGodModeMP(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
     XASSERT(pPlayerEntity != nullptr);
@@ -28,7 +28,7 @@ bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
     XASSERT(pParameters != nullptr);
     XASSERT(patchAddress != 0);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     Memory::Write<float>(patchAddress, enabled ? 9999.0f : 128.0f);
 
@@ -155,7 +155,7 @@ bool ChangeCratePositionPresets(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    CratePositionPresets positionPresets = *reinterpret_cast<CratePositionPresets *>(pParameters);
+    CratePositionPresets positionPresets = Memory::Read<CratePositionPresets>(pParameters);
 
     switch (positionPresets)
     {
@@ -191,7 +191,7 @@ bool ChangeCrateOrientation(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    CrateOrientation orientation = *reinterpret_cast<CrateOrientation *>(pParameters);
+    CrateOrientation orientation = Memory::Read<CrateOrientation>(pParameters);
 
     switch (orientation)
     {
@@ -362,7 +362,7 @@ bool ToggleBotMovement(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     int clientNum = Context::ClientNum;
 
@@ -384,7 +384,7 @@ bool ToggleBotAttack(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     int clientNum = Context::ClientNum;
 

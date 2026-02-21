@@ -70,7 +70,7 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &g_Config.DisplayControlsTexts));
 
     if (!IsDevkit())
-        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *pParams) { return ToggleDebugBuilds(*reinterpret_cast<bool *>(pParams)); }, &g_Config.AllowDebugBuilds));
+        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *pParams) { return ToggleDebugBuilds(Memory::Read<bool>(pParams)); }, &g_Config.AllowDebugBuilds));
 
     options.emplace_back(MakeOption(ToggleOption, "Auto Update", &g_Config.AutoUpdate));
 

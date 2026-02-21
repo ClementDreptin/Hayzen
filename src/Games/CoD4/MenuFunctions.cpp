@@ -32,7 +32,7 @@ bool CoD4::ToggleFallDamage(void *pParameters)
 
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -52,7 +52,7 @@ bool CoD4::ToggleAmmo(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
@@ -70,7 +70,7 @@ bool CoD4::ChangeJumpHeight(void *pParameters)
 
     XASSERT(pParameters != nullptr);
 
-    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     SetClientDvar(0, "jump_height", std::to_string(static_cast<uint64_t>(value)));
 
@@ -81,7 +81,7 @@ bool CoD4::GoThroughInvisibleBarriers(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;

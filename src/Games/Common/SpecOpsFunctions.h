@@ -10,7 +10,7 @@ bool ToggleGodModeSP(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
     XASSERT(pPlayerState != nullptr);
@@ -27,7 +27,7 @@ bool ChangeJumpHeight(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    uint32_t value = *reinterpret_cast<uint32_t *>(pParameters);
+    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     // Set the new jump height value
     std::string command = Formatter::Format("set jump_height %d", value);
@@ -40,7 +40,7 @@ bool ToggleSecondPlayerGodMode(void *pParameters)
 {
     XASSERT(pParameters != nullptr);
 
-    bool enabled = *reinterpret_cast<bool *>(pParameters);
+    bool enabled = Memory::Read<bool>(pParameters);
 
     // The second client num is always 1
     int secondClientNum = 1;

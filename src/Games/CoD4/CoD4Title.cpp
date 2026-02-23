@@ -21,11 +21,6 @@ CoD4Title::CoD4Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x822C9D50, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_NotifyNum"] = Detour(0x82217890, Scr_NotifyNumHook);
-    s_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
-
     ApplyPatches();
 
     InstallHooks();
@@ -169,16 +164,26 @@ void CoD4Title::G_ShutdownGameHook(bool freeScripts)
         s_CurrentInstance->InMatch(false);
 }
 
-void CoD4Title::InitRenderer()
+char *CoD4Title::Scr_AddSourceBufferHook(const char *filename, const char *extFilename, const char *codePos, bool archive)
 {
-    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x8216BAE8);
-    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x8216C0B8);
-    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x8216EB00);
-    UI::R_TextHeight = CoD4::Game::R_TextHeight;
-    UI::R_RegisterFont = CoD4::Game::R_RegisterFont;
-    UI::Material_RegisterHandle = CoD4::Game::Material_RegisterHandle;
+    XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
 
-    Title::InitRenderer();
+    // Call the original Scr_AddSourceBuffer function
+    char *result = s_DetourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(filename, extFilename, codePos, archive);
+
+    // Modify _gameobjects.gsc
+    if (!strcmp(extFilename, "maps/mp/gametypes/_gameobjects.gsc"))
+    {
+        const size_t originalMainFunctionStartOffset = 0x55;
+        XASSERT(strlen(result) > originalMainFunctionStartOffset);
+
+        // Replace the beginning of the script (the start of its main function) with our patched version
+        s_PatchedGameObjectsGscMainFunction += &result[originalMainFunctionStartOffset];
+
+        return const_cast<char *>(s_PatchedGameObjectsGscMainFunction.c_str());
+    }
+
+    return result;
 }
 
 void CoD4Title::ApplyPatches()
@@ -202,24 +207,23 @@ void CoD4Title::ApplyPatches()
     s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x822212C0, Scr_AddSourceBufferHook);
 }
 
-char *CoD4Title::Scr_AddSourceBufferHook(const char *filename, const char *extFilename, const char *codePos, bool archive)
+void CoD4Title::InstallHooks()
 {
-    XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x822C9D50, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_NotifyNum"] = Detour(0x82217890, Scr_NotifyNumHook);
+    s_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
 
-    // Call the original Scr_AddSourceBuffer function
-    char *result = s_DetourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(filename, extFilename, codePos, archive);
+    Title::InstallHooks();
+}
 
-    // Modify _gameobjects.gsc
-    if (!strcmp(extFilename, "maps/mp/gametypes/_gameobjects.gsc"))
-    {
-        const size_t originalMainFunctionStartOffset = 0x55;
-        XASSERT(strlen(result) > originalMainFunctionStartOffset);
+void CoD4Title::InitRenderer()
+{
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x8216BAE8);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x8216C0B8);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x8216EB00);
+    UI::R_TextHeight = CoD4::Game::R_TextHeight;
+    UI::R_RegisterFont = CoD4::Game::R_RegisterFont;
+    UI::Material_RegisterHandle = CoD4::Game::Material_RegisterHandle;
 
-        // Replace the beginning of the script (the start of its main function) with our patched version
-        s_PatchedGameObjectsGscMainFunction += &result[originalMainFunctionStartOffset];
-
-        return const_cast<char *>(s_PatchedGameObjectsGscMainFunction.c_str());
-    }
-
-    return result;
+    Title::InitRenderer();
 }

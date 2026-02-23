@@ -17,6 +17,8 @@ private:
 
     static void SV_DropClientHook(MW3::Game::client_t *client, const char *reason, bool tellThem);
 
+    virtual void InstallHooks() override;
+
     virtual void InitRenderer() override;
 
     virtual void WaitUntilReady() override;

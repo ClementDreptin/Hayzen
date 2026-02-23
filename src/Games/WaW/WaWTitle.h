@@ -15,11 +15,13 @@ private:
 
     static void G_ShutdownGameHook(bool freeScripts);
 
-    virtual void InitRenderer() override;
+    static char *Scr_AddSourceBufferHook(uint32_t scriptInstance, const char *filename, const char *extFilename, const char *codePos, bool archive);
 
     void ApplyPatches();
 
-    static char *Scr_AddSourceBufferHook(uint32_t scriptInstance, const char *filename, const char *extFilename, const char *codePos, bool archive);
+    virtual void InstallHooks() override;
+
+    virtual void InitRenderer() override;
 
     static std::string s_PatchedGameObjectsGscMainFunction;
 };

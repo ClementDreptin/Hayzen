@@ -18,6 +18,8 @@ private:
 
     static void SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
+    virtual void InstallHooks() override;
+
     virtual void Update() override;
 
     virtual void Render() override;

@@ -17,10 +17,6 @@ SpecOpsMW2Title::SpecOpsMW2Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821354B0, SCR_DrawScreenFieldHook);
-    s_DetourMap["ClientCommand"] = Detour(0x821EFFD0, ClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - MW2 Spec Ops Detected");
@@ -113,6 +109,14 @@ void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
         // Register that the user released the A button
         hasJumped = false;
     }
+}
+
+void SpecOpsMW2Title::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821354B0, SCR_DrawScreenFieldHook);
+    s_DetourMap["ClientCommand"] = Detour(0x821EFFD0, ClientCommandHook);
+
+    Title::InstallHooks();
 }
 
 void SpecOpsMW2Title::InitRenderer()

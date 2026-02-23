@@ -21,11 +21,6 @@ WaWTitle::WaWTitle()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821BF188, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x82254180, Scr_Notify);
-    s_DetourMap["G_ShutdownGame"] = Detour(0x82220C80, G_ShutdownGameHook);
-
     ApplyPatches();
 
     InstallHooks();
@@ -177,33 +172,6 @@ void WaWTitle::G_ShutdownGameHook(bool freeScripts)
         s_CurrentInstance->InMatch(false);
 }
 
-void WaWTitle::InitRenderer()
-{
-    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x82401410);
-    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x82401C30);
-    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x823FFF28);
-    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x82400018);
-    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x823FFEE0);
-    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x824006F0);
-
-    Title::InitRenderer();
-}
-
-void WaWTitle::ApplyPatches()
-{
-    // We need to patch a GSC script to make the HQ tables spawn in every gamemode
-    s_PatchedGameObjectsGscMainFunction =
-        "#include maps\\mp\\_utility;\n"
-        "#include maps\\mp\\gametypes\\_hud_util;\n"
-        "\n"
-        "main(allowed)\n"
-        "{\n"
-        "	// PATCH: By appending 'hq' to the list of allowed gamemodes, we always allow HQ tables to spawn\n"
-        "	allowed[allowed.size] = \"hq\";\n";
-
-    s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x82339EF8, Scr_AddSourceBufferHook);
-}
-
 char *WaWTitle::Scr_AddSourceBufferHook(uint32_t scriptInstance, const char *filename, const char *extFilename, const char *codePos, bool archive)
 {
     XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
@@ -224,4 +192,40 @@ char *WaWTitle::Scr_AddSourceBufferHook(uint32_t scriptInstance, const char *fil
     }
 
     return result;
+}
+
+void WaWTitle::ApplyPatches()
+{
+    // We need to patch a GSC script to make the HQ tables spawn in every gamemode
+    s_PatchedGameObjectsGscMainFunction =
+        "#include maps\\mp\\_utility;\n"
+        "#include maps\\mp\\gametypes\\_hud_util;\n"
+        "\n"
+        "main(allowed)\n"
+        "{\n"
+        "	// PATCH: By appending 'hq' to the list of allowed gamemodes, we always allow HQ tables to spawn\n"
+        "	allowed[allowed.size] = \"hq\";\n";
+
+    s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x82339EF8, Scr_AddSourceBufferHook);
+}
+
+void WaWTitle::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821BF188, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x82254180, Scr_Notify);
+    s_DetourMap["G_ShutdownGame"] = Detour(0x82220C80, G_ShutdownGameHook);
+
+    Title::InstallHooks();
+}
+
+void WaWTitle::InitRenderer()
+{
+    UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x82401410);
+    UI::R_AddCmdDrawText = reinterpret_cast<UI::R_ADDCMDDRAWTEXT>(0x82401C30);
+    UI::R_TextWidth = reinterpret_cast<UI::R_TEXTWIDTH>(0x823FFF28);
+    UI::R_TextHeight = reinterpret_cast<UI::R_TEXTHEIGHT>(0x82400018);
+    UI::R_RegisterFont = reinterpret_cast<UI::R_REGISTERFONT>(0x823FFEE0);
+    UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x824006F0);
+
+    Title::InitRenderer();
 }

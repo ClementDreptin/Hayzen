@@ -22,11 +22,6 @@ AlphaGhostsTitle::AlphaGhostsTitle()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x82486110, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x8263B778, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82765210, SV_ExecuteClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - Ghosts Alpha Multiplayer Detected");
@@ -147,6 +142,15 @@ void AlphaGhostsTitle::SV_ExecuteClientCommandHook(AlphaGhosts::Game::client_t *
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void AlphaGhostsTitle::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x82486110, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x8263B778, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82765210, SV_ExecuteClientCommandHook);
+
+    Title::InstallHooks();
 }
 
 void AlphaGhostsTitle::InitRenderer()

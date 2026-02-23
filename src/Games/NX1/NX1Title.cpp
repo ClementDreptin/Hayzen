@@ -19,11 +19,6 @@ NX1Title::NX1Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821AAAA0, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x822AADE0, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x8231B8E8, SV_ExecuteClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - NX1 Multiplayer Detected");
@@ -165,6 +160,15 @@ void NX1Title::SV_ExecuteClientCommandHook(NX1::Game::client_t *client, const ch
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void NX1Title::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821AAAA0, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x822AADE0, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x8231B8E8, SV_ExecuteClientCommandHook);
+
+    Title::InstallHooks();
 }
 
 void NX1Title::InitRenderer()

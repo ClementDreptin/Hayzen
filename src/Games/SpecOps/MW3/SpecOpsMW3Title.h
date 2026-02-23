@@ -14,5 +14,9 @@ private:
 
     static void ForceJumpEnabled();
 
+    virtual void InstallHooks() override;
+
     virtual void InitRenderer() override;
+
+    virtual void WaitUntilReady() override;
 };

@@ -20,11 +20,6 @@ AlphaMW2Title::AlphaMW2Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x822539C0, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822B4700, SV_ExecuteClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - MW2 Alpha Multiplayer Detected");
@@ -161,6 +156,15 @@ void AlphaMW2Title::SV_ExecuteClientCommandHook(AlphaMW2::Game::client_t *client
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void AlphaMW2Title::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8218B5F0, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x822539C0, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822B4700, SV_ExecuteClientCommandHook);
+
+    Title::InstallHooks();
 }
 
 void AlphaMW2Title::Update()

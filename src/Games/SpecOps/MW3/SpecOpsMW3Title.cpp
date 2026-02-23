@@ -17,10 +17,6 @@ SpecOpsMW3Title::SpecOpsMW3Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x82127090, SCR_DrawScreenFieldHook);
-    s_DetourMap["ClientCommand"] = Detour(0x821FEFB0, ClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - MW3 Spec Ops Detected");
@@ -126,6 +122,14 @@ void SpecOpsMW3Title::ForceJumpEnabled()
     pClient->ps.pm_flags &= ~(1 << 18);
 }
 
+void SpecOpsMW3Title::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x82127090, SCR_DrawScreenFieldHook);
+    s_DetourMap["ClientCommand"] = Detour(0x821FEFB0, ClientCommandHook);
+
+    Title::InstallHooks();
+}
+
 void SpecOpsMW3Title::InitRenderer()
 {
     UI::R_AddCmdDrawStretchPic = reinterpret_cast<UI::R_ADDCMDDRAWSTRETCHPIC>(0x823F4878);
@@ -136,4 +140,11 @@ void SpecOpsMW3Title::InitRenderer()
     UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x823E95E8);
 
     Title::InitRenderer();
+}
+
+void SpecOpsMW3Title::WaitUntilReady()
+{
+    // MW3 takes a little bit longer than other games to load so we override WaitUntilReady
+    // to make the sleep times longer
+    Sleep(IsDevkit() ? 4000 : 400);
 }

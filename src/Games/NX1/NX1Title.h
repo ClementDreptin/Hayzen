@@ -15,6 +15,8 @@ private:
 
     static void SV_ExecuteClientCommandHook(NX1::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
+    virtual void InstallHooks() override;
+
     virtual void InitRenderer() override;
 
     virtual void WaitUntilReady() override;

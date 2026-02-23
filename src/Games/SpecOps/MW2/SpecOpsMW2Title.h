@@ -12,5 +12,7 @@ public:
 private:
     static void ClientCommandHook(int clientNum, const char *s);
 
+    virtual void InstallHooks() override;
+
     virtual void InitRenderer() override;
 };

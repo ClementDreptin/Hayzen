@@ -19,11 +19,6 @@ MW2Title::MW2Title()
 
     InitRenderer();
 
-    // Set up the function hooks
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x82209710, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82253140, SV_ExecuteClientCommandHook);
-
     InstallHooks();
 
     Xam::XNotify("Hayzen - MW2 Multiplayer Detected");
@@ -164,6 +159,15 @@ void MW2Title::SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const ch
     // Stop the menu when the game ends
     if (!strcmp(s, "disconnect"))
         s_CurrentInstance->InMatch(false);
+}
+
+void MW2Title::InstallHooks()
+{
+    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
+    s_DetourMap["Scr_Notify"] = Detour(0x82209710, Scr_NotifyHook);
+    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82253140, SV_ExecuteClientCommandHook);
+
+    Title::InstallHooks();
 }
 
 void MW2Title::InitRenderer()

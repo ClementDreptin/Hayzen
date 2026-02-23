@@ -26,7 +26,7 @@ protected:
 
     static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 
-    void InstallHooks();
+    virtual void InstallHooks();
 
     void RemoveHooks();
 

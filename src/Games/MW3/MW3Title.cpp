@@ -15,9 +15,7 @@
 
 MW3Title::MW3Title()
 {
-    // Give the system some time to fully load the game in memory
-    // Devkits are a little slower and need more time
-    Sleep(IsDevkit() ? 4000 : 200);
+    WaitUntilReady();
 
     InitRenderer();
 
@@ -191,4 +189,11 @@ void MW3Title::InitRenderer()
     UI::Material_RegisterHandle = reinterpret_cast<UI::MATERIAL_REGISTERHANDLE>(0x82413F48);
 
     Title::InitRenderer();
+}
+
+void MW3Title::WaitUntilReady()
+{
+    // MW3 takes a little bit longer than other games to load so we override WaitUntilReady
+    // to make the sleep times longer
+    Sleep(IsDevkit() ? 4000 : 400);
 }

@@ -106,6 +106,13 @@ void Title::InitRenderer()
     XASSERT(UI::MaterialHandle != nullptr);
 }
 
+void Title::WaitUntilReady()
+{
+    // Give the system some time to fully load the game in memory
+    // Devkits are a little slower and need more time
+    Sleep(IsDevkit() ? 2000 : 200);
+}
+
 void Title::AskToReboot()
 {
     std::vector<std::wstring> buttonLabels(2);

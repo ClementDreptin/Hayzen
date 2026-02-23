@@ -36,6 +36,8 @@ protected:
 
     virtual void InitRenderer() = 0;
 
+    virtual void WaitUntilReady();
+
 private:
     bool m_InMatch;
 

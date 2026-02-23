@@ -17,5 +17,5 @@ private:
 
     virtual void InitRenderer() override;
 
-    void WaitUntilReady();
+    virtual void WaitUntilReady() override;
 };

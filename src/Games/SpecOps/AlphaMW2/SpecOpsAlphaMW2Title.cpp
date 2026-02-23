@@ -14,9 +14,7 @@
 SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
     : m_Console(Console::Props(SpecOpsAlphaMW2::Game::Cbuf_AddText, SpecOpsAlphaMW2::Game::Dvar_ForEach))
 {
-    // Give the system some time to fully load the game in memory
-    // Devkits are a little slower and need more time
-    Sleep(IsDevkit() ? 2000 : 200);
+    WaitUntilReady();
 
     InitRenderer();
 

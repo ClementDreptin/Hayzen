@@ -17,9 +17,7 @@ std::string CoD4Title::s_PatchedGameObjectsGscMainFunction;
 
 CoD4Title::CoD4Title()
 {
-    // Give the system some time to fully load the game in memory
-    // Devkits are a little slower and need more time
-    Sleep(IsDevkit() ? 2000 : 200);
+    WaitUntilReady();
 
     InitRenderer();
 

@@ -17,10 +17,9 @@ AlphaGhostsTitle::AlphaGhostsTitle()
 {
     WaitUntilReady();
 
-    // Bypass whitelist error
-    Memory::Write<uint32_t>(0x8268FF08, 0x60000000);
-
     InitRenderer();
+
+    ApplyPatches();
 
     InstallHooks();
 
@@ -142,6 +141,12 @@ void AlphaGhostsTitle::SV_ExecuteClientCommandHook(AlphaGhosts::Game::client_t *
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
         s_CurrentInstance->InMatch(false);
+}
+
+void AlphaGhostsTitle::ApplyPatches()
+{
+    // Bypass whitelist error
+    Memory::Write<uint32_t>(0x8268FF08, 0x60000000);
 }
 
 void AlphaGhostsTitle::InstallHooks()

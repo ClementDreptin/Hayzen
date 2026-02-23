@@ -15,6 +15,8 @@ private:
 
     static void SV_ExecuteClientCommandHook(AlphaGhosts::Game::client_t *client, const char *s, int fromOldServer);
 
+    void ApplyPatches();
+
     virtual void InstallHooks() override;
 
     virtual void InitRenderer() override;

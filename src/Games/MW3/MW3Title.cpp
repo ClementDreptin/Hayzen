@@ -19,6 +19,8 @@ MW3Title::MW3Title()
 
     InitRenderer();
 
+    ApplyPatches();
+
     InstallHooks();
 
     Xam::XNotify("Hayzen - MW3 Multiplayer Detected");
@@ -173,12 +175,16 @@ void MW3Title::SV_DropClientHook(MW3::Game::client_t *client, const char *reason
     s_DetourMap.at("SV_DropClient").GetOriginal<decltype(&SV_DropClientHook)>()(client, reason, tellThem);
 }
 
+void MW3Title::ApplyPatches()
+{
+    s_DetourMap["SV_DropClient"] = Detour(0x822C66A8, SV_DropClientHook);
+}
+
 void MW3Title::InstallHooks()
 {
     s_DetourMap["SCR_DrawScreenField"] = Detour(0x8217CF90, SCR_DrawScreenFieldHook);
     s_DetourMap["Scr_Notify"] = Detour(0x8226AF98, Scr_NotifyHook);
     s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822C78A0, SV_ExecuteClientCommandHook);
-    s_DetourMap["SV_DropClient"] = Detour(0x822C66A8, SV_DropClientHook);
 
     Title::InstallHooks();
 }

@@ -94,7 +94,7 @@ void AlphaGhostsTitle::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void AlphaGhostsTitle::Scr_NotifyHook(AlphaGhosts::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)

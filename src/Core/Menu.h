@@ -7,11 +7,11 @@ class Menu
 public:
     Menu();
 
+    Menu(const std::vector<OptionGroup> &optionGroups);
+
     inline bool Open() const { return m_Open; }
 
     inline void Open(bool open) { m_Open = open; }
-
-    void Init(const std::vector<OptionGroup> &optionGroups);
 
     void Update(Input::Gamepad *pGamepad);
 

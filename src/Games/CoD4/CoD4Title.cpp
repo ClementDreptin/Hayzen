@@ -108,7 +108,7 @@ void CoD4Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void CoD4Title::Scr_NotifyNumHook(int entNum, uint32_t classNum, uint32_t stringValue, uint32_t paramCount)

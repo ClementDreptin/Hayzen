@@ -67,7 +67,7 @@ void SpecOpsAlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 static bool hasJumped = false;

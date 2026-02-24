@@ -103,7 +103,7 @@ void AlphaMW2Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void AlphaMW2Title::Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)

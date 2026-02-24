@@ -104,7 +104,7 @@ void MW3Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)

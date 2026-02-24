@@ -16,10 +16,9 @@ Menu::Menu()
 {
 }
 
-void Menu::Init(const std::vector<OptionGroup> &optionGroups)
+Menu::Menu(const std::vector<OptionGroup> &optionGroups)
+    : m_Open(false), m_OptionGroups(optionGroups), m_CurrentOptionGroupIndex(0), m_CachedOptionGroupHeadersHeight(0.0f)
 {
-    m_OptionGroups = optionGroups;
-
     AddSettingsGroup();
 
     CalculateMenuDimensions();

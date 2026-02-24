@@ -102,7 +102,7 @@ void NX1Title::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void NX1Title::Scr_NotifyHook(NX1::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)

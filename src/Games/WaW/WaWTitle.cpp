@@ -113,7 +113,7 @@ void WaWTitle::InitMenu()
         optionGroups.emplace_back(OptionGroup("Input", options));
     }
 
-    m_Menu.Init(optionGroups);
+    m_Menu = Menu(optionGroups);
 }
 
 void WaWTitle::Scr_Notify(WaW::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)

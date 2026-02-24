@@ -13,7 +13,7 @@ public:
 
     inline void InMatch(bool inMatch) { m_InMatch = inMatch; }
 
-    inline static std::unordered_map<std::string, Detour> &GetDetourMap() { return s_DetourMap; }
+    inline static std::unordered_map<std::string, Detour> &GetDetourMap() { return s_CurrentInstance->m_DetourMap; }
 
     virtual void InitMenu() = 0;
 
@@ -22,13 +22,11 @@ protected:
 
     static Title *s_CurrentInstance;
 
-    static std::unordered_map<std::string, Detour> s_DetourMap;
+    std::unordered_map<std::string, Detour> m_DetourMap;
 
     static void SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI);
 
     virtual void InstallHooks();
-
-    void RemoveHooks();
 
     virtual void Update();
 

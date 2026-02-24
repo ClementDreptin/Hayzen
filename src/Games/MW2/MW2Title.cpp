@@ -31,8 +31,8 @@ void MW2Title::InitMenu()
     bool isFallDamageEnabled = Memory::Read<float>(0x82019C48) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820E1724) == 0x7D284B78;
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -107,10 +107,11 @@ void MW2Title::InitMenu()
 
 void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
-    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_Notify") != detourMap.end());
 
     // Call the original Scr_Notify function
-    s_DetourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
+    detourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.number;
@@ -146,10 +147,11 @@ void MW2Title::Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue
 
 void MW2Title::SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
-    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("SV_ExecuteClientCommand") != detourMap.end());
 
     // Call the original SV_ExecuteClientCommand function
-    s_DetourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
+    detourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
     int clientNum = client->gentity->state.number;
@@ -163,9 +165,9 @@ void MW2Title::SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const ch
 
 void MW2Title::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x82209710, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82253140, SV_ExecuteClientCommandHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x8214BEB8, SCR_DrawScreenFieldHook);
+    m_DetourMap["Scr_Notify"] = Detour(0x82209710, Scr_NotifyHook);
+    m_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82253140, SV_ExecuteClientCommandHook);
 
     Title::InstallHooks();
 }

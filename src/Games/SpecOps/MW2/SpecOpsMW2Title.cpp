@@ -29,8 +29,8 @@ void SpecOpsMW2Title::InitMenu()
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82331F48) == 0x7D284B78;
     float jumpHeightValue = SpecOpsMW2::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -73,10 +73,11 @@ static bool hasJumped = false;
 
 void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
 {
-    XASSERT(s_DetourMap.find("ClientCommand") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("ClientCommand") != detourMap.end());
 
     // Call the original ClientCommand function
-    s_DetourMap.at("ClientCommand").GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
+    detourMap.at("ClientCommand").GetOriginal<decltype(&ClientCommandHook)>()(clientNum, s);
 
     // Register when the user pressed the A button
     if (!strcmp(s, "n 7"))
@@ -113,8 +114,8 @@ void SpecOpsMW2Title::ClientCommandHook(int clientNum, const char *s)
 
 void SpecOpsMW2Title::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821354B0, SCR_DrawScreenFieldHook);
-    s_DetourMap["ClientCommand"] = Detour(0x821EFFD0, ClientCommandHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x821354B0, SCR_DrawScreenFieldHook);
+    m_DetourMap["ClientCommand"] = Detour(0x821EFFD0, ClientCommandHook);
 
     Title::InstallHooks();
 }

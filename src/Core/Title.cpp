@@ -6,7 +6,6 @@
 #include "Modules/InputRecorder.h"
 
 Title *Title::s_CurrentInstance = nullptr;
-std::unordered_map<std::string, Detour> Title::s_DetourMap;
 
 Title::Title()
     : m_InMatch(false)
@@ -24,7 +23,6 @@ Title::~Title()
 
     InputRecorder::Shutdown();
     Binds::Clear();
-    RemoveHooks();
 }
 
 void Title::Update()
@@ -59,10 +57,11 @@ void Title::Render()
 
 void Title::SCR_DrawScreenFieldHook(const int localClientNum, int refreshedUI)
 {
-    XASSERT(s_DetourMap.find("SCR_DrawScreenField") != s_DetourMap.end());
+    auto &detourMap = GetDetourMap();
+    XASSERT(detourMap.find("SCR_DrawScreenField") != detourMap.end());
 
     // Call the original SCR_DrawScreenField function
-    s_DetourMap.at("SCR_DrawScreenField").GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
+    detourMap.at("SCR_DrawScreenField").GetOriginal<decltype(&SCR_DrawScreenFieldHook)>()(localClientNum, refreshedUI);
 
     if (s_CurrentInstance != nullptr)
     {
@@ -76,7 +75,7 @@ void Title::InstallHooks()
 {
     HRESULT hr = S_OK;
 
-    for (auto it = s_DetourMap.begin(); it != s_DetourMap.end(); ++it)
+    for (auto it = m_DetourMap.begin(); it != m_DetourMap.end(); ++it)
     {
         hr = it->second.Install();
         if (FAILED(hr))
@@ -85,11 +84,6 @@ void Title::InstallHooks()
 
     if (FAILED(hr))
         AskToReboot();
-}
-
-void Title::RemoveHooks()
-{
-    s_DetourMap.clear();
 }
 
 void Title::InitRenderer()

@@ -33,8 +33,8 @@ void MW3Title::InitMenu()
     bool isFallDamageEnabled = Memory::Read<float>(0x82000C04) == 9999.0f;
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x820F63E4) == 0x7D495378;
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -109,10 +109,11 @@ void MW3Title::InitMenu()
 
 void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
-    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_Notify") != detourMap.end());
 
     // Call the original Scr_Notify function
-    s_DetourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
+    detourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.number;
@@ -148,10 +149,11 @@ void MW3Title::Scr_NotifyHook(MW3::Game::gentity_s *entity, uint16_t stringValue
 
 void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const char *s, int clientOK, int fromOldServer)
 {
-    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("SV_ExecuteClientCommand") != detourMap.end());
 
     // Call the original SV_ExecuteClientCommand function
-    s_DetourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
+    detourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, clientOK, fromOldServer);
 
     // If the client is not host, no need to go further
     int clientNum = client->gentity->state.number;
@@ -165,26 +167,27 @@ void MW3Title::SV_ExecuteClientCommandHook(MW3::Game::client_t *client, const ch
 
 void MW3Title::SV_DropClientHook(MW3::Game::client_t *client, const char *reason, bool tellThem)
 {
-    XASSERT(s_DetourMap.find("SV_DropClient") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("SV_DropClient") != detourMap.end());
 
     // Prevent bots from timing out
     if (client->bIsTestClient == 1)
         return;
 
     // Call the original SV_DropClient function
-    s_DetourMap.at("SV_DropClient").GetOriginal<decltype(&SV_DropClientHook)>()(client, reason, tellThem);
+    detourMap.at("SV_DropClient").GetOriginal<decltype(&SV_DropClientHook)>()(client, reason, tellThem);
 }
 
 void MW3Title::ApplyPatches()
 {
-    s_DetourMap["SV_DropClient"] = Detour(0x822C66A8, SV_DropClientHook);
+    m_DetourMap["SV_DropClient"] = Detour(0x822C66A8, SV_DropClientHook);
 }
 
 void MW3Title::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x8217CF90, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x8226AF98, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822C78A0, SV_ExecuteClientCommandHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x8217CF90, SCR_DrawScreenFieldHook);
+    m_DetourMap["Scr_Notify"] = Detour(0x8226AF98, Scr_NotifyHook);
+    m_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822C78A0, SV_ExecuteClientCommandHook);
 
     Title::InstallHooks();
 }

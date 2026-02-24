@@ -33,8 +33,8 @@ void AlphaGhostsTitle::InitMenu()
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x823A1234) == 0x60000000;
     float jumpHeightValue = AlphaGhosts::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -99,10 +99,11 @@ void AlphaGhostsTitle::InitMenu()
 
 void AlphaGhostsTitle::Scr_NotifyHook(AlphaGhosts::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
-    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_Notify") != detourMap.end());
 
     // Call the original Scr_Notify function
-    s_DetourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
+    detourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_NotifyHook)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.clientNum;
@@ -133,10 +134,11 @@ void AlphaGhostsTitle::Scr_NotifyHook(AlphaGhosts::Game::gentity_s *entity, uint
 
 void AlphaGhostsTitle::SV_ExecuteClientCommandHook(AlphaGhosts::Game::client_t *client, const char *s, int fromOldServer)
 {
-    XASSERT(s_DetourMap.find("SV_ExecuteClientCommand") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("SV_ExecuteClientCommand") != detourMap.end());
 
     // Call the original SV_ExecuteClientCommand function
-    s_DetourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, fromOldServer);
+    detourMap.at("SV_ExecuteClientCommand").GetOriginal<decltype(&SV_ExecuteClientCommandHook)>()(client, s, fromOldServer);
 
     // Stop the menu when the game ends
     if (!strcmp(s, "matchdatadone"))
@@ -151,9 +153,9 @@ void AlphaGhostsTitle::ApplyPatches()
 
 void AlphaGhostsTitle::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x82486110, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x8263B778, Scr_NotifyHook);
-    s_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82765210, SV_ExecuteClientCommandHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x82486110, SCR_DrawScreenFieldHook);
+    m_DetourMap["Scr_Notify"] = Detour(0x8263B778, Scr_NotifyHook);
+    m_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82765210, SV_ExecuteClientCommandHook);
 
     Title::InstallHooks();
 }

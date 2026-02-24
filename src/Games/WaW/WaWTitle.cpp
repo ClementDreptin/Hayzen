@@ -35,8 +35,8 @@ void WaWTitle::InitMenu()
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82146150) == 0x60000000;
     float jumpHeightValue = WaW::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -118,10 +118,11 @@ void WaWTitle::InitMenu()
 
 void WaWTitle::Scr_Notify(WaW::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount)
 {
-    XASSERT(s_DetourMap.find("Scr_Notify") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_Notify") != detourMap.end());
 
     // Call the original Scr_Notify function
-    s_DetourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_Notify)>()(entity, stringValue, paramCount);
+    detourMap.at("Scr_Notify").GetOriginal<decltype(&Scr_Notify)>()(entity, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entity->state.number;
@@ -160,10 +161,11 @@ void WaWTitle::Scr_Notify(WaW::Game::gentity_s *entity, uint16_t stringValue, ui
 
 void WaWTitle::G_ShutdownGameHook(bool freeScripts)
 {
-    XASSERT(s_DetourMap.find("G_ShutdownGame") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("G_ShutdownGame") != detourMap.end());
 
     // Call the original G_ShutdownGame function
-    s_DetourMap.at("G_ShutdownGame").GetOriginal<decltype(&G_ShutdownGameHook)>()(freeScripts);
+    detourMap.at("G_ShutdownGame").GetOriginal<decltype(&G_ShutdownGameHook)>()(freeScripts);
 
     // Stop the menu when the game ends
     // freeScripts is true when going back to the lobby and it's false when a round ends
@@ -174,10 +176,11 @@ void WaWTitle::G_ShutdownGameHook(bool freeScripts)
 
 char *WaWTitle::Scr_AddSourceBufferHook(uint32_t scriptInstance, const char *filename, const char *extFilename, const char *codePos, bool archive)
 {
-    XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_AddSourceBuffer") != detourMap.end());
 
     // Call the original Scr_AddSourceBuffer function
-    char *result = s_DetourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(scriptInstance, filename, extFilename, codePos, archive);
+    char *result = detourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(scriptInstance, filename, extFilename, codePos, archive);
 
     // Modify _gameobjects.gsc
     if (!strcmp(extFilename, "maps/mp/gametypes/_gameobjects.gsc"))
@@ -206,14 +209,14 @@ void WaWTitle::ApplyPatches()
         "	// PATCH: By appending 'hq' to the list of allowed gamemodes, we always allow HQ tables to spawn\n"
         "	allowed[allowed.size] = \"hq\";\n";
 
-    s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x82339EF8, Scr_AddSourceBufferHook);
+    m_DetourMap["Scr_AddSourceBuffer"] = Detour(0x82339EF8, Scr_AddSourceBufferHook);
 }
 
 void WaWTitle::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x821BF188, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_Notify"] = Detour(0x82254180, Scr_Notify);
-    s_DetourMap["G_ShutdownGame"] = Detour(0x82220C80, G_ShutdownGameHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x821BF188, SCR_DrawScreenFieldHook);
+    m_DetourMap["Scr_Notify"] = Detour(0x82254180, Scr_Notify);
+    m_DetourMap["G_ShutdownGame"] = Detour(0x82220C80, G_ShutdownGameHook);
 
     Title::InstallHooks();
 }

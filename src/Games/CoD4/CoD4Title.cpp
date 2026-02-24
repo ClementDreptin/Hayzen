@@ -35,8 +35,8 @@ void CoD4Title::InitMenu()
     bool isUnlimitedAmmoEnabled = Memory::Read<uint32_t>(0x82332088) == 0x60000000;
     float jumpHeightValue = CoD4::Game::Dvar_GetFloat("jump_height");
     bool goThroughInvisibleBarriersEnabled =
-        s_DetourMap.find("PM_CheckLadderMove") != s_DetourMap.end() &&
-        s_DetourMap.find("PmoveSingle") != s_DetourMap.end();
+        m_DetourMap.find("PM_CheckLadderMove") != m_DetourMap.end() &&
+        m_DetourMap.find("PmoveSingle") != m_DetourMap.end();
 
     // Main section
     {
@@ -113,10 +113,11 @@ void CoD4Title::InitMenu()
 
 void CoD4Title::Scr_NotifyNumHook(int entNum, uint32_t classNum, uint32_t stringValue, uint32_t paramCount)
 {
-    XASSERT(s_DetourMap.find("Scr_NotifyNum") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_NotifyNum") != detourMap.end());
 
     // Call the original Scr_NotifyNum function
-    s_DetourMap.at("Scr_NotifyNum").GetOriginal<decltype(&Scr_NotifyNumHook)>()(entNum, classNum, stringValue, paramCount);
+    detourMap.at("Scr_NotifyNum").GetOriginal<decltype(&Scr_NotifyNumHook)>()(entNum, classNum, stringValue, paramCount);
 
     // If the client is not host, no need to go further
     int clientNum = entNum;
@@ -152,10 +153,11 @@ void CoD4Title::Scr_NotifyNumHook(int entNum, uint32_t classNum, uint32_t string
 
 void CoD4Title::G_ShutdownGameHook(bool freeScripts)
 {
-    XASSERT(s_DetourMap.find("G_ShutdownGame") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("G_ShutdownGame") != detourMap.end());
 
     // Call the original G_ShutdownGame function
-    s_DetourMap.at("G_ShutdownGame").GetOriginal<decltype(&G_ShutdownGameHook)>()(freeScripts);
+    detourMap.at("G_ShutdownGame").GetOriginal<decltype(&G_ShutdownGameHook)>()(freeScripts);
 
     // Stop the menu when the game ends
     // freeScripts is true when going back to the lobby and it's false when a round ends
@@ -166,10 +168,11 @@ void CoD4Title::G_ShutdownGameHook(bool freeScripts)
 
 char *CoD4Title::Scr_AddSourceBufferHook(const char *filename, const char *extFilename, const char *codePos, bool archive)
 {
-    XASSERT(s_DetourMap.find("Scr_AddSourceBuffer") != s_DetourMap.end());
+    auto &detourMap = Title::GetDetourMap();
+    XASSERT(detourMap.find("Scr_AddSourceBuffer") != detourMap.end());
 
     // Call the original Scr_AddSourceBuffer function
-    char *result = s_DetourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(filename, extFilename, codePos, archive);
+    char *result = detourMap.at("Scr_AddSourceBuffer").GetOriginal<decltype(&Scr_AddSourceBufferHook)>()(filename, extFilename, codePos, archive);
 
     // Modify _gameobjects.gsc
     if (!strcmp(extFilename, "maps/mp/gametypes/_gameobjects.gsc"))
@@ -204,14 +207,14 @@ void CoD4Title::ApplyPatches()
         "	// PATCH: By appending 'hq' to the list of allowed gamemodes, we always allow HQ crates to spawn\n"
         "	allowed[allowed.size] = \"hq\";\n";
 
-    s_DetourMap["Scr_AddSourceBuffer"] = Detour(0x822212C0, Scr_AddSourceBufferHook);
+    m_DetourMap["Scr_AddSourceBuffer"] = Detour(0x822212C0, Scr_AddSourceBufferHook);
 }
 
 void CoD4Title::InstallHooks()
 {
-    s_DetourMap["SCR_DrawScreenField"] = Detour(0x822C9D50, SCR_DrawScreenFieldHook);
-    s_DetourMap["Scr_NotifyNum"] = Detour(0x82217890, Scr_NotifyNumHook);
-    s_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
+    m_DetourMap["SCR_DrawScreenField"] = Detour(0x822C9D50, SCR_DrawScreenFieldHook);
+    m_DetourMap["Scr_NotifyNum"] = Detour(0x82217890, Scr_NotifyNumHook);
+    m_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
 
     Title::InstallHooks();
 }

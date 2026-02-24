@@ -179,6 +179,8 @@ void Menu::CalculateMenuDimensions()
 
 void Menu::RenderControlsTexts()
 {
+    XASSERT(g_pPlugin != nullptr);
+
     float yOffset = 10.0f;
     float fontScale = 0.8f;
     float padding = g_Config.Padding * fontScale;

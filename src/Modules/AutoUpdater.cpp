@@ -343,6 +343,8 @@ static std::string GetFinalDownloadUrl(const std::string &url)
 
 static HRESULT ReadBodyToFile(Socket &socket)
 {
+    XASSERT(g_pPlugin != nullptr);
+
     NTSTATUS status = STATUS_SUCESS;
 
     // This is an NT device path, which means we need to use the kernel functions to
@@ -500,6 +502,8 @@ static void DisplaySuccessMessageBox(const std::string &latestVersion)
 
 HRESULT Run()
 {
+    XASSERT(g_pPlugin != nullptr);
+
     HRESULT hr = S_OK;
 
     // Get information about the latest version available on GitHub

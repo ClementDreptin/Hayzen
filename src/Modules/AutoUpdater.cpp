@@ -74,7 +74,7 @@ static const uint8_t s_SectigoRSA_E[] = {
     0x01, 0x00, 0x01
 };
 
-static std::string GetVersionNameFromBody(const std::string &body)
+static std::string GetVersionFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
@@ -105,7 +105,7 @@ static std::string GetVersionNameFromBody(const std::string &body)
     if (FAILED(hr))
     {
         DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
+            "[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON: %X.",
             versionKey.c_str(),
             hr
         );
@@ -211,7 +211,7 @@ static HRESULT ConnectToGitHub(Socket &socket)
 
 struct LatestVersion
 {
-    std::string Name;
+    std::string Number;
     std::string DownloadUrl;
 };
 
@@ -252,8 +252,8 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
         return E_FAIL;
 
     // Get the version from the body
-    std::string versionName = GetVersionNameFromBody(body);
-    if (versionName.empty())
+    std::string version = GetVersionFromBody(body);
+    if (version.empty())
         return E_FAIL;
 
     // Get the URL of the latest binary
@@ -261,7 +261,7 @@ static HRESULT GetLatestVersion(LatestVersion &latestVersion)
     if (downloadUrl.empty())
         return E_FAIL;
 
-    latestVersion.Name = versionName;
+    latestVersion.Number = version;
     latestVersion.DownloadUrl = downloadUrl;
 
     return hr;
@@ -509,12 +509,12 @@ HRESULT Run()
         return hr;
 
     // If we're up to date, stop here
-    std::string currentVersionName = g_pPlugin->GetVersion();
-    if (currentVersionName == latestVersion.Name)
+    std::string currentVersion = g_pPlugin->GetVersion();
+    if (currentVersion == latestVersion.Number)
         return hr;
 
     // Ask the user if they want to download the latest version
-    bool wantsToDownload = AskToDownload(currentVersionName, latestVersion.Name);
+    bool wantsToDownload = AskToDownload(currentVersion, latestVersion.Number);
     if (!wantsToDownload)
         return hr;
 
@@ -535,7 +535,7 @@ HRESULT Run()
     }
 
     // Let the user know everything succeeded
-    DisplaySuccessMessageBox(latestVersion.Name);
+    DisplaySuccessMessageBox(latestVersion.Number);
 
     return hr;
 }

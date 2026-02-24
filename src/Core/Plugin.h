@@ -10,6 +10,10 @@ public:
 
     ~Plugin();
 
+    HRESULT Init();
+
+    void Run();
+
     std::string GetName();
 
     Fs::Path GetFullPath();
@@ -20,15 +24,10 @@ public:
 
 private:
     HANDLE m_Handle;
-    HANDLE m_RunThreadHandle;
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
     NotificationPatcher m_NotificationPatcher;
-
-    HRESULT Init();
-
-    static uint32_t Run(Plugin *This);
 
     void InitNewTitle(uint32_t newTitleId);
 

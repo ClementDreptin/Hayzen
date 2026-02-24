@@ -32,14 +32,6 @@ typedef enum _TitleId
 Plugin::Plugin(HANDLE pluginHandle)
     : m_Handle(pluginHandle), m_Running(true), m_CurrentTitleId(0), m_pCurrentTitle(nullptr)
 {
-    // Start the main loop in a separate thread.
-    // We use the extended version of Thread to create a thread that won't get stopped
-    // when another game is launched.
-    m_RunThreadHandle = ThreadEx(
-        reinterpret_cast<PTHREAD_START_ROUTINE>(Run),
-        this,
-        EXCREATETHREAD_FLAG_SYSTEM
-    );
 }
 
 Plugin::~Plugin()
@@ -52,10 +44,43 @@ Plugin::~Plugin()
 
     // Cleanup the currently running title
     delete m_pCurrentTitle;
+}
 
-    // Wait for the run thread to finish
-    WaitForSingleObject(m_RunThreadHandle, INFINITE);
-    CloseHandle(m_RunThreadHandle);
+HRESULT Plugin::Init()
+{
+    // Check if we're running in a supported environment
+    bool onSupportedKernel = CheckKernelVersion();
+    if (!onSupportedKernel)
+        return E_FAIL;
+
+    // Setup config.
+    // We explicit discard potential errors because the config isn't absolutely necessary
+    // to use the plugin
+    CreateConfig();
+
+    // Enable debug builds if needed
+    if (g_Config.AllowDebugBuilds && !IsDevkit())
+    {
+        HRESULT hr = DebugEnabler::Enable();
+        if (FAILED(hr))
+            Xam::XNotify("Couldn't enable debug builds", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
+    }
+
+    // Run the auto updater if needed
+    if (g_Config.AutoUpdate)
+        AutoUpdater::Run();
+
+    return S_OK;
+}
+
+void Plugin::Run()
+{
+    while (m_Running)
+    {
+        uint32_t newTitleId = XamGetCurrentTitleId();
+        if (newTitleId != m_CurrentTitleId)
+            InitNewTitle(newTitleId);
+    }
 }
 
 std::string Plugin::GetName()
@@ -99,49 +124,6 @@ HRESULT Plugin::SaveConfig()
     }
 
     return g_Config.SaveToDisk();
-}
-
-HRESULT Plugin::Init()
-{
-    // Check if we're running in a supported environment
-    bool onSupportedKernel = CheckKernelVersion();
-    if (!onSupportedKernel)
-        return E_FAIL;
-
-    // Setup config.
-    // We explicit discard potential errors because the config isn't absolutely necessary
-    // to use the plugin
-    CreateConfig();
-
-    // Enable debug builds if needed
-    if (g_Config.AllowDebugBuilds && !IsDevkit())
-    {
-        HRESULT hr = DebugEnabler::Enable();
-        if (FAILED(hr))
-            Xam::XNotify("Couldn't enable debug builds", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
-    }
-
-    // Run the auto updater if needed
-    if (g_Config.AutoUpdate)
-        AutoUpdater::Run();
-
-    return S_OK;
-}
-
-uint32_t Plugin::Run(Plugin *This)
-{
-    HRESULT hr = This->Init();
-    if (FAILED(hr))
-        return 1;
-
-    while (This->m_Running)
-    {
-        uint32_t newTitleId = XamGetCurrentTitleId();
-        if (newTitleId != This->m_CurrentTitleId)
-            This->InitNewTitle(newTitleId);
-    }
-
-    return 0;
 }
 
 void Plugin::InitNewTitle(uint32_t newTitleId)

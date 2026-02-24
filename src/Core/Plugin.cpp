@@ -14,7 +14,6 @@
 #include "Games/WaW/WaWTitle.h"
 #include "Modules/AutoUpdater.h"
 #include "Modules/DebugEnabler.h"
-#include "Modules/NotificationPatcher.h"
 
 Config g_Config("hdd:\\Hayzen.ini");
 
@@ -50,9 +49,6 @@ Plugin::~Plugin()
     // Disable debug builds if needed
     if (g_Config.AllowDebugBuilds && !IsDevkit())
         DebugEnabler::Disable();
-
-    // Unload the notification patch
-    NotificationPatcher::Disable();
 
     // Cleanup the currently running title
     delete m_pCurrentTitle;
@@ -94,7 +90,7 @@ std::string Plugin::GetVersion()
 HRESULT Plugin::SaveConfig()
 {
     // It is necessary mount the HDD again because this function might get called from a game
-    // which my not have the HDD mounted
+    // which may not have the HDD mounted
     HRESULT hr = Fs::MountHdd();
     if (FAILED(hr) && hr != STATUS_OBJECT_NAME_COLLISION)
     {
@@ -116,9 +112,6 @@ HRESULT Plugin::Init()
     // We explicit discard potential errors because the config isn't absolutely necessary
     // to use the plugin
     CreateConfig();
-
-    // Allow notifications to be displayed from system threads
-    NotificationPatcher::Enable();
 
     // Enable debug builds if needed
     if (g_Config.AllowDebugBuilds && !IsDevkit())

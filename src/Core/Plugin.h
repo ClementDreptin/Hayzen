@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Title.h"
+#include "Modules/NotificationPatcher.h"
 
 class Plugin
 {
@@ -23,6 +24,7 @@ private:
     bool m_Running;
     uint32_t m_CurrentTitleId;
     Title *m_pCurrentTitle;
+    NotificationPatcher m_NotificationPatcher;
 
     HRESULT Init();
 

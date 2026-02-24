@@ -5,11 +5,16 @@
 // The same patch is usually applied by RPC servers (JRPC2, XDRPC, etc.) and most RGH/Jtag users have one loaded,
 // but most Devkit and BadUpdate users don't, so this module makes sure notifications work for everyone.
 
-namespace NotificationPatcher
+class NotificationPatcher
 {
+public:
+    NotificationPatcher();
 
-void Enable();
+    ~NotificationPatcher();
 
-void Disable();
+private:
+    uint16_t m_DefaultInstruction;
 
-}
+    static const uintptr_t s_RetailPatchAddress = 0x816A3158;
+    static const uintptr_t s_DevkitPatchAddress = 0x817619DC;
+};

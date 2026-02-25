@@ -127,4 +127,6 @@ void Config::Reset()
     Y = 150.0f;
     Color = D3DCOLOR_XRGB(210, 20, 20);
     DisplayControlsTexts = true;
+    AllowDebugBuilds = true;
+    AutoUpdate = true;
 }

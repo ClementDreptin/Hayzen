@@ -231,7 +231,7 @@ bool Menu::ToggleDebugBuilds(bool enabled)
 
 bool Menu::SaveSettings()
 {
-    HRESULT hr = g_pPlugin->SaveConfig();
+    HRESULT hr = g_Config.SaveToDisk();
     bool success = SUCCEEDED(hr);
 
     if (success)

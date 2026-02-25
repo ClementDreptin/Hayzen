@@ -112,20 +112,6 @@ std::string Plugin::GetVersion()
     );
 }
 
-HRESULT Plugin::SaveConfig()
-{
-    // It is necessary mount the HDD again because this function might get called from a game
-    // which may not have the HDD mounted
-    HRESULT hr = Fs::MountHdd();
-    if (FAILED(hr) && hr != STATUS_OBJECT_NAME_COLLISION)
-    {
-        DebugPrint("[Hayzen][Config]: Error: Couldn't mount HDD: %X.", hr);
-        return hr;
-    }
-
-    return g_Config.SaveToDisk();
-}
-
 void Plugin::InitNewTitle(uint32_t newTitleId)
 {
     // Clean up what previous game may have left out

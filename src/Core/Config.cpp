@@ -41,6 +41,15 @@ HRESULT Config::SaveToDisk()
     m_Structure["color"]["b"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETBLUE(Color)));
     m_Structure["color"]["a"] = std::to_string(static_cast<uint64_t>(D3DCOLOR_GETALPHA(Color)));
 
+    // It is necessary mount the HDD again because this function might get called from a game
+    // which may not have the HDD mounted
+    HRESULT hr = Fs::MountHdd();
+    if (FAILED(hr) && hr != STATUS_OBJECT_NAME_COLLISION)
+    {
+        DebugPrint("[Hayzen][Config]: Error: Couldn't mount HDD: %X.", hr);
+        return hr;
+    }
+
     bool success = m_File.generate(m_Structure);
 
 #ifndef NDEBUG

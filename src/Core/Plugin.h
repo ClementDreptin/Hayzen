@@ -20,8 +20,6 @@ public:
 
     std::string GetVersion();
 
-    HRESULT SaveConfig();
-
 private:
     HANDLE m_Handle;
     bool m_Running;

@@ -127,12 +127,8 @@ static bool LoadPosition()
     return true;
 }
 
-bool ToggleSaveLoadBinds(void *pParameters)
+bool ToggleSaveLoadBinds(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     if (enabled)
     {
         Cbuf_AddText(0, "unbind button_lshldr;unbind button_rshldr");
@@ -167,12 +163,8 @@ static bool ToggleUfo()
     return true;
 }
 
-bool ToggleUfoBind(void *pParameters)
+bool ToggleUfoBind(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     if (enabled)
     {
         Cbuf_AddText(0, "unbind dpad_up");
@@ -189,12 +181,8 @@ bool ToggleUfoBind(void *pParameters)
     return true;
 }
 
-bool RecordInput(void *pParameters)
+bool RecordInput(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     int clientNum = Context::ClientNum;
 
     if (enabled)
@@ -222,12 +210,8 @@ static bool ReplayInput()
     return true;
 }
 
-bool ToggleReplayInputBind(void *pParameters)
+bool ToggleReplayInputBind(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     if (enabled)
     {
         Binds::Add(XINPUT_GAMEPAD_DPAD_DOWN, ReplayInput);

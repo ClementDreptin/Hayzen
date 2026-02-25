@@ -10,12 +10,12 @@ SelectOption::SelectOption()
 }
 
 SelectOption::SelectOption(const std::string &name, const std::vector<std::string> &options)
-    : Option(name, nullptr), m_Options(options), m_CurrentOptionIndex(0)
+    : Option(name), m_Options(options), m_CurrentOptionIndex(0)
 {
 }
 
 SelectOption::SelectOption(const std::string &name, const std::vector<std::string> &options, Callback callback)
-    : Option(name, callback), m_Options(options), m_CurrentOptionIndex(0)
+    : Option(name), m_Callback(callback), m_Options(options), m_CurrentOptionIndex(0)
 {
 }
 
@@ -36,7 +36,7 @@ bool SelectOption::Update(Input::Gamepad *pGamepad)
         // If there is a callback, only update the option index if the call succeeds
         if (m_Callback != nullptr)
         {
-            bool success = m_Callback(&newOptionIndex);
+            bool success = m_Callback(newOptionIndex);
             if (success)
                 m_CurrentOptionIndex = newOptionIndex;
         }
@@ -55,7 +55,7 @@ bool SelectOption::Update(Input::Gamepad *pGamepad)
         // If there is a callback, only update the option index if the call succeeds
         if (m_Callback != nullptr)
         {
-            bool success = m_Callback(&newOptionIndex);
+            bool success = m_Callback(newOptionIndex);
             if (success)
                 m_CurrentOptionIndex = newOptionIndex;
         }

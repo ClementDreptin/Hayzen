@@ -12,13 +12,13 @@ RangeOption<T>::RangeOption()
 
 template<typename T>
 RangeOption<T>::RangeOption(const std::string &name, const ValueOrPtr<T> &value, T min, T max, T step)
-    : Option(name, nullptr), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
+    : Option(name), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
 {
 }
 
 template<typename T>
 RangeOption<T>::RangeOption(const std::string &name, Callback callback, const ValueOrPtr<T> &value, T min, T max, T step)
-    : Option(name, callback), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
+    : Option(name), m_Callback(callback), m_Min(min), m_Max(max), m_Step(step), m_Current(value)
 {
 }
 
@@ -41,7 +41,7 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
 
         if (m_Callback != nullptr)
         {
-            bool success = m_Callback(&newValue);
+            bool success = m_Callback(newValue);
             if (success)
                 m_Current = newValue;
         }
@@ -62,7 +62,7 @@ bool RangeOption<T>::Update(Input::Gamepad *pGamepad)
         // If there is a callback, only update the value if the call succeeds
         if (m_Callback != nullptr)
         {
-            bool success = m_Callback(&newValue);
+            bool success = m_Callback(newValue);
             if (success)
                 m_Current = newValue;
         }

@@ -5,6 +5,8 @@
 class ToggleOption : public Option
 {
 public:
+    typedef std::function<bool(bool)> Callback;
+
     ToggleOption();
 
     ToggleOption(const std::string &name, const ValueOrPtr<bool> &active);
@@ -16,5 +18,6 @@ public:
     virtual void Render(float x, float y, float width) override;
 
 private:
+    Callback m_Callback;
     ValueOrPtr<bool> m_Active;
 };

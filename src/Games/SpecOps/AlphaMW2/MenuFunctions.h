@@ -3,24 +3,24 @@
 namespace SpecOpsAlphaMW2
 {
 
-bool ToggleGodMode(void *pParameters);
+bool ToggleGodMode(bool enabled);
 
-bool ToggleAmmo(void *pParameters);
+bool ToggleAmmo(bool enabled);
 
-bool ChangeJumpHeight(void *pParameters);
+bool ChangeJumpHeight(uint32_t value);
 
-bool ToggleReplayInputBind(void *pParameters);
+bool ToggleReplayInputBind(bool enabled);
 
-bool ToggleSaveLoadBinds(void *pParameters);
+bool ToggleSaveLoadBinds(bool enabled);
 
-bool ToggleUfoBind(void *pParameters);
+bool ToggleUfoBind(bool enabled);
 
-bool ToggleSecondPlayerGodMode(void *pParameters);
+bool ToggleSecondPlayerGodMode(bool enabled);
 
-bool TeleportSecondPlayerToMe(void *);
+void TeleportSecondPlayerToMe();
 
-bool GoThroughInvisibleBarriers(void *pParameters);
+bool GoThroughInvisibleBarriers(bool enabled);
 
-bool RecordInput(void *pParameters);
+bool RecordInput(bool enabled);
 
 }

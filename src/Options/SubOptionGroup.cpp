@@ -10,7 +10,7 @@ SubOptionGroup::SubOptionGroup()
 }
 
 SubOptionGroup::SubOptionGroup(const std::string &name, const std::vector<std::shared_ptr<Option>> &options)
-    : Option(name, nullptr), m_Open(false), m_OptionGroup(OptionGroup(options))
+    : Option(name), m_Open(false), m_OptionGroup(OptionGroup(options))
 {
 }
 

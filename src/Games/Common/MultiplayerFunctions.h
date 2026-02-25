@@ -6,12 +6,8 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-bool ToggleGodModeMP(void *pParameters)
+bool ToggleGodModeMP(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     gentity_s *pPlayerEntity = GetEntity(Context::ClientNum);
     XASSERT(pPlayerEntity != nullptr);
 
@@ -23,19 +19,16 @@ bool ToggleGodModeMP(void *pParameters)
     return true;
 }
 
-bool ToggleFallDamage(void *pParameters, uintptr_t patchAddress)
+bool ToggleFallDamage(bool enabled, uintptr_t patchAddress)
 {
-    XASSERT(pParameters != nullptr);
     XASSERT(patchAddress != 0);
-
-    bool enabled = Memory::Read<bool>(pParameters);
 
     Memory::Write<float>(patchAddress, enabled ? 9999.0f : 128.0f);
 
     return true;
 }
 
-static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
+static void SpawnCrate(const vec3 &origin, const vec3 &angles)
 {
     int clientNum = Context::ClientNum;
 
@@ -45,7 +38,7 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     if (!pCurrentMapCrateBrushModel)
     {
         iPrintLn(clientNum, "^1You cannot spawn a Crate on this map!");
-        return false;
+        return;
     }
 
     // Spawn a crate and place it at origin and facing angles
@@ -102,11 +95,9 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     pEntity->r.contents = contents;
     SV_LinkEntity(pEntity);
 #endif
-
-    return true;
 }
 
-bool SpawnCrate()
+void SpawnCrate()
 {
     int clientNum = Context::ClientNum;
 
@@ -126,10 +117,10 @@ bool SpawnCrate()
     crateOrigin.z += Context::CrateHeight;
     vec3 crateAngles = vec3(0.0f, playerViewY + Context::CrateAngle, 0.0f);
 
-    return SpawnCrate(crateOrigin, crateAngles);
+    SpawnCrate(crateOrigin, crateAngles);
 }
 
-bool SpawnBlocker()
+void SpawnBlocker()
 {
     int clientNum = Context::ClientNum;
 
@@ -148,14 +139,12 @@ bool SpawnBlocker()
     crateOrigin.z += 40.0f;
     vec3 crateAngles = vec3(90.0f, playerViewY, 0.0f);
 
-    return SpawnCrate(crateOrigin, crateAngles);
+    SpawnCrate(crateOrigin, crateAngles);
 }
 
-bool ChangeCratePositionPresets(void *pParameters)
+bool ChangeCratePositionPresets(size_t index)
 {
-    XASSERT(pParameters != nullptr);
-
-    CratePositionPresets positionPresets = Memory::Read<CratePositionPresets>(pParameters);
+    CratePositionPresets positionPresets = static_cast<CratePositionPresets>(index);
 
     switch (positionPresets)
     {
@@ -187,11 +176,9 @@ typedef enum _CrateOrientation
     CrateOrientation_RightStrafe,
 } CrateOrientation;
 
-bool ChangeCrateOrientation(void *pParameters)
+bool ChangeCrateOrientation(size_t index)
 {
-    XASSERT(pParameters != nullptr);
-
-    CrateOrientation orientation = Memory::Read<CrateOrientation>(pParameters);
+    CrateOrientation orientation = static_cast<CrateOrientation>(index);
 
     switch (orientation)
     {
@@ -249,7 +236,7 @@ struct SpawnBotOptions
     uintptr_t ClientsBaseAddress;
 };
 
-bool TeleportBotToMe();
+void TeleportBotToMe();
 
 uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
 {
@@ -307,7 +294,7 @@ uint32_t SpawnBotThread(SpawnBotOptions *pOptions)
     return 0;
 }
 
-bool SpawnBot(SpawnBotOptions *pOptions)
+void SpawnBot(SpawnBotOptions *pOptions)
 {
     XASSERT(pOptions != nullptr);
 
@@ -317,7 +304,7 @@ bool SpawnBot(SpawnBotOptions *pOptions)
     if (pBot != nullptr)
     {
         iPrintLn(Context::ClientNum, "^1There is already a bot in the game!");
-        return false;
+        return;
     }
 
     pBot = SV_AddTestClient();
@@ -327,11 +314,9 @@ bool SpawnBot(SpawnBotOptions *pOptions)
     // wait between certain operations. If this wasn't done on a separate thread, it
     // would block the game's thread and make it crash.
     Thread(reinterpret_cast<PTHREAD_START_ROUTINE>(SpawnBotThread), pOptions);
-
-    return true;
 }
 
-bool TeleportBotToMe()
+void TeleportBotToMe()
 {
     int clientNum = Context::ClientNum;
 
@@ -341,7 +326,7 @@ bool TeleportBotToMe()
     if (pBot == nullptr)
     {
         iPrintLn(clientNum, "^1There is no bot in the game!");
-        return false;
+        return;
     }
 
     // Get the player's current position and viewY
@@ -354,16 +339,10 @@ bool TeleportBotToMe()
     float distance = 100.0f;
     vec3 newOrigin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
     SetClientOrigin(pBot, reinterpret_cast<const float *>(&newOrigin));
-
-    return true;
 }
 
-bool ToggleBotMovement(void *pParameters)
+bool ToggleBotMovement(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     int clientNum = Context::ClientNum;
 
     gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);
@@ -380,12 +359,8 @@ bool ToggleBotMovement(void *pParameters)
     return true;
 }
 
-bool ToggleBotAttack(void *pParameters)
+bool ToggleBotAttack(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     int clientNum = Context::ClientNum;
 
     gentity_s *pBot = static_cast<gentity_s *>(Context::pBotEntity);

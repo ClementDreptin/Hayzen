@@ -3,13 +3,11 @@
 class Option
 {
 public:
-    typedef std::function<bool(void *)> Callback;
-
     Option();
 
     virtual ~Option() {}
 
-    Option(const std::string &name, Callback callback);
+    Option(const std::string &name);
 
     inline const std::string &GetName() const { return m_Name; }
 
@@ -25,7 +23,6 @@ public:
 
 protected:
     std::string m_Name;
-    Callback m_Callback;
     bool m_IsSelected;
 
     mutable float m_CachedMinWidth;

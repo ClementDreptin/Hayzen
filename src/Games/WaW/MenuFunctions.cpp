@@ -20,19 +20,15 @@ using namespace WaW::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_WAW
 
-bool WaW::ToggleGodMode(void *pParameters)
+bool WaW::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(enabled);
 }
 
-bool WaW::ToggleFallDamage(void *pParameters)
+bool WaW::ToggleFallDamage(bool enabled)
 {
     // For WaW we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -48,12 +44,8 @@ bool WaW::ToggleFallDamage(void *pParameters)
     return true;
 }
 
-bool WaW::ToggleAmmo(void *pParameters)
+bool WaW::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x82146150;
@@ -63,26 +55,18 @@ bool WaW::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool WaW::ChangeJumpHeight(void *pParameters)
+bool WaW::ChangeJumpHeight(uint32_t value)
 {
     // For WaW changing the constant dvar value doesn't work
     // so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     SetClientDvar(-1, "jump_height", std::to_string(static_cast<uint64_t>(value)));
 
     return true;
 }
 
-bool WaW::GoThroughInvisibleBarriers(void *pParameters)
+bool WaW::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x8213E938;
@@ -91,12 +75,8 @@ bool WaW::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool WaW::ToggleUncappedBounces(void *pParameters)
+bool WaW::ToggleUncappedBounces(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     SetClientDvar(-1, "player_bayonetLaunchProof", enabled ? "0" : "1");
 
     return true;
@@ -104,7 +84,7 @@ bool WaW::ToggleUncappedBounces(void *pParameters)
 
 #define GAME_WAW
 
-static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
+static void SpawnCrate(const vec3 &origin, const vec3 &angles)
 {
     // TODO: remove once the mesh offset issue is resolved
 
@@ -116,7 +96,7 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     if (!pCurrentMapCrateBrushModel)
     {
         iPrintLn(clientNum, "^1You cannot spawn a Crate on this map!");
-        return false;
+        return;
     }
 
     // Spawn a crate and place it at origin and facing angles
@@ -151,13 +131,11 @@ static bool SpawnCrate(const vec3 &origin, const vec3 &angles)
     pCollisionEntity->r.contents = contents;
     SV_LinkEntity(pEntity);
     SV_LinkEntity(pCollisionEntity);
-
-    return true;
 }
 
 #undef GAME_WAW
 
-bool WaW::SpawnCrate(void *)
+void WaW::SpawnCrate()
 {
     // TODO: reuse the common implementation once the mesh offset issue is resolved
 
@@ -179,66 +157,66 @@ bool WaW::SpawnCrate(void *)
     crateOrigin.z += Context::CrateHeight;
     vec3 crateAngles = vec3(0.0f, playerViewY + Context::CrateAngle, 0.0f);
 
-    return ::SpawnCrate(crateOrigin, crateAngles);
+    ::SpawnCrate(crateOrigin, crateAngles);
 }
 
-bool WaW::SpawnBlocker(void *)
+void WaW::SpawnBlocker()
 {
     // TODO: fix orientation
 
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
+    COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool WaW::ChangeCratePositionPresets(void *pParameters)
+bool WaW::ChangeCratePositionPresets(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(index);
 }
 
-bool WaW::ChangeCrateOrientation(void *pParameters)
+bool WaW::ChangeCrateOrientation(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(index);
 }
 
-bool WaW::ToggleSaveLoadBinds(void *pParameters)
+bool WaW::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool WaW::ToggleUfoBind(void *pParameters)
+bool WaW::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool WaW::SpawnBot(void *)
+void WaW::SpawnBot()
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x82F9C994;
     pOptions->ClientsBaseAddress = 0x83008C80 + 0xB8010; // svs + offsetof(serverStatic_t, clients) = 0x830C0C90
 
-    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-bool WaW::TeleportBotToMe(void *)
+void WaW::TeleportBotToMe()
 {
-    return COMMON_FN_NAMESPACE::TeleportBotToMe();
+    COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-bool WaW::ToggleBotMovement(void *pParameters)
+bool WaW::ToggleBotMovement(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(enabled);
 }
 
-bool WaW::ToggleBotAttack(void *pParameters)
+bool WaW::ToggleBotAttack(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(enabled);
 }
 
-bool WaW::RecordInput(void *pParameters)
+bool WaW::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool WaW::ToggleReplayInputBind(void *pParameters)
+bool WaW::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

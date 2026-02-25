@@ -20,19 +20,15 @@ using namespace AlphaGhosts::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_ALPHAGHOSTS
 
-bool AlphaGhosts::ToggleGodMode(void *pParameters)
+bool AlphaGhosts::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(enabled);
 }
 
-bool AlphaGhosts::ToggleFallDamage(void *pParameters)
+bool AlphaGhosts::ToggleFallDamage(bool enabled)
 {
     // For the Ghosts Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -48,12 +44,8 @@ bool AlphaGhosts::ToggleFallDamage(void *pParameters)
     return true;
 }
 
-bool AlphaGhosts::ToggleAmmo(void *pParameters)
+bool AlphaGhosts::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x823A1234;
@@ -63,26 +55,18 @@ bool AlphaGhosts::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool AlphaGhosts::ChangeJumpHeight(void *pParameters)
+bool AlphaGhosts::ChangeJumpHeight(uint32_t value)
 {
     // For the Ghosts Alpha changing the constant dvar value doesn't work
     // so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     Cbuf_AddText(0, Formatter::Format("set jump_height %d", value).c_str());
 
     return true;
 }
 
-bool AlphaGhosts::GoThroughInvisibleBarriers(void *pParameters)
+bool AlphaGhosts::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x82387F70;
@@ -91,42 +75,42 @@ bool AlphaGhosts::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool AlphaGhosts::SpawnCrate(void *)
+void AlphaGhosts::SpawnCrate()
 {
-    return COMMON_FN_NAMESPACE::SpawnCrate();
+    COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
-bool AlphaGhosts::SpawnBlocker(void *)
+void AlphaGhosts::SpawnBlocker()
 {
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
+    COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool AlphaGhosts::ChangeCratePositionPresets(void *pParameters)
+bool AlphaGhosts::ChangeCratePositionPresets(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(index);
 }
 
-bool AlphaGhosts::ChangeCrateOrientation(void *pParameters)
+bool AlphaGhosts::ChangeCrateOrientation(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(index);
 }
 
-bool AlphaGhosts::ToggleSaveLoadBinds(void *pParameters)
+bool AlphaGhosts::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool AlphaGhosts::ToggleUfoBind(void *pParameters)
+bool AlphaGhosts::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool AlphaGhosts::RecordInput(void *pParameters)
+bool AlphaGhosts::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool AlphaGhosts::ToggleReplayInputBind(void *pParameters)
+bool AlphaGhosts::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

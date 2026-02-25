@@ -10,12 +10,12 @@ ToggleOption::ToggleOption()
 }
 
 ToggleOption::ToggleOption(const std::string &name, const ValueOrPtr<bool> &active)
-    : Option(name, nullptr), m_Active(active)
+    : Option(name), m_Active(active)
 {
 }
 
 ToggleOption::ToggleOption(const std::string &name, Callback callback, const ValueOrPtr<bool> &active)
-    : Option(name, callback), m_Active(active)
+    : Option(name), m_Callback(callback), m_Active(active)
 {
 }
 
@@ -31,7 +31,7 @@ bool ToggleOption::Update(Input::Gamepad *pGamepad)
         // If there is a callback, only update the value if the call succeeds
         if (m_Callback != nullptr)
         {
-            bool success = m_Callback(&newValue);
+            bool success = m_Callback(newValue);
             if (success)
                 m_Active = newValue;
         }

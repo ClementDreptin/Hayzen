@@ -3,36 +3,36 @@
 namespace MW2
 {
 
-bool ToggleGodMode(void *pParameters);
+bool ToggleGodMode(bool enabled);
 
-bool ToggleFallDamage(void *pParameters);
+bool ToggleFallDamage(bool enabled);
 
-bool ToggleAmmo(void *pParameters);
+bool ToggleAmmo(bool enabled);
 
-bool GoThroughInvisibleBarriers(void *pParameters);
+bool GoThroughInvisibleBarriers(bool enabled);
 
-bool SpawnCrate(void *);
+void SpawnCrate();
 
-bool SpawnBlocker(void *);
+void SpawnBlocker();
 
-bool ChangeCratePositionPresets(void *pParameters);
+bool ChangeCratePositionPresets(size_t index);
 
-bool ChangeCrateOrientation(void *pParameters);
+bool ChangeCrateOrientation(size_t index);
 
-bool ToggleSaveLoadBinds(void *pParameters);
+bool ToggleSaveLoadBinds(bool enabled);
 
-bool ToggleUfoBind(void *pParameters);
+bool ToggleUfoBind(bool enabled);
 
-bool SpawnBot(void *);
+void SpawnBot();
 
-bool TeleportBotToMe(void *);
+void TeleportBotToMe();
 
-bool ToggleBotMovement(void *pParameters);
+bool ToggleBotMovement(bool enabled);
 
-bool ToggleBotAttack(void *pParameters);
+bool ToggleBotAttack(bool enabled);
 
-bool RecordInput(void *pParameters);
+bool RecordInput(bool enabled);
 
-bool ToggleReplayInputBind(void *pParameters);
+bool ToggleReplayInputBind(bool enabled);
 
 }

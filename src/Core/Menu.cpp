@@ -69,7 +69,7 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(ToggleOption, "Show Controls", &g_Config.DisplayControlsTexts));
 
     if (!IsDevkit())
-        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](void *pParams) { return ToggleDebugBuilds(Memory::Read<bool>(pParams)); }, &g_Config.AllowDebugBuilds));
+        options.emplace_back(MakeOption(ToggleOption, "Allow Debug Builds", [this](bool enabled) { return ToggleDebugBuilds(enabled); }, &g_Config.AllowDebugBuilds));
 
     options.emplace_back(MakeOption(ToggleOption, "Auto Update", &g_Config.AutoUpdate));
 
@@ -79,8 +79,8 @@ void Menu::AddSettingsGroup()
     options.emplace_back(MakeOption(SubOptionGroup, "Menu Position", menuPositionOptions));
 
     options.emplace_back(MakeOption(ColorPickerOption, "Menu Color", &g_Config.Color));
-    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this](void *) { return SaveSettings(); }));
-    options.emplace_back(MakeOption(ClickOption, "Reset Settings", [this](void *) { return ResetSettings(); }));
+    options.emplace_back(MakeOption(ClickOption, "Save Settings", [this]() { SaveSettings(); }));
+    options.emplace_back(MakeOption(ClickOption, "Reset Settings", [&]() { g_Config.Reset(); }));
     m_OptionGroups.emplace_back(OptionGroup("Settings", options));
 }
 
@@ -229,22 +229,14 @@ bool Menu::ToggleDebugBuilds(bool enabled)
     return SUCCEEDED(hr);
 }
 
-bool Menu::SaveSettings()
+void Menu::SaveSettings()
 {
     HRESULT hr = g_Config.SaveToDisk();
-    bool success = SUCCEEDED(hr);
-
-    if (success)
-        Xam::XNotify("Settings Saved");
-    else
+    if (FAILED(hr))
+    {
         Xam::XNotify("Could not save settings", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
+        return;
+    }
 
-    return success;
-}
-
-bool Menu::ResetSettings()
-{
-    g_Config.Reset();
-
-    return true;
+    Xam::XNotify("Settings Saved");
 }

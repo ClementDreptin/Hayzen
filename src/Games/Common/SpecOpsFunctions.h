@@ -6,12 +6,8 @@
 namespace COMMON_FN_NAMESPACE
 {
 
-bool ToggleGodModeSP(void *pParameters)
+bool ToggleGodModeSP(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     playerState_s *pPlayerState = GetPlayerState(Context::ClientNum);
     XASSERT(pPlayerState != nullptr);
 
@@ -23,12 +19,8 @@ bool ToggleGodModeSP(void *pParameters)
     return true;
 }
 
-bool ChangeJumpHeight(void *pParameters)
+bool ChangeJumpHeight(uint32_t value)
 {
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = Memory::Read<uint32_t>(pParameters);
-
     // Set the new jump height value
     std::string command = Formatter::Format("set jump_height %d", value);
     Cbuf_AddText(0, command.c_str());
@@ -36,12 +28,8 @@ bool ChangeJumpHeight(void *pParameters)
     return true;
 }
 
-bool ToggleSecondPlayerGodMode(void *pParameters)
+bool ToggleSecondPlayerGodMode(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     // The second client num is always 1
     int secondClientNum = 1;
     int firstClientNum = Context::ClientNum;
@@ -65,7 +53,7 @@ bool ToggleSecondPlayerGodMode(void *pParameters)
     return true;
 }
 
-bool TeleportSecondPlayerToMe()
+void TeleportSecondPlayerToMe()
 {
     // The second client num is always 1
     int secondClientNum = 1;
@@ -76,7 +64,7 @@ bool TeleportSecondPlayerToMe()
     if (!pSecondClient->connected)
     {
         iPrintLn(firstClientNum, "^1No other player in the game!");
-        return false;
+        return;
     }
 
     // Get the first player's current position and viewY
@@ -88,8 +76,6 @@ bool TeleportSecondPlayerToMe()
     // Teleport the second player in front of the first player
     float distance = 100.0f;
     pSecondClient->ps.origin = Math::ProjectForward(origin, Math::Radians(viewY), distance);
-
-    return true;
 }
 
 }

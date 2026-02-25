@@ -20,19 +20,15 @@ using namespace AlphaMW2::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_ALPHAMW2
 
-bool AlphaMW2::ToggleGodMode(void *pParameters)
+bool AlphaMW2::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(enabled);
 }
 
-bool AlphaMW2::ToggleFallDamage(void *pParameters)
+bool AlphaMW2::ToggleFallDamage(bool enabled)
 {
     // For the MW2 Alpha we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -48,12 +44,8 @@ bool AlphaMW2::ToggleFallDamage(void *pParameters)
     return true;
 }
 
-bool AlphaMW2::ToggleAmmo(void *pParameters)
+bool AlphaMW2::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x82113628;
@@ -63,26 +55,18 @@ bool AlphaMW2::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool AlphaMW2::ChangeJumpHeight(void *pParameters)
+bool AlphaMW2::ChangeJumpHeight(uint32_t value)
 {
     // For the MW2 Alpha changing the constant dvar value doesn't work
     // so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     SetClientDvar(-1, "jump_height", std::to_string(static_cast<uint64_t>(value)));
 
     return true;
 }
 
-bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
+bool AlphaMW2::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x8210AD80;
@@ -91,66 +75,66 @@ bool AlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool AlphaMW2::SpawnCrate(void *)
+void AlphaMW2::SpawnCrate()
 {
-    return COMMON_FN_NAMESPACE::SpawnCrate();
+    COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
-bool AlphaMW2::SpawnBlocker(void *)
+void AlphaMW2::SpawnBlocker()
 {
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
+    COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool AlphaMW2::ChangeCratePositionPresets(void *pParameters)
+bool AlphaMW2::ChangeCratePositionPresets(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(index);
 }
 
-bool AlphaMW2::ChangeCrateOrientation(void *pParameters)
+bool AlphaMW2::ChangeCrateOrientation(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(index);
 }
 
-bool AlphaMW2::ToggleSaveLoadBinds(void *pParameters)
+bool AlphaMW2::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool AlphaMW2::ToggleUfoBind(void *pParameters)
+bool AlphaMW2::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool AlphaMW2::SpawnBot(void *)
+void AlphaMW2::SpawnBot()
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8355D5C4;
     pOptions->ClientsBaseAddress = 0x83574580 + 0x3818; // svs + offsetof(serverStatic_t, clients) = 0x83577D98
 
-    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-bool AlphaMW2::TeleportBotToMe(void *)
+void AlphaMW2::TeleportBotToMe()
 {
-    return COMMON_FN_NAMESPACE::TeleportBotToMe();
+    COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-bool AlphaMW2::ToggleBotMovement(void *pParameters)
+bool AlphaMW2::ToggleBotMovement(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(enabled);
 }
 
-bool AlphaMW2::ToggleBotAttack(void *pParameters)
+bool AlphaMW2::ToggleBotAttack(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(enabled);
 }
 
-bool AlphaMW2::RecordInput(void *pParameters)
+bool AlphaMW2::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool AlphaMW2::ToggleReplayInputBind(void *pParameters)
+bool AlphaMW2::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

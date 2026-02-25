@@ -5,6 +5,8 @@
 class SelectOption : public Option
 {
 public:
+    typedef std::function<bool(size_t)> Callback;
+
     SelectOption();
 
     SelectOption(const std::string &name, const std::vector<std::string> &options);
@@ -18,6 +20,7 @@ public:
     virtual float GetMinWidth() const override;
 
 private:
+    Callback m_Callback;
     std::vector<std::string> m_Options;
     size_t m_CurrentOptionIndex;
 };

@@ -20,22 +20,18 @@ using namespace MW3::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_MW3
 
-bool MW3::ToggleGodMode(void *pParameters)
+bool MW3::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(enabled);
 }
 
-bool MW3::ToggleFallDamage(void *pParameters)
+bool MW3::ToggleFallDamage(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleFallDamage(pParameters, 0x82000C04);
+    return COMMON_FN_NAMESPACE::ToggleFallDamage(enabled, 0x82000C04);
 }
 
-bool MW3::ToggleAmmo(void *pParameters)
+bool MW3::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x820F63E4;
@@ -45,12 +41,8 @@ bool MW3::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool MW3::GoThroughInvisibleBarriers(void *pParameters)
+bool MW3::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x820E94A0;
@@ -59,66 +51,66 @@ bool MW3::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool MW3::SpawnCrate(void *)
+void MW3::SpawnCrate()
 {
-    return COMMON_FN_NAMESPACE::SpawnCrate();
+    COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
-bool MW3::SpawnBlocker(void *)
+void MW3::SpawnBlocker()
 {
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
+    COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool MW3::ChangeCratePositionPresets(void *pParameters)
+bool MW3::ChangeCratePositionPresets(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(index);
 }
 
-bool MW3::ChangeCrateOrientation(void *pParameters)
+bool MW3::ChangeCrateOrientation(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(index);
 }
 
-bool MW3::ToggleSaveLoadBinds(void *pParameters)
+bool MW3::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool MW3::ToggleUfoBind(void *pParameters)
+bool MW3::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool MW3::SpawnBot(void *)
+void MW3::SpawnBot()
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x8349746C;
     pOptions->ClientsBaseAddress = 0x834C0480 + 0x205E90; // svs + offsetof(serverStatic_t, clients) = 0x836C6310
 
-    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-bool MW3::TeleportBotToMe(void *)
+void MW3::TeleportBotToMe()
 {
-    return COMMON_FN_NAMESPACE::TeleportBotToMe();
+    COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-bool MW3::ToggleBotMovement(void *pParameters)
+bool MW3::ToggleBotMovement(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(enabled);
 }
 
-bool MW3::ToggleBotAttack(void *pParameters)
+bool MW3::ToggleBotAttack(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotAttack(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotAttack(enabled);
 }
 
-bool MW3::RecordInput(void *pParameters)
+bool MW3::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool MW3::ToggleReplayInputBind(void *pParameters)
+bool MW3::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

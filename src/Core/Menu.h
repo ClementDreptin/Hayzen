@@ -36,7 +36,5 @@ private:
 
     bool ToggleDebugBuilds(bool enabled);
 
-    bool SaveSettings();
-
-    bool ResetSettings();
+    void SaveSettings();
 };

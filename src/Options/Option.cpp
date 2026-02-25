@@ -5,12 +5,12 @@
 #include "Core/UI.h"
 
 Option::Option()
-    : m_Callback(nullptr), m_IsSelected(false), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
+    : m_IsSelected(false), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
 {
 }
 
-Option::Option(const std::string &name, Callback callback)
-    : m_Name(name), m_Callback(callback), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
+Option::Option(const std::string &name)
+    : m_Name(name), m_CachedMinWidth(0.0f), m_CachedMinHeight(0.0f)
 {
 }
 

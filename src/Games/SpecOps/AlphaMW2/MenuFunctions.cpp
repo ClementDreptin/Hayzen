@@ -20,17 +20,13 @@ using namespace SpecOpsAlphaMW2::Game;
 #include "Games/Common/SpecOpsFunctions.h"
 #undef GAME_ALPHAMW2
 
-bool SpecOpsAlphaMW2::ToggleGodMode(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeSP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeSP(enabled);
 }
 
-bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x82328610;
@@ -40,17 +36,13 @@ bool SpecOpsAlphaMW2::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool SpecOpsAlphaMW2::ChangeJumpHeight(void *pParameters)
+bool SpecOpsAlphaMW2::ChangeJumpHeight(uint32_t value)
 {
-    return COMMON_FN_NAMESPACE::ChangeJumpHeight(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeJumpHeight(value);
 }
 
-bool SpecOpsAlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
+bool SpecOpsAlphaMW2::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x8231FCE0;
@@ -59,32 +51,32 @@ bool SpecOpsAlphaMW2::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool SpecOpsAlphaMW2::ToggleUfoBind(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleSecondPlayerGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSecondPlayerGodMode(enabled);
 }
 
-bool SpecOpsAlphaMW2::TeleportSecondPlayerToMe(void *)
+void SpecOpsAlphaMW2::TeleportSecondPlayerToMe()
 {
-    return COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
+    COMMON_FN_NAMESPACE::TeleportSecondPlayerToMe();
 }
 
-bool SpecOpsAlphaMW2::RecordInput(void *pParameters)
+bool SpecOpsAlphaMW2::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool SpecOpsAlphaMW2::ToggleReplayInputBind(void *pParameters)
+bool SpecOpsAlphaMW2::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

@@ -5,14 +5,16 @@
 class ClickOption : public Option
 {
 public:
+    typedef std::function<void()> Callback;
+
     ClickOption();
 
-    ClickOption(const std::string &name, Callback callback, void *pParameters = nullptr);
+    ClickOption(const std::string &name, Callback callback);
 
     virtual bool Update(Input::Gamepad *pGamepad) override;
 
     virtual void Render(float x, float y, float width) override;
 
 private:
-    void *m_pParameters;
+    Callback m_Callback;
 };

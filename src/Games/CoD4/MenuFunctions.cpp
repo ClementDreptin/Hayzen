@@ -20,19 +20,15 @@ using namespace CoD4::Game;
 #include "Games/Common/MultiplayerFunctions.h"
 #undef GAME_COD4
 
-bool CoD4::ToggleGodMode(void *pParameters)
+bool CoD4::ToggleGodMode(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleGodModeMP(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleGodModeMP(enabled);
 }
 
-bool CoD4::ToggleFallDamage(void *pParameters)
+bool CoD4::ToggleFallDamage(bool enabled)
 {
     // For CoD4 we can't use the common function because changing the constant value
     // doesn't work so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
 
     if (enabled)
     {
@@ -48,12 +44,8 @@ bool CoD4::ToggleFallDamage(void *pParameters)
     return true;
 }
 
-bool CoD4::ToggleAmmo(void *pParameters)
+bool CoD4::ToggleAmmo(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::ToggleAmmoOptions options = {};
     options.Enabled = enabled;
     options.PatchAddress = 0x82332088;
@@ -63,26 +55,18 @@ bool CoD4::ToggleAmmo(void *pParameters)
     return COMMON_FN_NAMESPACE::ToggleAmmo(options);
 }
 
-bool CoD4::ChangeJumpHeight(void *pParameters)
+bool CoD4::ChangeJumpHeight(uint32_t value)
 {
     // For CoD4 changing the constant dvar value doesn't work
     // so we went back to the old dvar way
-
-    XASSERT(pParameters != nullptr);
-
-    uint32_t value = Memory::Read<uint32_t>(pParameters);
 
     SetClientDvar(0, "jump_height", std::to_string(static_cast<uint64_t>(value)));
 
     return true;
 }
 
-bool CoD4::GoThroughInvisibleBarriers(void *pParameters)
+bool CoD4::GoThroughInvisibleBarriers(bool enabled)
 {
-    XASSERT(pParameters != nullptr);
-
-    bool enabled = Memory::Read<bool>(pParameters);
-
     COMMON_FN_NAMESPACE::GoThroughInvisibleBarriersOptions options = {};
     options.Enabled = enabled;
     options.PM_CheckLadderMoveAddress = 0x823354D0;
@@ -91,63 +75,63 @@ bool CoD4::GoThroughInvisibleBarriers(void *pParameters)
     return COMMON_FN_NAMESPACE::GoThroughInvisibleBarriers(options);
 }
 
-bool CoD4::SpawnCrate(void *)
+void CoD4::SpawnCrate()
 {
-    return COMMON_FN_NAMESPACE::SpawnCrate();
+    COMMON_FN_NAMESPACE::SpawnCrate();
 }
 
-bool CoD4::SpawnBlocker(void *)
+void CoD4::SpawnBlocker()
 {
     // TODO: fix orientation
 
-    return COMMON_FN_NAMESPACE::SpawnBlocker();
+    COMMON_FN_NAMESPACE::SpawnBlocker();
 }
 
-bool CoD4::ChangeCratePositionPresets(void *pParameters)
+bool CoD4::ChangeCratePositionPresets(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCratePositionPresets(index);
 }
 
-bool CoD4::ChangeCrateOrientation(void *pParameters)
+bool CoD4::ChangeCrateOrientation(size_t index)
 {
-    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(pParameters);
+    return COMMON_FN_NAMESPACE::ChangeCrateOrientation(index);
 }
 
-bool CoD4::ToggleSaveLoadBinds(void *pParameters)
+bool CoD4::ToggleSaveLoadBinds(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleSaveLoadBinds(enabled);
 }
 
-bool CoD4::ToggleUfoBind(void *pParameters)
+bool CoD4::ToggleUfoBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleUfoBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleUfoBind(enabled);
 }
 
-bool CoD4::SpawnBot(void *)
+void CoD4::SpawnBot()
 {
     COMMON_FN_NAMESPACE::SpawnBotOptions *pOptions = new COMMON_FN_NAMESPACE::SpawnBotOptions();
     pOptions->ServerIdAddress = 0x85027538;
     pOptions->ClientsBaseAddress = 0x82EE3500 + 0xA100C; // svs + offsetof(serverStatic_t, clients) = 0x82F8450C
 
-    return COMMON_FN_NAMESPACE::SpawnBot(pOptions);
+    COMMON_FN_NAMESPACE::SpawnBot(pOptions);
 }
 
-bool CoD4::TeleportBotToMe(void *)
+void CoD4::TeleportBotToMe()
 {
-    return COMMON_FN_NAMESPACE::TeleportBotToMe();
+    COMMON_FN_NAMESPACE::TeleportBotToMe();
 }
 
-bool CoD4::ToggleBotMovement(void *pParameters)
+bool CoD4::ToggleBotMovement(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleBotMovement(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleBotMovement(enabled);
 }
 
-bool CoD4::RecordInput(void *pParameters)
+bool CoD4::RecordInput(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::RecordInput(pParameters);
+    return COMMON_FN_NAMESPACE::RecordInput(enabled);
 }
 
-bool CoD4::ToggleReplayInputBind(void *pParameters)
+bool CoD4::ToggleReplayInputBind(bool enabled)
 {
-    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(pParameters);
+    return COMMON_FN_NAMESPACE::ToggleReplayInputBind(enabled);
 }

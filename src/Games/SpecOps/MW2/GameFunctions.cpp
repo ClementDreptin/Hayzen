@@ -12,6 +12,8 @@ decltype(Cbuf_AddText) Cbuf_AddText = reinterpret_cast<decltype(Cbuf_AddText)>(0
 
 decltype(Dvar_GetFloat) Dvar_GetFloat = reinterpret_cast<decltype(Dvar_GetFloat)>(0x822E0480);
 
+decltype(Dvar_ForEach) Dvar_ForEach = reinterpret_cast<decltype(Dvar_ForEach)>(0x822E33D0);
+
 decltype(GetPlayerState) GetPlayerState = reinterpret_cast<decltype(GetPlayerState)>(0x8233CB30);
 
 decltype(SetClientOrigin) SetClientOrigin = reinterpret_cast<decltype(SetClientOrigin)>(0x821E6898);

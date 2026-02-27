@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Title.h"
+#include "Modules/Console.h"
 
 class SpecOpsMW2Title : public Title
 {
@@ -10,9 +11,15 @@ public:
     virtual void InitMenu() override;
 
 private:
+    Console m_Console;
+
     static void ClientCommandHook(int clientNum, const char *s);
 
     virtual void InstallHooks() override;
+
+    virtual void Update() override;
+
+    virtual void Render() override;
 
     virtual void InitRenderer() override;
 };

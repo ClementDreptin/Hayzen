@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Core/Title.h"
+#include "Games/SpecOps/AlphaMW2/Structs.h"
 #include "Modules/Console.h"
 
 class SpecOpsAlphaMW2Title : public Title
@@ -11,7 +12,7 @@ public:
     virtual void InitMenu() override;
 
 private:
-    Console m_Console;
+    Console<SpecOpsAlphaMW2::Game::dvar_t> m_Console;
 
     static void ClientCommandHook(int clientNum, const char *s);
 

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Games/Common/Structs.h"
+
 // Spec Ops MW2 structs used by the game functions.
 namespace SpecOpsMW2
 {
@@ -60,6 +62,22 @@ struct gentity_s
 };
 
 static_assert(sizeof(gentity_s) == 0x274, "size of gentity_s different than 0x274");
+
+struct dvar_t
+{
+    const char *name;
+    const char *description;
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x48, "sizeof dvar_t different than 0x48");
 
 }
 }

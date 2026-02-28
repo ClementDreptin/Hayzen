@@ -14,7 +14,7 @@
 #include "Options/ToggleOption.h"
 
 AlphaMW2Title::AlphaMW2Title()
-    : m_Console(Console::Props(AlphaMW2::Game::Cbuf_AddText, AlphaMW2::Game::Dvar_ForEach))
+    : m_Console(Console<AlphaMW2::Game::dvar_t>::Props(AlphaMW2::Game::Cbuf_AddText, AlphaMW2::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 

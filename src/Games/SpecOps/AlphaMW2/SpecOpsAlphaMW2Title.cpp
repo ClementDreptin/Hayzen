@@ -12,7 +12,7 @@
 #include "Options/ToggleOption.h"
 
 SpecOpsAlphaMW2Title::SpecOpsAlphaMW2Title()
-    : m_Console(Console::Props(SpecOpsAlphaMW2::Game::Cbuf_AddText, SpecOpsAlphaMW2::Game::Dvar_ForEach))
+    : m_Console(Console<SpecOpsAlphaMW2::Game::dvar_t>::Props(SpecOpsAlphaMW2::Game::Cbuf_AddText, SpecOpsAlphaMW2::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 

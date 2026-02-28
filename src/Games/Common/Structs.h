@@ -64,19 +64,3 @@ union DvarValue {
 };
 
 static_assert(sizeof(DvarValue) == 0x10, "sizeof DvarValue different than 0x10");
-
-struct dvar_t
-{
-    const char *name;
-    const char *description;
-    uint16_t flags;
-    DvarType type;
-    bool modified;
-    DvarValue current;
-    DvarValue latched;
-    DvarValue reset;
-    DvarLimits domain;
-    dvar_t *hashNext;
-};
-
-static_assert(sizeof(dvar_t) == 0x48, "sizeof dvar_t different than 0x48");

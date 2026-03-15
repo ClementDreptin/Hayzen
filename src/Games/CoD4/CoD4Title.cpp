@@ -35,25 +35,27 @@ static void Callback(const char *dvarName)
     DebugPrint(dvarName);
 }
 
-static void Dvar_ForEachReplacement(int callback)
+static void Dvar_ForEachReplacement(int r3)
 {
-    int(__fastcall * v1)(DWORD);
-    int v2;
-    int **v3;
+    int(__fastcall * callback)(DWORD);
+    int counter;
+    int **currentDvarName;
 
-    v1 = (int(__fastcall *)(DWORD))callback;
-    if (!Memory::Read<bool>(0x85027522))
+    callback = (int(__fastcall *)(DWORD))r3;
+    bool areDvarsSorted = Memory::Read<bool>(0x85027522);
+    if (!areDvarsSorted)
         Dvar_Sort();
-    v2 = 0;
-    if (Memory::Read<DWORD>(0x84B32024) > 0)
+    counter = 0;
+    DWORD dvarCount = Memory::Read<DWORD>(0x84B32024);
+    if (dvarCount > 0)
     {
-        v3 = (int **)0x84B32030;
+        currentDvarName = (int **)0x84B32030;
         do
         {
-            v1(*(DWORD *)*v3);
-            ++v2;
-            ++v3;
-        } while (v2 < Memory::Read<DWORD>(0x84B32024));
+            callback(*(DWORD *)*currentDvarName);
+            ++counter;
+            ++currentDvarName;
+        } while (counter < dvarCount);
     }
 }
 

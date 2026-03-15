@@ -7,6 +7,7 @@
 #include "Games/CoD4/Structs.h"
 #include "Games/SpecOps/AlphaMW2/Structs.h"
 #include "Games/SpecOps/MW2/Structs.h"
+#include "Games/WaW/Structs.h"
 
 #define MAX_CHAR_COUNT 128
 #define MAX_HISTORY_SIZE 30
@@ -683,3 +684,4 @@ template class Console<AlphaMW2::Game::dvar_t>;
 template class Console<CoD4::Game::dvar_t>;
 template class Console<SpecOpsAlphaMW2::Game::dvar_t>;
 template class Console<SpecOpsMW2::Game::dvar_t>;
+template class Console<WaW::Game::dvar_t>;

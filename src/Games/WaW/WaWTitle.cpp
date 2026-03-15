@@ -16,6 +16,7 @@
 std::string WaWTitle::s_PatchedGameObjectsGscMainFunction;
 
 WaWTitle::WaWTitle()
+    : m_Console(Console<WaW::Game::dvar_t>::Props(WaW::Game::Cbuf_AddText, WaW::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -219,6 +220,22 @@ void WaWTitle::InstallHooks()
     m_DetourMap["G_ShutdownGame"] = Detour(0x82220C80, G_ShutdownGameHook);
 
     Title::InstallHooks();
+}
+
+void WaWTitle::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void WaWTitle::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void WaWTitle::InitRenderer()

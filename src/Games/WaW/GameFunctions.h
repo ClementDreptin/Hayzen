@@ -43,6 +43,8 @@ extern bool (*UI_AnyMenuActive)(int localClientNum);
 
 extern void (*BG_PlayerStateToEntityState)(playerState_s *ps, entityState_s *s, int snap, char handler);
 
+extern void (*Dvar_Sort)();
+
 void iPrintLn(int clientNum, const std::string &text);
 
 gclient_s *GetGClient(int clientNum);
@@ -58,6 +60,8 @@ void SetClientDvar(int clientNum, const std::string &dvar, const std::string &va
 bool IsHost(int clientNum);
 
 gentity_s *GetCurrentMapCrateBrushModel();
+
+void Dvar_ForEach(void (*callback)(const dvar_t *dvar, void *userData), void *data);
 
 }
 }

@@ -2,6 +2,7 @@
 
 #include "Core/Title.h"
 #include "Games/WaW/Structs.h"
+#include "Modules/Console.h"
 
 class WaWTitle : public Title
 {
@@ -11,6 +12,8 @@ public:
     virtual void InitMenu() override;
 
 private:
+    Console<WaW::Game::dvar_t> m_Console;
+
     static std::string s_PatchedGameObjectsGscMainFunction;
 
     static void Scr_Notify(WaW::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
@@ -22,6 +25,10 @@ private:
     void ApplyPatches();
 
     virtual void InstallHooks() override;
+
+    virtual void Update() override;
+
+    virtual void Render() override;
 
     virtual void InitRenderer() override;
 };

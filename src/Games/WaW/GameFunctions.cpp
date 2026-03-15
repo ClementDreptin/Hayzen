@@ -42,6 +42,8 @@ decltype(UI_AnyMenuActive) UI_AnyMenuActive = reinterpret_cast<decltype(UI_AnyMe
 
 decltype(BG_PlayerStateToEntityState) BG_PlayerStateToEntityState = reinterpret_cast<decltype(BG_PlayerStateToEntityState)>(0x82135A00);
 
+decltype(Dvar_Sort) Dvar_Sort = reinterpret_cast<decltype(Dvar_Sort)>(0x822C04C8);
+
 void iPrintLn(int clientNum, const std::string &text)
 {
     XASSERT(clientNum >= 0 && clientNum <= 17);
@@ -181,6 +183,23 @@ gentity_s *GetCurrentMapCrateBrushModel()
     XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
     return s_CrateBrushModelMap[mapName];
+}
+
+void Dvar_ForEach(void (*callback)(const dvar_t *dvar, void *userData), void *data)
+{
+    // WaW's Dvar_ForEach is actually Dvar_ForEachName from the newer games, so if we want
+    // the callback to receive a const dvar_t * instead of a const char * and be able to
+    // pass user data, we need to reimplement this function ourselves
+
+    bool areDvarsSorted = Memory::Read<bool>(0x85124C00);
+    if (!areDvarsSorted)
+        Dvar_Sort();
+
+    size_t dvarCount = Memory::Read<size_t>(0x850C47E4);
+    dvar_t **sortedDvars = reinterpret_cast<dvar_t **>(0x850C4800);
+
+    for (size_t i = 0; i < dvarCount; i++)
+        callback(sortedDvars[i], data);
 }
 
 }

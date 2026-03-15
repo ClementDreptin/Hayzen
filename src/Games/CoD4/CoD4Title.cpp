@@ -16,6 +16,7 @@
 std::string CoD4Title::s_PatchedGameObjectsGscMainFunction;
 
 CoD4Title::CoD4Title()
+    : m_Console(Console<CoD4::Game::dvar_t>::Props(CoD4::Game::Cbuf_AddText, CoD4::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -26,31 +27,6 @@ CoD4Title::CoD4Title()
     InstallHooks();
 
     Xam::XNotify("Hayzen - CoD4 Multiplayer Detected");
-}
-
-void (*Dvar_Sort)() = (void (*)())0x821D2788;
-
-static void Callback(const CoD4::Game::dvar_t *dvar, void *userData)
-{
-    DebugPrint("%s: %p", dvar->name, userData);
-}
-
-static void Dvar_ForEachReplacement(void (*callback)(const CoD4::Game::dvar_t *dvar, void *userData), void *data)
-{
-    bool areDvarsSorted = Memory::Read<bool>(0x85027522);
-    if (!areDvarsSorted)
-        Dvar_Sort();
-
-    size_t dvarCount = Memory::Read<size_t>(0x84B32024);
-    CoD4::Game::dvar_t **sortedDvars = (CoD4::Game::dvar_t **)0x84B32030;
-
-    for (size_t i = 0; i < dvarCount; i++)
-        callback(sortedDvars[i], data);
-}
-
-static void Debug()
-{
-    Dvar_ForEachReplacement(Callback, (void *)0x12345678);
 }
 
 void CoD4Title::InitMenu()
@@ -66,7 +42,6 @@ void CoD4Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
-        options.emplace_back(MakeOption(ClickOption, "Debug", Debug));
         options.emplace_back(MakeOption(ToggleOption, "God Mode", CoD4::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", CoD4::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", CoD4::ToggleAmmo, isUnlimitedAmmoEnabled));
@@ -243,6 +218,22 @@ void CoD4Title::InstallHooks()
     m_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
 
     Title::InstallHooks();
+}
+
+void CoD4Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void CoD4Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void CoD4Title::InitRenderer()

@@ -4,6 +4,7 @@
 #include "Core/Config.h"
 #include "Core/UI.h"
 #include "Games/AlphaMW2/Structs.h"
+#include "Games/CoD4/Structs.h"
 #include "Games/SpecOps/AlphaMW2/Structs.h"
 #include "Games/SpecOps/MW2/Structs.h"
 
@@ -679,5 +680,6 @@ bool StringUtils::IEquals(const std::string &str1, const std::string &str2)
 }
 
 template class Console<AlphaMW2::Game::dvar_t>;
+template class Console<CoD4::Game::dvar_t>;
 template class Console<SpecOpsAlphaMW2::Game::dvar_t>;
 template class Console<SpecOpsMW2::Game::dvar_t>;

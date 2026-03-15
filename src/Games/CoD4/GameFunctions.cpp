@@ -42,6 +42,8 @@ decltype(DB_FindXAssetHeader) DB_FindXAssetHeader = reinterpret_cast<decltype(DB
 
 decltype(BG_PlayerStateToEntityState) BG_PlayerStateToEntityState = reinterpret_cast<decltype(BG_PlayerStateToEntityState)>(0x8233CBE8);
 
+decltype(Dvar_Sort) Dvar_Sort = reinterpret_cast<decltype(Dvar_Sort)>(0x821D2788);
+
 int R_TextHeight(UI::Font_s *pFont)
 {
     // This function is inlined in CoD4 so it had to be reimplemented
@@ -204,6 +206,23 @@ gentity_s *GetCurrentMapCrateBrushModel()
     XASSERT(s_CrateBrushModelMap.find(mapName) != s_CrateBrushModelMap.end());
 
     return s_CrateBrushModelMap[mapName];
+}
+
+void Dvar_ForEach(void (*callback)(const dvar_t *dvar, void *userData), void *data)
+{
+    // CoD4's Dvar_ForEach is actually Dvar_ForEachName from the newer games, so if we want
+    // the callback to receive a const dvar_t * instead of a const char * and be able to
+    // pass user data, we need to reimplement this function ourselves
+
+    bool areDvarsSorted = Memory::Read<bool>(0x85027522);
+    if (!areDvarsSorted)
+        Dvar_Sort();
+
+    size_t dvarCount = Memory::Read<size_t>(0x84B32024);
+    dvar_t **sortedDvars = reinterpret_cast<dvar_t **>(0x84B32030);
+
+    for (size_t i = 0; i < dvarCount; i++)
+        callback(sortedDvars[i], data);
 }
 
 }

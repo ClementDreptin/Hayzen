@@ -43,6 +43,8 @@ extern void *(*DB_FindXAssetHeader)(int type, const char *name);
 
 extern void (*BG_PlayerStateToEntityState)(playerState_s *ps, entityState_s *s, int snap, char handler);
 
+extern void (*Dvar_Sort)();
+
 int R_TextHeight(UI::Font_s *pFont);
 
 UI::Font_s *R_RegisterFont(const char *font, int imageTrack);
@@ -66,6 +68,8 @@ void SetClientDvar(int clientNum, const std::string &dvar, const std::string &va
 bool IsHost(int clientNum);
 
 gentity_s *GetCurrentMapCrateBrushModel();
+
+void Dvar_ForEach(void (*callback)(const dvar_t *dvar, void *userData), void *data);
 
 }
 }

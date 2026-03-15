@@ -28,6 +28,40 @@ CoD4Title::CoD4Title()
     Xam::XNotify("Hayzen - CoD4 Multiplayer Detected");
 }
 
+void (*Dvar_Sort)() = (void (*)())0x821D2788;
+
+static void Callback(const char *dvarName)
+{
+    DebugPrint(dvarName);
+}
+
+static void Dvar_ForEachReplacement(int callback)
+{
+    int(__fastcall * v1)(DWORD);
+    int v2;
+    int **v3;
+
+    v1 = (int(__fastcall *)(DWORD))callback;
+    if (!Memory::Read<bool>(0x85027522))
+        Dvar_Sort();
+    v2 = 0;
+    if (Memory::Read<DWORD>(0x84B32024) > 0)
+    {
+        v3 = (int **)0x84B32030;
+        do
+        {
+            v1(*(DWORD *)*v3);
+            ++v2;
+            ++v3;
+        } while (v2 < Memory::Read<DWORD>(0x84B32024));
+    }
+}
+
+static void Debug()
+{
+    Dvar_ForEachReplacement((int)Callback);
+}
+
 void CoD4Title::InitMenu()
 {
     std::vector<OptionGroup> optionGroups;
@@ -41,6 +75,7 @@ void CoD4Title::InitMenu()
     // Main section
     {
         std::vector<std::shared_ptr<Option>> options;
+        options.emplace_back(MakeOption(ClickOption, "Debug", Debug));
         options.emplace_back(MakeOption(ToggleOption, "God Mode", CoD4::ToggleGodMode, false));
         options.emplace_back(MakeOption(ToggleOption, "Fall Damage", CoD4::ToggleFallDamage, false));
         options.emplace_back(MakeOption(ToggleOption, "Ammo", CoD4::ToggleAmmo, isUnlimitedAmmoEnabled));

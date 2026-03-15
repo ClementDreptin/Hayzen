@@ -35,13 +35,11 @@ static void Callback(const char *dvarName)
     DebugPrint(dvarName);
 }
 
-static void Dvar_ForEachReplacement(int r3)
+static void Dvar_ForEachReplacement(void (*callback)(const char *dvarName))
 {
-    int(__fastcall * callback)(DWORD);
     int counter;
     int **currentDvarName;
 
-    callback = (int(__fastcall *)(DWORD))r3;
     bool areDvarsSorted = Memory::Read<bool>(0x85027522);
     if (!areDvarsSorted)
         Dvar_Sort();
@@ -52,7 +50,7 @@ static void Dvar_ForEachReplacement(int r3)
         currentDvarName = (int **)0x84B32030;
         do
         {
-            callback(*(DWORD *)*currentDvarName);
+            callback(*(const char **)*currentDvarName);
             ++counter;
             ++currentDvarName;
         } while (counter < dvarCount);
@@ -61,7 +59,7 @@ static void Dvar_ForEachReplacement(int r3)
 
 static void Debug()
 {
-    Dvar_ForEachReplacement((int)Callback);
+    Dvar_ForEachReplacement(Callback);
 }
 
 void CoD4Title::InitMenu()

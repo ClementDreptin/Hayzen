@@ -41,17 +41,15 @@ static void Dvar_ForEachReplacement(void (*callback)(const char *dvarName))
     if (!areDvarsSorted)
         Dvar_Sort();
 
-    size_t counter = 0;
     size_t dvarCount = Memory::Read<size_t>(0x84B32024);
+    CoD4::Game::dvar_t **sortedDvars = (CoD4::Game::dvar_t **)0x84B32030;
     if (dvarCount > 0)
     {
-        int **currentDvarName = (int **)0x84B32030;
-        do
+        for (size_t i = 0; i < dvarCount; i++)
         {
-            callback(*(const char **)*currentDvarName);
-            ++counter;
-            ++currentDvarName;
-        } while (counter < dvarCount);
+            CoD4::Game::dvar_t *currentDvar = sortedDvars[i];
+            DebugPrint(currentDvar->name);
+        }
     }
 }
 

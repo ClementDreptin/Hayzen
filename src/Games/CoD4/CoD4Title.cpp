@@ -37,17 +37,15 @@ static void Callback(const char *dvarName)
 
 static void Dvar_ForEachReplacement(void (*callback)(const char *dvarName))
 {
-    int counter;
-    int **currentDvarName;
-
     bool areDvarsSorted = Memory::Read<bool>(0x85027522);
     if (!areDvarsSorted)
         Dvar_Sort();
-    counter = 0;
-    DWORD dvarCount = Memory::Read<DWORD>(0x84B32024);
+
+    size_t counter = 0;
+    size_t dvarCount = Memory::Read<size_t>(0x84B32024);
     if (dvarCount > 0)
     {
-        currentDvarName = (int **)0x84B32030;
+        int **currentDvarName = (int **)0x84B32030;
         do
         {
             callback(*(const char **)*currentDvarName);

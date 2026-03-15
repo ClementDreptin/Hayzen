@@ -30,12 +30,12 @@ CoD4Title::CoD4Title()
 
 void (*Dvar_Sort)() = (void (*)())0x821D2788;
 
-static void Callback(const char *dvarName)
+static void Callback(const CoD4::Game::dvar_t *dvar, void *userData)
 {
-    DebugPrint(dvarName);
+    DebugPrint("%s: %p", dvar->name, userData);
 }
 
-static void Dvar_ForEachReplacement(void (*callback)(const char *dvarName))
+static void Dvar_ForEachReplacement(void (*callback)(const CoD4::Game::dvar_t *dvar, void *userData), void *data)
 {
     bool areDvarsSorted = Memory::Read<bool>(0x85027522);
     if (!areDvarsSorted)
@@ -45,12 +45,12 @@ static void Dvar_ForEachReplacement(void (*callback)(const char *dvarName))
     CoD4::Game::dvar_t **sortedDvars = (CoD4::Game::dvar_t **)0x84B32030;
 
     for (size_t i = 0; i < dvarCount; i++)
-        DebugPrint(sortedDvars[i]->name);
+        callback(sortedDvars[i], data);
 }
 
 static void Debug()
 {
-    Dvar_ForEachReplacement(Callback);
+    Dvar_ForEachReplacement(Callback, (void *)0x12345678);
 }
 
 void CoD4Title::InitMenu()

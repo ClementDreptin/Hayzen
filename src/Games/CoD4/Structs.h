@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Games/Common/Structs.h"
+
 // CoD4 TU4 structs used by the game functions.
 namespace CoD4
 {
@@ -90,6 +92,22 @@ struct client_t
 };
 
 static_assert(sizeof(client_t) == 0xA2C88, "size of client_t different than 0xA2C88");
+
+struct dvar_t
+{
+    const char *name;
+    const char *description;
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x48, "sizeof dvar_t different than 0x48");
 
 }
 }

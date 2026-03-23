@@ -1,6 +1,8 @@
 #pragma once
 
-// WaW TU4 structs used by the game functions.
+#include "Games/Common/Structs.h"
+
+// WaW TU7 structs used by the game functions.
 namespace WaW
 {
 namespace Game
@@ -89,6 +91,24 @@ struct client_t
 };
 
 static_assert(sizeof(client_t) == 0xB762C, "size of client_t different than 0xB762C");
+
+struct dvar_t
+{
+    const char *name;
+    const char *description;
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    bool saveRestorable;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarValue saved;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x5C, "sizeof dvar_t different than 0x5C");
 
 }
 }

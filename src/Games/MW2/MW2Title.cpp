@@ -14,6 +14,7 @@
 #include "Options/ToggleOption.h"
 
 MW2Title::MW2Title()
+    : m_Console(Console<MW2::Game::dvar_t>::Props(MW2::Game::Cbuf_AddText, MW2::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -170,6 +171,22 @@ void MW2Title::InstallHooks()
     m_DetourMap["SV_ExecuteClientCommand"] = Detour(0x82253140, SV_ExecuteClientCommandHook);
 
     Title::InstallHooks();
+}
+
+void MW2Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void MW2Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void MW2Title::InitRenderer()

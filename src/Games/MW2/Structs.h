@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Games/Common/Structs.h"
+
 // MW2 TU9 structs used by the game functions.
 namespace MW2
 {
@@ -83,6 +85,28 @@ struct client_t
 };
 
 static_assert(sizeof(client_t) == 0x97F80, "size of client_t different than 0x97F80");
+
+struct dvar_t
+{
+    // Hack to make the Console class think the dvars have descriptions while keeping
+    // the struct size intact, the Console will just display the dvar name in place of
+    // the description
+    union {
+        const char *name;
+        const char *description;
+    };
+
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x44, "sizeof dvar_t different than 0x44");
 
 }
 }

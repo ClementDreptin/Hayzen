@@ -14,6 +14,7 @@
 #include "Options/ToggleOption.h"
 
 MW3Title::MW3Title()
+    : m_Console(Console<MW3::Game::dvar_t>::Props(MW3::Game::Cbuf_AddText, MW3::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -190,6 +191,22 @@ void MW3Title::InstallHooks()
     m_DetourMap["SV_ExecuteClientCommand"] = Detour(0x822C78A0, SV_ExecuteClientCommandHook);
 
     Title::InstallHooks();
+}
+
+void MW3Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void MW3Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void MW3Title::InitRenderer()

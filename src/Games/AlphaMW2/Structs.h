@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Games/Common/Structs.h"
+
 // MW2 Alpha structs used by the game functions.
 namespace AlphaMW2
 {
@@ -83,6 +85,22 @@ struct client_t
 };
 
 static_assert(sizeof(client_t) == 0x97F80, "size of client_t different than 0x97F80");
+
+struct dvar_t
+{
+    const char *name;
+    const char *description;
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x48, "sizeof dvar_t different than 0x48");
 
 }
 }

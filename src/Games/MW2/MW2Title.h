@@ -2,6 +2,7 @@
 
 #include "Core/Title.h"
 #include "Games/MW2/Structs.h"
+#include "Modules/Console.h"
 
 class MW2Title : public Title
 {
@@ -11,11 +12,17 @@ public:
     virtual void InitMenu() override;
 
 private:
+    Console<MW2::Game::dvar_t> m_Console;
+
     static void Scr_NotifyHook(MW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 
     static void SV_ExecuteClientCommandHook(MW2::Game::client_t *client, const char *s, int clientOK, int fromOldServer);
 
     virtual void InstallHooks() override;
+
+    virtual void Update() override;
+
+    virtual void Render() override;
 
     virtual void InitRenderer() override;
 };

@@ -12,7 +12,7 @@ public:
     virtual void InitMenu() override;
 
 private:
-    Console m_Console;
+    Console<AlphaMW2::Game::dvar_t> m_Console;
 
     static void Scr_NotifyHook(AlphaMW2::Game::gentity_s *entity, uint16_t stringValue, uint32_t paramCount);
 

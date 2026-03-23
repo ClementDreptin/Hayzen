@@ -14,6 +14,8 @@ extern void (*Cbuf_AddText)(int localClientNum, const char *text);
 
 extern float (*Dvar_GetFloat)(const char *dvarName);
 
+extern void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData);
+
 extern playerState_s *(*GetPlayerState)(int num);
 
 extern void (*SetClientOrigin)(gentity_s *ent, const float *origin);

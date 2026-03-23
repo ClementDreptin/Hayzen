@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Games/Common/Structs.h"
+
 // MW3 TU24 structs used by the game functions.
 namespace MW3
 {
@@ -130,6 +132,28 @@ struct usercmd_s
 };
 
 static_assert(sizeof(usercmd_s) == 0x2C, "size of usercmd_s different than 0x10");
+
+struct dvar_t
+{
+    // Hack to make the Console class think the dvars have descriptions while keeping
+    // the struct size intact, the Console will just display the dvar name in place of
+    // the description
+    union {
+        const char *name;
+        const char *description;
+    };
+
+    uint16_t flags;
+    DvarType type;
+    bool modified;
+    DvarValue current;
+    DvarValue latched;
+    DvarValue reset;
+    DvarLimits domain;
+    dvar_t *hashNext;
+};
+
+static_assert(sizeof(dvar_t) == 0x44, "size of dvar_t different than 0x44");
 
 }
 }

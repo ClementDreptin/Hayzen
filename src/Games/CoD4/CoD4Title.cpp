@@ -16,6 +16,7 @@
 std::string CoD4Title::s_PatchedGameObjectsGscMainFunction;
 
 CoD4Title::CoD4Title()
+    : m_Console(Console<CoD4::Game::dvar_t>::Props(CoD4::Game::Cbuf_AddText, CoD4::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -217,6 +218,22 @@ void CoD4Title::InstallHooks()
     m_DetourMap["G_ShutdownGame"] = Detour(0x82272E58, G_ShutdownGameHook);
 
     Title::InstallHooks();
+}
+
+void CoD4Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void CoD4Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void CoD4Title::InitRenderer()

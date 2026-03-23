@@ -3,6 +3,14 @@
 
 #include "Core/Config.h"
 #include "Core/UI.h"
+#include "Games/AlphaMW2/Structs.h"
+#include "Games/CoD4/Structs.h"
+#include "Games/MW2/Structs.h"
+#include "Games/MW3/Structs.h"
+#include "Games/SpecOps/AlphaMW2/Structs.h"
+#include "Games/SpecOps/MW2/Structs.h"
+#include "Games/SpecOps/MW3/Structs.h"
+#include "Games/WaW/Structs.h"
 
 #define MAX_CHAR_COUNT 128
 #define MAX_HISTORY_SIZE 30
@@ -25,18 +33,21 @@ bool IEquals(const std::string &str1, const std::string &str2);
 
 }
 
-Console::Props::Props(CBUF_ADDTEXT Cbuf_AddText, DVAR_FOREACH Dvar_ForEach)
+template<typename TDvar>
+Console<TDvar>::Props::Props(CBUF_ADDTEXT Cbuf_AddText, DVAR_FOREACH Dvar_ForEach)
     : Cbuf_AddText(Cbuf_AddText), Dvar_ForEach(Dvar_ForEach)
 {
 }
 
-Console::Console(const Props &props)
+template<typename TDvar>
+Console<TDvar>::Console(const Props &props)
     : m_Props(props), m_Open(false), m_CursorPosition(0), m_HistoryIndex(0), m_AutocompleteIndex(static_cast<size_t>(-1))
 {
     m_Command.reserve(MAX_CHAR_COUNT);
 }
 
-void Console::Update()
+template<typename TDvar>
+void Console<TDvar>::Update()
 {
     XINPUT_KEYSTROKE keystroke = {};
     uint32_t result = XInputGetKeystroke(0, XINPUT_FLAG_KEYBOARD, &keystroke);
@@ -176,7 +187,8 @@ void Console::Update()
     }
 }
 
-void Console::Render()
+template<typename TDvar>
+void Console<TDvar>::Render()
 {
     XASSERT(UI::pConsoleFont != nullptr);
 
@@ -224,7 +236,8 @@ void Console::Render()
     UI::pFont = UI::pDefaultFont;
 }
 
-void Console::Submit()
+template<typename TDvar>
+void Console<TDvar>::Submit()
 {
     XASSERT(m_Props.Cbuf_AddText != nullptr);
 
@@ -245,13 +258,15 @@ void Console::Submit()
     ResetAutocompleteMatches();
 }
 
-void Console::SetCommand(const std::string &command)
+template<typename TDvar>
+void Console<TDvar>::SetCommand(const std::string &command)
 {
     m_Command = command;
     m_CursorPosition = m_Command.size();
 }
 
-bool Console::AnySpaceAfterCommand()
+template<typename TDvar>
+bool Console<TDvar>::AnySpaceAfterCommand()
 {
     auto firstNonWhitespace = std::find_if(m_Command.begin(), m_Command.end(), [](unsigned char ch) {
         return !std::isspace(ch);
@@ -267,7 +282,8 @@ bool Console::AnySpaceAfterCommand()
     return firstWhitespaceAfterCommand != m_Command.end();
 }
 
-void Console::AppendToHistory()
+template<typename TDvar>
+void Console<TDvar>::AppendToHistory()
 {
     m_History.emplace_back(m_Command);
 
@@ -278,7 +294,8 @@ void Console::AppendToHistory()
     m_HistoryIndex = m_History.size();
 }
 
-void Console::UpdateAutocompleteMatches()
+template<typename TDvar>
+void Console<TDvar>::UpdateAutocompleteMatches()
 {
     XASSERT(m_Props.Dvar_ForEach != nullptr);
 
@@ -295,7 +312,8 @@ void Console::UpdateAutocompleteMatches()
         m_Props.Dvar_ForEach(FindMatchingDvarsCallback, this);
 }
 
-void Console::FindMatchingDvarsCallback(const dvar_t *dvar, void *data)
+template<typename TDvar>
+void Console<TDvar>::FindMatchingDvarsCallback(const TDvar *dvar, void *data)
 {
     Console *This = static_cast<Console *>(data);
 
@@ -306,7 +324,8 @@ void Console::FindMatchingDvarsCallback(const dvar_t *dvar, void *data)
         This->m_AutocompleteMatches.emplace_back(dvar);
 }
 
-void Console::FindExactDvarCallback(const dvar_t *dvar, void *data)
+template<typename TDvar>
+void Console<TDvar>::FindExactDvarCallback(const TDvar *dvar, void *data)
 {
     Console *This = static_cast<Console *>(data);
 
@@ -317,7 +336,8 @@ void Console::FindExactDvarCallback(const dvar_t *dvar, void *data)
         This->m_AutocompleteMatches.emplace_back(dvar);
 }
 
-void Console::GenerateAutocompleteQuery()
+template<typename TDvar>
+void Console<TDvar>::GenerateAutocompleteQuery()
 {
     auto firstNonWhitespace = std::find_if(m_Command.begin(), m_Command.end(), [](unsigned char ch) {
         return !std::isspace(ch);
@@ -333,7 +353,8 @@ void Console::GenerateAutocompleteQuery()
     m_AutocompleteQuery = std::string(firstNonWhitespace, firstWhitespaceAfterCommand);
 }
 
-void Console::CycleThroughAutocompleteMatches(bool shiftPressed)
+template<typename TDvar>
+void Console<TDvar>::CycleThroughAutocompleteMatches(bool shiftPressed)
 {
     size_t lastIndex = m_AutocompleteMatches.size() - 1;
 
@@ -360,14 +381,16 @@ void Console::CycleThroughAutocompleteMatches(bool shiftPressed)
     SetCommand(m_AutocompleteMatches[m_AutocompleteIndex]->name);
 }
 
-void Console::ResetAutocompleteMatches()
+template<typename TDvar>
+void Console<TDvar>::ResetAutocompleteMatches()
 {
     m_AutocompleteMatches.clear();
     m_AutocompleteQuery.clear();
     m_AutocompleteIndex = static_cast<size_t>(-1);
 }
 
-void Console::DrawAutocompleteMatches()
+template<typename TDvar>
+void Console<TDvar>::DrawAutocompleteMatches()
 {
     float columnWidth = s_SafeAreaWidth / 16;
     float oneLineHeight = UI::GetFontHeight() + g_Config.Padding * 2;
@@ -408,7 +431,7 @@ void Console::DrawAutocompleteMatches()
     // Draw the info of each dvar
     for (size_t i = 0; i < m_AutocompleteMatches.size(); i++)
     {
-        const dvar_t &dvar = *m_AutocompleteMatches[i];
+        const TDvar &dvar = *m_AutocompleteMatches[i];
 
         commonText.Y = nameHeader.Y + headerHeight + (UI::GetFontHeight() + g_Config.Padding) * i;
         commonText.BorderPosition = UI::BorderPosition_Left | UI::BorderPosition_Right;
@@ -441,7 +464,8 @@ void Console::DrawAutocompleteMatches()
     }
 }
 
-void Console::DrawExactMatchExtendedDetails()
+template<typename TDvar>
+void Console<TDvar>::DrawExactMatchExtendedDetails()
 {
     XASSERT(m_AutocompleteMatches.size() == 1);
 
@@ -450,7 +474,7 @@ void Console::DrawExactMatchExtendedDetails()
     float headerHeight = oneLineHeight;
     float autocompleteMatchesHeight = headerHeight + m_AutocompleteMatches.size() * oneLineHeight;
 
-    const dvar_t &dvar = *m_AutocompleteMatches[0];
+    const TDvar &dvar = *m_AutocompleteMatches[0];
 
     UI::TextProps props = {};
     props.X = s_SafeAreaOffsetX;
@@ -465,7 +489,8 @@ void Console::DrawExactMatchExtendedDetails()
     UI::DrawText(props);
 }
 
-std::string Console::DvarValueToString(const dvar_t &dvar, const DvarValue &value)
+template<typename TDvar>
+std::string Console<TDvar>::DvarValueToString(const TDvar &dvar, const DvarValue &value)
 {
     if (dvar.type == DVAR_TYPE_BOOL)
         return value.enabled ? "1" : "0";
@@ -510,7 +535,8 @@ std::string Console::DvarValueToString(const dvar_t &dvar, const DvarValue &valu
     return "UNKNOWN_TYPE";
 }
 
-std::string Console::DvarDomainToString(const dvar_t &dvar)
+template<typename TDvar>
+std::string Console<TDvar>::DvarDomainToString(const TDvar &dvar)
 {
     if (dvar.type == DVAR_TYPE_BOOL)
         return "Domain is 0 or 1.";
@@ -584,7 +610,8 @@ std::string Console::DvarDomainToString(const dvar_t &dvar)
     return "UNKNOWN_TYPE";
 }
 
-std::string Console::DvarVectorDomainToString(size_t componentCount, const dvar_t &dvar)
+template<typename TDvar>
+std::string Console<TDvar>::DvarVectorDomainToString(size_t componentCount, const TDvar &dvar)
 {
     // This should be FLT_MIN but this is how it's implemented in the Dvar_VectorDomainToString function from the games
     const float minFloat = -FLT_MAX;
@@ -655,3 +682,12 @@ bool StringUtils::IEquals(const std::string &str1, const std::string &str2)
                return std::tolower(a) == std::tolower(b);
            });
 }
+
+template class Console<AlphaMW2::Game::dvar_t>;
+template class Console<CoD4::Game::dvar_t>;
+template class Console<MW2::Game::dvar_t>;
+template class Console<MW3::Game::dvar_t>;
+template class Console<SpecOpsAlphaMW2::Game::dvar_t>;
+template class Console<SpecOpsMW2::Game::dvar_t>;
+template class Console<SpecOpsMW3::Game::dvar_t>;
+template class Console<WaW::Game::dvar_t>;

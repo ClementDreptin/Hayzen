@@ -12,6 +12,7 @@
 #include "Options/ToggleOption.h"
 
 SpecOpsMW3Title::SpecOpsMW3Title()
+    : m_Console(Console<SpecOpsMW3::Game::dvar_t>::Props(SpecOpsMW3::Game::Cbuf_AddText, SpecOpsMW3::Game::Dvar_ForEach))
 {
     WaitUntilReady();
 
@@ -129,6 +130,22 @@ void SpecOpsMW3Title::InstallHooks()
     m_DetourMap["ClientCommand"] = Detour(0x821FEFB0, ClientCommandHook);
 
     Title::InstallHooks();
+}
+
+void SpecOpsMW3Title::Update()
+{
+    // Call the parent to update the menu
+    Title::Update();
+
+    m_Console.Update();
+}
+
+void SpecOpsMW3Title::Render()
+{
+    // Call the parent to render the menu
+    Title::Render();
+
+    m_Console.Render();
 }
 
 void SpecOpsMW3Title::InitRenderer()

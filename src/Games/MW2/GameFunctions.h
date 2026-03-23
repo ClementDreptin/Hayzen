@@ -18,6 +18,8 @@ extern bool (*Dvar_GetBool)(const char *dvarName);
 
 extern const char *(*Dvar_GetString)(const char *dvarName);
 
+extern void (*Dvar_ForEach)(void (*callback)(const dvar_t *dvar, void *data), void *userData);
+
 extern playerState_s *(*GetPlayerState)(int clientNum);
 
 extern bool (*Session_IsHost)(uintptr_t sessionDataPtr, int clientNum);

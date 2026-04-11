@@ -13,10 +13,9 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Check code formatting with clang-format.
-        uses: jidicula/clang-format-action@v4.14.0
+        uses: jidicula/clang-format-action@v4.18.0
         with:
-          clang-format-version: 19
           check-path: src

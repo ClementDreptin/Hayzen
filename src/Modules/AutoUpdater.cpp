@@ -2,7 +2,6 @@
 #include "Modules/AutoUpdater.h"
 
 #include "Core/Plugin.h"
-#include "Modules/Http.h"
 #include "Modules/Json.h"
 
 namespace AutoUpdater
@@ -29,52 +28,44 @@ static const uint8_t s_SectigoECC_Q[] = {
     0xEF, 0x93, 0xF5, 0x60, 0x97
 };
 
-static const uint8_t s_SectigoRSA_DN[] = {
-    0x30, 0x81, 0x8F, 0x31, 0x0B, 0x30, 0x09, 0x06, 0x03, 0x55, 0x04, 0x06,
-    0x13, 0x02, 0x47, 0x42, 0x31, 0x1B, 0x30, 0x19, 0x06, 0x03, 0x55, 0x04,
-    0x08, 0x13, 0x12, 0x47, 0x72, 0x65, 0x61, 0x74, 0x65, 0x72, 0x20, 0x4D,
-    0x61, 0x6E, 0x63, 0x68, 0x65, 0x73, 0x74, 0x65, 0x72, 0x31, 0x10, 0x30,
-    0x0E, 0x06, 0x03, 0x55, 0x04, 0x07, 0x13, 0x07, 0x53, 0x61, 0x6C, 0x66,
-    0x6F, 0x72, 0x64, 0x31, 0x18, 0x30, 0x16, 0x06, 0x03, 0x55, 0x04, 0x0A,
-    0x13, 0x0F, 0x53, 0x65, 0x63, 0x74, 0x69, 0x67, 0x6F, 0x20, 0x4C, 0x69,
-    0x6D, 0x69, 0x74, 0x65, 0x64, 0x31, 0x37, 0x30, 0x35, 0x06, 0x03, 0x55,
-    0x04, 0x03, 0x13, 0x2E, 0x53, 0x65, 0x63, 0x74, 0x69, 0x67, 0x6F, 0x20,
-    0x52, 0x53, 0x41, 0x20, 0x44, 0x6F, 0x6D, 0x61, 0x69, 0x6E, 0x20, 0x56,
-    0x61, 0x6C, 0x69, 0x64, 0x61, 0x74, 0x69, 0x6F, 0x6E, 0x20, 0x53, 0x65,
-    0x63, 0x75, 0x72, 0x65, 0x20, 0x53, 0x65, 0x72, 0x76, 0x65, 0x72, 0x20,
-    0x43, 0x41
+static const uint8_t s_R12_RSA_DN[] = {
+    0x30, 0x33, 0x31, 0x0B, 0x30, 0x09, 0x06, 0x03, 0x55, 0x04, 0x06, 0x13,
+    0x02, 0x55, 0x53, 0x31, 0x16, 0x30, 0x14, 0x06, 0x03, 0x55, 0x04, 0x0A,
+    0x13, 0x0D, 0x4C, 0x65, 0x74, 0x27, 0x73, 0x20, 0x45, 0x6E, 0x63, 0x72,
+    0x79, 0x70, 0x74, 0x31, 0x0C, 0x30, 0x0A, 0x06, 0x03, 0x55, 0x04, 0x03,
+    0x13, 0x03, 0x52, 0x31, 0x32
 };
 
-static const uint8_t s_SectigoRSA_N[] = {
-    0xD6, 0x73, 0x33, 0xD6, 0xD7, 0x3C, 0x20, 0xD0, 0x00, 0xD2, 0x17, 0x45,
-    0xB8, 0xD6, 0x3E, 0x07, 0xA2, 0x3F, 0xC7, 0x41, 0xEE, 0x32, 0x30, 0xC9,
-    0xB0, 0x6C, 0xFD, 0xF4, 0x9F, 0xCB, 0x12, 0x98, 0x0F, 0x2D, 0x3F, 0x8D,
-    0x4D, 0x01, 0x0C, 0x82, 0x0F, 0x17, 0x7F, 0x62, 0x2E, 0xE9, 0xB8, 0x48,
-    0x79, 0xFB, 0x16, 0x83, 0x4E, 0xAD, 0xD7, 0x32, 0x25, 0x93, 0xB7, 0x07,
-    0xBF, 0xB9, 0x50, 0x3F, 0xA9, 0x4C, 0xC3, 0x40, 0x2A, 0xE9, 0x39, 0xFF,
-    0xD9, 0x81, 0xCA, 0x1F, 0x16, 0x32, 0x41, 0xDA, 0x80, 0x26, 0xB9, 0x23,
-    0x7A, 0x87, 0x20, 0x1E, 0xE3, 0xFF, 0x20, 0x9A, 0x3C, 0x95, 0x44, 0x6F,
-    0x87, 0x75, 0x06, 0x90, 0x40, 0xB4, 0x32, 0x93, 0x16, 0x09, 0x10, 0x08,
-    0x23, 0x3E, 0xD2, 0xDD, 0x87, 0x0F, 0x6F, 0x5D, 0x51, 0x14, 0x6A, 0x0A,
-    0x69, 0xC5, 0x4F, 0x01, 0x72, 0x69, 0xCF, 0xD3, 0x93, 0x4C, 0x6D, 0x04,
-    0xA0, 0xA3, 0x1B, 0x82, 0x7E, 0xB1, 0x9A, 0xB9, 0xED, 0xC5, 0x9E, 0xC5,
-    0x37, 0x78, 0x9F, 0x9A, 0x08, 0x34, 0xFB, 0x56, 0x2E, 0x58, 0xC4, 0x09,
-    0x0E, 0x06, 0x64, 0x5B, 0xBC, 0x37, 0xDC, 0xF1, 0x9F, 0x28, 0x68, 0xA8,
-    0x56, 0xB0, 0x92, 0xA3, 0x5C, 0x9F, 0xBB, 0x88, 0x98, 0x08, 0x1B, 0x24,
-    0x1D, 0xAB, 0x30, 0x85, 0xAE, 0xAF, 0xB0, 0x2E, 0x9E, 0x7A, 0x9D, 0xC1,
-    0xC0, 0x42, 0x1C, 0xE2, 0x02, 0xF0, 0xEA, 0xE0, 0x4A, 0xD2, 0xEF, 0x90,
-    0x0E, 0xB4, 0xC1, 0x40, 0x16, 0xF0, 0x6F, 0x85, 0x42, 0x4A, 0x64, 0xF7,
-    0xA4, 0x30, 0xA0, 0xFE, 0xBF, 0x2E, 0xA3, 0x27, 0x5A, 0x8E, 0x8B, 0x58,
-    0xB8, 0xAD, 0xC3, 0x19, 0x17, 0x84, 0x63, 0xED, 0x6F, 0x56, 0xFD, 0x83,
-    0xCB, 0x60, 0x34, 0xC4, 0x74, 0xBE, 0xE6, 0x9D, 0xDB, 0xE1, 0xE4, 0xE5,
-    0xCA, 0x0C, 0x5F, 0x15
+static const uint8_t s_R12_RSA_N[] = {
+    0xDA, 0x98, 0x28, 0x74, 0xAD, 0xBE, 0x94, 0xFE, 0x3B, 0xE0, 0x1E, 0xE2,
+    0xE5, 0x4B, 0x75, 0xAB, 0x2C, 0x12, 0x7F, 0xED, 0xA7, 0x03, 0x32, 0x7E,
+    0x36, 0x97, 0xEC, 0xE8, 0x31, 0x8F, 0xA5, 0x13, 0x8D, 0x0B, 0x99, 0x2E,
+    0x1E, 0xCD, 0x01, 0x51, 0x3D, 0x4C, 0xE5, 0x28, 0x6E, 0x09, 0x55, 0x31,
+    0xAA, 0xA5, 0x22, 0x5D, 0x72, 0xF4, 0x2D, 0x07, 0xC2, 0x4D, 0x40, 0x3C,
+    0xDF, 0x01, 0x23, 0xB9, 0x78, 0x37, 0xF5, 0x1A, 0x65, 0x32, 0x34, 0xE6,
+    0x86, 0x71, 0x9D, 0x04, 0xEF, 0x84, 0x08, 0x5B, 0xBD, 0x02, 0x1A, 0x99,
+    0xEB, 0xA6, 0x01, 0x00, 0x9A, 0x73, 0x90, 0x6D, 0x8F, 0xA2, 0x07, 0xA0,
+    0xD0, 0x97, 0xD3, 0xDA, 0x45, 0x61, 0x81, 0x35, 0x3D, 0x14, 0xF9, 0xC4,
+    0xC0, 0x5F, 0x6A, 0xDC, 0x0B, 0x96, 0x1A, 0xB0, 0x9F, 0xE3, 0x2A, 0xEA,
+    0xBD, 0x2A, 0xD6, 0x98, 0xC7, 0x9B, 0x71, 0xAB, 0x3B, 0x74, 0x0F, 0x3C,
+    0xDB, 0xB2, 0x60, 0xBE, 0x5A, 0x4B, 0x4E, 0x18, 0xE9, 0xDB, 0x2A, 0x73,
+    0x5C, 0x89, 0x61, 0x65, 0x9E, 0xFE, 0xED, 0x3C, 0xA6, 0xCB, 0x4E, 0x6F,
+    0xE4, 0x9E, 0xF9, 0x00, 0x46, 0xB3, 0xFF, 0x19, 0x4D, 0x2A, 0x63, 0xB3,
+    0x8E, 0x66, 0xC6, 0x18, 0x85, 0x70, 0xC7, 0x50, 0x65, 0x6F, 0x3B, 0x74,
+    0xE5, 0x48, 0x83, 0x0F, 0x08, 0x58, 0x5D, 0x2D, 0x23, 0x9D, 0x5E, 0xA3,
+    0xFE, 0xE8, 0xDB, 0x00, 0xA1, 0xD2, 0xF4, 0xE3, 0x19, 0x4D, 0xF2, 0xEE,
+    0x7A, 0xF6, 0x27, 0x9E, 0xE5, 0xCD, 0x9C, 0x2D, 0xA2, 0xF2, 0x7F, 0x9C,
+    0x17, 0xAD, 0xEF, 0x13, 0x37, 0x39, 0xD1, 0xB4, 0xC8, 0x2C, 0x41, 0xD6,
+    0x86, 0xC0, 0xE9, 0xEC, 0x21, 0xF8, 0x59, 0x1B, 0x7F, 0xB9, 0x3A, 0x7C,
+    0x9F, 0x5C, 0x01, 0x9D, 0x62, 0x04, 0xC2, 0x28, 0xBD, 0x0A, 0xAD, 0x3C,
+    0xCA, 0x10, 0xEC, 0x1B
 };
 
-static const uint8_t s_SectigoRSA_E[] = {
+static const uint8_t s_R12_RSA_E[] = {
     0x01, 0x00, 0x01
 };
 
-static std::string GetVersionFromBody(const std::string &body)
+static Optional<std::string> GetVersionFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
@@ -87,18 +78,18 @@ static std::string GetVersionFromBody(const std::string &body)
     if (FAILED(hr))
     {
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't set the JSON buffers: %X.", hr);
-        return value;
+        return NullOpt();
     }
 
     // Read up until the version key is found
     hr = Json::ReadUpToKey(reader, versionKey);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Open the value at the version key
     hr = Json::ReadTokenType(reader, Json_String);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Read the value at the version key
     hr = XJSONGetTokenValue(reader, value, sizeof(value));
@@ -109,7 +100,7 @@ static std::string GetVersionFromBody(const std::string &body)
             versionKey.c_str(),
             hr
         );
-        return value;
+        return NullOpt();
     }
 
     XJSONCloseReader(reader);
@@ -117,7 +108,7 @@ static std::string GetVersionFromBody(const std::string &body)
     return value;
 }
 
-static std::string GetDownloadUrlFromBody(const std::string &body)
+static Optional<std::string> GetDownloadUrlFromBody(const std::string &body)
 {
     HRESULT hr = S_OK;
 
@@ -131,82 +122,49 @@ static std::string GetDownloadUrlFromBody(const std::string &body)
     if (FAILED(hr))
     {
         DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't set the JSON buffers (%X).", hr);
-        return value;
+        return NullOpt();
     }
 
     // Read up until the assets array key is found
     hr = Json::ReadUpToKey(reader, assetsArrayKey);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Open the array
     hr = Json::ReadTokenType(reader, Json_BeginArray);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Open the first object
     hr = Json::ReadTokenType(reader, Json_BeginObject);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Read up until the download URL key is found
     hr = Json::ReadUpToKey(reader, downloadUrlKey);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Open the value at the download URL key
     hr = Json::ReadTokenType(reader, Json_String);
     if (FAILED(hr))
-        return value;
+        return NullOpt();
 
     // Read the value at the download URL key
     hr = XJSONGetTokenValue(reader, value, sizeof(value));
     if (FAILED(hr))
     {
         DebugPrint(
-            L"[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON (%X).",
+            "[Hayzen][AutoUpdater]: Error: Couldn't read \"%s\" value from JSON (%X).",
             downloadUrlKey.c_str(),
             hr
         );
-        return value;
+        return NullOpt();
     }
 
     XJSONCloseReader(reader);
 
     return value;
-}
-
-static HRESULT ConnectToGitHub(Socket &socket)
-{
-    HRESULT hr = S_OK;
-
-    // Register GitHub's EC trust anchor
-    // Required for calls to api.github.com
-    hr = socket.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), Socket::Curve_secp256r1);
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add EC trust anchor.");
-        return hr;
-    }
-
-    // Register GitHub's RSA trust anchor
-    // Required for calls to release-assets.githubusercontent.com
-    hr = socket.AddRsaTrustAnchor(s_SectigoRSA_DN, sizeof(s_SectigoRSA_DN), s_SectigoRSA_N, sizeof(s_SectigoRSA_N), s_SectigoRSA_E, sizeof(s_SectigoRSA_E));
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't add RSA trust anchor.");
-        return hr;
-    }
-
-    // Connect to GitHub
-    hr = socket.Connect();
-    if (FAILED(hr))
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't connect to GitHub.");
-        return hr;
-    }
-
-    return hr;
 }
 
 struct LatestVersion
@@ -215,56 +173,43 @@ struct LatestVersion
     std::string DownloadUrl;
 };
 
-static HRESULT GetLatestVersion(LatestVersion &latestVersion)
+static Optional<LatestVersion> GetLatestVersion(const Http::Client &httpClient)
 {
-    HRESULT hr = S_OK;
+    // Send request to GitHub API
+    Optional<Http::Response> response = httpClient.Get("https://api.github.com/repos/ClementDreptin/Hayzen/releases/latest");
+    if (!response)
+    {
+        DebugPrint("Couldn't get the latest version from the GitHub API.");
+        return NullOpt();
+    }
 
-    // Connect to GitHub
-    std::string domain = "api.github.com";
-    Socket socket(domain, 443);
-    hr = ConnectToGitHub(socket);
-    if (FAILED(hr))
-        return hr;
-
-    // Send the request
-    hr = Http::SendRequest(socket, domain, "/repos/ClementDreptin/Hayzen/releases/latest");
-    if (FAILED(hr))
-        return hr;
-
-    // Read HTTP status
-    uint32_t status = Http::ReadStatus(socket);
-    if (status != 200)
+    // Check HTTP status
+    if (response->Status != 200)
     {
         DebugPrint(
             "[Hayzen][AutoUpdater]: Error: Invalid status code when trying to get the "
             "latest version number. Expected 200 but got %d.",
-            status
+            response->Status
         );
-        return E_FAIL;
+        return NullOpt();
     }
 
-    // Flush the headers
-    auto headers = Http::ReadHeaders(socket);
-
-    // Read the body
-    std::string body = Http::ReadBody(socket);
-    if (body.empty())
-        return E_FAIL;
-
     // Get the version from the body
-    std::string version = GetVersionFromBody(body);
-    if (version.empty())
-        return E_FAIL;
+    std::string body = response->BodyAsString();
+    Optional<std::string> version = GetVersionFromBody(body);
+    if (!version)
+        return NullOpt();
 
     // Get the URL of the latest binary
-    std::string downloadUrl = GetDownloadUrlFromBody(body);
-    if (downloadUrl.empty())
-        return E_FAIL;
+    Optional<std::string> downloadUrl = GetDownloadUrlFromBody(body);
+    if (!downloadUrl)
+        return NullOpt();
 
-    latestVersion.Number = version;
-    latestVersion.DownloadUrl = downloadUrl;
+    LatestVersion result;
+    result.Number = *version;
+    result.DownloadUrl = *downloadUrl;
 
-    return hr;
+    return result;
 }
 
 static bool AskToDownload(const std::string &currentVersion, const std::string &latestVersion)
@@ -293,55 +238,7 @@ static bool AskToDownload(const std::string &currentVersion, const std::string &
     return result == ERROR_SUCCESS && buttonPressedIndex == 0;
 }
 
-static std::string GetFinalDownloadUrl(const std::string &url)
-{
-    HRESULT hr = S_OK;
-
-    Http::Url parsedUrl = {};
-    hr = Http::ParseUrl(url, parsedUrl);
-    if (FAILED(hr))
-        return "";
-
-    // Connect to GitHub
-    Socket socket(parsedUrl.Hostname, 443);
-    hr = ConnectToGitHub(socket);
-    if (FAILED(hr))
-        return "";
-
-    // Send the request
-    hr = Http::SendRequest(socket, parsedUrl.Hostname, parsedUrl.Path);
-    if (FAILED(hr))
-        return "";
-
-    // Read HTTP status
-    uint32_t status = Http::ReadStatus(socket);
-    if (status != 302)
-    {
-        DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Invalid status code when trying to follow "
-            "redirect. Expected 302 but got %d.",
-            status
-        );
-        return "";
-    }
-
-    // Read the headers
-    auto headers = Http::ReadHeaders(socket);
-
-    // Flush the body
-    Http::ReadBody(socket);
-
-    // The final download URL is in the "Location" header
-    if (headers.find("Location") == headers.end())
-    {
-        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't find \"Location\" header in HTTP response.");
-        return "";
-    }
-
-    return headers.at("Location");
-}
-
-static HRESULT ReadBodyToFile(Socket &socket)
+static HRESULT WriteBodyToFile(const std::vector<uint8_t> &body)
 {
     XASSERT(g_pPlugin != nullptr);
 
@@ -381,22 +278,21 @@ static HRESULT ReadBodyToFile(Socket &socket)
         return status;
     }
 
-    // Flush any remaining data in the internal HTTP buffer
-    std::vector<char> httpInternalBuffer = Http::FlushInternalBuffer();
+    // Replace the contents of the existing file with the response body
     status = NtWriteFile(
         handle,
         nullptr,
         nullptr,
         nullptr,
         &block,
-        httpInternalBuffer.data(),
-        httpInternalBuffer.size(),
+        const_cast<uint8_t *>(body.data()),
+        body.size(),
         nullptr
     );
     if (status != 0)
     {
         DebugPrint(
-            "[Hayzen][AutoUpdater]: Error: Couldn't write internal buffer to \"%s\" (%X).",
+            "[Hayzen][AutoUpdater]: Error: Couldn't write to \"%s\" (%X).",
             pluginPath.c_str(),
             status
         );
@@ -404,78 +300,34 @@ static HRESULT ReadBodyToFile(Socket &socket)
         return status;
     }
 
-    // Get the response
-    char buffer[2048] = {};
-    for (;;)
-    {
-        int bytesRead = socket.Receive(buffer, sizeof(buffer));
-        if (bytesRead <= 0)
-            break;
-
-        status = NtWriteFile(
-            handle,
-            nullptr,
-            nullptr,
-            nullptr,
-            &block,
-            buffer,
-            bytesRead,
-            nullptr
-        );
-        if (status != 0)
-        {
-            DebugPrint(
-                "[Hayzen][AutoUpdater]: Error: Couldn't write to \"%s\" (%X).",
-                pluginPath.c_str(),
-                status
-            );
-            NtClose(handle);
-            return status;
-        }
-    }
-
     NtClose(handle);
 
     return status;
 }
 
-static HRESULT Download(const std::string &url)
+static HRESULT Download(const Http::Client &httpClient, const std::string &url)
 {
-    HRESULT hr = S_OK;
+    // Send request to GitHub API
+    Optional<Http::Response> response = httpClient.Get(url);
+    if (!response)
+    {
+        DebugPrint("[Hayzen][AutoUpdater]: Error: Couldn't download the latest binary from GitHub.");
+        return E_FAIL;
+    }
 
-    Http::Url parsedUrl = {};
-    hr = Http::ParseUrl(url, parsedUrl);
-    if (FAILED(hr))
-        return hr;
-
-    // Connect to GitHub
-    Socket socket(parsedUrl.Hostname, 443);
-    hr = ConnectToGitHub(socket);
-    if (FAILED(hr))
-        return hr;
-
-    // Send the request
-    hr = Http::SendRequest(socket, parsedUrl.Hostname, parsedUrl.Path);
-    if (FAILED(hr))
-        return hr;
-
-    // Read HTTP status
-    uint32_t status = Http::ReadStatus(socket);
-    if (status != 200)
+    // Check HTTP status
+    if (response->Status != 200)
     {
         DebugPrint(
             "[Hayzen][AutoUpdater]: Error: Invalid status code when trying to download. "
             "Expected 200 but got %d.",
-            status
+            response->Status
         );
         return E_FAIL;
     }
 
-    // Flush the headers
-    Http::ReadHeaders(socket);
-
     // Overwrite the old file with the new one
-    hr = ReadBodyToFile(socket);
+    HRESULT hr = WriteBodyToFile(response->Body);
     if (FAILED(hr))
         return hr;
 
@@ -504,34 +356,28 @@ HRESULT Run()
 {
     XASSERT(g_pPlugin != nullptr);
 
-    HRESULT hr = S_OK;
+    // Setup the HTTP client to send requests to GitHub
+    Http::Client httpClient;
+    httpClient.AddECTrustAnchor(s_SectigoECC_DN, sizeof(s_SectigoECC_DN), s_SectigoECC_Q, sizeof(s_SectigoECC_Q), Socket::Curve_secp256r1);
+    httpClient.AddRsaTrustAnchor(s_R12_RSA_DN, sizeof(s_R12_RSA_DN), s_R12_RSA_N, sizeof(s_R12_RSA_N), s_R12_RSA_E, sizeof(s_R12_RSA_E));
 
     // Get information about the latest version available on GitHub
-    LatestVersion latestVersion = {};
-    hr = GetLatestVersion(latestVersion);
-    if (FAILED(hr))
-        return hr;
+    Optional<LatestVersion> latestVersion = GetLatestVersion(httpClient);
+    if (!latestVersion)
+        return E_FAIL;
 
     // If we're up to date, stop here
     std::string currentVersion = g_pPlugin->GetVersion();
-    if (currentVersion == latestVersion.Number)
-        return hr;
+    if (currentVersion == latestVersion->Number)
+        return S_OK;
 
     // Ask the user if they want to download the latest version
-    bool wantsToDownload = AskToDownload(currentVersion, latestVersion.Number);
+    bool wantsToDownload = AskToDownload(currentVersion, latestVersion->Number);
     if (!wantsToDownload)
-        return hr;
-
-    // The download URL returned by the API will return a redirect, so we need to follow it
-    std::string finalDownloadUrl = GetFinalDownloadUrl(latestVersion.DownloadUrl);
-    if (finalDownloadUrl.empty())
-    {
-        Xam::XNotify("Couldn't download the latest version.", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
-        return hr;
-    }
+        return S_OK;
 
     // Download the file and replace the existing one
-    hr = Download(finalDownloadUrl);
+    HRESULT hr = Download(httpClient, latestVersion->DownloadUrl);
     if (FAILED(hr))
     {
         Xam::XNotify("Couldn't download the latest version.", Xam::XNOTIFYUI_TYPE_AVOID_REVIEW);
@@ -539,7 +385,7 @@ HRESULT Run()
     }
 
     // Let the user know everything succeeded
-    DisplaySuccessMessageBox(latestVersion.Number);
+    DisplaySuccessMessageBox(latestVersion->Number);
 
     return hr;
 }

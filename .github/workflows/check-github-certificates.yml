@@ -1,0 +1,20 @@
+name: Check GitHub certificates
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  check-certificates:
+    name: Check GitHub certificates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+
+      - name: Check GitHub certificates
+        run: node ./scripts/verify-github-certs.js

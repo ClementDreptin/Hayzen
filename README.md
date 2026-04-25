@@ -53,14 +53,14 @@ git clone --recursive https://github.com/ClementDreptin/Hayzen.git
 
 Open `Hayzen.sln` in Visual Studio.
 
-#### Visual Studio 2022 (or any environment)
+### Any other environment
 
-You can't build with the 64-bit version of MSBuild so you'll need to run the 32-bit version manually. Open PowerShell (which can be done in `View > Terminal` in Visual Studio) and run the following command:
+Xbox 360 projects can't be built with the 64-bit version of MSBuild, you need to run the 32-bit version. You can make yourself an alias for convenience:
 
 ```PS1
 # Create an alias to the 32-bit version of MSBuild named msbuild
-# The default installation path of VS2022 is C:\Program Files\Microsoft Visual Studio\2022\Community
-Set-Alias msbuild "<path_vs2022>\MSBuild\Current\Bin\MSBuild.exe"
+# The default installation path of VS2026 is C:\Program Files\Microsoft Visual Studio\18\Community
+Set-Alias msbuild "<path_vs2026>\MSBuild\Current\Bin\MSBuild.exe"
 ```
 
 Now run `msbuild` to compile the plugin and deploy it to your console.

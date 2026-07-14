@@ -74,13 +74,12 @@ XBREBOOT := "$(XDK_BIN_DIR)/xbreboot.exe"
 # ================================================================
 
 INCLUDES := src $(XEXUTILS_INC) $(MINI_INC)
-LIBS := xjson.lib
 
 CXX_FLAGS := -c $(addprefix -I ,$(INCLUDES)) -Zi -nologo -W4 -MP -MT -D _XBOX -Gm- -EHsc -GS \
 			 -fp:fast -fp:except- -Zc:wchar_t -Zc:forScope -GR- -openmp- -Fp"$(PCH_FILE)" \
 			 -Fd"$(INT_DIR)/vc100.pdb" -TP -wd4481 -FI"$(XDK_INC_DIR)/xbox_intellisense_platform.h"
 
-LD_FLAGS := -ERRORREPORT:QUEUE -NOLOGO $(LIBS) -MANIFESTUAC:"level='asInvoker' uiAccess='false'" \
+LD_FLAGS := -ERRORREPORT:QUEUE -NOLOGO -MANIFESTUAC:"level='asInvoker' uiAccess='false'" \
 			-DEBUG -PDB:"$(OUT_DIR)/$(PROJECT_NAME).pdb" -STACK:"262144","262144" -TLBID:1 \
 			-RELEASE -IMPLIB:"$(OUT_DIR)/$(PROJECT_NAME).lib" -XEX:NO -ALIGN:128,4096 \
 			-DLL -ENTRY:"_DllMainCRTStartup"

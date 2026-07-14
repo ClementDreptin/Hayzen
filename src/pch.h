@@ -2,7 +2,6 @@
 
 // Xbox headers
 #include <xtl.h>
-#include <xjson.h>
 
 // C++ standard library
 #include <cstdint>

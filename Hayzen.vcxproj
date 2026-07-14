@@ -62,7 +62,6 @@
       <PreprocessorDefinitions Condition="'$(Configuration)'=='Release'">NDEBUG;_XBOX</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>xjson.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SetChecksum>true</SetChecksum>
       <AdditionalOptions>/DLL /ENTRY:"_DllMainCRTStartup" /ALIGN:128,4096 %(AdditionalOptions)</AdditionalOptions>
@@ -131,7 +130,6 @@
     <ClInclude Include="src\Modules\Console.h" />
     <ClInclude Include="src\Modules\DebugEnabler.h" />
     <ClInclude Include="src\Modules\InputRecorder.h" />
-    <ClInclude Include="src\Modules\Json.h" />
     <ClInclude Include="src\Options\ClickOption.h" />
     <ClInclude Include="src\Options\ColorPickerOption.h" />
     <ClInclude Include="src\Options\Option.h" />
@@ -184,7 +182,6 @@
     <ClCompile Include="src\Modules\Console.cpp" />
     <ClCompile Include="src\Modules\DebugEnabler.cpp" />
     <ClCompile Include="src\Modules\InputRecorder.cpp" />
-    <ClCompile Include="src\Modules\Json.cpp" />
     <ClCompile Include="src\Options\ClickOption.cpp" />
     <ClCompile Include="src\Options\ColorPickerOption.cpp" />
     <ClCompile Include="src\Options\Option.cpp" />

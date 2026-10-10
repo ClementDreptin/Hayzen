@@ -123,11 +123,11 @@ void Plugin::InitNewTitle(uint32_t newTitleId)
     switch (newTitleId)
     {
     case Title_Dashboard:
-        Xam::XNotify("Hayzen - Dashboard Detected");
+        InitDashboard();
         m_pCurrentTitle = nullptr;
         break;
     case Title_XShell:
-        Xam::XNotify("Hayzen - XShell Detected");
+        InitXShell();
         m_pCurrentTitle = nullptr;
         break;
     case Title_CoD4:
@@ -335,4 +335,19 @@ bool Plugin::CheckKernelVersion()
     }
 
     return onSupportedKernel;
+}
+
+void Plugin::InitDashboard()
+{
+    // Going back to the dashboard can trigger a breakpoint because of low heap space left
+    // when trying to call XNotify during the dashboard initialization, so we wait a little
+    // bit for some memory to become available again.
+    Sleep(1000);
+
+    Xam::XNotify("Hayzen - Dashboard Detected");
+}
+
+void Plugin::InitXShell()
+{
+    Xam::XNotify("Hayzen - XShell Detected");
 }

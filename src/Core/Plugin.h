@@ -36,6 +36,10 @@ private:
     bool IsMultiplayerExecutable(uintptr_t stringAddress);
 
     bool CheckKernelVersion();
+
+    void InitDashboard();
+
+    void InitXShell();
 };
 
 extern Plugin *g_pPlugin;
